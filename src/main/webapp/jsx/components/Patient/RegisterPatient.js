@@ -667,7 +667,7 @@ const UserRegistration = (props) => {
         <ToastContainer autoClose={3000} hideProgressBar />
         <div className="row page-titles mx-0" style={{marginTop:"0px", marginBottom:"-10px"}}>
 			<ol className="breadcrumb">
-				<li className="breadcrumb-item active"><h4> <Link to={"/"} >COVID-19 /</Link> Patient Registration</h4></li>
+				<li className="breadcrumb-item active"><h4> <Link to={"/"} >HEPATITIS /</Link> Patient Registration</h4></li>
 			</ol>
 		  </div>
           <Link
@@ -1443,7 +1443,7 @@ const UserRegistration = (props) => {
                             {/* Adding First DOSAGE FORM HERE */}
                             <div className="card">
                                 <div className="card-header" style={{backgroundColor:"#014d88",color:'#fff',fontWeight:'bolder', borderRadius:"0.2rem"}}>
-                                    <h5 className="card-title"  style={{color:'#fff'}}>COVID-19 First Dosage</h5>
+                                    <h5 className="card-title"  style={{color:'#fff'}}>HEPATITIS First Dosage</h5>
                                 </div>
 
                             <div className="card-body">
