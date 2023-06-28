@@ -4,11 +4,13 @@ import "react-toastify/dist/ReactToastify.css";
 import "react-widgets/dist/css/react-widgets.css";
 import {Link} from "react-router-dom";
 import {TiArrowBack} from 'react-icons/ti'
-import ViralHepatitisForm1 from "./ViralHepatitisForms/Form1";
 import { ToastContainer } from "react-toastify";
 import Steppers from "./Stepper/Stepper";
+import ViralHepatitisForm1 from "./ViralHepatitisForms/Form1";
 import ViralHepatitisForm2 from "./ViralHepatitisForms/Form2";
 import ViralHepatitisForm3 from "./ViralHepatitisForms/Form3";
+import FollowupForm from "./ViralHepatitisForms/FollowUp";
+
 
 
 
@@ -38,7 +40,7 @@ const ViralHepatitisFormsContainer = (props) => {
             </Link>
             <br/><br/> 
             <Steppers/>
-            <ViralHepatitisForm3/>
+            <FollowupForm/>
         </>
     );
 };

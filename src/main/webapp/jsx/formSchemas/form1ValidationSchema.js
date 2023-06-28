@@ -107,7 +107,7 @@ export const useValidateForm2ValuesHook = (onSubmit) => {
     gradeOfEncephalopathy: "",
     childPughScore: "",
     liverBiopsyStage: "",
-    stagingDateFoorLiverBiopsy: "",
+    stagingDateForLiverBiopsy: "",
     diagnosis: "",
     commobidities: ""
     
@@ -153,7 +153,7 @@ export const useValidateForm2ValuesHook = (onSubmit) => {
     gradeOfEncephalopathy:yup.string(),
     childPughScore:yup.string(),
     liverBiopsyStage:yup.string(),
-    stagingDateFoorLiverBiopsy:yup.string(),
+    stagingDateForLiverBiopsy:yup.string(),
     diagnosis:yup.string()
   });
 
@@ -258,6 +258,89 @@ export const useValidateForm3ValuesHook = (onSubmit) => {
     initialValues: form3InitialValues,
     onSubmit,
     validationSchema: Form3ValidationSchema,
+  });
+   return { formik };
+};
+
+export const useValidateFollowupFormValuesHook = (onSubmit) => {
+  const followupFormIntialValue = {
+    dateOfVisit: "",
+    weight: "",
+    height: "",
+    bmi: "",
+    bloodPressure: "",
+    hbsAgQuantification: "",
+    hbeAg: "",
+    hbvDna: "",
+
+    alt: "",
+    ast: "",
+    plt: "",
+    totalBilirubin: "",
+    directBilirubin: "",
+    albumin: "",
+    apriScore: "",
+    fib4: "",
+    prothrombinTime: "",
+    urea: "",
+    creatinine: "",
+    ultrasoundScan: "",
+    afp: "",
+    fibroscan: "",
+    ctScan: "",
+    ascites: "",
+    severityOfAscites: "",
+    gradeOfEncephalopathy: "",
+    childPughScore: "",
+    liverBiopsyStage: "",
+    stagingDateForLiverBiopsy: "",
+    diagnosis: "",
+    treatmentRegimen: "",
+    clinicalName: "",
+    nextAppointment: "",
+    remark: "",
+
+  };
+
+  const FollowupFormValidationSchema = yup.object({
+    dateOfVisit: yup.string(),
+    weight: yup.string(),
+    height: yup.string(),
+    bmi: yup.string(),
+    bloodPressure: yup.string(),
+    hbsAgQuantification: yup.string(),
+    hbeAg: yup.string(),
+    hbvDna: yup.string(),
+
+    alt: yup.string(),
+    ast: yup.string(),
+    plt: yup.string(),
+    totalBilirubin: yup.string(),
+    directBilirubin: yup.string(),
+    albumin: yup.string(),
+    apriScore: yup.string(),
+    fib4: yup.string(),
+    prothrombinTime: yup.string(),
+    urea: yup.string(),
+    creatinine: yup.string(),
+    ultrasoundScan: yup.string(),
+    afp: yup.string(),
+    fibroscan: yup.string(),
+    ctScan: yup.string(),
+    ascites: yup.string(),
+    severityOfAscites: yup.string(),
+    gradeOfEncephalopathy: yup.string(),
+    childPughScore: yup.string(),
+    liverBiopsyStage: yup.string(),
+    stagingDateForLiverBiopsy: yup.string(),
+    diagnosis: yup.string()
+
+  });
+
+  const formik = useFormik({
+    initialValues: followupFormIntialValue,
+    onSubmit,
+    validationSchema: FollowupFormValidationSchema,
   });
    return { formik };;
 };

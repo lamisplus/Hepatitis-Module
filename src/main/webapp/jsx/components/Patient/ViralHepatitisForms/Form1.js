@@ -455,6 +455,7 @@ const ViralHepatitisForm1 = () => {
                                             ) : "" }   
                                         </FormGroup>
                                     </div>
+
                                     <div className="form-group mb-3 col-md-4">
                                         <FormGroup>
                                             <Label for="bmi">BMI </Label>
@@ -473,6 +474,7 @@ const ViralHepatitisForm1 = () => {
                                             ) : "" }
                                         </FormGroup>
                                     </div>
+                                    
                                 </div>
                                 <div className="row"> 
                                     <div className="form-group mb-3 col-md-4">
