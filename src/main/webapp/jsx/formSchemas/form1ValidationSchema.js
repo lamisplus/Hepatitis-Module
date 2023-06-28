@@ -173,20 +173,22 @@ export const useValidateForm3ValuesHook = (onSubmit) => {
    hbvNewRegimen: "",
    hbvDateStarted: "",
    hbvHistoryOfAdverseEffect: "",
+
    hbvRegimeSwitchNewRegimen: "",
    hbvRegimeSwitchDateStarted: "",
    hbvRegimeSwitchHistoryOfAdverseEffect: "",
    hbvRegimeSwitchReason: "",
    hbvRegimeSwitchDateStopped: "",
    hbvReasonForTreatmentEligibility: "",
-   hbvReasonsForTreatmentHbvpmtct: "",
    hbvReasonsForTreatmentComment: "",
 
    hcvTreatmentExperience: "",
-   hcvPastTreatmentRegimen: "",
+   hcvPastTreatmentExperience: "",
    hcvDateStarted: "",
    hcvDateCompleted: "",
    hcvPrescribedDuration: "",
+   hcvAdverseEventReported: "",
+
    hcvNewRegimen: "",
    hcvRegimeSwitchNewRegimen: "",
    hcvRegimeSwitchPrescribedDuration: "",
@@ -196,8 +198,10 @@ export const useValidateForm3ValuesHook = (onSubmit) => {
   
    svr12TestingDateStarted: "",
    svr12TestingHcvRna: "",
+   svr12TestingHcvRnaValue: "",
    svr12RetreatmentDateTested: "",
    svr12RetreatmentHcvRna: "",
+   svr12RetreatmentHcvRnaValue: "",
 
    hcvRetreatmentNewRegime: "",
    hcvRetreatmentPrescribedDuration: "",
@@ -205,13 +209,49 @@ export const useValidateForm3ValuesHook = (onSubmit) => {
    hcvRetreatmentDateStopped: "",
    hcvRetreatmentAdverseEffect: "",
    hcvRetreatmentHcvGenotype: "",
-
-
-    
   };
 
   const Form3ValidationSchema = yup.object({
-    
+    hbvTreatmentExperience: yup.string(),
+   hbvPastTreatmentRegimen: yup.string(),
+   hbvNewRegimen: yup.string(),
+   hbvDateStarted: yup.string(),
+   hbvHistoryOfAdverseEffect: yup.string(),
+   hbvRegimeSwitchNewRegimen: yup.string(),
+   hbvRegimeSwitchDateStarted: yup.string(),
+   hbvRegimeSwitchHistoryOfAdverseEffect: yup.string(),
+   hbvRegimeSwitchReason: yup.string(),
+   hbvRegimeSwitchDateStopped: yup.string(),
+   hbvReasonForTreatmentEligibility: yup.string(),
+   hbvReasonsForTreatmentComment: yup.string(),
+
+   hcvTreatmentExperience: yup.string(),
+   hcvPastTreatmentExperience: yup.string(),
+   hcvDateStarted: yup.string(),
+   hcvDateCompleted: yup.string(),
+   hcvPrescribedDuration: yup.string(),
+   hcvNewRegimen: yup.string(),
+   hcvRegimeSwitchNewRegimen: yup.string(),
+   hcvRegimeSwitchPrescribedDuration: yup.string(),
+   hcvRegimeSwitchDateStarted: yup.string(),
+   hcvRegimeSwitchDateStopped: yup.string(),
+   hcvAdverseEventReported: yup.string(),
+  
+   svr12TestingDateStarted: yup.string(),
+   svr12TestingHcvRna: yup.string(),
+   svr12TestingHcvRnaValue: yup.string(),
+   svr12RetreatmentDateTested: yup.string(),
+   svr12RetreatmentHcvRna: yup.string(),
+   svr12RetreatmentHcvRnaValue: yup.string(),
+
+   hcvRetreatmentNewRegime: yup.string(),
+   hcvRetreatmentPrescribedDuration: yup.string(),
+   hcvRetreatmentDateStarted: yup.string(),
+   hcvRetreatmentDateStopped: yup.string(),
+   hcvRetreatmentAdverseEffect: yup.string(),
+   hcvRetreatmentHcvGenotype: yup.string(),
+
+
   });
 
   const formik = useFormik({

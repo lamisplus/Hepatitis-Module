@@ -18,7 +18,7 @@ import "react-widgets/dist/css/react-widgets.css";
 import { useValidateForm3ValuesHook } from "../../../formSchemas/form1ValidationSchema";
 import { Collapse, IconButton } from "@material-ui/core";
 import { ArrowForward, ExpandMore as ExpandMoreIcon } from "@material-ui/icons";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
@@ -96,11 +96,11 @@ const ViralHepatitisForm3 = () => {
   const classes = useStyles();
   const { formik } = useValidateForm3ValuesHook();
   const [isDropdownsOpen, setIsDropdownsOpen] = useState({
-    hbvTreatmentRegimenSwitch: false,
-    hbvTreatmentReasonforTreatment: false,
-    hcvTreatmentRegimenSwitch: false,
-    hcvTreatmentRegimenHcvRetreatment: false,
-    hcvTreatmentSvr12Testing: false,
+    hbvTreatmentRegimenSwitch: true,
+    hbvTreatmentReasonforTreatment: true,
+    hcvTreatmentRegimenSwitch: true,
+    hcvTreatmentRegimenHcvRetreatment: true,
+    hcvTreatmentSvr12Testing: true,
   });
   return (
     <>
@@ -123,6 +123,165 @@ const ViralHepatitisForm3 = () => {
                   </h5>
                 </div>
                 <div>
+                  <div className="card-body">
+                    <div
+                      className="basic-form"
+                      style={{ padding: "0 50px 0 50px" }}
+                    >
+                      <div className="row">
+                        <div className="form-group mb-3 col-md-4">
+                          <FormGroup>
+                            <Label for="hbvTreatmentExperience">
+                              Treatment experience
+                              <span style={{ color: "red" }}> *</span>{" "}
+                            </Label>
+                            <select
+                              className="form-control"
+                              type="date"
+                              name="hbvTreatmentExperience"
+                              id="hbvTreatmentExperience"
+                              value={formik.values.hbvTreatmentExperience}
+                              onChange={formik.handleChange}
+                              onBlur={formik.handleBlur}
+                              style={{
+                                border: "1px solid #014D88",
+                                borderRadius: "0.2rem",
+                              }}
+                            >
+                              <option value="">Select</option>
+                              <option value="yes">Yes</option>
+                              <option value="no">No</option>
+                            </select>
+                            {formik.errors.hbvTreatmentExperience !== "" ? (
+                              <span className={classes.error}>
+                                {formik.errors.hbvTreatmentExperience}
+                              </span>
+                            ) : (
+                              ""
+                            )}
+                          </FormGroup>
+                        </div>
+
+                        {formik.values.hbvTreatmentExperience === "yes" && (
+                          <div className="form-group mb-3 col-md-4">
+                            <FormGroup>
+                              <Label for="hbvPastTreatmentRegimen">
+                                Past treatment regime
+                                <span style={{ color: "red" }}> *</span>{" "}
+                              </Label>
+                              <input
+                                className="form-control"
+                                type="text"
+                                name="hbvPastTreatmentRegimen"
+                                id="hbvPastTreatmentRegimen"
+                                value={formik.values.hbvPastTreatmentRegimen}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                style={{
+                                  border: "1px solid #014D88",
+                                  borderRadius: "0.2rem",
+                                }}
+                              />
+                              {formik.errors.hbvPastTreatmentRegimen !== "" ? (
+                                <span className={classes.error}>
+                                  {formik.errors.hbvPastTreatmentRegimen}
+                                </span>
+                              ) : (
+                                ""
+                              )}
+                            </FormGroup>
+                          </div>
+                        )}
+                        <div className="form-group mb-3 col-md-4">
+                          <FormGroup>
+                            <Label for="hbvNewRegimen">New regime</Label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              name="hbvNewRegimen"
+                              id="hbvNewRegimen"
+                              value={formik.values.hbvNewRegimen}
+                              onChange={formik.handleChange}
+                              onBlur={formik.handleBlur}
+                              style={{
+                                border: "1px solid #014D88",
+                                borderRadius: "0.2rem",
+                              }}
+                            />
+                            {formik.errors.hbvNewRegimen !== "" ? (
+                              <span className={classes.error}>
+                                {formik.errors.hbvNewRegimen}
+                              </span>
+                            ) : (
+                              ""
+                            )}
+                          </FormGroup>
+                        </div>
+
+                        {formik.values.hbvNewRegimen !== "" && (
+                          <div className="form-group mb-3 col-md-4">
+                            <FormGroup>
+                              <Label for="hbvDateStarted">Date started</Label>
+                              <input
+                                className="form-control"
+                                type="date"
+                                name="hbvDateStarted"
+                                id="hbvDateStarted"
+                                value={formik.values.hbvDateStarted}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                style={{
+                                  border: "1px solid #014D88",
+                                  borderRadius: "0.2rem",
+                                }}
+                              />
+                              {formik.errors.hbvDateStarted !== "" ? (
+                                <span className={classes.error}>
+                                  {formik.errors.hbvDateStarted}
+                                </span>
+                              ) : (
+                                ""
+                              )}
+                            </FormGroup>
+                          </div>
+                        )}
+
+                        <div className="form-group mb-3 col-md-4">
+                          <FormGroup>
+                            <Label for="hbvHistoryOfAdverseEffect">
+                              History of adverse effect
+                            </Label>
+                            <select
+                              className="form-control"
+                              name="hbvHistoryOfAdverseEffect"
+                              id="hbvHistoryOfAdverseEffect"
+                              value={formik.values.hbvHistoryOfAdverseEffect}
+                              onChange={formik.handleChange}
+                              onBlur={formik.handleBlur}
+                              style={{
+                                border: "1px solid #014D88",
+                                borderRadius: "0.2rem",
+                              }}
+                            >
+                              <option value="">Select</option>
+                              <option value="yes">Yes</option>
+                              <option value="no">No</option>
+                            </select>
+                            {formik.errors.hbvHistoryOfAdverseEffect !== "" ? (
+                              <span className={classes.error}>
+                                {formik.errors.hbvHistoryOfAdverseEffect}
+                              </span>
+                            ) : (
+                              ""
+                            )}
+                          </FormGroup>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
                   <div
                     style={{
                       backgroundColor: "#d8f6ff",
@@ -143,14 +302,15 @@ const ViralHepatitisForm3 = () => {
                         marginTop: "10px",
                       }}
                     >
-                      Hepatitis B
+                      Regimen Switch
                     </p>
                     <IconButton
                       onClick={() =>
                         setIsDropdownsOpen((prevState) => {
                           return {
                             ...prevState,
-                            hbvTreatmentRegimenSwitch: !prevState.hbvTreatmentRegimenSwitch,
+                            hbvTreatmentRegimenSwitch:
+                              !prevState.hbvTreatmentRegimenSwitch,
                           };
                         })
                       }
@@ -169,177 +329,16 @@ const ViralHepatitisForm3 = () => {
                         <div className="row">
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
-                              <Label for="dateHbvTestRequested">
-                                Date HBV test requested{" "}
+                              <Label for="hbvRegimeSwitchNewRegimen">
+                                New Regimen
                                 <span style={{ color: "red" }}> *</span>{" "}
                               </Label>
-                              <input
-                                className="form-control"
-                                type="date"
-                                name="dateHbvTestRequested"
-                                id="dateHbvTestRequested"
-                                value={formik.values.dateHbvTestRequested}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                style={{
-                                  border: "1px solid #014D88",
-                                  borderRadius: "0.2rem",
-                                }}
-                              />
-                              {formik.errors.dateHbvTestRequested !== "" ? (
-                                <span className={classes.error}>
-                                  {formik.errors.dateHbvTestRequested}
-                                </span>
-                              ) : (
-                                ""
-                              )}
-                            </FormGroup>
-                          </div>
-                          <div className="form-group mb-3 col-md-4">
-                            <FormGroup>
-                              <Label for="dateHbvSampleCollected">
-                                Date HBV sample Requested{" "}
-                                <span style={{ color: "red" }}> *</span>{" "}
-                              </Label>
-                              <input
-                                className="form-control"
-                                type="date"
-                                name="dateHbvSampleCollected"
-                                id="dateHbvSampleCollected"
-                                value={formik.values.dateHbvSampleCollected}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                style={{
-                                  border: "1px solid #014D88",
-                                  borderRadius: "0.2rem",
-                                }}
-                              />
-                              {formik.errors.dateHbvSampleCollected !== "" ? (
-                                <span className={classes.error}>
-                                  {formik.errors.dateHbvSampleCollected}
-                                </span>
-                              ) : (
-                                ""
-                              )}
-                            </FormGroup>
-                          </div>
-                          <div className="form-group mb-3 col-md-4">
-                            <FormGroup>
-                              <Label for="dateHbvDnaResultReported">
-                                Date of HBV DNA result reported{" "}
-                              </Label>
-                              <input
-                                className="form-control"
-                                type="date"
-                                name="dateHbvDnaResultReported"
-                                id="dateHbvDnaResultReported"
-                                value={formik.values.dateHbvDnaResultReported}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                style={{
-                                  border: "1px solid #014D88",
-                                  borderRadius: "0.2rem",
-                                }}
-                              />
-                              {formik.errors.dateHbvDnaResultReported !== "" ? (
-                                <span className={classes.error}>
-                                  {formik.errors.dateHbvDnaResultReported}
-                                </span>
-                              ) : (
-                                ""
-                              )}
-                            </FormGroup>
-                          </div>
-                        </div>
-                        <div className="row">
-                          <div className="form-group mb-2 col-md-4">
-                            <FormGroup>
-                              <Label>
-                                HBV DNA(UI/ml){" "}
-                                <span style={{ color: "red" }}> *</span>
-                              </Label>
-                              <div className="radio">
-                                <label>
-                                  <input
-                                    type="radio"
-                                    value="detected"
-                                    name="hbvDna"
-                                    onBlur={formik.handleBlur}
-                                    onChange={formik.handleChange}
-                                    style={{
-                                      border: "1px solid #014D88",
-                                      borderRadius: "0.2rem",
-                                    }}
-                                  />{" "}
-                                  Detected
-                                </label>
-                              </div>
-                              <div className="radio">
-                                <label>
-                                  <input
-                                    type="radio"
-                                    value="undetected"
-                                    name="hbvDna"
-                                    onBlur={formik.handleBlur}
-                                    onChange={formik.handleChange}
-                                    style={{
-                                      border: "1px solid #014D88",
-                                      borderRadius: "0.2rem",
-                                    }}
-                                  />{" "}
-                                  Undetected
-                                </label>
-
-                                {formik.errors.hbvDna !== "" ? (
-                                  <span className={classes.error}>
-                                    {formik.errors.hbvDna}
-                                  </span>
-                                ) : (
-                                  ""
-                                )}
-                              </div>
-                            </FormGroup>
-                          </div>
-                          {formik.values.hbvDna === "detected" && (
-                            <div className="form-group mb-3 col-md-4">
-                              <FormGroup>
-                                <Label for="hbvDnaValue">
-                                  Input HBV DNA value{" "}
-                                  <span style={{ color: "red" }}> *</span>{" "}
-                                </Label>
-                                <input
-                                  className="form-control"
-                                  type="text"
-                                  name="hbvDnaValue"
-                                  id="hbvDnaValue"
-                                  value={formik.values.hbvDnaValue}
-                                  onChange={formik.handleChange}
-                                  onBlur={formik.handleBlur}
-                                  style={{
-                                    border: "1px solid #014D88",
-                                    borderRadius: "0.2rem",
-                                  }}
-                                />
-
-                                {formik.errors.hbvDnaValue !== "" ? (
-                                  <span className={classes.error}>
-                                    {formik.errors.hbvDnaValue}
-                                  </span>
-                                ) : (
-                                  ""
-                                )}
-                              </FormGroup>
-                            </div>
-                          )}
-                          <div className="form-group mb-3 col-md-4">
-                            <FormGroup>
-                              <Label for="landmark">HBsAG Quantification</Label>
                               <input
                                 className="form-control"
                                 type="text"
-                                name="hbsAgQuantification"
-                                id="hbsAgQuantification"
-                                value={formik.values.hbsAgQuantification}
+                                name="hbvRegimeSwitchNewRegimen"
+                                id="hbvRegimeSwitchNewRegimen"
+                                value={formik.values.hbvRegimeSwitchNewRegimen}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                                 style={{
@@ -347,9 +346,10 @@ const ViralHepatitisForm3 = () => {
                                   borderRadius: "0.2rem",
                                 }}
                               />
-                              {formik.errors.hbsAgQuantification ? (
+                              {formik.errors.hbvRegimeSwitchNewRegimen !==
+                              "" ? (
                                 <span className={classes.error}>
-                                  {formik.errors.hbsAgQuantification}
+                                  {formik.errors.hbvRegimeSwitchNewRegimen}
                                 </span>
                               ) : (
                                 ""
@@ -359,57 +359,27 @@ const ViralHepatitisForm3 = () => {
 
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
-                              <Label for="hbeAg">HbeAG</Label>
-                              <select
+                              <Label for="hbvRegimeSwitchDateStarted">
+                                Date Started{" "}
+                                <span style={{ color: "red" }}> *</span>{" "}
+                              </Label>
+                              <input
                                 className="form-control"
-                                name="hbeAg"
-                                id="hbeAg"
+                                type="date"
+                                name="hbvRegimeSwitchDateStarted"
+                                id="hbvRegimeSwitchDateStarted"
+                                value={formik.values.hbvRegimeSwitchDateStarted}
                                 onChange={formik.handleChange}
-                                value={formik.values.hbeAg}
+                                onBlur={formik.handleBlur}
                                 style={{
                                   border: "1px solid #014D88",
                                   borderRadius: "0.2rem",
                                 }}
-                              >
-                                <option value={""}>Select</option>
-                                <option value={"reactive"}>Reactive</option>
-                                <option value={"non-reactive"}>
-                                  Non Reactive
-                                </option>
-                              </select>
-                              {formik.errors.hbeAg !== "" ? (
+                              />
+                              {formik.errors.hbvRegimeSwitchDateStarted !==
+                              "" ? (
                                 <span className={classes.error}>
-                                  {formik.errors.hbeAg}
-                                </span>
-                              ) : (
-                                ""
-                              )}
-                            </FormGroup>
-                          </div>
-                          <div className="form-group mb-3 col-md-4">
-                            <FormGroup>
-                              <Label for="antiHdv">Anti-HDV</Label>
-                              <select
-                                className="form-control"
-                                name="antiHdv"
-                                id="antiHdv"
-                                onChange={formik.handleChange}
-                                value={formik.values.antiHdv}
-                                style={{
-                                  border: "1px solid #014D88",
-                                  borderRadius: "0.2rem",
-                                }}
-                              >
-                                <option value={""}>Select</option>
-                                <option value={"reactive"}>Reactive</option>
-                                <option value={"non-reactive"}>
-                                  Non Reactive
-                                </option>
-                                <option value={"not done"}>Not Done</option>
-                              </select>
-                              {formik.errors.antiHdv !== "" ? (
-                                <span className={classes.error}>
-                                  {formik.errors.antiHdv}
+                                  {formik.errors.hbvRegimeSwitchDateStarted}
                                 </span>
                               ) : (
                                 ""
@@ -419,27 +389,36 @@ const ViralHepatitisForm3 = () => {
 
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
-                              <Label for="treatmentEligible">
-                                Treatment Eligible
+                              <Label for="hbvRegimeSwitchHistoryOfAdverseEffect">
+                                Adverse effect reported
                               </Label>
                               <select
                                 className="form-control"
-                                name="treatmentEligible"
-                                id="treatmentEligible"
+                                name="hbvRegimeSwitchHistoryOfAdverseEffect"
+                                id="hbvRegimeSwitchHistoryOfAdverseEffect"
+                                value={
+                                  formik.values
+                                    .hbvRegimeSwitchHistoryOfAdverseEffect
+                                }
                                 onChange={formik.handleChange}
-                                value={formik.values.treatmentEligible}
+                                onBlur={formik.handleBlur}
                                 style={{
                                   border: "1px solid #014D88",
                                   borderRadius: "0.2rem",
                                 }}
                               >
-                                <option value={""}>Select</option>
-                                <option value={"yes"}>Yes</option>
-                                <option value={"no"}>No</option>
+                                <option value="">Select</option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
                               </select>
-                              {formik.errors.treatmentEligible !== "" ? (
+                              {formik.errors
+                                .hbvRegimeSwitchHistoryOfAdverseEffect !==
+                              "" ? (
                                 <span className={classes.error}>
-                                  {formik.errors.treatmentEligible}
+                                  {
+                                    formik.errors
+                                      .hbvRegimeSwitchHistoryOfAdverseEffect
+                                  }
                                 </span>
                               ) : (
                                 ""
@@ -449,27 +428,26 @@ const ViralHepatitisForm3 = () => {
 
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
-                              <Label for="pmtctEligible">PMTCT Eligible</Label>
-                              <select
+                              <Label for="hbvRegimeSwitchReason">
+                                Reason for switch
+                                <span style={{ color: "red" }}> *</span>{" "}
+                              </Label>
+                              <input
                                 className="form-control"
-                                name="pmtctEligible"
-                                id="pmtctEligible"
+                                type="text"
+                                name="hbvRegimeSwitchReason"
+                                id="hbvRegimeSwitchReason"
+                                value={formik.values.hbvRegimeSwitchReason}
                                 onChange={formik.handleChange}
-                                value={formik.values.pmtctEligible}
+                                onBlur={formik.handleBlur}
                                 style={{
                                   border: "1px solid #014D88",
                                   borderRadius: "0.2rem",
                                 }}
-                              >
-                                <option value={""}>Select</option>
-                                <option value={"reactive"}>Reactive</option>
-                                <option value={"non-reactive"}>
-                                  Non Reactive
-                                </option>
-                              </select>
-                              {formik.errors.pmtctEligible !== "" ? (
+                              />
+                              {formik.errors.hbvRegimeSwitchReason !== "" ? (
                                 <span className={classes.error}>
-                                  {formik.errors.pmtctEligible}
+                                  {formik.errors.hbvRegimeSwitchReason}
                                 </span>
                               ) : (
                                 ""
@@ -477,26 +455,29 @@ const ViralHepatitisForm3 = () => {
                             </FormGroup>
                           </div>
 
-                          <div className="form-group mb-3 col-md-4-12">
+                          <div className="form-group mb-3 col-md-4">
                             <FormGroup>
-                              <Label for="comment">Comment</Label>
-                              <textarea
+                              <Label for="hbvRegimeSwitchDateStopped">
+                                Date Stopped{" "}
+                                <span style={{ color: "red" }}> *</span>{" "}
+                              </Label>
+                              <input
                                 className="form-control"
-                                name="comment"
-                                id="comment"
+                                type="date"
+                                name="hbvRegimeSwitchDateStopped"
+                                id="hbvRegimeSwitchDateStopped"
+                                value={formik.values.hbvRegimeSwitchDateStopped}
                                 onChange={formik.handleChange}
-                                value={formik.values.comment}
-                                cols="50"
-                                rows="30"
+                                onBlur={formik.handleBlur}
                                 style={{
                                   border: "1px solid #014D88",
                                   borderRadius: "0.2rem",
-                                  height: "120px",
                                 }}
                               />
-                              {formik.errors.comment !== "" ? (
+                              {formik.errors.hbvRegimeSwitchDateStopped !==
+                              "" ? (
                                 <span className={classes.error}>
-                                  {formik.errors.comment}
+                                  {formik.errors.hbvRegimeSwitchDateStopped}
                                 </span>
                               ) : (
                                 ""
@@ -530,14 +511,15 @@ const ViralHepatitisForm3 = () => {
                         marginTop: "10px",
                       }}
                     >
-                      Hepatitis C
+                      Reason for treatment
                     </p>
                     <IconButton
                       onClick={() =>
                         setIsDropdownsOpen((prevState) => {
                           return {
                             ...prevState,
-                            hbvTreatmentReasonforTreatment: !prevState.hbvTreatmentReasonforTreatment,
+                            hbvTreatmentReasonforTreatment:
+                              !prevState.hbvTreatmentReasonforTreatment,
                           };
                         })
                       }
@@ -548,99 +530,45 @@ const ViralHepatitisForm3 = () => {
                     </IconButton>
                   </div>
                   <div className="card-body">
-                    <Collapse in={isDropdownsOpen.hbvTreatmentReasonforTreatment}>
+                    <Collapse
+                      in={isDropdownsOpen.hbvTreatmentReasonforTreatment}
+                    >
                       <div
                         className="basic-form"
                         style={{ padding: "0 50px 0 50px" }}
                       >
                         <div className="row">
-                          <div className="form-group mb-3 col-md-4">
+                          <div className="form-group mb-3 col-md-6">
                             <FormGroup>
-                              <Label for="hcvRna">HCV RNA (IU/ml)</Label>
-                              <select
-                                className="form-control"
-                                name="hcvRna"
-                                id="hcvRna"
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                value={formik.values.hcvRna}
-                                style={{
-                                  border: "1px solid #014D88",
-                                  borderRadius: "0.2rem",
-                                }}
-                              >
-                                <option value={""}>select</option>
-                                <option value={"detected"}>Detected</option>
-                                <option value={"undetected"}>Undetected</option>
-                              </select>
-                              {formik.errors.hcvRna !== "" ? (
-                                <span className={classes.error}>
-                                  {formik.errors.hcvRna}
-                                </span>
-                              ) : (
-                                ""
-                              )}
-                            </FormGroup>
-                          </div>
-                          {formik.values.hcvRna === "detected" && (
-                            <div className="form-group mb-3 col-md-4">
-                              <FormGroup>
-                                <Label for="hcvValue">
-                                  Input HCV RNA Value{" "}
-                                  <span style={{ color: "red" }}> *</span>{" "}
-                                </Label>
-                                <input
-                                  className="form-control"
-                                  type="text"
-                                  name="hcvValue"
-                                  id="hcvValue"
-                                  value={formik.values.hcvValue}
-                                  onChange={formik.handleChange}
-                                  onBlur={formik.handleBlur}
-                                  style={{
-                                    border: "1px solid #014D88",
-                                    borderRadius: "0.2rem",
-                                  }}
-                                />
-                                {formik.errors.hcvValue !== "" ? (
-                                  <span className={classes.error}>
-                                    {formik.errors.hcvValue}
-                                  </span>
-                                ) : (
-                                  ""
-                                )}
-                              </FormGroup>
-                            </div>
-                          )}
-
-                          <div className="form-group mb-3 col-md-4">
-                            <FormGroup>
-                              <Label for="hepatitisCoInfection">
-                                Hepatitis Coinfection
+                              <Label for="hbvReasonForTreatmentEligibility">
+                                Reasons for treatment
                               </Label>
                               <select
                                 className="form-control"
-                                name="hepatitisCoInfection"
-                                id="hepatitisCoInfection"
+                                name="hbvReasonForTreatmentEligibility"
+                                id="hbvReasonForTreatmentEligibility"
                                 onChange={formik.handleChange}
-                                value={formik.values.hepatitisCoInfection}
+                                value={
+                                  formik.values.hbvReasonForTreatmentEligibility
+                                }
                                 style={{
                                   border: "1px solid #014D88",
                                   borderRadius: "0.2rem",
                                 }}
                                 multiple
                               >
-                                <option value={""}>Select</option>
-                                <option value={"hbv/hcv"}>HBV/HCV</option>
-                                <option value={"hcv/hiv"}>HCV/HIV</option>
-                                <option value={"hbv/hdv"}>HBV/HDV</option>
-                                <option value={"hbv/hcd/hiv"}>
-                                  HBV/HCD/HIV
+                                <option value={"treatment eligible"}>
+                                  Treatment Eligible
                                 </option>
+                                <option value={"hbv pmtct"}>HBV PMTCT</option>
                               </select>
-                              {formik.errors.hepatitisCoInfection !== "" ? (
+                              {formik.errors
+                                .hbvReasonForTreatmentEligibility !== "" ? (
                                 <span className={classes.error}>
-                                  {formik.errors.hepatitisCoInfection}
+                                  {
+                                    formik.errors
+                                      .hbvReasonForTreatmentEligibility
+                                  }
                                 </span>
                               ) : (
                                 ""
@@ -648,28 +576,31 @@ const ViralHepatitisForm3 = () => {
                             </FormGroup>
                           </div>
 
-                          <div className="form-group mb-3 col-md-4">
+                          <div className="form-group mb-3 col-md-6">
                             <FormGroup>
-                              <Label for="commobidities">
-                                Commobidities{" "}
-                                <span style={{ color: "red" }}> *</span>{" "}
+                              <Label for="hbvReasonsForTreatmentComment">
+                                Comment
                               </Label>
-                              <input
+                              <textarea
                                 className="form-control"
-                                type="text"
-                                name="commobidities"
-                                id="commobidities"
-                                value={formik.values.commobidities}
+                                name="hbvReasonsForTreatmentComment"
+                                id="hbvReasonsForTreatmentComment"
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
+                                value={
+                                  formik.values.hbvReasonsForTreatmentComment
+                                }
                                 style={{
                                   border: "1px solid #014D88",
                                   borderRadius: "0.2rem",
+                                  height: "80px",
                                 }}
                               />
-                              {formik.errors.commobidities !== "" ? (
+
+                              {formik.errors.hbvReasonsForTreatmentComment !==
+                              "" ? (
                                 <span className={classes.error}>
-                                  {formik.errors.commobidities}
+                                  {formik.errors.hbvReasonsForTreatmentComment}
                                 </span>
                               ) : (
                                 ""
@@ -697,6 +628,198 @@ const ViralHepatitisForm3 = () => {
                     Hepatitis C Treatment
                   </h5>
                 </div>
+
+                <div>
+                  <div className="card-body">
+                    <div
+                      className="basic-form"
+                      style={{ padding: "0 50px 0 50px" }}
+                    >
+                      <div className="row">
+                        <div className="form-group mb-3 col-md-4">
+                          <FormGroup>
+                            <Label for="hcvTreatmentExperience">
+                              Treatment experience
+                              <span style={{ color: "red" }}> *</span>{" "}
+                            </Label>
+                            <select
+                              className="form-control"
+                              type="date"
+                              name="hcvTreatmentExperience"
+                              id="hcvTreatmentExperience"
+                              value={formik.values.hcvTreatmentExperience}
+                              onChange={formik.handleChange}
+                              onBlur={formik.handleBlur}
+                              style={{
+                                border: "1px solid #014D88",
+                                borderRadius: "0.2rem",
+                              }}
+                            >
+                              <option value="">Select</option>
+                              <option value="yes">Yes</option>
+                              <option value="no">No</option>
+                            </select>
+                            {formik.errors.hcvTreatmentExperience !== "" ? (
+                              <span className={classes.error}>
+                                {formik.errors.hcvTreatmentExperience}
+                              </span>
+                            ) : (
+                              ""
+                            )}
+                          </FormGroup>
+                        </div>
+
+                        {formik.values.hcvTreatmentExperience === "yes" && (
+                          <div className="form-group mb-3 col-md-4">
+                            <FormGroup>
+                              <Label for="hcvPastTreatmentExperience">
+                                Past treatment experience
+                                <span style={{ color: "red" }}> *</span>{" "}
+                              </Label>
+                              <input
+                                className="form-control"
+                                type="text"
+                                name="hcvPastTreatmentExperience"
+                                id="hcvPastTreatmentExperience"
+                                value={formik.values.hcvPastTreatmentExperience}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                style={{
+                                  border: "1px solid #014D88",
+                                  borderRadius: "0.2rem",
+                                }}
+                              />
+                              {formik.errors.hcvPastTreatmentExperience !==
+                              "" ? (
+                                <span className={classes.error}>
+                                  {formik.errors.hcvPastTreatmentExperience}
+                                </span>
+                              ) : (
+                                ""
+                              )}
+                            </FormGroup>
+                          </div>
+                        )}
+
+                        <div className="form-group mb-3 col-md-4">
+                          <FormGroup>
+                            <Label for="hcvDateStarted">Date started</Label>
+                            <input
+                              className="form-control"
+                              type="date"
+                              name="hcvDateStarted"
+                              id="hcvDateStarted"
+                              value={formik.values.hcvDateStarted}
+                              onChange={formik.handleChange}
+                              onBlur={formik.handleBlur}
+                              style={{
+                                border: "1px solid #014D88",
+                                borderRadius: "0.2rem",
+                              }}
+                            />
+                            {formik.errors.hcvDateStarted !== "" ? (
+                              <span className={classes.error}>
+                                {formik.errors.hcvDateStarted}
+                              </span>
+                            ) : (
+                              ""
+                            )}
+                          </FormGroup>
+                        </div>
+
+                        <div className="form-group mb-3 col-md-4">
+                          <FormGroup>
+                            <Label for="hcvDateCompleted">Date completed</Label>
+                            <input
+                              className="form-control"
+                              type="date"
+                              name="hcvDateCompleted"
+                              id="hcvDateCompleted"
+                              value={formik.values.hcvDateCompleted}
+                              onChange={formik.handleChange}
+                              onBlur={formik.handleBlur}
+                              style={{
+                                border: "1px solid #014D88",
+                                borderRadius: "0.2rem",
+                              }}
+                            />
+                            {formik.errors.hcvDateCompleted !== "" ? (
+                              <span className={classes.error}>
+                                {formik.errors.hcvDateCompleted}
+                              </span>
+                            ) : (
+                              ""
+                            )}
+                          </FormGroup>
+                        </div>
+
+                        <div className="form-group mb-3 col-md-4">
+                          <FormGroup>
+                            <Label for="hcvPrescribedDuration">
+                              Prescribed duration
+                            </Label>
+                            <select
+                              className="form-control"
+                              name="hcvPrescribedDuration"
+                              id="hcvPrescribedDuration"
+                              value={formik.values.hcvPrescribedDuration}
+                              onChange={formik.handleChange}
+                              onBlur={formik.handleBlur}
+                              style={{
+                                border: "1px solid #014D88",
+                                borderRadius: "0.2rem",
+                              }}
+                            >
+                              <option value="">Select</option>
+                              <option value="8 weeks">8 weeks</option>
+                              <option value="12 weeks">12 weeks</option>
+                              <option value="24 weeks">24 weeks</option>
+                            </select>
+                            {formik.errors.hcvPrescribedDuration !== "" ? (
+                              <span className={classes.error}>
+                                {formik.errors.hcvPrescribedDuration}
+                              </span>
+                            ) : (
+                              ""
+                            )}
+                          </FormGroup>
+                        </div>
+
+                        <div className="form-group mb-3 col-md-4">
+                          <FormGroup>
+                            <Label for="hcvAdverseEventReported">
+                              Adverse Effect reported
+                            </Label>
+                            <select
+                              className="form-control"
+                              name="hcvAdverseEventReported"
+                              id="hcvAdverseEventReported"
+                              value={formik.values.hcvAdverseEventReported}
+                              onChange={formik.handleChange}
+                              onBlur={formik.handleBlur}
+                              style={{
+                                border: "1px solid #014D88",
+                                borderRadius: "0.2rem",
+                              }}
+                            >
+                              <option value="">Select</option>
+                              <option value="yes">Yes</option>
+                              <option value="no">12 weeks</option>
+                            </select>
+                            {formik.errors.hcvAdverseEventReported !== "" ? (
+                              <span className={classes.error}>
+                                {formik.errors.hcvAdverseEventReported}
+                              </span>
+                            ) : (
+                              ""
+                            )}
+                          </FormGroup>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 <div>
                   <div
                     style={{
@@ -718,14 +841,15 @@ const ViralHepatitisForm3 = () => {
                         marginTop: "10px",
                       }}
                     >
-                      Hepatitis B
+                      Regimen Switch
                     </p>
                     <IconButton
                       onClick={() =>
                         setIsDropdownsOpen((prevState) => {
                           return {
                             ...prevState,
-                            hbvTreatmentRegimenSwitch: !prevState.hbvTreatmentRegimenSwitch,
+                            hbvTreatmentRegimenSwitch:
+                              !prevState.hbvTreatmentRegimenSwitch,
                           };
                         })
                       }
@@ -744,177 +868,15 @@ const ViralHepatitisForm3 = () => {
                         <div className="row">
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
-                              <Label for="dateHbvTestRequested">
-                                Date HBV test requested{" "}
-                                <span style={{ color: "red" }}> *</span>{" "}
+                              <Label for="hcvRegimeSwitchNewRegimen">
+                                New regime
                               </Label>
-                              <input
-                                className="form-control"
-                                type="date"
-                                name="dateHbvTestRequested"
-                                id="dateHbvTestRequested"
-                                value={formik.values.dateHbvTestRequested}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                style={{
-                                  border: "1px solid #014D88",
-                                  borderRadius: "0.2rem",
-                                }}
-                              />
-                              {formik.errors.dateHbvTestRequested !== "" ? (
-                                <span className={classes.error}>
-                                  {formik.errors.dateHbvTestRequested}
-                                </span>
-                              ) : (
-                                ""
-                              )}
-                            </FormGroup>
-                          </div>
-                          <div className="form-group mb-3 col-md-4">
-                            <FormGroup>
-                              <Label for="dateHbvSampleCollected">
-                                Date HBV sample Requested{" "}
-                                <span style={{ color: "red" }}> *</span>{" "}
-                              </Label>
-                              <input
-                                className="form-control"
-                                type="date"
-                                name="dateHbvSampleCollected"
-                                id="dateHbvSampleCollected"
-                                value={formik.values.dateHbvSampleCollected}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                style={{
-                                  border: "1px solid #014D88",
-                                  borderRadius: "0.2rem",
-                                }}
-                              />
-                              {formik.errors.dateHbvSampleCollected !== "" ? (
-                                <span className={classes.error}>
-                                  {formik.errors.dateHbvSampleCollected}
-                                </span>
-                              ) : (
-                                ""
-                              )}
-                            </FormGroup>
-                          </div>
-                          <div className="form-group mb-3 col-md-4">
-                            <FormGroup>
-                              <Label for="dateHbvDnaResultReported">
-                                Date of HBV DNA result reported{" "}
-                              </Label>
-                              <input
-                                className="form-control"
-                                type="date"
-                                name="dateHbvDnaResultReported"
-                                id="dateHbvDnaResultReported"
-                                value={formik.values.dateHbvDnaResultReported}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                style={{
-                                  border: "1px solid #014D88",
-                                  borderRadius: "0.2rem",
-                                }}
-                              />
-                              {formik.errors.dateHbvDnaResultReported !== "" ? (
-                                <span className={classes.error}>
-                                  {formik.errors.dateHbvDnaResultReported}
-                                </span>
-                              ) : (
-                                ""
-                              )}
-                            </FormGroup>
-                          </div>
-                        </div>
-                        <div className="row">
-                          <div className="form-group mb-2 col-md-4">
-                            <FormGroup>
-                              <Label>
-                                HBV DNA(UI/ml){" "}
-                                <span style={{ color: "red" }}> *</span>
-                              </Label>
-                              <div className="radio">
-                                <label>
-                                  <input
-                                    type="radio"
-                                    value="detected"
-                                    name="hbvDna"
-                                    onBlur={formik.handleBlur}
-                                    onChange={formik.handleChange}
-                                    style={{
-                                      border: "1px solid #014D88",
-                                      borderRadius: "0.2rem",
-                                    }}
-                                  />{" "}
-                                  Detected
-                                </label>
-                              </div>
-                              <div className="radio">
-                                <label>
-                                  <input
-                                    type="radio"
-                                    value="undetected"
-                                    name="hbvDna"
-                                    onBlur={formik.handleBlur}
-                                    onChange={formik.handleChange}
-                                    style={{
-                                      border: "1px solid #014D88",
-                                      borderRadius: "0.2rem",
-                                    }}
-                                  />{" "}
-                                  Undetected
-                                </label>
-
-                                {formik.errors.hbvDna !== "" ? (
-                                  <span className={classes.error}>
-                                    {formik.errors.hbvDna}
-                                  </span>
-                                ) : (
-                                  ""
-                                )}
-                              </div>
-                            </FormGroup>
-                          </div>
-                          {formik.values.hbvDna === "detected" && (
-                            <div className="form-group mb-3 col-md-4">
-                              <FormGroup>
-                                <Label for="hbvDnaValue">
-                                  Input HBV DNA value{" "}
-                                  <span style={{ color: "red" }}> *</span>{" "}
-                                </Label>
-                                <input
-                                  className="form-control"
-                                  type="text"
-                                  name="hbvDnaValue"
-                                  id="hbvDnaValue"
-                                  value={formik.values.hbvDnaValue}
-                                  onChange={formik.handleChange}
-                                  onBlur={formik.handleBlur}
-                                  style={{
-                                    border: "1px solid #014D88",
-                                    borderRadius: "0.2rem",
-                                  }}
-                                />
-
-                                {formik.errors.hbvDnaValue !== "" ? (
-                                  <span className={classes.error}>
-                                    {formik.errors.hbvDnaValue}
-                                  </span>
-                                ) : (
-                                  ""
-                                )}
-                              </FormGroup>
-                            </div>
-                          )}
-                          <div className="form-group mb-3 col-md-4">
-                            <FormGroup>
-                              <Label for="landmark">HBsAG Quantification</Label>
                               <input
                                 className="form-control"
                                 type="text"
-                                name="hbsAgQuantification"
-                                id="hbsAgQuantification"
-                                value={formik.values.hbsAgQuantification}
+                                name="hcvRegimeSwitchNewRegimen"
+                                id="hcvRegimeSwitchNewRegimen"
+                                value={formik.values.hcvRegimeSwitchNewRegimen}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                                 style={{
@@ -922,9 +884,10 @@ const ViralHepatitisForm3 = () => {
                                   borderRadius: "0.2rem",
                                 }}
                               />
-                              {formik.errors.hbsAgQuantification ? (
+                              {formik.errors.hcvRegimeSwitchNewRegimen !==
+                              "" ? (
                                 <span className={classes.error}>
-                                  {formik.errors.hbsAgQuantification}
+                                  {formik.errors.hcvRegimeSwitchNewRegimen}
                                 </span>
                               ) : (
                                 ""
@@ -934,57 +897,26 @@ const ViralHepatitisForm3 = () => {
 
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
-                              <Label for="hbeAg">HbeAG</Label>
-                              <select
+                              <Label for="hcvRegimeSwitchDateStarted">
+                                Date started
+                              </Label>
+                              <input
                                 className="form-control"
-                                name="hbeAg"
-                                id="hbeAg"
+                                type="date"
+                                name="hcvRegimeSwitchDateStarted"
+                                id="hcvRegimeSwitchDateStarted"
+                                value={formik.values.hcvRegimeSwitchDateStarted}
                                 onChange={formik.handleChange}
-                                value={formik.values.hbeAg}
+                                onBlur={formik.handleBlur}
                                 style={{
                                   border: "1px solid #014D88",
                                   borderRadius: "0.2rem",
                                 }}
-                              >
-                                <option value={""}>Select</option>
-                                <option value={"reactive"}>Reactive</option>
-                                <option value={"non-reactive"}>
-                                  Non Reactive
-                                </option>
-                              </select>
-                              {formik.errors.hbeAg !== "" ? (
+                              />
+                              {formik.errors.hcvRegimeSwitchDateStarted !==
+                              "" ? (
                                 <span className={classes.error}>
-                                  {formik.errors.hbeAg}
-                                </span>
-                              ) : (
-                                ""
-                              )}
-                            </FormGroup>
-                          </div>
-                          <div className="form-group mb-3 col-md-4">
-                            <FormGroup>
-                              <Label for="antiHdv">Anti-HDV</Label>
-                              <select
-                                className="form-control"
-                                name="antiHdv"
-                                id="antiHdv"
-                                onChange={formik.handleChange}
-                                value={formik.values.antiHdv}
-                                style={{
-                                  border: "1px solid #014D88",
-                                  borderRadius: "0.2rem",
-                                }}
-                              >
-                                <option value={""}>Select</option>
-                                <option value={"reactive"}>Reactive</option>
-                                <option value={"non-reactive"}>
-                                  Non Reactive
-                                </option>
-                                <option value={"not done"}>Not Done</option>
-                              </select>
-                              {formik.errors.antiHdv !== "" ? (
-                                <span className={classes.error}>
-                                  {formik.errors.antiHdv}
+                                  {formik.errors.hcvRegimeSwitchDateStarted}
                                 </span>
                               ) : (
                                 ""
@@ -994,27 +926,65 @@ const ViralHepatitisForm3 = () => {
 
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
-                              <Label for="treatmentEligible">
-                                Treatment Eligible
+                              <Label for="hcvRegimeSwitchDateStopped">
+                                Date stopped
+                              </Label>
+                              <input
+                                className="form-control"
+                                type="date"
+                                name="hcvRegimeSwitchDateStopped"
+                                id="hcvRegimeSwitchDateStopped"
+                                value={formik.values.hcvRegimeSwitchDateStopped}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                style={{
+                                  border: "1px solid #014D88",
+                                  borderRadius: "0.2rem",
+                                }}
+                              />
+                              {formik.errors.hcvRegimeSwitchDateStopped !==
+                              "" ? (
+                                <span className={classes.error}>
+                                  {formik.errors.hcvRegimeSwitchDateStopped}
+                                </span>
+                              ) : (
+                                ""
+                              )}
+                            </FormGroup>
+                          </div>
+
+                          <div className="form-group mb-3 col-md-4">
+                            <FormGroup>
+                              <Label for="hcvRegimeSwitchPrescribedDuration">
+                                Prescribed duration
                               </Label>
                               <select
                                 className="form-control"
-                                name="treatmentEligible"
-                                id="treatmentEligible"
+                                name="hcvRegimeSwitchPrescribedDuration"
+                                id="hcvRegimeSwitchPrescribedDuration"
+                                value={
+                                  formik.values
+                                    .hcvRegimeSwitchPrescribedDuration
+                                }
                                 onChange={formik.handleChange}
-                                value={formik.values.treatmentEligible}
+                                onBlur={formik.handleBlur}
                                 style={{
                                   border: "1px solid #014D88",
                                   borderRadius: "0.2rem",
                                 }}
                               >
-                                <option value={""}>Select</option>
-                                <option value={"yes"}>Yes</option>
-                                <option value={"no"}>No</option>
+                                <option value="">Select</option>
+                                <option value="8 weeks">8 weeks</option>
+                                <option value="12 weeks">12 weeks</option>
+                                <option value="24 weeks">24 weeks</option>
                               </select>
-                              {formik.errors.treatmentEligible !== "" ? (
+                              {formik.errors
+                                .hcvRegimeSwitchPrescribedDuration !== "" ? (
                                 <span className={classes.error}>
-                                  {formik.errors.treatmentEligible}
+                                  {
+                                    formik.errors
+                                      .hcvRegimeSwitchPrescribedDuration
+                                  }
                                 </span>
                               ) : (
                                 ""
@@ -1024,54 +994,38 @@ const ViralHepatitisForm3 = () => {
 
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
-                              <Label for="pmtctEligible">PMTCT Eligible</Label>
+                              <Label for="hcvRegimeSwitchHistoryOfAdverseEffect">
+                                Adverse effect
+                              </Label>
                               <select
                                 className="form-control"
-                                name="pmtctEligible"
-                                id="pmtctEligible"
+                                type="text"
+                                name="hcvRegimeSwitchHistoryOfAdverseEffect"
+                                id="hcvRegimeSwitchHistoryOfAdverseEffect"
+                                value={
+                                  formik.values
+                                    .hcvRegimeSwitchHistoryOfAdverseEffect
+                                }
                                 onChange={formik.handleChange}
-                                value={formik.values.pmtctEligible}
+                                onBlur={formik.handleBlur}
                                 style={{
                                   border: "1px solid #014D88",
                                   borderRadius: "0.2rem",
                                 }}
                               >
-                                <option value={""}>Select</option>
-                                <option value={"reactive"}>Reactive</option>
-                                <option value={"non-reactive"}>
-                                  Non Reactive
-                                </option>
+                                <option value="">Select</option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
                               </select>
-                              {formik.errors.pmtctEligible !== "" ? (
-                                <span className={classes.error}>
-                                  {formik.errors.pmtctEligible}
-                                </span>
-                              ) : (
-                                ""
-                              )}
-                            </FormGroup>
-                          </div>
 
-                          <div className="form-group mb-3 col-md-4-12">
-                            <FormGroup>
-                              <Label for="comment">Comment</Label>
-                              <textarea
-                                className="form-control"
-                                name="comment"
-                                id="comment"
-                                onChange={formik.handleChange}
-                                value={formik.values.comment}
-                                cols="50"
-                                rows="30"
-                                style={{
-                                  border: "1px solid #014D88",
-                                  borderRadius: "0.2rem",
-                                  height: "120px",
-                                }}
-                              />
-                              {formik.errors.comment !== "" ? (
+                              {formik.errors
+                                .hcvRegimeSwitchHistoryOfAdverseEffect !==
+                              "" ? (
                                 <span className={classes.error}>
-                                  {formik.errors.comment}
+                                  {
+                                    formik.errors
+                                      .hcvRegimeSwitchHistoryOfAdverseEffect
+                                  }
                                 </span>
                               ) : (
                                 ""
@@ -1105,25 +1059,26 @@ const ViralHepatitisForm3 = () => {
                         marginTop: "10px",
                       }}
                     >
-                      Hepatitis C
+                      SVR 12 Testing
                     </p>
                     <IconButton
                       onClick={() =>
                         setIsDropdownsOpen((prevState) => {
                           return {
                             ...prevState,
-                            hbvTreatmentReasonforTreatment: !prevState.hbvTreatmentReasonforTreatment,
+                            hcvTreatmentSvr12Testing:
+                              !prevState.hcvTreatmentSvr12Testing,
                           };
                         })
                       }
-                      aria-expanded={isDropdownsOpen.hbvTreatmentRegimenSwitch}
+                      aria-expanded={isDropdownsOpen.hcvTreatmentSvr12Testing}
                       aria-label="Expand"
                     >
                       <ExpandMoreIcon />
                     </IconButton>
                   </div>
                   <div className="card-body">
-                    <Collapse in={isDropdownsOpen.hbvTreatmentReasonforTreatment}>
+                    <Collapse in={isDropdownsOpen.hcvTreatmentSvr12Testing}>
                       <div
                         className="basic-form"
                         style={{ padding: "0 50px 0 50px" }}
@@ -1131,55 +1086,88 @@ const ViralHepatitisForm3 = () => {
                         <div className="row">
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
-                              <Label for="hcvRna">HCV RNA (IU/ml)</Label>
-                              <select
+                              <Label for="svr12TestingDateStarted">
+                                Date tested
+                              </Label>
+                              <input
                                 className="form-control"
-                                name="hcvRna"
-                                id="hcvRna"
+                                name="svr12TestingDateStarted"
+                                id="svr12TestingDateStarted"
+                                type="date"
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
-                                value={formik.values.hcvRna}
+                                value={formik.values.svr12TestingDateStarted}
                                 style={{
                                   border: "1px solid #014D88",
                                   borderRadius: "0.2rem",
                                 }}
-                              >
-                                <option value={""}>select</option>
-                                <option value={"detected"}>Detected</option>
-                                <option value={"undetected"}>Undetected</option>
-                              </select>
-                              {formik.errors.hcvRna !== "" ? (
+                              />
+
+                              {formik.errors.svr12TestingDateStarted !== "" ? (
                                 <span className={classes.error}>
-                                  {formik.errors.hcvRna}
+                                  {formik.errors.svr12TestingDateStarted}
                                 </span>
                               ) : (
                                 ""
                               )}
                             </FormGroup>
                           </div>
-                          {formik.values.hcvRna === "detected" && (
+
+                          <div className="form-group mb-3 col-md-4">
+                            <FormGroup>
+                              <Label for="svr12TestingHcvRna">
+                                HCV RNA <span style={{ color: "red" }}> *</span>{" "}
+                              </Label>
+                              <select
+                                className="form-control"
+                                name="svr12TestingHcvRna"
+                                id="svr12TestingHcvRna"
+                                value={formik.values.svr12TestingHcvRna}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                style={{
+                                  border: "1px solid #014D88",
+                                  borderRadius: "0.2rem",
+                                }}
+                              >
+                                <option value="">Select</option>
+                                <option value="detected">Detected</option>
+                                <option value="undetected">Undetected</option>
+                              </select>
+                              {formik.errors.svr12TestingHcvRna !== "" ? (
+                                <span className={classes.error}>
+                                  {formik.errors.svr12TestingHcvRna}
+                                </span>
+                              ) : (
+                                ""
+                              )}
+                            </FormGroup>
+                          </div>
+
+                          {formik.values.svr12TestingHcvRna === "detected" && (
                             <div className="form-group mb-3 col-md-4">
                               <FormGroup>
-                                <Label for="hcvValue">
-                                  Input HCV RNA Value{" "}
-                                  <span style={{ color: "red" }}> *</span>{" "}
+                                <Label for="svr12TestingHcvRnaValue">
+                                  Input HCV RNA value
                                 </Label>
                                 <input
                                   className="form-control"
+                                  name="svr12TestingHcvRnaValue"
+                                  id="svr12TestingHcvRnaValue"
                                   type="text"
-                                  name="hcvValue"
-                                  id="hcvValue"
-                                  value={formik.values.hcvValue}
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
+                                  value={formik.values.svr12TestingHcvRnaValue}
                                   style={{
                                     border: "1px solid #014D88",
                                     borderRadius: "0.2rem",
                                   }}
                                 />
-                                {formik.errors.hcvValue !== "" ? (
+
+                                {formik.errors.svr12TestingHcvRnaValue !==
+                                "" ? (
                                   <span className={classes.error}>
-                                    {formik.errors.hcvValue}
+                                    {formik.errors.svr12TestingHcvRnaValue}
                                   </span>
                                 ) : (
                                   ""
@@ -1190,32 +1178,26 @@ const ViralHepatitisForm3 = () => {
 
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
-                              <Label for="hepatitisCoInfection">
-                                Hepatitis Coinfection
+                              <Label for="svr12TestingHcvRnaValue">
+                                Input HCV RNA value
                               </Label>
-                              <select
+                              <input
                                 className="form-control"
-                                name="hepatitisCoInfection"
-                                id="hepatitisCoInfection"
+                                name="svr12TestingHcvRnaValue"
+                                id="svr12TestingHcvRnaValue"
+                                type="text"
                                 onChange={formik.handleChange}
-                                value={formik.values.hepatitisCoInfection}
+                                onBlur={formik.handleBlur}
+                                value={formik.values.svr12TestingHcvRnaValue}
                                 style={{
                                   border: "1px solid #014D88",
                                   borderRadius: "0.2rem",
                                 }}
-                                multiple
-                              >
-                                <option value={""}>Select</option>
-                                <option value={"hbv/hcv"}>HBV/HCV</option>
-                                <option value={"hcv/hiv"}>HCV/HIV</option>
-                                <option value={"hbv/hdv"}>HBV/HDV</option>
-                                <option value={"hbv/hcd/hiv"}>
-                                  HBV/HCD/HIV
-                                </option>
-                              </select>
-                              {formik.errors.hepatitisCoInfection !== "" ? (
+                              />
+
+                              {formik.errors.svr12TestingHcvRnaValue !== "" ? (
                                 <span className={classes.error}>
-                                  {formik.errors.hepatitisCoInfection}
+                                  {formik.errors.svr12TestingHcvRnaValue}
                                 </span>
                               ) : (
                                 ""
@@ -1225,26 +1207,343 @@ const ViralHepatitisForm3 = () => {
 
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
-                              <Label for="commobidities">
-                                Commobidities{" "}
-                                <span style={{ color: "red" }}> *</span>{" "}
+                              <Label for="svr12RetreatmentDateTested">
+                                Retreatment date tested
                               </Label>
                               <input
                                 className="form-control"
-                                type="text"
-                                name="commobidities"
-                                id="commobidities"
-                                value={formik.values.commobidities}
+                                name="svr12RetreatmentDateTested"
+                                id="svr12RetreatmentDateTested"
+                                onChange={formik.handleChange}
+                                value={formik.values.svr12RetreatmentDateTested}
+                                style={{
+                                  border: "1px solid #014D88",
+                                  borderRadius: "0.2rem",
+                                }}
+                                type="date"
+                              />
+
+                              {formik.errors.svr12RetreatmentDateTested !==
+                              "" ? (
+                                <span className={classes.error}>
+                                  {formik.errors.svr12RetreatmentDateTested}
+                                </span>
+                              ) : (
+                                ""
+                              )}
+                            </FormGroup>
+                          </div>
+
+                          <div className="form-group mb-3 col-md-4">
+                            <FormGroup>
+                              <Label for="svr12RetreatmentHcvRna">
+                                Retreatment HCV RNA(IU/ml)
+                                <span style={{ color: "red" }}> *</span>{" "}
+                              </Label>
+                              <select
+                                className="form-control"
+                                name="svr12RetreatmentHcvRna"
+                                id="svr12RetreatmentHcvRna"
+                                value={formik.values.svr12RetreatmentHcvRna}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                                 style={{
                                   border: "1px solid #014D88",
                                   borderRadius: "0.2rem",
                                 }}
-                              />
-                              {formik.errors.commobidities !== "" ? (
+                              >
+                                <option value="">Select</option>
+                                <option value="detected">Detected</option>
+                                <option value="undetected">Undetected</option>
+                              </select>
+                              {formik.errors.svr12RetreatmentHcvRna !== "" ? (
                                 <span className={classes.error}>
-                                  {formik.errors.commobidities}
+                                  {formik.errors.svr12RetreatmentHcvRna}
+                                </span>
+                              ) : (
+                                ""
+                              )}
+                            </FormGroup>
+                          </div>
+
+                          {formik.values.svr12RetreatmentHcvRna ===
+                            "detetcted" && (
+                            <div className="form-group mb-3 col-md-4">
+                              <FormGroup>
+                                <Label for="svr12RetreatmentHcvRnaValue">
+                                  Input Retreatment HCV RNA value(IU/ml)
+                                  <span style={{ color: "red" }}> *</span>{" "}
+                                </Label>
+                                <input
+                                  className="form-control"
+                                  type="text"
+                                  name="svr12RetreatmentHcvRnaValue"
+                                  id="svr12RetreatmentHcvRnaValue"
+                                  value={
+                                    formik.values.svr12RetreatmentHcvRnaValue
+                                  }
+                                  onChange={formik.handleChange}
+                                  onBlur={formik.handleBlur}
+                                  style={{
+                                    border: "1px solid #014D88",
+                                    borderRadius: "0.2rem",
+                                  }}
+                                />
+
+                                {formik.errors.svr12RetreatmentHcvRnaValue !==
+                                "" ? (
+                                  <span className={classes.error}>
+                                    {formik.errors.svr12RetreatmentHcvRnaValue}
+                                  </span>
+                                ) : (
+                                  ""
+                                )}
+                              </FormGroup>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </Collapse>
+                  </div>
+                </div>
+
+                <div>
+                  <div
+                    style={{
+                      backgroundColor: "#d8f6ff",
+                      width: "95%",
+                      margin: "auto",
+                      marginTop: "5rem",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <p
+                      style={{
+                        color: "black",
+                        fontSize: "15px",
+                        fontWeight: "600",
+                        marginLeft: "10px",
+                        marginTop: "10px",
+                      }}
+                    >
+                      HCV Retreatment
+                    </p>
+                    <IconButton
+                      onClick={() =>
+                        setIsDropdownsOpen((prevState) => {
+                          return {
+                            ...prevState,
+                            hcvTreatmentRegimenHcvRetreatment:
+                              !prevState.hcvTreatmentRegimenHcvRetreatment,
+                          };
+                        })
+                      }
+                      aria-expanded={
+                        isDropdownsOpen.hcvTreatmentRegimenHcvRetreatment
+                      }
+                      aria-label="Expand"
+                    >
+                      <ExpandMoreIcon />
+                    </IconButton>
+                  </div>
+                  <div className="card-body">
+                    <Collapse
+                      in={isDropdownsOpen.hcvTreatmentRegimenHcvRetreatment}
+                    >
+                      <div
+                        className="basic-form"
+                        style={{ padding: "0 50px 0 50px" }}
+                      >
+                        <div className="row">
+                          <div className="form-group mb-3 col-md-4">
+                            <FormGroup>
+                              <Label for="hcvRetreatmentNewRegime">
+                                New regime
+                              </Label>
+                              <input
+                                className="form-control"
+                                name="hcvRetreatmentNewRegime"
+                                id="hcvRetreatmentNewRegime"
+                                type="text"
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                value={formik.values.hcvRetreatmentNewRegime}
+                                style={{
+                                  border: "1px solid #014D88",
+                                  borderRadius: "0.2rem",
+                                }}
+                              />
+
+                              {formik.errors.hcvRetreatmentNewRegime !== "" ? (
+                                <span className={classes.error}>
+                                  {formik.errors.hcvRetreatmentNewRegime}
+                                </span>
+                              ) : (
+                                ""
+                              )}
+                            </FormGroup>
+                          </div>
+
+                          <div className="form-group mb-3 col-md-4">
+                            <FormGroup>
+                              <Label for="hcvRetreatmentPrescribedDuration">
+                                Prescribed Duration
+                                <span style={{ color: "red" }}> *</span>{" "}
+                              </Label>
+                              <select
+                                className="form-control"
+                                name="hcvRetreatmentPrescribedDuration"
+                                id="hcvRetreatmentPrescribedDuration"
+                                value={
+                                  formik.values.hcvRetreatmentPrescribedDuration
+                                }
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                style={{
+                                  border: "1px solid #014D88",
+                                  borderRadius: "0.2rem",
+                                }}
+                              >
+                                <option value="">Select</option>
+                                <option value="8 weeks">8 weeks</option>
+                                <option value="12 weeks">12 weeks</option>
+                                <option value="24 weeks">24 weeks</option>
+                              </select>
+                              {formik.errors
+                                .hcvRetreatmentPrescribedDuration !== "" ? (
+                                <span className={classes.error}>
+                                  {
+                                    formik.errors
+                                      .hcvRetreatmentPrescribedDuration
+                                  }
+                                </span>
+                              ) : (
+                                ""
+                              )}
+                            </FormGroup>
+                          </div>
+                         
+                          <div className="form-group mb-3 col-md-4">
+                            <FormGroup>
+                              <Label for="hcvRetreatmentDateStarted">
+                               Date started
+                              </Label>
+                              <input
+                                className="form-control"
+                                name="hcvRetreatmentDateStarted"
+                                id="hcvRetreatmentDateStarted"
+                                type="date"
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                value={formik.values.hcvRetreatmentDateStarted}
+                                style={{
+                                  border: "1px solid #014D88",
+                                  borderRadius: "0.2rem",
+                                }}
+                              />
+
+                              {formik.errors.hcvRetreatmentDateStarted !== "" ? (
+                                <span className={classes.error}>
+                                  {formik.errors.hcvRetreatmentDateStarted}
+                                </span>
+                              ) : (
+                                ""
+                              )}
+                            </FormGroup>
+                          </div>
+
+                          <div className="form-group mb-3 col-md-4">
+                            <FormGroup>
+                              <Label for="hcvRetreatmentDateStopped">
+                               Date stopped
+                              </Label>
+                              <input
+                                className="form-control"
+                                name="hcvRetreatmentDateStopped"
+                                id="hcvRetreatmentDateStopped"
+                                type="date"
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                value={formik.values.hcvRetreatmentDateStopped}
+                                style={{
+                                  border: "1px solid #014D88",
+                                  borderRadius: "0.2rem",
+                                }}
+                              />
+
+                              {formik.errors.hcvRetreatmentDateStopped !== "" ? (
+                                <span className={classes.error}>
+                                  {formik.errors.hcvRetreatmentDateStopped}
+                                </span>
+                              ) : (
+                                ""
+                              )}
+                            </FormGroup>
+                          </div>
+
+                          <div className="form-group mb-3 col-md-4">
+                            <FormGroup>
+                              <Label for="hcvRetreatmentAdverseEffect">
+                                Adverse effect
+                                <span style={{ color: "red" }}> *</span>{" "}
+                              </Label>
+                              <select
+                                className="form-control"
+                                name="hcvRetreatmentAdverseEffect"
+                                id="hcvRetreatmentAdverseEffect"
+                                value={
+                                  formik.values.hcvRetreatmentAdverseEffect
+                                }
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                style={{
+                                  border: "1px solid #014D88",
+                                  borderRadius: "0.2rem",
+                                }}
+                              >
+                                <option value="">Select</option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                                
+                              </select>
+                              {formik.errors
+                                .hcvRetreatmentAdverseEffect !== "" ? (
+                                <span className={classes.error}>
+                                  {
+                                    formik.errors
+                                      .hcvRetreatmentAdverseEffect
+                                  }
+                                </span>
+                              ) : (
+                                ""
+                              )}
+                            </FormGroup>
+                          </div>
+
+                          <div className="form-group mb-3 col-md-4">
+                            <FormGroup>
+                              <Label for="hcvRetreatmentHcvGenotype">
+                                HCV Genotype
+                              </Label>
+                              <input
+                                className="form-control"
+                                name="hcvRetreatmentHcvGenotype"
+                                id="hcvRetreatmentHcvGenotype"
+                                type="text"
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                value={formik.values.hcvRetreatmentHcvGenotype}
+                                style={{
+                                  border: "1px solid #014D88",
+                                  borderRadius: "0.2rem",
+                                }}
+                              />
+
+                              {formik.errors.hcvRetreatmentHcvGenotype !== "" ? (
+                                <span className={classes.error}>
+                                  {formik.errors.hcvRetreatmentHcvGenotype}
                                 </span>
                               ) : (
                                 ""
