@@ -19,7 +19,7 @@ const Home = () => {
     <Fragment>  
       <div className="row page-titles mx-0" style={{marginTop:"0px", marginBottom:"-10px"}}>
 			<ol className="breadcrumb">
-				<li className="breadcrumb-item active"><h4>COVID-19</h4></li>
+				<li className="breadcrumb-item active"><h4>Viral Hepatitis</h4></li>
 			</ol>
 		  </div>
       <Link to={"register-patient"}>
@@ -48,10 +48,10 @@ const Home = () => {
                     className="mb-3"
                 >
                   
-                  <Tab eventKey="home" title="Find Patients">                   
+                  <Tab eventKey="home" title="List">                   
                     <PatientList />
                   </Tab>
-                  <Tab eventKey="vaccinated" title="Vaccinated Patients">                   
+                  <Tab eventKey="vaccinated" title="Summary">                   
                     <PatientVaccinatedLIst />
                   </Tab>
                   {/* <Tab eventKey="visualization" title="Data Visualisation">                   

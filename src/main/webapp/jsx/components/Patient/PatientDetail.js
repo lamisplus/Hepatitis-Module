@@ -67,7 +67,7 @@ function PatientCard(props) {
     <div className={classes.root}>
       <div className="row page-titles mx-0" style={{marginTop:"0px", marginBottom:"-10px"}}>
 			<ol className="breadcrumb">
-				<li className="breadcrumb-item active"><h4> <Link to={"/"} >COVID-19 /</Link> Patient Dashboard</h4></li>
+				<li className="breadcrumb-item active"><h4> <Link to={"/"} >HEPATITIS /</Link> Patient Dashboard</h4></li>
 			</ol>
 		  </div>
       <Card >

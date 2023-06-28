@@ -25,6 +25,7 @@ import  './patient.css'
 import {  Modal } from "react-bootstrap";
 import "react-widgets/dist/css/react-widgets.css";
 import { DateTimePicker } from "react-widgets";
+import Steppers from "./Stepper/Stepper";
 
 
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
@@ -102,47 +103,46 @@ const useStyles = makeStyles((theme) => ({
 
 const UserRegistration = (props) => {
     const [basicInfo, setBasicInfo]= useState(
-            {
-                active: true,
-                address: [],
-                contact: [],
-                contactPoint: [],
-                dateOfBirth: "",
-                deceased: false,
-                deceasedDateTime: null,
-                firstName: "",
-                genderId: "",
-                identifier: "",
-                otherName: "",
-                maritalStatusId: "",
-                educationId: "",
-                employmentStatusId:"",
-                dateOfRegistration: "",
-                isDateOfBirthEstimated: null,
-                age:"",
-                phoneNumber:"",
-                altPhonenumber:"",
-                dob:"",
-                countryId:1,
-                stateId:"",
-                district:"",
-                sexId:"",
-                ninNumber:""
+        {
+            active: true,
+            address: [],
+            contact: [],
+            contactPoint: [],
+            dateOfBirth: "",
+            deceased: false,
+            deceasedDateTime: null,
+            firstName: "",
+            genderId: "",
+            identifier: "",
+            otherName: "",
+            maritalStatusId: "",
+            educationId: "",
+            employmentStatusId:"",
+            dateOfRegistration: "",
+            isDateOfBirthEstimated: null,
+            age:"",
+            phoneNumber:"",
+            altPhonenumber:"",
+            dob:"",
+            countryId:1,
+            stateId:"",
+            district:"",
+            sexId:"",
+            ninNumber:""
 
-            }
+        }
     )
     const [relatives, setRelatives]= useState(
-                { 
-                    address:"",
-                    phone:"",
-                    firstName: "",
-                    email: "",
-                    relationshipId: "",
-                    lastName: "",
-                    middleName: ""
-                }
-                
-        )
+        { 
+            address:"",
+            phone:"",
+            firstName: "",
+            email: "",
+            relationshipId: "",
+            lastName: "",
+            middleName: ""
+        }        
+    )
     const [contacts, setContacts] = useState([]);
     const [saving, setSaving] = useState(false);
     const [disabledAgeBaseOnAge, setDisabledAgeBaseOnAge] = useState(false);
@@ -167,6 +167,7 @@ const UserRegistration = (props) => {
      //HIV INFORMATION
      const [showContactCard, setShowContactCard] = useState(true);
      const [vaccine, setVaccine] = useState([]);
+    
      //const [showRelativeCard, setShowRelativeCard] = useState(false);
      const [objValues, setObjValues] = useState(
         {   adverseEffect: "",
@@ -182,11 +183,82 @@ const UserRegistration = (props) => {
             occupation: "",
             vaccineId: "",
             visitDate: "",
-            patientId: "",
             visitId: "",
-            workInHealthSector: ""
+            workInHealthSector: "",
+            careEntryPoint: "",
+            weight: "",
+            height: "",
+            bmi:"",
+            pregnant: "",
+            breastFeeding: "",
+            historyOfInjectionUsed: "",
+            hepatitisBHbsag: "",
+            dateOfFirstPositiveScreening: new Date(),
+            hepatitisCHcvab: "",
+            dateOfHbvDnaTestRequired: new Date(),
+            dateOfHbvDnaSampleCollected: new Date(),
+            dateOfHbvDnaResultReportedForHepatitisB: new Date(),
+            hbvDna: "",
+            hbvDnaResult: "",
+            hbsagQuantification: "",
+            hbeag: "",
+            antHdv: "",
+            treatmentEligible: "",
+            pmtctEligible: "",
+            comment: "",
+            hcvRna: "",
+            hcvRnaResult: "",
+            hepatitisCoinfection: null,
+            hepatitisCommobidities: "",
+            astChecked: false,
+            astResult: "",
+            altChecked: false,
+            altResult: "",
+            pstChecked: false,
+            pstResult: "",
+            bilibrubinTotal: "",
+            bilibrubinDirect: "",
+            bilibrubinAlbumin: "",
+            apriScore: "",
+            fib4: "",
+            prothrombinTime: "",
+            urea: "",
+            creatinine: "",
+            ultrasoundScan: "",
+            afp: "",
+            fibroScan: "",
+            notDone: "",
+            ctScan: "",
+            acitesChecked: "",
+            acitesValue: "",
+            encephalopathy: "",
+            childPughScore: "",
+            liverBiopsyStage: "",
+            stagingDateOfLiverBiopsy: new Date(),
+            diagnosis: "",
+            treatmentExperience: "",
+            pastTreatmentRegimen: "",
+            newRegimenOptional: "",
+            dateStartedOnNewRegimen: new Date(),
+            historyOfAdvserseEvents: "",
+            newRegimen: "",
+            dateStarted: new Date(),
+            adverseEventReported: "",
+            reasonForSwitch: "",
+            dateStopped: "",
+            treatmentEligibleForNewRegimen: "",
+            hbvPmtct: "",
+            commentNewRegimen: "",
+            
+            
+
         });
-     
+        const handleAncillaryInputChange = async(e) => {
+            await setObjValues ({...objValues,  [e.target.name]: !objValues[e.target.name]});
+            console.log(objValues[e.target.name])
+             
+        }
+
      //status for hospital Number 
      const [hospitalNumStatus, setHospitalNumStatus]= useState(false);
      const [hospitalNumStatus2, setHospitalNumStatus2]= useState(false);
@@ -344,9 +416,9 @@ const UserRegistration = (props) => {
            
     }
     const handleDateOfBirthChange = (e) => {
-        if (e.target.value == "Actual") {
+        if (e.target.value === "Actual") {
             setAgeDisabled(true);
-        } else if (e.target.value == "Estimated") {
+        } else if (e.target.value === "Estimated") {
             setAgeDisabled(false);
         }
     }
@@ -367,8 +439,6 @@ const UserRegistration = (props) => {
         }
         setBasicInfo({...basicInfo, age: Math.abs(e.target.value)});
     }
-    //End of Date of Birth and Age handling 
-    //Handle Input Change for Basic Infor
     const handleInputChangeBasic = e => {  
         setErrors({...temp, [e.target.name]:""})      
         setBasicInfo ({...basicInfo,  [e.target.name]: e.target.value}); 
@@ -414,6 +484,7 @@ const UserRegistration = (props) => {
     const handleAddRelative = () => {
         setShowRelative(true);
     };
+
     //Function to cancel the relatives form
     const handleCancelSaveRelationship = () => {
         setShowRelative(false);
@@ -462,7 +533,6 @@ const UserRegistration = (props) => {
     }
     /*****  Validation  */
     const validate = () => {
-        
             temp.firstName = basicInfo.firstName ? "" : "First Name is required"
             temp.hospitalNumber = basicInfo.hospitalNumber ? "" : "Hospital Number  is required."
             //temp.middleName = basicInfo.middleName ? "" : "Middle is required."
@@ -606,18 +676,17 @@ const UserRegistration = (props) => {
         setObjValues ({...objValues,  [e.target.name]: e.target.value});
         if(e.target.name==='location' && objValues.location!=='Facility'){
             objValues.vaccinationFacility=""
-            setObjValues ({...objValues,  ['vaccinationFacility']: ""});
+            setObjValues ({...objValues,  'vaccinationFacility': ""});
             setObjValues ({...objValues,  [e.target.name]: e.target.value});
-        }          
-    }      
+        } 
+                
+    }
+         
     const checkPhoneNumber=(e, inputName)=>{
         const NumberValue = checkNumberLimit(e.target.value.replace(/\D/g, ''))
         setRelatives({...relatives, [inputName]: NumberValue})    
     }
-    // const checkPhoneNumberBasic=(e, inputName)=>{
-    //     const limit = 10;
-    //     setBasicInfo({...basicInfo,  [inputName]: e.slice(0, limit)});     
-    // } 
+   
     const checkNINLimit=(e)=>{
         const limit = 11;        
         const acceptedNumber= e.slice(0, limit)
@@ -626,10 +695,10 @@ const UserRegistration = (props) => {
     //Handle CheckBox handleCheckBoxworkInHealthSector handleCheckBoxknownMedicalCondition
     const handleCheckBoxworkInHealthSector =e =>{
         if(e.target.checked){
-            setObjValues ({...objValues,  ['workInHealthSector']: e.target.checked});  
+            setObjValues ({...objValues,  'workInHealthSector': e.target.checked});  
             //setOvcEnrolled(true)
         }else{
-            setObjValues ({...objValues,  ['workInHealthSector']: false}); 
+            setObjValues ({...objValues,  'workInHealthSector': false}); 
         }
     }
     
@@ -645,10 +714,10 @@ const UserRegistration = (props) => {
     }
     const handleCheckBoxknownMedicalCondition =e =>{
         if(e.target.checked){
-            setObjValues ({...objValues,  ['knownMedicalCondition']: e.target.checked});  
+            setObjValues ({...objValues,  'knownMedicalCondition': e.target.checked});  
             //setOvcEnrolled(true)
         }else{
-            setObjValues ({...objValues,  ['knownMedicalCondition']: false});  
+            setObjValues ({...objValues,  'knownMedicalCondition': false});  
         }
     }
     const onClickContactCard =() =>{
@@ -667,7 +736,7 @@ const UserRegistration = (props) => {
         <ToastContainer autoClose={3000} hideProgressBar />
         <div className="row page-titles mx-0" style={{marginTop:"0px", marginBottom:"-10px"}}>
 			<ol className="breadcrumb">
-				<li className="breadcrumb-item active"><h4> <Link to={"/"} >COVID-19 /</Link> Patient Registration</h4></li>
+				<li className="breadcrumb-item active"><h4> <Link to={"/"} >Viral Hepatitis /</Link>New Client</h4></li>
 			</ol>
 		  </div>
           <Link
@@ -687,6 +756,7 @@ const UserRegistration = (props) => {
             </Link>
             <br /><br/>
   
+            <Steppers/>
             <Card className={classes.root}>
                 <CardContent>
                     
@@ -694,33 +764,14 @@ const UserRegistration = (props) => {
                         <Form >
                             <div className="card">
                                 <div className="card-header" style={{backgroundColor:"#014d88",color:'#fff',fontWeight:'bolder',  borderRadius:"0.2rem"}}>
-                                    <h5 className="card-title" style={{color:'#fff'}}>{userDetail===null ? "Basic Information" : "Edit User Information"}</h5>
+                                    <h5 className="card-title" style={{color:'#fff'}}>Demography</h5>
                                 </div>
 
                                 <div className="card-body">
                                     <div className="basic-form">
                                         <div className="row">
-                                            <div className="form-group mb-3 col-md-4">
-                                                <FormGroup>
-                                                    <Label for="dateOfRegistration">Date of Registration <span style={{ color:"red"}}> *</span> </Label>
-                                                    <Input
-                                                        className="form-control"
-                                                        type="date"
-                                                        name="dateOfRegistration"
-                                                        id="dateOfRegistration"
-                                                        min="1983-12-31"
-                                                        max= {moment(new Date()).format("YYYY-MM-DD") }
-                                                        value={basicInfo.dateOfRegistration}
-                                                        onChange={handleInputChangeBasic}
-                                                        style={{border: "1px solid #014D88", borderRadius:"0.2rem"}}
-                                                    />
-                                                   {errors.dateOfRegistration !=="" ? (
-                                                    <span className={classes.error}>{errors.dateOfRegistration}</span>
-                                                    ) : "" }
-                                                </FormGroup>
-                                            </div>
-                                            
-                                            <div className="form-group mb-3 col-md-4">
+
+                                        <div className="form-group mb-3 col-md-4">
                                                 <FormGroup>
                                                     <Label for="patientId">Hospital Number <span style={{ color:"red"}}> *</span> </Label>
                                                     <input
@@ -743,6 +794,28 @@ const UserRegistration = (props) => {
                                                     ) :""} */}
                                                 </FormGroup>
                                             </div>
+                                            
+                                            <div className="form-group mb-3 col-md-4">
+                                                <FormGroup>
+                                                    <Label for="dateOfRegistration">Date of Registration <span style={{ color:"red"}}> *</span> </Label>
+                                                    <Input
+                                                        className="form-control"
+                                                        type="date"
+                                                        name="dateOfRegistration"
+                                                        id="dateOfRegistration"
+                                                        min="1983-12-31"
+                                                        max= {moment(new Date()).format("YYYY-MM-DD") }
+                                                        value={basicInfo.dateOfRegistration}
+                                                        onChange={handleInputChangeBasic}
+                                                        style={{border: "1px solid #014D88", borderRadius:"0.2rem"}}
+                                                    />
+                                                   {errors.dateOfRegistration !=="" ? (
+                                                    <span className={classes.error}>{errors.dateOfRegistration}</span>
+                                                    ) : "" }
+                                                </FormGroup>
+                                            </div>
+                                            
+                                            
                                            
                                         </div>
                                         
@@ -1443,184 +1516,153 @@ const UserRegistration = (props) => {
                             {/* Adding First DOSAGE FORM HERE */}
                             <div className="card">
                                 <div className="card-header" style={{backgroundColor:"#014d88",color:'#fff',fontWeight:'bolder', borderRadius:"0.2rem"}}>
-                                    <h5 className="card-title"  style={{color:'#fff'}}>COVID-19 First Dosage</h5>
+                                    <h5 className="card-title"  style={{color:'#fff'}}>Hepatitis Enrolment</h5>
                                 </div>
 
                             <div className="card-body">
                             <div className="row">
-                            <div className="form-group mb-3 col-md-4">                                    
-                            <div className="form-check custom-checkbox ml-1 ">
-                                <input
-                                type="checkbox"
-                                className="form-check-input"
-                                name="workInHealthSector"
-                                id="workInHealthSector"                                        
-                                onChange={handleCheckBoxworkInHealthSector}
-                                //disabled={locationState.actionType==='update'? false : true}
-                                />
-                                <label
-                                className="form-check-label"
-                                htmlFor="workInHealthSector"
-                                >
-                                Do you work in the Heath sector ?
-                                </label>
-                            </div>
-                            </div>
-                            <div className="form-group mb-3 col-md-4">
-                        
-                            <div className="form-check custom-checkbox ml-1 ">
-                                <input
-                                type="checkbox"
-                                className="form-check-input"
-                                name="knownMedicalCondition"
-                                id="knownMedicalCondition"                                        
-                                onChange={handleCheckBoxknownMedicalCondition}
-                                //disabled={locationState.actionType==='update'? false : true}
-                                />
-                                <label
-                                className="form-check-label"
-                                htmlFor="knownMedicalCondition"
-                                >
-                                Any known medical condition ?
-                                </label>
-                            </div>
-                            </div>
-                            {objValues.knownMedicalCondition===true &&(                                    
-                            <div className="form-group mb-3 col-md-4">
-                                    <FormGroup>
-                                        <Label for="knownMedicalCondition">Medical conditions </Label>
-                                        <input
-                                            className="form-control"
-                                            type="text"
-                                            name="medicalCondition"
-                                            value={basicInfo.medicalCondition}
-                                            id="medicalCondition"
-                                            onChange={handleInputChangeBasic}
-                                            style={{border: "1px solid #014D88",borderRadius:"0.2rem"}}
-                                        />
-                                        
-                                    </FormGroup>
-                                
-                            </div>
-                            )}
+                            
+                            
                               <div className="form-group mb-3 col-md-6">
                                           <FormGroup>
-                                          <Label >Vaccine <span style={{ color:"red"}}> *</span></Label>
-                                          <Input 
-                                              type="select"
-                                              name="vaccine"
-                                              id="vaccine"
+                                          <Label >Care Entry Point <span style={{ color:"red"}}> *</span></Label>
+                                          <Input
+                                              type="text"
+                                              name="careEntryPoint"
+                                              id="careEntryPoint"
                                               onChange={handleInputChange}
-                                              value={objValues.vaccine} 
-                                          >
-                                              <option value="" >Select</option>
-                                              {vaccine.map((value) => (
-                                                <option key={value.id} value={value.id}>
-                                                    {value.name}
-                                                </option>
-                                            ))}
-                                          </Input>
+                                              value={objValues.careEntryPoint} 
+                                          />
+                                             
+                                          
 
                                          
-                                          {errors.vaccine !=="" ? (
-                                                  <span className={classes.error}>{errors.vaccine}</span>
+                                          {errors.careEntryPoint !=="" ? (
+                                                  <span className={classes.error}>{errors.careEntryPoint}</span>
                                           ) : "" }           
                                           </FormGroup>
                               </div>     
                               <div className="form-group mb-3 col-md-6">
                                       <FormGroup>
-                                      <Label >Date of First Dosage <span style={{ color:"red"}}> *</span></Label>
+                                      <Label>Weight (Kg) <span style={{ color:"red"}}> *</span></Label>
                                       <InputGroup> 
                                           <Input 
-                                              type="date"
-                                              name="vaccineDate"
-                                              id="vaccineDate"
+                                              type="text"
+                                              name="weight"
+                                              id="weight"
                                               onChange={handleInputChange}
-                                              value={objValues.vaccineDate} 
-                                              max= {moment(new Date()).format("YYYY-MM-DD") }
+                                              value={objValues.weight} 
+                            
                                           />
 
                                       </InputGroup>
-                                      {errors.vaccineDate !=="" ? (
-                                              <span className={classes.error}>{errors.vaccineDate}</span>
+                                      {errors.weight !=="" ? (
+                                              <span className={classes.error}>{errors.weight}</span>
                                       ) : "" }
                                       </FormGroup>
                               </div>
                                                              
                               <div className="form-group mb-3 col-md-6">
                                       <FormGroup>
-                                      <Label >Location <span style={{ color:"red"}}> *</span></Label>
-                                      <InputGroup> 
-                                          <Input 
-                                              type="select"
-                                              name="location"
-                                              id="location"
-                                              onChange={handleInputChange}
-                                              value={objValues.location} 
-                                          >
-                                              <option value="" >Select</option>
-                                              <option value="Facility" >Facility</option>
-                                              <option value="Community" >Community</option>
-                                          </Input>
-                                      </InputGroup> 
-                                      {errors.location !=="" ? (
-                                              <span className={classes.error}>{errors.location}</span>
-                                      ) : "" }                                        
-                                      </FormGroup>
-                              </div>
-                              {objValues.location==='Facility' && (
-                              <div className="form-group mb-3 col-md-6">
-                                      <FormGroup>
-                                      <Label >Facility Name </Label>
+                                      <Label>Height (m) <span style={{ color:"red"}}> *</span></Label>
                                       <InputGroup> 
                                           <Input 
                                               type="text"
-                                              name="vaccinationFacility"
-                                              id="vaccinationFacility"
+                                              name="height"
+                                              id="height"
                                               onChange={handleInputChange}
-                                              value={objValues.vaccinationFacility} 
-                                          >
-                                          </Input>
+                                              value={objValues.height} 
+                                          />   
                                       </InputGroup> 
-                                      {errors.vaccinationFacility !=="" ? (
-                                              <span className={classes.error}>{errors.vaccinationFacility}</span>
+                                      {errors.height !=="" ? (
+                                              <span className={classes.error}>{errors.height}</span>
                                       ) : "" }                                        
                                       </FormGroup>
                               </div>
-                              )}
+                             
                               <div className="form-group mb-3 col-md-6">
                                       <FormGroup>
-                                      <Label >Batch Number <span style={{ color:"red"}}> *</span></Label>
+                                      <Label >BMI <span style={{ color:"red"}}> *</span></Label>
                                       <InputGroup> 
                                     <Input 
                                         type="text"
-                                        name="batchNumber"
-                                        id="batchNumber"
+                                        name="bmi"
+                                        id="bmi"
                                         onChange={handleInputChange}
-                                        value={objValues.batchNumber} 
+                                        value={objValues.bmi} 
                                     />
 
                                       </InputGroup>
-                                      {errors.batchNumber !=="" ? (
-                                              <span className={classes.error}>{errors.batchNumber}</span>
+                                      {errors.bmi !=="" ? (
+                                              <span className={classes.error}>{errors.bmi}</span>
                                       ) : "" }                                         
                                       </FormGroup>
                               </div>
                               <div className="form-group mb-3 col-md-6">
                                 <FormGroup>
-                                <Label >Adverse Effect </Label>
+                                <Label >Pregnant </Label>
                                 <InputGroup> 
                                     <Input 
-                                        type="text"
-                                        name="adverseEffect"
-                                        id="adverseEffect"
+                                        type="select"
+                                        name="pregnant"
+                                        id="pregnant"
                                         onChange={handleInputChange}
-                                        value={objValues.adverseEffect} 
-                                    />
+                                        value={objValues.pregnant} 
+                                    >
+                                        <option value="" >Select</option>
+                                        <option value="no" >No</option>
+                                        <option value="yes" >Yes</option>
+
+                                    </Input>
 
                                 </InputGroup>
-                                {errors.adverseEffect !=="" ? (
-                                        <span className={classes.error}>{errors.adverseEffect}</span>
+                                {errors.pregnant !=="" ? (
+                                        <span className={classes.error}>{errors.pregnant}</span>
+                                ) : "" }           
+                                </FormGroup>
+                              </div>     
+                              <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label >Breast Feeding </Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="select"
+                                        name="breastFeeding"
+                                        id="breastFeeding"
+                                        onChange={handleInputChange}
+                                        value={objValues.breastFeeding} 
+                                    >
+                                        <option value="" >Select</option>
+                                        <option value="no" >No</option>
+                                        <option value="yes" >Yes</option>
+
+                                    </Input>
+
+                                </InputGroup>
+                                {errors.breastFeeding !=="" ? (
+                                        <span className={classes.error}>{errors.breastFeeding}</span>
+                                ) : "" }           
+                                </FormGroup>
+                              </div>     
+                              <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label >History of injection drugs used </Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="select"
+                                        name="historyOfInjectionUsed"
+                                        id="historyOfInjectionUsed"
+                                        onChange={handleInputChange}
+                                        value={objValues.historyOfInjectionUsed} 
+                                    >
+                                        <option value="" >Select</option>
+                                        <option value="no" >No</option>
+                                        <option value="yes" >Yes</option>
+                                    </Input>
+
+                                </InputGroup>
+                                {errors.historyOfInjectionUsed !=="" ? (
+                                        <span className={classes.error}>{errors.historyOfInjectionUsed}</span>
                                 ) : "" }           
                                 </FormGroup>
                               </div>     
@@ -1628,6 +1670,1490 @@ const UserRegistration = (props) => {
                             </div>
                             </div>
                             {/* END OF First DOSAGE */}
+
+
+                            {/* Start of screening */}
+                            <div className="card">
+                                <div className="card-header" style={{backgroundColor:"#014d88",color:'#fff',fontWeight:'bolder', borderRadius:"0.2rem"}}>
+                                    <h5 className="card-title"  style={{color:'#fff'}}>Screening</h5>
+                                </div>
+
+                            <div className="card-body">
+                            <div className="row">
+                            
+                            
+                              <div className="form-group mb-3 col-md-6">
+                                          <FormGroup>
+                                          <Label >Hepatitis B HBsAG <span style={{ color:"red"}}> *</span></Label>
+                                          <Input
+                                              type="select"
+                                              name="hepatitisBHbsag"
+                                              id="hepatitisBHbsag"
+                                              onChange={handleInputChange}
+                                              value={objValues.hepatitisBHbsag} 
+                                          >
+                                             <option value="">select</option>
+                                             <option value={"reactive"}>Reactive</option>
+                                             <option value={"non-reactive"}>Non-Reactive</option>
+                                          </Input>
+
+                                         
+                                          {errors.hepatitisBHbsag !=="" ? (
+                                                  <span className={classes.error}>{errors.hepatitisBHbsag}</span>
+                                          ) : "" }           
+                                          </FormGroup>
+                              </div>     
+                              <div className="form-group mb-3 col-md-6">
+                                      <FormGroup>
+                                      <Label>Date of first possible screening (If applicable) <span style={{ color:"red"}}> *</span></Label>
+                                      <InputGroup> 
+                                          <Input 
+                                              type="date"
+                                              name="dateOfFirstPositiveScreening"
+                                              id="dateOfFirstPositiveScreening"
+                                              onChange={handleInputChange}
+                                              value={objValues.dateOfFirstPositiveScreening} 
+                            
+                                          />
+
+                                      </InputGroup>
+                                      {errors.dateOfFirstPositiveScreening !=="" ? (
+                                              <span className={classes.error}>{errors.dateOfFirstPositiveScreening}</span>
+                                      ) : "" }
+                                      </FormGroup>
+                              </div>
+                                                             
+                              <div className="form-group mb-3 col-md-6">
+                                      <FormGroup>
+                                      <Label>Hepatitis C HCVAb<span style={{ color:"red"}}> *</span></Label>
+                                      <InputGroup> 
+                                          <Input 
+                                              type="select"
+                                              name="hepatitisCHcvab"
+                                              id="hepatitisCHcvab"
+                                              onChange={handleInputChange}
+                                              value={objValues.hepatitisCHcvab} 
+                                          > 
+                                            <option></option>
+                                          </Input>  
+                                      </InputGroup> 
+                                      {errors.hepatitisCHcvab !=="" ? (
+                                              <span className={classes.error}>{errors.hepatitisCHcvab}</span>
+                                      ) : "" }                                        
+                                      </FormGroup>
+                              </div>
+
+                               
+                            </div>
+                            </div>
+                            </div>
+                            {/* End of screening */}
+
+
+                            {/* Start of diagnosis (hepatitis b) */}
+                            <div className="card">
+                                <div className="card-header" style={{backgroundColor:"#014d88",color:'#fff',fontWeight:'bolder', borderRadius:"0.2rem"}}>
+                                    <h5 className="card-title"  style={{color:'#fff'}}>Diagnosis (Hepatitis B)</h5>
+                                </div>
+
+                            <div className="card-body">
+                            <div className="row">
+                              <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label >Date of HBV DNA test required <span style={{ color:"red"}}> *</span></Label>
+                                <Input
+                                    type="select"
+                                    name="dateOfHbvDnaTestRequired"
+                                    id="dateOfHbvDnaTestRequired"
+                                    onChange={handleInputChange}
+                                    value={objValues.dateOfHbvDnaTestRequired} 
+                                >
+                                    <option value="">select</option>
+                                    <option value={"reactive"}>Reactive</option>
+                                    <option value={"non-reactive"}>Non-Reactive</option>
+                                </Input>
+
+                                
+                                {errors.dateOfHbvDnaTestRequired !=="" ? (
+                                        <span className={classes.error}>{errors.dateOfHbvDnaTestRequired}</span>
+                                ) : "" }           
+                                </FormGroup>
+                              </div>  
+
+                              <div className="form-group mb-3 col-md-6">
+                                      <FormGroup>
+                                      <Label>Date of HBV DNA sample collected <span style={{ color:"red"}}> *</span></Label>
+                                      <InputGroup> 
+                                          <Input 
+                                              type="date"
+                                              name="dateOfHbvDnaSampleCollected"
+                                              id="dateOfHbvDnaSampleCollected"
+                                              onChange={handleInputChange}
+                                              value={objValues.dateOfHbvDnaSampleCollected} 
+                            
+                                          />
+
+                                      </InputGroup>
+                                      {errors.dateOfHbvDnaSampleCollected !=="" ? (
+                                              <span className={classes.error}>{errors.dateOfHbvDnaSampleCollected}</span>
+                                      ) : "" }
+                                      </FormGroup>
+                              </div>
+                                                             
+                              <div className="form-group mb-3 col-md-6">
+                                      <FormGroup>
+                                      <Label>HBV DNA(IU/ml)<span style={{ color:"red"}}> *</span></Label>
+                                      <InputGroup> 
+                                          <Input 
+                                              type="select"
+                                              name="hbvDna"
+                                              id="hbvDna"
+                                              onChange={handleInputChange}
+                                              value={objValues.hbvDna} 
+                                          > 
+                                            <option value="">select</option>
+                                            <option value={"detected"}>Detected</option>
+                                            <option value={"undetected"}>Undetected</option>
+                                          </Input>  
+                                      </InputGroup> 
+                                      {errors.hbvDna !=="" ? (
+                                              <span className={classes.error}>{errors.hbvDna}</span>
+                                      ) : "" }                                        
+                                      </FormGroup>
+                              </div>
+
+                              {
+                                objValues.hbvDna ==="detected" && (
+                                    <div className="form-group mb-3 col-md-6">
+                                    <FormGroup>
+                                    <Label>HBV DNA result<span style={{ color:"red"}}> *</span></Label>
+                                    <InputGroup> 
+                                        <Input 
+                                            type="text"
+                                            name="hbvDnaResult"
+                                            id="hbvDnaResult"
+                                            onChange={handleInputChange}
+                                            value={objValues.hbvDnaResult} 
+                                        /> 
+                                          
+                                    </InputGroup> 
+                                    {errors.hbvDnaResult !=="" ? (
+                                            <span className={classes.error}>{errors.hbvDnaResult}</span>
+                                    ) : "" }                                        
+                                    </FormGroup>
+                            </div>
+                            )
+                              }
+
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>HBsAG quantification<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="text"
+                                        name="hbsagQuantification"
+                                        id="hbsagQuantification"
+                                        onChange={handleInputChange}
+                                        value={objValues.hbsagQuantification} 
+                                    /> 
+                                        
+                                </InputGroup> 
+                                {errors.hbsagQuantification !=="" ? (
+                                        <span className={classes.error}>{errors.hbsagQuantification}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>HBeAG<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="select"
+                                        name="hbeag"
+                                        id="hbeag"
+                                        onChange={handleInputChange}
+                                        value={objValues.hbeag} 
+                                    > 
+                                        <option value="">select</option>
+                                        <option value={"reactive"}>Reactive</option>
+                                        <option value={"unreactive"}>Unreactive</option>
+                                    </Input>
+                                </InputGroup> 
+                                {errors.hbeag !=="" ? (
+                                    <span className={classes.error}>{errors.hbeag}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>Ant-HDV<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="select"
+                                        name="antHdv"
+                                        id="antHdv"
+                                        onChange={handleInputChange}
+                                        value={objValues.antHdv} 
+                                    > 
+                                        <option value="">select</option>
+                                        <option value={"reactive"}>Reactive</option>
+                                        <option value={"unreactive"}>Unreactive</option>
+                                        <option value={"not done"}>Not done</option>
+                                    </Input>
+                                </InputGroup> 
+                                {errors.antHdv !=="" ? (
+                                    <span className={classes.error}>{errors.antHdv}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>Treatment Eligible<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="select"
+                                        name="treatmentEligible"
+                                        id="treatmentEligible"
+                                        onChange={handleInputChange}
+                                        value={objValues.treatmentEligible} 
+                                    > 
+                                        <option value="">select</option>
+                                        <option value={"yes"}>Yes</option>
+                                        <option value={"no"}>No</option>
+                                    </Input>
+                                </InputGroup> 
+                                {errors.treatmentEligible !=="" ? (
+                                    <span className={classes.error}>{errors.treatmentEligible}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>PMTCT Eligible<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="select"
+                                        name="pmtctEligible"
+                                        id="pmtctEligible"
+                                        onChange={handleInputChange}
+                                        value={objValues.pmtctEligible} 
+                                    > 
+                                        <option value="">select</option>
+                                        <option value={"yes"}>Yes</option>
+                                        <option value={"no"}>No</option>
+                                    </Input>
+                                </InputGroup> 
+                                {errors.pmtctEligible !=="" ? (
+                                    <span className={classes.error}>{errors.pmtctEligible}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+
+                            <div className="form-group mb-3 col-md-12">
+                                <FormGroup>
+                                <Label>Comment<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="textarea"
+                                        name="comment"
+                                        id="comment"
+                                        onChange={handleInputChange}
+                                        value={objValues.comment} 
+                                        rows="5"
+                                        style={{ height: "150px" }}
+                                    /> 
+                                       
+                                </InputGroup> 
+                                {errors.comment !=="" ? (
+                                    <span className={classes.error}>{errors.comment}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+
+                            </div>
+                            </div>
+                            </div>
+                            {/* End of diagnosis (hepatitis b) */}
+
+                            {/* Start of diagnosis (hepatitis c) */}
+                            <div className="card">
+                                <div className="card-header" style={{backgroundColor:"#014d88",color:'#fff',fontWeight:'bolder', borderRadius:"0.2rem"}}>
+                                    <h5 className="card-title"  style={{color:'#fff'}}>Diagnosis (Hepatitis C)</h5>
+                                </div>
+
+                            <div className="card-body">
+                            <div className="row">
+                              
+
+                              
+                                                             
+                              <div className="form-group mb-3 col-md-6">
+                                      <FormGroup>
+                                      <Label>HCV RNA(IU/ml)<span style={{ color:"red"}}> *</span></Label>
+                                      <InputGroup> 
+                                          <Input 
+                                              type="select"
+                                              name="hcvRna"
+                                              id="hcvRna"
+                                              onChange={handleInputChange}
+                                              value={objValues.hcvRna} 
+                                          > 
+                                            <option value="">select</option>
+                                            <option value={"detected"}>Detected</option>
+                                            <option value={"undetected"}>Undetected</option>
+                                          </Input>  
+                                      </InputGroup> 
+                                      {errors.hcvRna !=="" ? (
+                                              <span className={classes.error}>{errors.hcvRna}</span>
+                                      ) : "" }                                        
+                                      </FormGroup>
+                              </div>
+
+                              {
+                                objValues.hcvRna ==="detected" && (
+                                    <div className="form-group mb-3 col-md-6">
+                                    <FormGroup>
+                                    <Label>HCV RNA result<span style={{ color:"red"}}> *</span></Label>
+                                    <InputGroup> 
+                                        <Input 
+                                            type="text"
+                                            name="hcvRnaResult"
+                                            id="hcvRnaResult"
+                                            onChange={handleInputChange}
+                                            value={objValues.hcvRnaResult} 
+                                        /> 
+                                          
+                                    </InputGroup> 
+                                    {errors.hcvRnaResult !=="" ? (
+                                            <span className={classes.error}>{errors.hcvRnaResult}</span>
+                                    ) : "" }                                        
+                                    </FormGroup>
+                            </div>
+                            )
+                              }
+
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>Hepatitis Coinfection<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        multiple
+                                        type="select"
+                                        name="hepatitisCoinfection"
+                                        id="hepatitisCoinfection"
+                                        onChange={handleInputChange}
+                                        value={objValues.hepatitisCoinfection} 
+                                    >
+                                        
+                                        <option value="HBV/HCV/">(HBV/HCV/)</option>
+                                        <option value="HCV/HIV">(HCV/HIV)</option>
+                                        <option value="HBV/HDV">(HBV/HDV)</option>
+                                        <option value="HBV/HCD/HIV">(HBV/HCD/HIV)</option>
+                                    </Input>     
+                                        
+                                </InputGroup> 
+                                {errors.hepatitisCoinfection !=="" ? (
+                                        <span className={classes.error}>{errors.hepatitisCoinfection}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+
+                            <div className="form-group mb-3 col-md-12">
+                                <FormGroup>
+                                <Label>Commobidities<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="text"
+                                        name="hepatitisCommobidities"
+                                        id="hepatitisCommobidities"
+                                        onChange={handleInputChange}
+                                        value={objValues.hepatitisCommobidities} 
+                                   /> 
+                                      
+                                </InputGroup> 
+                                {errors.hepatitisCommobidities !=="" ? (
+                                    <span className={classes.error}>{errors.hepatitisCommobidities}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+
+                            </div>
+                            </div>
+                            </div>
+                            {/* End of diagnosis (hepatitis c) */}
+
+
+                             {/* Start of ancillary testing */}
+                             <div className="card">
+                                <div className="card-header" style={{backgroundColor:"#014d88",color:'#fff',fontWeight:'bolder', borderRadius:"0.2rem"}}>
+                                    <h5 className="card-title"  style={{color:'#fff'}}>Ancillary testing/Clinical Parameter</h5>
+                                </div>
+
+                            <div className="card-body">
+                            <div className="row">
+                                                             
+                            <div className="form-group mb-2 col-md-6">
+                                <FormGroup>
+                                    <Label>Check box if applicable <span style={{ color:"red"}}> *</span></Label>
+                                    <div className="radio">
+                                        <label>
+                                            <input
+                                                type="checkbox"
+                                                id="astChecked"
+                                                name="astChecked"
+                                                checked={objValues.astChecked}
+                                                onChange={handleAncillaryInputChange}
+                                                style={{border: "1px solid #014D88", borderRadius:"0.2rem"}}
+                                            /> AST
+                                        </label>
+                                    </div>
+                                    <div className="radio">
+                                        <label>
+                                            <input
+                                                type="checkbox"
+                                                id="altChecked"
+                                                name="altChecked"
+                                                checked={objValues.altChecked}
+                                                onChange={handleAncillaryInputChange}
+                                                style={{border: "1px solid #014D88", borderRadius:"0.2rem"}}
+                                            /> ALT
+                                        </label>
+                                    </div>
+                                    <div className="radio">
+                                        <label>
+                                            <input
+                                                type="checkbox"
+                                                id="pstChecked"
+                                                name="pstChecked"
+                                                checked={objValues.pstChecked}
+                                                onChange={handleAncillaryInputChange}
+                                                style={{border: "1px solid #014D88", borderRadius:"0.2rem"}}
+                                            /> PST
+                                        </label>
+                                    </div>
+                                </FormGroup>
+                            </div>
+
+                           {
+                            objValues.astChecked && (
+                                <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>AST result (IU/ml)<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="text"
+                                        name="astResult"
+                                        id="astResult"
+                                        onChange={handleInputChange}
+                                        value={objValues.astResult} 
+                                   /> 
+                                      
+                                </InputGroup> 
+                                {errors.astResult !=="" ? (
+                                    <span className={classes.error}>{errors.astResult}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+                        )}
+
+{
+                            objValues.altChecked && (
+                                <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>ALT result (IU/ml)<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="text"
+                                        name="altResult"
+                                        id="altResult"
+                                        onChange={handleInputChange}
+                                        value={objValues.altResult} 
+                                   /> 
+                                      
+                                </InputGroup> 
+                                {errors.altResult !=="" ? (
+                                    <span className={classes.error}>{errors.altResult}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+                            )
+                           }
+
+                           {
+                            objValues.pstChecked && (
+                                <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>PST result (IU/ml)<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="text"
+                                        name="pstResult"
+                                        id="pstResult"
+                                        onChange={handleInputChange}
+                                        value={objValues.pstResult} 
+                                   /> 
+                                      
+                                </InputGroup> 
+                                {errors.pstResult !=="" ? (
+                                    <span className={classes.error}>{errors.pstResult}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+                            )}
+
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>Bilibrubin: Total (μmol/L)<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="text"
+                                        name="bilibrubinTotal"
+                                        id="bilibrubinTotal"
+                                        onChange={handleInputChange}
+                                        value={objValues.bilibrubinTotal} 
+                                   /> 
+                                      
+                                </InputGroup> 
+                                {errors.bilibrubinTotal !=="" ? (
+                                    <span className={classes.error}>{errors.bilibrubinTotal}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>Bilibrubin: Direct (μmol/L)<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="text"
+                                        name="bilibrubinDirect"
+                                        id="bilibrubinDirect"
+                                        onChange={handleInputChange}
+                                        value={objValues.bilibrubinDirect} 
+                                   /> 
+                                      
+                                </InputGroup> 
+                                {errors.bilibrubinDirect !=="" ? (
+                                    <span className={classes.error}>{errors.bilibrubinDirect}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>Bilibrubin: Albumin (μmol/L)<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="text"
+                                        name="bilibrubinAlbumin"
+                                        id="bilibrubinAlbumin"
+                                        onChange={handleInputChange}
+                                        value={objValues.bilibrubinAlbumin} 
+                                   /> 
+                                      
+                                </InputGroup> 
+                                {errors.bilibrubinAlbumin !=="" ? (
+                                    <span className={classes.error}>{errors.bilibrubinAlbumin}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+
+                            
+                             
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>APRI Score<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="text"
+                                        name="apriScore"
+                                        id="apriScore"
+                                        onChange={handleInputChange}
+                                        value={objValues.apriScore} 
+                                    />      
+                                </InputGroup> 
+                                {errors.apriScore !=="" ? (
+                                        <span className={classes.error}>{errors.apriScore}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>FIB-4<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="text"
+                                        name="fib4"
+                                        id="fib4"
+                                        onChange={handleInputChange}
+                                        value={objValues.fib4} 
+                                   /> 
+                                      
+                                </InputGroup> 
+                                {errors.fib4 !=="" ? (
+                                    <span className={classes.error}>{errors.fib4}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>Prothrombin time/INR<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="text"
+                                        name="prothrombinTime"
+                                        id="prothrombinTime"
+                                        onChange={handleInputChange}
+                                        value={objValues.prothrombinTime} 
+                                   /> 
+                                      
+                                </InputGroup> 
+                                {errors.prothrombinTime !=="" ? (
+                                    <span className={classes.error}>{errors.prothrombinTime}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>Urea<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="text"
+                                        name="urea"
+                                        id="urea"
+                                        onChange={handleInputChange}
+                                        value={objValues.urea} 
+                                   /> 
+                                      
+                                </InputGroup> 
+                                {errors.urea !=="" ? (
+                                    <span className={classes.error}>{errors.urea}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>Creatinine (μmol/L)<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="text"
+                                        name="creatinine"
+                                        id="creatinine"
+                                        onChange={handleInputChange}
+                                        value={objValues.creatinine} 
+                                   /> 
+                                      
+                                </InputGroup> 
+                                {errors.creatinine !=="" ? (
+                                    <span className={classes.error}>{errors.creatinine}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>Ultrasound scan<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="text"
+                                        name="ultrasoundScan"
+                                        id="ultrasoundScan"
+                                        onChange={handleInputChange}
+                                        value={objValues.ultrasoundScan} 
+                                   /> 
+                                      
+                                </InputGroup> 
+                                {errors.ultrasoundScan !=="" ? (
+                                    <span className={classes.error}>{errors.ultrasoundScan}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>AFP (ng/ml)<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="text"
+                                        name="afp"
+                                        id="afp"
+                                        onChange={handleInputChange}
+                                        value={objValues.afp} 
+                                   /> 
+                                      
+                                </InputGroup> 
+                                {errors.afp !=="" ? (
+                                    <span className={classes.error}>{errors.afp}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>FibroScan (ng/ml)<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="text"
+                                        name="fibroScan"
+                                        id="fibroScan"
+                                        onChange={handleInputChange}
+                                        value={objValues.fibroScan} 
+                                   /> 
+                                      
+                                </InputGroup> 
+                                {errors.fibroScan !=="" ? (
+                                    <span className={classes.error}>{errors.fibroScan}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>Not done (kpa)<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="text"
+                                        name="notDone"
+                                        id="notDone"
+                                        onChange={handleInputChange}
+                                        value={objValues.notDone} 
+                                   /> 
+                                      
+                                </InputGroup> 
+                                {errors.notDone !=="" ? (
+                                    <span className={classes.error}>{errors.notDone}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>CT scan<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="text"
+                                        name="notDone"
+                                        id="notDone"
+                                        onChange={handleInputChange}
+                                        value={objValues.notDone} 
+                                   /> 
+                                      
+                                </InputGroup> 
+                                {errors.notDone !=="" ? (
+                                    <span className={classes.error}>{errors.notDone}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+                            
+                            <div className="form-group mb-2 col-md-6">
+                                <FormGroup>
+                                    <Label>Acites<span style={{ color:"red"}}> *</span></Label>
+                                    <div className="radio">
+                                        <label>
+                                            <input
+                                                type="radio"
+                                                value="yes"
+                                                checked={objValues.acitesChecked === "yes"}
+                                                name="acitesChecked"
+                                                onChange={handleInputChange}
+                                                style={{border: "1px solid #014D88", borderRadius:"0.2rem"}}
+                                            /> Yes
+                                        </label>
+                                    </div>
+                                    <div className="radio">
+                                        <label>
+                                            <input
+                                                type="radio"
+                                                value="no"
+                                                name="acitesChecked"
+                                                checked={objValues.acitesChecked === "no"}
+                                                onChange={handleInputChange}
+                                                style={{border: "1px solid #014D88", borderRadius:"0.2rem"}}
+                                            /> No
+                                        </label>
+                                    </div>
+                                </FormGroup>
+                            </div>
+
+
+                            {
+                            objValues.acitesChecked === "yes" &&
+                            (<div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>Acites value<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="select"
+                                        name="acitesValue"
+                                        id="acitesValue"
+                                        onChange={handleInputChange}
+                                        value={objValues.acitesValue} 
+                                   > 
+                                    <option value="">select</option>
+                                    <option value="mild">Mild</option>
+                                    <option value="moderate">Moderate</option>
+                                    <option value="massive/gross">Massive/Gross</option>
+                                   </Input>
+                                      
+                                </InputGroup> 
+                                {errors.acitesValue !=="" ? (
+                                    <span className={classes.error}>{errors.acitesValue}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>)}
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>Encephalopathy<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="select"
+                                        name="encephalopathy"
+                                        id="encephalopathy"
+                                        onChange={handleInputChange}
+                                        value={objValues.encephalopathy} 
+                                   >
+                                    <option value="">select</option>
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </Input> 
+                                      
+                                </InputGroup> 
+                                {errors.encephalopathy !=="" ? (
+                                    <span className={classes.error}>{errors.encephalopathy}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>Child pugh score<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="text"
+                                        name="childPughScore"
+                                        id="childPughScore"
+                                        onChange={handleInputChange}
+                                        value={objValues.childPughScore} 
+                                   /> 
+                                      
+                                </InputGroup> 
+                                {errors.childPughScore !=="" ? (
+                                    <span className={classes.error}>{errors.childPughScore}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>Liver biopsy stage<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="select"
+                                        name="liverBiopsyStage"
+                                        id="liverBiopsyStage"
+                                        onChange={handleInputChange}
+                                        value={objValues.liverBiopsyStage} 
+                                   > 
+                                        <option value="">select</option>
+                                        <option value="F0">No Fibrosis</option>
+                                        <option value="F1">Mild Fibrosis</option>
+                                        <option value="F2">Moderate Fibrosis</option>
+                                        <option value="F3">Severe Fibrosis</option>
+                                        <option value="F4">Cirrhosis</option>
+                                        <option value="not done">Not Done</option>
+                                    </Input>
+                                </InputGroup> 
+                                {errors.liverBiopsyStage !=="" ? (
+                                    <span className={classes.error}>{errors.liverBiopsyStage}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>Staging date of liver biopsy<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="date"
+                                        name="stagingDateOfLiverBiopsy"
+                                        id="stagingDateOfLiverBiopsy"
+                                        min="1983-12-31"
+                                        max= {moment(new Date()).format("YYYY-MM-DD") }
+                                        onChange={handleInputChange}
+                                        value={objValues.stagingDateOfLiverBiopsy} 
+                                   /> 
+                                      
+                                </InputGroup> 
+                                {errors.stagingDateOfLiverBiopsy !=="" ? (
+                                    <span className={classes.error}>{errors.stagingDateOfLiverBiopsy}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+
+                            <div className="form-group mb-3 col-md-12">
+                                <FormGroup>
+                                <Label >Diagnosis</Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="select"
+                                        name="diagnosis"
+                                        id="diagnosis"
+                                        onChange={handleInputChange}
+                                        value={objValues.diagnosis} 
+                                    >
+                                        <option value="" >Select</option>
+                                        <option value="no fibrosis" >No Fibrosis</option>
+                                        <option value="fibrosis" >Fibrosis</option>
+                                        <option value="cirrhosis" >cirrhosis</option>
+                                        <option value="hcc" >HCC</option>
+
+                                    </Input>
+
+                                </InputGroup>
+                                {errors.diagnosis !=="" ? (
+                                        <span className={classes.error}>{errors.diagnosis}</span>
+                                ) : "" }           
+                                </FormGroup>
+                              </div>
+
+                            </div>
+                            </div>
+                            </div>
+                            {/* End of ancillary testing */}
+
+                            {/* Start ofHepatitis B treatment */}
+                            <div className="card">
+                                <div className="card-header" style={{backgroundColor:"#014d88",color:'#fff',fontWeight:'bolder', borderRadius:"0.2rem"}}>
+                                    <h5 className="card-title"  style={{color:'#fff'}}>Hepatitis B Treatment</h5>
+                                </div>
+
+                            <div className="card-body">
+                            <div className="row">
+                                                             
+                            <div className="form-group mb-2 col-md-6">
+                                <FormGroup>
+                                    <Label>Check box if applicable <span style={{ color:"red"}}> *</span></Label>
+                                    <div className="radio">
+                                        <label>
+                                            <input
+                                                type="checkbox"
+                                                id="astChecked"
+                                                name="astChecked"
+                                                checked={objValues.astChecked}
+                                                onChange={handleAncillaryInputChange}
+                                                style={{border: "1px solid #014D88", borderRadius:"0.2rem"}}
+                                            /> AST
+                                        </label>
+                                    </div>
+                                    <div className="radio">
+                                        <label>
+                                            <input
+                                                type="checkbox"
+                                                id="altChecked"
+                                                name="altChecked"
+                                                checked={objValues.altChecked}
+                                                onChange={handleAncillaryInputChange}
+                                                style={{border: "1px solid #014D88", borderRadius:"0.2rem"}}
+                                            /> ALT
+                                        </label>
+                                    </div>
+                                    <div className="radio">
+                                        <label>
+                                            <input
+                                                type="checkbox"
+                                                id="pstChecked"
+                                                name="pstChecked"
+                                                checked={objValues.pstChecked}
+                                                onChange={handleAncillaryInputChange}
+                                                style={{border: "1px solid #014D88", borderRadius:"0.2rem"}}
+                                            /> PST
+                                        </label>
+                                    </div>
+                                </FormGroup>
+                            </div>
+
+                           {
+                            objValues.astChecked && (
+                                <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>AST result (IU/ml)<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="text"
+                                        name="astResult"
+                                        id="astResult"
+                                        onChange={handleInputChange}
+                                        value={objValues.astResult} 
+                                   /> 
+                                      
+                                </InputGroup> 
+                                {errors.astResult !=="" ? (
+                                    <span className={classes.error}>{errors.astResult}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+                        )}
+
+{
+                            objValues.altChecked && (
+                                <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>ALT result (IU/ml)<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="text"
+                                        name="altResult"
+                                        id="altResult"
+                                        onChange={handleInputChange}
+                                        value={objValues.altResult} 
+                                   /> 
+                                      
+                                </InputGroup> 
+                                {errors.altResult !=="" ? (
+                                    <span className={classes.error}>{errors.altResult}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+                            )
+                           }
+
+                           {
+                            objValues.pstChecked && (
+                                <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>PST result (IU/ml)<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="text"
+                                        name="pstResult"
+                                        id="pstResult"
+                                        onChange={handleInputChange}
+                                        value={objValues.pstResult} 
+                                   /> 
+                                      
+                                </InputGroup> 
+                                {errors.pstResult !=="" ? (
+                                    <span className={classes.error}>{errors.pstResult}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+                            )}
+
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>Bilibrubin: Total (μmol/L)<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="text"
+                                        name="bilibrubinTotal"
+                                        id="bilibrubinTotal"
+                                        onChange={handleInputChange}
+                                        value={objValues.bilibrubinTotal} 
+                                   /> 
+                                      
+                                </InputGroup> 
+                                {errors.bilibrubinTotal !=="" ? (
+                                    <span className={classes.error}>{errors.bilibrubinTotal}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>Bilibrubin: Direct (μmol/L)<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="text"
+                                        name="bilibrubinDirect"
+                                        id="bilibrubinDirect"
+                                        onChange={handleInputChange}
+                                        value={objValues.bilibrubinDirect} 
+                                   /> 
+                                      
+                                </InputGroup> 
+                                {errors.bilibrubinDirect !=="" ? (
+                                    <span className={classes.error}>{errors.bilibrubinDirect}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>Bilibrubin: Albumin (μmol/L)<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="text"
+                                        name="bilibrubinAlbumin"
+                                        id="bilibrubinAlbumin"
+                                        onChange={handleInputChange}
+                                        value={objValues.bilibrubinAlbumin} 
+                                   /> 
+                                      
+                                </InputGroup> 
+                                {errors.bilibrubinAlbumin !=="" ? (
+                                    <span className={classes.error}>{errors.bilibrubinAlbumin}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+
+                            
+                             
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>APRI Score<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="text"
+                                        name="apriScore"
+                                        id="apriScore"
+                                        onChange={handleInputChange}
+                                        value={objValues.apriScore} 
+                                    />      
+                                </InputGroup> 
+                                {errors.apriScore !=="" ? (
+                                        <span className={classes.error}>{errors.apriScore}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>FIB-4<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="text"
+                                        name="fib4"
+                                        id="fib4"
+                                        onChange={handleInputChange}
+                                        value={objValues.fib4} 
+                                   /> 
+                                      
+                                </InputGroup> 
+                                {errors.fib4 !=="" ? (
+                                    <span className={classes.error}>{errors.fib4}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>Prothrombin time/INR<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="text"
+                                        name="prothrombinTime"
+                                        id="prothrombinTime"
+                                        onChange={handleInputChange}
+                                        value={objValues.prothrombinTime} 
+                                   /> 
+                                      
+                                </InputGroup> 
+                                {errors.prothrombinTime !=="" ? (
+                                    <span className={classes.error}>{errors.prothrombinTime}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>Urea<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="text"
+                                        name="urea"
+                                        id="urea"
+                                        onChange={handleInputChange}
+                                        value={objValues.urea} 
+                                   /> 
+                                      
+                                </InputGroup> 
+                                {errors.urea !=="" ? (
+                                    <span className={classes.error}>{errors.urea}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>Creatinine (μmol/L)<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="text"
+                                        name="creatinine"
+                                        id="creatinine"
+                                        onChange={handleInputChange}
+                                        value={objValues.creatinine} 
+                                   /> 
+                                      
+                                </InputGroup> 
+                                {errors.creatinine !=="" ? (
+                                    <span className={classes.error}>{errors.creatinine}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>Ultrasound scan<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="text"
+                                        name="ultrasoundScan"
+                                        id="ultrasoundScan"
+                                        onChange={handleInputChange}
+                                        value={objValues.ultrasoundScan} 
+                                   /> 
+                                      
+                                </InputGroup> 
+                                {errors.ultrasoundScan !=="" ? (
+                                    <span className={classes.error}>{errors.ultrasoundScan}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>AFP (ng/ml)<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="text"
+                                        name="afp"
+                                        id="afp"
+                                        onChange={handleInputChange}
+                                        value={objValues.afp} 
+                                   /> 
+                                      
+                                </InputGroup> 
+                                {errors.afp !=="" ? (
+                                    <span className={classes.error}>{errors.afp}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>FibroScan (ng/ml)<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="text"
+                                        name="fibroScan"
+                                        id="fibroScan"
+                                        onChange={handleInputChange}
+                                        value={objValues.fibroScan} 
+                                   /> 
+                                      
+                                </InputGroup> 
+                                {errors.fibroScan !=="" ? (
+                                    <span className={classes.error}>{errors.fibroScan}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>Not done (kpa)<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="text"
+                                        name="notDone"
+                                        id="notDone"
+                                        onChange={handleInputChange}
+                                        value={objValues.notDone} 
+                                   /> 
+                                      
+                                </InputGroup> 
+                                {errors.notDone !=="" ? (
+                                    <span className={classes.error}>{errors.notDone}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>CT scan<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="text"
+                                        name="notDone"
+                                        id="notDone"
+                                        onChange={handleInputChange}
+                                        value={objValues.notDone} 
+                                   /> 
+                                      
+                                </InputGroup> 
+                                {errors.notDone !=="" ? (
+                                    <span className={classes.error}>{errors.notDone}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+                            
+                            <div className="form-group mb-2 col-md-6">
+                                <FormGroup>
+                                    <Label>Acites<span style={{ color:"red"}}> *</span></Label>
+                                    <div className="radio">
+                                        <label>
+                                            <input
+                                                type="radio"
+                                                value="yes"
+                                                checked={objValues.acitesChecked === "yes"}
+                                                name="acitesChecked"
+                                                onChange={handleInputChange}
+                                                style={{border: "1px solid #014D88", borderRadius:"0.2rem"}}
+                                            /> Yes
+                                        </label>
+                                    </div>
+                                    <div className="radio">
+                                        <label>
+                                            <input
+                                                type="radio"
+                                                value="no"
+                                                name="acitesChecked"
+                                                checked={objValues.acitesChecked === "no"}
+                                                onChange={handleInputChange}
+                                                style={{border: "1px solid #014D88", borderRadius:"0.2rem"}}
+                                            /> No
+                                        </label>
+                                    </div>
+                                </FormGroup>
+                            </div>
+
+
+                            {
+                            objValues.acitesChecked === "yes" &&
+                            (<div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>Acites value<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="select"
+                                        name="acitesValue"
+                                        id="acitesValue"
+                                        onChange={handleInputChange}
+                                        value={objValues.acitesValue} 
+                                   > 
+                                    <option value="">select</option>
+                                    <option value="mild">Mild</option>
+                                    <option value="moderate">Moderate</option>
+                                    <option value="massive/gross">Massive/Gross</option>
+                                   </Input>
+                                      
+                                </InputGroup> 
+                                {errors.acitesValue !=="" ? (
+                                    <span className={classes.error}>{errors.acitesValue}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>)}
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>Encephalopathy<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="select"
+                                        name="encephalopathy"
+                                        id="encephalopathy"
+                                        onChange={handleInputChange}
+                                        value={objValues.encephalopathy} 
+                                   >
+                                    <option value="">select</option>
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </Input> 
+                                      
+                                </InputGroup> 
+                                {errors.encephalopathy !=="" ? (
+                                    <span className={classes.error}>{errors.encephalopathy}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>Child pugh score<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="text"
+                                        name="childPughScore"
+                                        id="childPughScore"
+                                        onChange={handleInputChange}
+                                        value={objValues.childPughScore} 
+                                   /> 
+                                      
+                                </InputGroup> 
+                                {errors.childPughScore !=="" ? (
+                                    <span className={classes.error}>{errors.childPughScore}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>Liver biopsy stage<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="select"
+                                        name="liverBiopsyStage"
+                                        id="liverBiopsyStage"
+                                        onChange={handleInputChange}
+                                        value={objValues.liverBiopsyStage} 
+                                   > 
+                                        <option value="">select</option>
+                                        <option value="F0">No Fibrosis</option>
+                                        <option value="F1">Mild Fibrosis</option>
+                                        <option value="F2">Moderate Fibrosis</option>
+                                        <option value="F3">Severe Fibrosis</option>
+                                        <option value="F4">Cirrhosis</option>
+                                        <option value="not done">Not Done</option>
+                                    </Input>
+                                </InputGroup> 
+                                {errors.liverBiopsyStage !=="" ? (
+                                    <span className={classes.error}>{errors.liverBiopsyStage}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+
+                            <div className="form-group mb-3 col-md-6">
+                                <FormGroup>
+                                <Label>Staging date of liver biopsy<span style={{ color:"red"}}> *</span></Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="date"
+                                        name="stagingDateOfLiverBiopsy"
+                                        id="stagingDateOfLiverBiopsy"
+                                        min="1983-12-31"
+                                        max= {moment(new Date()).format("YYYY-MM-DD") }
+                                        onChange={handleInputChange}
+                                        value={objValues.stagingDateOfLiverBiopsy} 
+                                   /> 
+                                      
+                                </InputGroup> 
+                                {errors.stagingDateOfLiverBiopsy !=="" ? (
+                                    <span className={classes.error}>{errors.stagingDateOfLiverBiopsy}</span>
+                                ) : "" }                                        
+                                </FormGroup>
+                            </div>
+
+                            <div className="form-group mb-3 col-md-12">
+                                <FormGroup>
+                                <Label >Diagnosis</Label>
+                                <InputGroup> 
+                                    <Input 
+                                        type="select"
+                                        name="diagnosis"
+                                        id="diagnosis"
+                                        onChange={handleInputChange}
+                                        value={objValues.diagnosis} 
+                                    >
+                                        <option value="" >Select</option>
+                                        <option value="no fibrosis" >No Fibrosis</option>
+                                        <option value="fibrosis" >Fibrosis</option>
+                                        <option value="cirrhosis" >cirrhosis</option>
+                                        <option value="hcc" >HCC</option>
+                                    </Input>
+
+                                </InputGroup>
+                                {errors.diagnosis !=="" ? (
+                                        <span className={classes.error}>{errors.diagnosis}</span>
+                                ) : "" }           
+                                </FormGroup>
+                              </div>
+                            </div>
+                            </div>
+                            </div>
+                            {/* End of Hepatitis B treatment */}
                             {saving ? <Spinner /> : ""}
 
                             <br />
