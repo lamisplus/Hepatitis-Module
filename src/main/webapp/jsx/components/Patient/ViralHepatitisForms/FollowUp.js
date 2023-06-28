@@ -1191,7 +1191,7 @@ const FollowupForm = () => {
                   endIcon={<ArrowForward />}
                   style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}
                 >
-                  <span style={{ textTransform: "capitalize" }}>Next</span>
+                  <span style={{ textTransform: "capitalize" }}>Submit</span>
                 </MatButton>
               </div>
             </Form>
