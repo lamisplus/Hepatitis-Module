@@ -9,7 +9,6 @@ import  ThemeContext  from "./../src/main/webapp/context/ThemeContext";
 
 ReactDOM.render(
 	<React.StrictMode>
-
             <SimpleReactLightbox>
                 <BrowserRouter basename='/'>
                     <ThemeContext>

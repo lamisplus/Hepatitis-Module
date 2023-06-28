@@ -12,9 +12,10 @@ import "./../src/main/webapp/css/style.css";
 import 'bootstrap/dist/css/bootstrap.css';
 import Home from './main/webapp/jsx/components/Home'
 import PatientDetail from './main/webapp/jsx/components/Patient/PatientDetail'
-import RegisterPatientPage from './main/webapp/jsx/components/Patient/RegisterPatient';
+// import RegisterPatientPage from './main/webapp/jsx/components/Patient/RegisterPatient';
 import EnrollPatientPage from './main/webapp/jsx/components/Patient/EnrollPatient';
 import UpdatePatientEnrollment from './main/webapp/jsx/components/Patient/UpdatePatientEnrollment';
+import ViralHepatitisFormsContainer from "./main/webapp/jsx/components/Patient/ViralHepatitisFormsContainer";
 
 export default function App() {
   return (
@@ -28,7 +29,7 @@ export default function App() {
             <PatientDetail />
           </Route> 
           <Route path="/register-patient">
-            <RegisterPatientPage />
+            <ViralHepatitisFormsContainer />
           </Route>
           <Route path="/enroll-patient">
             <EnrollPatientPage />
