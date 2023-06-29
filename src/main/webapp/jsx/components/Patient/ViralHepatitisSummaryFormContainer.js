@@ -5,6 +5,9 @@ import NonReactive from "./ViralHepatitisSummaryForms/NonReactive";
 import Fibrosis from "./ViralHepatitisSummaryForms/Fibrosis";
 import Cirrhosis from "./ViralHepatitisSummaryForms/Cirrhosis";
 import HepatocellularCarcinoma from "./ViralHepatitisSummaryForms/HepatocellularCarcinoma";
+import HbvType1 from "./ViralHepatitisSummaryForms/HbvType1";
+import HbvType2 from "./ViralHepatitisSummaryForms/HbvType2";
+import HbvType3 from "./ViralHepatitisSummaryForms/HbvType3";
 
 const ViralHepatitisSummaryFormContainer = () => {
 
@@ -20,9 +23,9 @@ const formMap = {
     "Fibrosis" : <Fibrosis/>,
     "Cirrhosis" : <Cirrhosis/>,
     "Hepatocellular Carcinoma" : <HepatocellularCarcinoma/>,
-    "HBV DNA <2000 IU/ml" : <div>HBV DNA {">"}2000 IU/ml</div>,
-    "HBV DNA >=2000 IU/ml" : <div>HBV DNA {">="}2000 IU/ml</div>,
-    "HBV DNA >=200000 IU/ml" : <div>HBV DNA {">="}200000 IU/ml</div>,
+    "HBV DNA <2000 IU/ml" : <HbvType1/>,
+    "HBV DNA >=2000 IU/ml" : <HbvType2/>,
+    "HBV DNA >=200000 IU/ml" : <HbvType3/>,
     "HBegAg +ve" : <div>HBegAg +ve</div>,
     "Mortality Reactive" : <div> Mortality Reactive</div>,
     "Mortality Reactive" : <div> Mortality Reactive</div>,
