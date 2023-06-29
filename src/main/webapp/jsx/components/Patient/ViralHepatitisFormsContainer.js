@@ -47,7 +47,7 @@ const ViralHepatitisFormsContainer = (props) => {
                     </Button>
             </Link>
             <br/><br/> 
-            <Steppers/>
+            <Steppers activeStep={step}/>
             {formMap[step]}
         </>
     );

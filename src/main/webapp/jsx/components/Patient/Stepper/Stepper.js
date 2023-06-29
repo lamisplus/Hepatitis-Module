@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
-  return ['Enrolement', 'Diagnosis', 'Treatment'];
+  return ['Enrolement', 'Diagnosis', 'Treatment', "Follow up"];
 }
 
 function getStepContent(stepIndex) {
@@ -36,22 +36,11 @@ function getStepContent(stepIndex) {
   }
 }
 
-export default function Steppers() {
-  const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(0);
+export default function Steppers({activeStep}) {
+  
+  
   const steps = getSteps();
 
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleReset = () => {
-    setActiveStep(0);
-  };
 
   return (
     
