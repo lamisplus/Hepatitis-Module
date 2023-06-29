@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom'
 import Button from '@material-ui/core/Button';
 import { FaUserPlus } from "react-icons/fa";
 //import PageTitle from "./../layouts/PageTitle";
+import ViralHepatitis from "./Patient/ViralHepatitisForms/Form1"
+import ViralHepatitisSummaryFormContainer from "./Patient/ViralHepatitisSummaryFormContainer";
 const divStyle = {
   borderRadius: "2px",
   fontSize: 14,
@@ -52,7 +54,8 @@ const Home = () => {
                     <PatientList />
                   </Tab>
                   <Tab eventKey="vaccinated" title="Summary">                   
-                    <PatientVaccinatedLIst />
+                    {/* <PatientVaccinatedLIst /> */}
+                   <ViralHepatitisSummaryFormContainer/>
                   </Tab>
                   {/* <Tab eventKey="visualization" title="Data Visualisation">                   
                     <VisualisationHome />
