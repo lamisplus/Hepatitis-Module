@@ -16,14 +16,14 @@ const formMap = {
     "Fibrosis" : <div>Fibrosis</div>,
     "Cirrhosis" : <div>Cirrhosis</div>,
     "Hepatocellular Carcinoma" : <div>Hepatocellular Carcinoma</div>,
+    "HBV DNA <2000 IU/ml" : <div>HBV DNA {">"}2000 IU/ml</div>,
+    "HBV DNA >=2000 IU/ml" : <div>HBV DNA {">="}2000 IU/ml</div>,
+    "HBV DNA >=200000 IU/ml" : <div>HBV DNA {">="}200000 IU/ml</div>,
+    "HBegAg +ve" : <div>HBegAg +ve</div>,
+    "Mortality Reactive" : <div> Mortality Reactive</div>,
+    "Mortality Reactive" : <div> Mortality Reactive</div>,
     "Monitoring Reactive" : <div>Monitoring Reactive</div>,
     "Monitoring Non Reactive" : <div>Monitoring Non Reactive</div>,
-    "Reactive" : <div>reactive</div>,
-    "Reactive" : <div>reactive</div>,
-    "Reactive" : <div>reactive</div>,
-    "Reactive" : <div>reactive</div>,
-    "Reactive" : <div>reactive</div>,
-
 }
 
   return (
@@ -33,7 +33,7 @@ const formMap = {
       </div>
 
       <div>
-        <ViralHepatitisForm2/>
+       {formMap[formValues.select3Value]}
       </div>
     </div>
   );

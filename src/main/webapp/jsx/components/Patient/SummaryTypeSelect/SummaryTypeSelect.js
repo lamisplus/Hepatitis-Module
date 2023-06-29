@@ -112,8 +112,8 @@ const SummaryTypeSelect = ({
                 )}
                 {select2Value === "Mortality" && (
                   <>
-                    <option value="Reactive">Reactive</option>
-                    <option value="Non Reactive">Non Reactive</option>
+                    <option value="Mortality Reactive">Reactive</option>
+                    <option value="Mortality Reactive">Non Reactive</option>
                   </>
                 )}
                 {select2Value === "Treatment" && (
