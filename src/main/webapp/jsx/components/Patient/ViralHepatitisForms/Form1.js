@@ -84,10 +84,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const ViralHepatitisForm1 = () => {
+const ViralHepatitisForm1 = ({setStep}) => {
 
+    const onSubmitHandler = (values) => {
+        window.scrollTo(0, 0);
+        console.log(values)
+        setStep(1)
+    }
     const classes = useStyles();
-    const {formik} = useValidateForm1ValuesHook()
+    const {formik} = useValidateForm1ValuesHook(onSubmitHandler)
     return (
         <>
             <Card className={classes.root}>

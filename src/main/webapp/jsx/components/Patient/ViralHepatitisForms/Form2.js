@@ -92,13 +92,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ViralHepatitisForm2 = () => {
+const ViralHepatitisForm2 = ({setStep}) => {
+  const onSubmitHandler = (values) => {
+    window.scrollTo(0, 0);
+    console.log(values)
+    setStep(2)
+}
+const moveBack = () => {
+  window.scrollTo(0, 0);
+  setStep(0)
+}
   const classes = useStyles();
-  const { formik } = useValidateForm2ValuesHook();
+  const { formik } = useValidateForm2ValuesHook(onSubmitHandler);
   const [isDropdownsOpen, setIsDropdownsOpen] = useState({
-    hepatitisBDropdown: false,
-    hepatitisCDropdown: false,
-    coInfectionDropdown: false,
+    hepatitisBDropdown: true,
+    hepatitisCDropdown: true,
+    coInfectionDropdown: true,
   });
   return (
     <>
@@ -1319,9 +1328,10 @@ const ViralHepatitisForm2 = () => {
               <br />
               <div className="d-flex justify-content-between">
                 <MatButton
-                  type="submit"
+                  type="button"
                   variant="contained"
                   color="primary"
+                  onClick={moveBack}
                   className={classes.button}
                   startIcon={<ArrowBackIcon />}
                   style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}
@@ -1329,7 +1339,7 @@ const ViralHepatitisForm2 = () => {
                   <span style={{ textTransform: "capitalize" }}>Previous</span>
                 </MatButton>
                 <MatButton
-                  type="button"
+                  type="submit"
                   variant="contained"
                   color="primary"
                   className={classes.button}

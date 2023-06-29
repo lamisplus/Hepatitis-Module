@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import Button from "@material-ui/core/Button";
 import "react-toastify/dist/ReactToastify.css";
 import "react-widgets/dist/css/react-widgets.css";
@@ -9,12 +9,20 @@ import Steppers from "./Stepper/Stepper";
 import ViralHepatitisForm1 from "./ViralHepatitisForms/Form1";
 import ViralHepatitisForm2 from "./ViralHepatitisForms/Form2";
 import ViralHepatitisForm3 from "./ViralHepatitisForms/Form3";
+import ViralHepatitisForm4 from "./ViralHepatitisForms/Form4";
 import FollowupForm from "./ViralHepatitisForms/FollowUp";
 
 
 
 
 const ViralHepatitisFormsContainer = (props) => {
+    const [step, setStep] = useState(0)
+    const formMap = {
+        0: <ViralHepatitisForm1 step={step} setStep={setStep}/>,
+        1: <ViralHepatitisForm2 step={step} setStep={setStep}/>,
+        2: <ViralHepatitisForm3 step={step} setStep={setStep}/>,
+        3: <FollowupForm step={step} setStep={setStep}/>,
+    }
     return (
         <>
             <ToastContainer autoClose={3000} hideProgressBar />
@@ -40,7 +48,7 @@ const ViralHepatitisFormsContainer = (props) => {
             </Link>
             <br/><br/> 
             <Steppers/>
-            <FollowupForm/>
+            {formMap[step]}
         </>
     );
 };
