@@ -8,7 +8,7 @@ import HepatocellularCarcinoma from "./ViralHepatitisSummaryForms/Hepatocellular
 import HbvType1 from "./ViralHepatitisSummaryForms/HbvType1";
 import HbvType2 from "./ViralHepatitisSummaryForms/HbvType2";
 import HbvType3 from "./ViralHepatitisSummaryForms/HbvType3";
-import HbvType4 from "./HbvType4";
+import HbvType4 from "./ViralHepatitisSummaryForms/HbvType4";
 
 const ViralHepatitisSummaryFormContainer = () => {
 
