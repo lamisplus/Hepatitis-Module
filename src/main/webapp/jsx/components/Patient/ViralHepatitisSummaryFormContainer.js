@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import SummaryTypeSelect from "./SummaryTypeSelect/SummaryTypeSelect";
 import Reactive  from "../Patient/ViralHepatitisSummaryForms/Reactive";
+import NonReactive from "./ViralHepatitisSummaryForms/NonReactive";
 
 const ViralHepatitisSummaryFormContainer = () => {
 
@@ -12,7 +13,7 @@ const ViralHepatitisSummaryFormContainer = () => {
 
 const formMap = {
     "Reactive" : <Reactive/>,
-    "Non Reactive" : <div>Non Reactive</div>,
+    "Non Reactive" : <NonReactive/>,
     "Fibrosis" : <div>Fibrosis</div>,
     "Cirrhosis" : <div>Cirrhosis</div>,
     "Hepatocellular Carcinoma" : <div>Hepatocellular Carcinoma</div>,
