@@ -32,6 +32,12 @@ const formMap = {
         <SummaryTypeSelect formValues={formValues} setFormValues={setFormValues}/>
       </div>
 
+      <div className="my-2" style={{fontWeight: "600"}}>
+        <span>{formValues.select1Value && ` ${formValues.select1Value} `}</span>
+        <span>{formValues.select2Value && ` | ${formValues.select2Value } `}</span>
+        <span style={{color: "#014d88"}}>{formValues.select3Value && `| ${formValues.select3Value} `}</span>
+      </div>
+
       <div>
        {formMap[formValues.select3Value]}
       </div>

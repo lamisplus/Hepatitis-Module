@@ -536,18 +536,18 @@ const ViralHepatitisForm2 = () => {
                         setIsDropdownsOpen((prevState) => {
                           return {
                             ...prevState,
-                            hepatitisCDropdown: !prevState.hepatitisCDropdown,
+                            coInfectionDropdown: !prevState.coInfectionDropdown,
                           };
                         })
                       }
-                      aria-expanded={isDropdownsOpen.hepatitisBDropdown}
+                      aria-expanded={isDropdownsOpen.coInfectionDropdown}
                       aria-label="Expand"
                     >
                       <ExpandMoreIcon />
                     </IconButton>
                   </div>
                   <div className="card-body">
-                    <Collapse in={isDropdownsOpen.hepatitisCDropdown}>
+                    <Collapse in={isDropdownsOpen.coInfectionDropdown}>
                       <div
                         className="basic-form"
                         style={{ padding: "0 50px 0 50px" }}
