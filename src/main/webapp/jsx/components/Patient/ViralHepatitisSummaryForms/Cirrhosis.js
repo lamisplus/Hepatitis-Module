@@ -91,7 +91,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NonReactive = () => {
+const Cirrhosis = () => {
   const classes = useStyles();
   const { formik } = useValidateSummaryValuesHook();
   const [isDropdownsOpen, setIsDropdownsOpen] = useState({
@@ -116,7 +116,7 @@ const NonReactive = () => {
                   }}
                 >
                   <h5 className="card-title" style={{ color: "#fff" }}>
-                    Non-Reactive
+                    Cirrhosis
                   </h5>
                 </div>
 
@@ -586,4 +586,4 @@ const NonReactive = () => {
   );
 };
 
-export default NonReactive;
+export default Cirrhosis;

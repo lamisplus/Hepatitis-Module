@@ -3,6 +3,7 @@ import SummaryTypeSelect from "./SummaryTypeSelect/SummaryTypeSelect";
 import Reactive  from "../Patient/ViralHepatitisSummaryForms/Reactive";
 import NonReactive from "./ViralHepatitisSummaryForms/NonReactive";
 import Fibrosis from "./ViralHepatitisSummaryForms/Fibrosis";
+import Cirrhosis from "./ViralHepatitisSummaryForms/Cirrhosis";
 
 const ViralHepatitisSummaryFormContainer = () => {
 
@@ -16,7 +17,7 @@ const formMap = {
     "Reactive" : <Reactive/>,
     "Non Reactive" : <NonReactive/>,
     "Fibrosis" : <Fibrosis/>,
-    "Cirrhosis" : <div>Cirrhosis</div>,
+    "Cirrhosis" : <Cirrhosis/>,
     "Hepatocellular Carcinoma" : <div>Hepatocellular Carcinoma</div>,
     "HBV DNA <2000 IU/ml" : <div>HBV DNA {">"}2000 IU/ml</div>,
     "HBV DNA >=2000 IU/ml" : <div>HBV DNA {">="}2000 IU/ml</div>,
