@@ -11,7 +11,7 @@ import ViralHepatitisForm2 from "./ViralHepatitisForms/Form2";
 import ViralHepatitisForm3 from "./ViralHepatitisForms/Form3";
 import ViralHepatitisForm4 from "./ViralHepatitisForms/Form4";
 import FollowupForm from "./ViralHepatitisForms/FollowUp";
-
+import LaboratoryRegister from "./ViralHepatitisForms/LaboratoryRegister"
 
 
 
@@ -22,6 +22,7 @@ const ViralHepatitisFormsContainer = (props) => {
         1: <ViralHepatitisForm2 step={step} setStep={setStep}/>,
         2: <ViralHepatitisForm3 step={step} setStep={setStep}/>,
         3: <FollowupForm step={step} setStep={setStep}/>,
+        4: <LaboratoryRegister/>,
     }
     return (
         <>

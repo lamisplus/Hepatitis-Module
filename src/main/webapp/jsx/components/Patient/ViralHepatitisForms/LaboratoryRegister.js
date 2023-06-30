@@ -18,10 +18,10 @@ import "react-widgets/dist/css/react-widgets.css";
 import {Link, useHistory, useLocation} from "react-router-dom";
 import {TiArrowBack} from 'react-icons/ti'
 import {FaPlus, FaAngleDown} from 'react-icons/fa'
-import {token, url as baseUrl } from "../../../api";
+import {token, url as baseUrl } from "../../../../api";
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
-import  './patient.css'
+import  '../patient.css'
 import {  Modal } from "react-bootstrap";
 import "react-widgets/dist/css/react-widgets.css";
 import { DateTimePicker } from "react-widgets";
@@ -667,7 +667,7 @@ const UserRegistration = (props) => {
         <ToastContainer autoClose={3000} hideProgressBar />
         <div className="row page-titles mx-0" style={{marginTop:"0px", marginBottom:"-10px"}}>
 			<ol className="breadcrumb">
-				<li className="breadcrumb-item active"><h4> <Link to={"/"} >COVID-19 /</Link> Patient Registration</h4></li>
+				<li className="breadcrumb-item active"><h4> <Link to={"/"} >Viral Hepatitis /</Link> Laboratory Registration</h4></li>
 			</ol>
 		  </div>
           <Link

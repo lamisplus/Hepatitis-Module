@@ -15,7 +15,7 @@ import "react-phone-input-2/lib/style.css";
 import "../patient.css";
 import "react-widgets/dist/css/react-widgets.css";
 import { useValidateFollowupFormValuesHook } from "../../../formSchemas/form1ValidationSchema";
-import { ArrowForward } from "@material-ui/icons";
+import { ArrowBack, ArrowForward } from "@material-ui/icons";
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
 const useStyles = makeStyles((theme) => ({
@@ -88,9 +88,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const FollowupForm = () => {
+const FollowupForm = ({step, setStep}) => {
+
+  const onSubmitHandler = (values) => {
+    window.scrollTo(0, 0);
+    console.log(values)
+    setStep(4)
+}
+const moveBack = () => {
+  window.scrollTo(0, 0);
+  setStep(2)
+}
+
+
   const classes = useStyles();
-  const { formik } = useValidateFollowupFormValuesHook();
+  const { formik } = useValidateFollowupFormValuesHook(onSubmitHandler);
   return (
     <>
       <Card className={classes.root}>
@@ -1182,7 +1194,18 @@ const FollowupForm = () => {
               {false ? <Spinner /> : ""}
 
               <br />
-              <div className="d-flex justify-content-end">
+              <div className="d-flex justify-content-between">
+                <MatButton
+                  type="button"
+                  variant="contained"
+                  color="primary"
+                  className={classes.button}
+                  endIcon={<ArrowBack />}
+                  onClick={moveBack}
+                  style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}
+                >
+                  <span style={{ textTransform: "capitalize" }}>Previous</span>
+                </MatButton>
                 <MatButton
                   type="submit"
                   variant="contained"

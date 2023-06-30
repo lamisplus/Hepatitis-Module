@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
-  return ['Enrolement', 'Diagnosis', 'Treatment', "Follow up"];
+  return ['Enrolement', 'Diagnosis', 'Treatment', "Follow up", "Laboratory register"];
 }
 
 function getStepContent(stepIndex) {
