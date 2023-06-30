@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
-  return ['Enrolement', 'Diagnosis', 'Treatment', "Follow up", "Laboratory register"];
+  return ['Enrolement', 'Diagnosis', 'Treatment'];
 }
 
 function getStepContent(stepIndex) {
@@ -43,7 +43,6 @@ export default function Steppers({activeStep}) {
 
 
   return (
-    
       <Stepper activeStep={activeStep} alternativeLabel>
         {steps.map((label) => (
           <Step key={label}>
@@ -51,7 +50,5 @@ export default function Steppers({activeStep}) {
           </Step>
         ))}
       </Stepper>
-    
-    
   );
 }
