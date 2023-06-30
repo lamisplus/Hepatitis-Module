@@ -9,7 +9,7 @@ menus:
     url: /across/resources/static/hepatitis/index.html
 umdLocation: /across/resources/static/hepatitis/index.html
 webModules:
-  - breadcrumb: HEPATITIS-19
+  - breadcrumb: HEPATITIS
     name: HepatitisModule
     path: hepatitis
     position: 99
