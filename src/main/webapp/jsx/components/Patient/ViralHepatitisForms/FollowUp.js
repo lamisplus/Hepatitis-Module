@@ -88,17 +88,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const FollowupForm = ({step, setStep}) => {
+const FollowupForm = () => {
 
-  const onSubmitHandler = (values) => {
-    window.scrollTo(0, 0);
-    console.log(values)
-    setStep(4)
-}
-const moveBack = () => {
-  window.scrollTo(0, 0);
-  setStep(2)
-}
+//   const onSubmitHandler = (values) => {
+//     window.scrollTo(0, 0);
+//     console.log(values)
+//     setStep(4)
+// }
+// const moveBack = () => {
+//   window.scrollTo(0, 0);
+//   setStep(2)
+// }
 
 
   const classes = useStyles();

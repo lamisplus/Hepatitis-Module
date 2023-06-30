@@ -21,8 +21,8 @@ const ViralHepatitisFormsContainer = (props) => {
         0: <ViralHepatitisForm1 step={step} setStep={setStep}/>,
         1: <ViralHepatitisForm2 step={step} setStep={setStep}/>,
         2: <ViralHepatitisForm3 step={step} setStep={setStep}/>,
-        3: <FollowupForm step={step} setStep={setStep}/>,
-        4: <LaboratoryRegister/>,
+        // 3: <FollowupForm step={step} setStep={setStep}/>,
+        // 4: <LaboratoryRegister/>,
     }
     return (
         <>
