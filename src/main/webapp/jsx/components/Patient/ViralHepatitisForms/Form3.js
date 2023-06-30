@@ -94,13 +94,13 @@ const useStyles = makeStyles((theme) => ({
 
 const ViralHepatitisForm3 = ({setStep}) => {
   const onSubmitHandler = (values) => {
-    window.scrollTo(0, 0);
+    // window.scrollTo(0, 0);
     console.log(values)
-    setStep(3)
+    // setStep(3)
 }
 const moveBack = () => {
-  window.scrollTo(0, 0);
-  setStep(1)
+  // window.scrollTo(0, 0);
+  // setStep(1)
 }
 
   const classes = useStyles();
@@ -1568,27 +1568,16 @@ const moveBack = () => {
               </div>
               {false ? <Spinner /> : ""}
               <br />
-              <div className="d-flex justify-content-between">
-                <MatButton
-                  type="button"
-                  variant="contained"
-                  color="primary"
-                  onClick={moveBack}
-                  className={classes.button}
-                  startIcon={<ArrowBackIcon />}
-                  style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}
-                >
-                  <span style={{ textTransform: "capitalize" }}>Previous</span>
-                </MatButton>
+              <div className="d-flex justify-content-end">
                 <MatButton
                   type="submit"
                   variant="contained"
                   color="primary"
                   className={classes.button}
-                  endIcon={<ArrowForward />}
+                  // endIcon={<ArrowForward />}
                   style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}
                 >
-                  <span style={{ textTransform: "capitalize" }}>Next</span>
+                  <span style={{ textTransform: "capitalize" }}>Submit</span>
                 </MatButton>
               </div>
             </Form>
