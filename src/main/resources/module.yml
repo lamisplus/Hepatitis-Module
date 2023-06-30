@@ -1,19 +1,19 @@
-basePackage: org.lamisplus.modules.covid
-name: CovidModule
+basePackage: org.lamisplus.modules.hepatitis
+name: HepatitisModule
 store: true
 menus:
   - icon: fa fa-virus
     disabled: false
-    name: COVID-19
-    state: covid
-    url: /across/resources/static/covid/index.html
-umdLocation: /across/resources/static/covid/index.html
+    name: HEPATITIS
+    state: hepatitis
+    url: /across/resources/static/hepatitis/index.html
+umdLocation: /across/resources/static/hepatitis/index.html
 webModules:
-  - breadcrumb: COVID-19
-    name: CovidModule
-    path: covid
+  - breadcrumb: HEPATITIS-19
+    name: HepatitisModule
+    path: hepatitis
     position: 99
 permissions:
-  - name: create_covid_vaccination
-    description: create covid vaccination
-    moduleName: CovidModule
+  - name: create_hepatitis
+    description: create hepatitis
+    moduleName: HepatitisModule
