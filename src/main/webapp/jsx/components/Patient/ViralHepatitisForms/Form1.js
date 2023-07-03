@@ -373,7 +373,7 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                           </Label>
                           <input
                             className="form-control"
-                            type="text"
+                            type="date"
                             name="dateOfBirth"
                             id="dateOfBirth"
                             value={formik.initialValues.dateOfBirth}
@@ -784,7 +784,7 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                         </Label>
                         <input
                           className="form-control"
-                          type="text"
+                          type="date"
                           name="dateOfHepatitisBPositiveScreening"
                           id="dateOfHepatitisBPositiveScreening"
                           value={
