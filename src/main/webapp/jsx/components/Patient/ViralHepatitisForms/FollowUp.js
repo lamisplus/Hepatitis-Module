@@ -90,15 +90,9 @@ const useStyles = makeStyles((theme) => ({
 
 const FollowupForm = () => {
 
-//   const onSubmitHandler = (values) => {
-//     window.scrollTo(0, 0);
-//     console.log(values)
-//     setStep(4)
-// }
-// const moveBack = () => {
-//   window.scrollTo(0, 0);
-//   setStep(2)
-// }
+  const onSubmitHandler = (values) => {
+    console.log(values)
+}
 
 
   const classes = useStyles();
@@ -1194,18 +1188,8 @@ const FollowupForm = () => {
               {false ? <Spinner /> : ""}
 
               <br />
-              <div className="d-flex justify-content-between">
-                <MatButton
-                  type="button"
-                  variant="contained"
-                  color="primary"
-                  className={classes.button}
-                  endIcon={<ArrowBack />}
-                  onClick={moveBack}
-                  style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}
-                >
-                  <span style={{ textTransform: "capitalize" }}>Previous</span>
-                </MatButton>
+              <div className="d-flex justify-content-end">
+                
                 <MatButton
                   type="submit"
                   variant="contained"
