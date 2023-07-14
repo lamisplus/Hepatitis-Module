@@ -3,9 +3,16 @@ package org.lamisplus.modules.hepatitis.domain.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.lamisplus.modules.hepatitis.domain.constants.Enum.ReactiveState;
+import org.lamisplus.modules.hepatitis.domain.constants.Enum.Sex;
+import org.lamisplus.modules.hepatitis.domain.constants.status.CareEntryPoint;
+import org.lamisplus.modules.hepatitis.domain.constants.status.LevelOfEducation;
+import org.lamisplus.modules.hepatitis.domain.constants.status.MaritalStatus;
+import org.lamisplus.modules.hepatitis.domain.constants.status.Occupation;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
 @AllArgsConstructor
@@ -15,55 +22,86 @@ import java.time.LocalDate;
 public class Enrollment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
+
     @Column(name = "uuid")
-    private String uuid;
+    private UUID uuid;
+
     @Column(name = "hospital_number")
     private String hospitalNo;
+
     @Column(name = "surname")
     private String surname;
+
     @Column(name = "other_name")
     private String otherName;
+
     @Column(name = "phone_number")
     private String phone;
+
+    @Column(name = "sex")
+    private Sex sex;
+
     @Column(name = "address")
     private String address;
+
     @Column(name = "landmark")
     private String landmark;
+
     @Column(name = "country")
     private String country;
+
     @Column(name = "state")
     private String state;
+
     @Column(name = "lga")
     private String lga;
+
     @Column(name = "date_of_birth")
     private String dob;
+
     @Column(name = "age")
     private Integer age;
+
     @Column(name = "occupation")
-    private String occupation;
+    private Occupation occupation;
+
     @Column(name = "marital_status")
-    private String maritalStatus;
+    private MaritalStatus maritalStatus;
+
     @Column(name = "education")
-    private String education;
+    private LevelOfEducation education;
+
     @Column(name = "entry_point")
-    private String entryPoint;
+    private CareEntryPoint entryPoint;
+
     @Column(name = "weight")
     private String weight;
+
     @Column(name = "height")
     private String height;
+
     @Column(name = "bmi")
     private String bmi;
+
     @Column(name = "hepatitis_b")
-    private String hepatitisB;
+    private ReactiveState hepatitisB;
+
+    @Column(name = "pregnant")
+    private boolean pregnant;
+
     @Column(name = "breast_feeding")
-    private String breastFeeding;
+    private boolean breastFeeding;
+
     @Column(name = "history_of_drug_abuse")
-    private String historyOfAbuse;
+    private boolean historyOfAbuse;
+
     @Column(name = "screening_hepatitis_b")
-    private String screenHepatitisB;
+    private ReactiveState screenHepatitisB;
+
     @Column(name = "screening_date_of_hepatitis_b")
     private LocalDate screenDateOfHepB;
+
     @Column(name = "screening_of_hepatitis_c")
-    private String screenHepatitisC;
+    private ReactiveState screenHepatitisC;
 }
