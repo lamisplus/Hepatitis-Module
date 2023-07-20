@@ -1,9 +1,7 @@
 package org.lamisplus.modules.hepatitis.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.lamisplus.modules.hepatitis.domain.constants.Enum.Detect;
 import org.lamisplus.modules.hepatitis.domain.constants.Enum.ReactiveState;
 import org.lamisplus.modules.hepatitis.domain.constants.status.BiopsyDiagnosis;
@@ -16,7 +14,8 @@ import java.time.LocalDate;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Table(name = "hepatitis_diagnosis")
 public class Diagnosis {
     @Id

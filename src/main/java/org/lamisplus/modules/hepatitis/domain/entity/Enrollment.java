@@ -1,9 +1,7 @@
 package org.lamisplus.modules.hepatitis.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.lamisplus.modules.hepatitis.domain.constants.Enum.ReactiveState;
 import org.lamisplus.modules.hepatitis.domain.constants.Enum.Sex;
 import org.lamisplus.modules.hepatitis.domain.constants.status.CareEntryPoint;
@@ -18,7 +16,8 @@ import java.util.UUID;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Table(name = "hepatitis_enrollment")
 public class Enrollment {
     @Id
