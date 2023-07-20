@@ -1,19 +1,16 @@
 basePackage: org.lamisplus.modules.hepatitis
 name: HepatitisModule
+dependencies: {}
 store: true
 menus:
-  - icon: fa fa-virus
+  - icon: fa fa-bar-chart
     disabled: false
     name: Hepatitis
-    state: hepatitis
-    url: /across/resources/static/hepatitis/index.html
+    state: Hepatitis
+    url: /across/resources/static/Hepatitis/index.html
 umdLocation: /across/resources/static/hepatitis/index.html
 webModules:
-  - breadcrumb: HEPATITIS
+  - breadcrumb: Hepatitis
     name: HepatitisModule
     path: hepatitis
     position: 99
-permissions:
-  - name: create_hepatitis
-    description: create hepatitis
-    moduleName: HepatitisModule

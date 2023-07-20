@@ -1,4 +1,4 @@
-package org.lamisplus.modules.hepatitis.domain.HepatitisMapper;
+package org.lamisplus.modules.hepatitis.service.mapper;
 
 import org.lamisplus.modules.hepatitis.domain.constants.Enum.Detect;
 import org.lamisplus.modules.hepatitis.domain.constants.Enum.ReactiveState;
@@ -10,9 +10,11 @@ import org.lamisplus.modules.hepatitis.domain.dto.request.TreatmentDTO;
 import org.lamisplus.modules.hepatitis.domain.entity.Diagnosis;
 import org.lamisplus.modules.hepatitis.domain.entity.Enrollment;
 import org.lamisplus.modules.hepatitis.domain.entity.Treatment;
+import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
+@Component
 public class HepatitisMapper{
     public Enrollment mapEnrollmentDtoEntity(EnrollmentDTO dto) {
         Enrollment enrollment = new Enrollment();

@@ -9,11 +9,10 @@ import org.lamisplus.modules.hepatitis.domain.dto.request.TreatmentDTO;
 import org.lamisplus.modules.hepatitis.domain.entity.Diagnosis;
 import org.lamisplus.modules.hepatitis.domain.entity.Enrollment;
 import org.lamisplus.modules.hepatitis.domain.entity.Treatment;
-import org.lamisplus.modules.hepatitis.domain.HepatitisMapper.HepatitisMapper;
+import org.lamisplus.modules.hepatitis.service.mapper.HepatitisMapper;
 import org.lamisplus.modules.hepatitis.repository.DiagnosisRepository;
 import org.lamisplus.modules.hepatitis.repository.EnrollmentRepository;
 import org.lamisplus.modules.hepatitis.repository.TreatmentRepository;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor

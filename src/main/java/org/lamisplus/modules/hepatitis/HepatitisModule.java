@@ -14,7 +14,7 @@ public class HepatitisModule extends AcrossModule {
                 getClass ().getPackage ().getName () + ".repository",
                 getClass ().getPackage ().getName () + ".service",
                 getClass ().getPackage ().getName () + ".controller",
-                getClass ().getPackage ().getName () + ".utility",
+                //getClass ().getPackage ().getName () + ".utility",
                 "org.springframework.web.socket"
         ));
     }
