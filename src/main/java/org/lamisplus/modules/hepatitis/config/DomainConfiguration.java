@@ -18,7 +18,7 @@ import javax.sql.DataSource;
 @Slf4j
 @Configuration
 @EnableJpaRepositories( transactionManagerRef = "hepatitisTransactionManger",
-        basePackages = {"org.lamisplus.modules.covid.repository"})
+        basePackages = {"org.lamisplus.modules.hepatitis.repository"})
 public class DomainConfiguration {
     private final DataSource dataSource;
 
