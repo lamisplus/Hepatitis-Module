@@ -1,5 +1,6 @@
 package org.lamisplus.modules.hepatitis.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -57,8 +58,9 @@ public class Enrollment {
     @Column(name = "lga")
     private String lga;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "date_of_birth")
-    private String dob;
+    private LocalDate dob;
 
     @Column(name = "age")
     private Integer age;
@@ -85,20 +87,21 @@ public class Enrollment {
     private String bmi;
 
     @Column(name = "hepatitis_b")
-    private ReactiveState hepatitisB;
+    private ReactiveState hepatitisBhBsAg;
 
     @Column(name = "pregnant")
-    private boolean pregnant;
+    private Boolean pregnant;
 
     @Column(name = "breast_feeding")
-    private boolean breastFeeding;
+    private Boolean breastFeeding;
 
     @Column(name = "history_of_drug_abuse")
-    private boolean historyOfAbuse;
+    private Boolean historyOfAbuse;
 
-    @Column(name = "screening_hepatitis_b")
-    private ReactiveState screenHepatitisB;
+//    @Column(name = "screening_hepatitis_b")
+//    private ReactiveState screenHepatitisB;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "screening_date_of_hepatitis_b")
     private LocalDate screenDateOfHepB;
 

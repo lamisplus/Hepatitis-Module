@@ -1,5 +1,6 @@
 package org.lamisplus.modules.hepatitis.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,11 +20,12 @@ public class Treatment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "enrollment_id")
-    private int enrollmentId;
+    @OneToOne
+    @JoinColumn(name = "enrollment_id", referencedColumnName = "uuid", nullable = false)
+    private Enrollment enrollmentId;
 
     @Column(name = "experience_hepatitis_b")
-    private boolean experienceHepB;
+    private Boolean experienceHepB;
 
     @Column(name = "new_regime_hepatitis_b")
     private String newRegimeHepB;
@@ -32,17 +34,19 @@ public class Treatment {
     private boolean historyAdverseEffectHepB;
 
     @Column(name = "new_regime_switch_hepatitis_b")
-    private String newRegimeSwitchHepB;
+    private Detect newRegimeSwitchHepB;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "date_started_hepatitis_b")
     private LocalDate dateStartedHepB;
 
     @Column(name = "adverse_effect_reported_hepatitis_b")
-    private boolean adverseEffectReportedHepB;
+    private Boolean adverseEffectReportedHepB;
 
     @Column(name = "reason_for_switch_hepatitis_b")
     private String reasonForSwitchHepB;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "date_stop_hepatitis_b")
     private LocalDate dateStoppedHepB;
 
@@ -53,11 +57,13 @@ public class Treatment {
     private String commentHepB;
 
     @Column(name = "experience_hepatitis_c")
-    private boolean experienceHepC;
+    private Boolean experienceHepC;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "date_started_hepatitis_c")
     private LocalDate dateStartedHepC;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "date_completed_hepatitis_c")
     private LocalDate dateCompletedHepC;
 
@@ -65,14 +71,16 @@ public class Treatment {
     private PrescribedDuration prescribedHepC;
 
     @Column(name = "history_adverse_effect_hepatitis_c")
-    private String historyAdverseEffectHepC;
+    private Boolean historyAdverseEffectHepC;
 
     @Column(name = "new_regime_switch_hepatitis_c")
-    private String newRegimeSwitchHepC;
+    private Detect newRegimeSwitchHepC;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "date_started_switch_hepatitis_c")
     private LocalDate dateStartedSwitchHepC;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "date_stop_switch_hepatitis_c")
     private LocalDate dateStoppedSwitchHepC;
 
@@ -80,8 +88,9 @@ public class Treatment {
     private PrescribedDuration prescribedSwitchHepC;
 
     @Column(name = "adverse_effect_hepatitis_c")
-    private boolean adverseEffectHepC;
+    private Boolean adverseEffectHepC;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "date_tested_svr")
     private LocalDate dateTestedSVR;
 
@@ -91,6 +100,7 @@ public class Treatment {
     @Column(name = "hvc_rna_svr_value")
     private String hvcRnaSVRValue;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "retreatment_date_tested_svr")
     private LocalDate retreatmentDateTested;
 
@@ -103,9 +113,11 @@ public class Treatment {
     @Column(name = "new_prescribed_duration_hcv")
     private PrescribedDuration newPrescribedDurationHCV;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "date_started_hcv")
     private LocalDate dateStartedHCV;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "date_stopped_hcv")
     private LocalDate dateStoppedHCV;
 

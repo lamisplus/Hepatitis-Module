@@ -1,5 +1,6 @@
 package org.lamisplus.modules.hepatitis.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,15 +23,19 @@ public class Diagnosis {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "enrollment_id")
-    private int enrollmentId;
+    @OneToOne
+    @JoinColumn(name = "enrollment_id", referencedColumnName = "uuid", nullable = false)
+    private Enrollment enrollmentId;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "date_hbv_test_requested")
     private LocalDate dateHBVTestRequested;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "date_hbv_sample_requested")
     private LocalDate dateHBVSampleRequested;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "date_hbv_dna_result_reported")
     private LocalDate dateHBVDNAResultReported;
 
@@ -47,10 +52,10 @@ public class Diagnosis {
     private ReactiveState antiHDV;
 
     @Column(name = "treatment_eligible")
-    private boolean treatmentEligible;
+    private Boolean treatmentEligible;
 
     @Column(name = "pmtct_eligible")
-    private boolean pmtctEligible;
+    private Boolean pmtctEligible;
 
     @Column(name = "comment")
     private String comment;
@@ -103,11 +108,11 @@ public class Diagnosis {
     @Column(name = "ultrasound_scan")
     private String ultrasoundScan;
 
-    @Column(name = "acites")
-    private boolean acites;
+    @Column(name = "ascites")
+    private Boolean ascites;
 
     @Column(name = "grade_of_encephalopathy")
-    private int gradeOfEncephalopathy;
+    private Integer gradeOfEncephalopathy;
 
     @Column(name = "child_pugh_score")
     private String childPughScore;
