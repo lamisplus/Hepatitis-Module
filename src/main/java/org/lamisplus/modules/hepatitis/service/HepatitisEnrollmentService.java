@@ -9,11 +9,15 @@ import org.lamisplus.modules.hepatitis.domain.entity.Enrollment;
 import org.lamisplus.modules.hepatitis.domain.entity.Treatment;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLOutput;
+
 @Service
-public interface HepatitisEnrollmentService  {
-    public Enrollment saveEnrollment(EnrollmentDTO enrollment);
-    public Diagnosis saveDiagnosis(DiagnosisDTO diagnosisDTO, Enrollment enrollment);
-    public Treatment saveTreatment(TreatmentDTO treatmentDTO, Enrollment enrollment);
-    public String createPatient(HepatitisRequestDTO hepatitisRequestDTO);
+public class HepatitisEnrollmentService  {
+//    public Enrollment saveEnrollment(EnrollmentDTO enrollment);
+//    public Diagnosis saveDiagnosis(DiagnosisDTO diagnosisDTO, Enrollment enrollment);
+//    public Treatment saveTreatment(TreatmentDTO treatmentDTO, Enrollment enrollment);
+    public String createPatient(HepatitisRequestDTO hepatitisRequestDTO) {
+        return "IN";
+    };
 
 }

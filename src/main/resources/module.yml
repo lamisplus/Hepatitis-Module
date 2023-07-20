@@ -4,7 +4,7 @@ store: true
 menus:
   - icon: fa fa-virus
     disabled: false
-    name: HEPATITIS
+    name: Hepatitis
     state: hepatitis
     url: /across/resources/static/hepatitis/index.html
 umdLocation: /across/resources/static/hepatitis/index.html
