@@ -1,4 +1,4 @@
-package org.lamisplus.modules.hepatitis.domain.mapper;
+package org.lamisplus.modules.hepatitis.domain.HepatitisMapper;
 
 import org.lamisplus.modules.hepatitis.domain.constants.Enum.Detect;
 import org.lamisplus.modules.hepatitis.domain.constants.Enum.ReactiveState;
@@ -13,11 +13,9 @@ import org.lamisplus.modules.hepatitis.domain.entity.Treatment;
 
 import java.util.UUID;
 
-public class HepatitisMapperImplementation implements HepatitisMapper{
-    @Override
+public class HepatitisMapper{
     public Enrollment mapEnrollmentDtoEntity(EnrollmentDTO dto) {
         Enrollment enrollment = new Enrollment();
-//        enrollment.setId(dto.getId());
         enrollment.setAge(dto.getAge());
         enrollment.setBmi(dto.getBmi());
         enrollment.setCountry(dto.getCountry());
@@ -47,10 +45,8 @@ public class HepatitisMapperImplementation implements HepatitisMapper{
 
     }
 
-    @Override
     public Diagnosis mapDiagnosisDtoEntity(DiagnosisDTO dto, Enrollment enrollment) {
         Diagnosis diagnosis = new Diagnosis();
-//        enrollment.setId(dto.getId());
         diagnosis.setDiagnosis(BiopsyDiagnosis.valueOf(dto.getDiagnosis()));
         diagnosis.setAlt(dto.getAlt());
         diagnosis.setAfp(dto.getAfp());
@@ -86,10 +82,8 @@ public class HepatitisMapperImplementation implements HepatitisMapper{
         return diagnosis;
     }
 
-    @Override
     public Treatment mapTreatmentDtoEntity(TreatmentDTO dto, Enrollment enrollment) {
         Treatment treatment = new Treatment();
-
         treatment.setCommentHepB(dto.getHbvReasonsForTreatmentComment());
         treatment.setAdverseEffectHCV(dto.getHcvAdverseEventReported());
         treatment.setDateCompletedHepC(dto.getHcvDateCompleted());
