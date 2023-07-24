@@ -15,6 +15,7 @@ public class FollowupDTO {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dateOfVisit;
+
     private String enrollmentId;
     private String weight;
     private String height;
