@@ -32,6 +32,7 @@ public class HepatitisEnrollmentService {
 
         return enrollment.getUuid().toString();
     }
+
     public Enrollment saveEnrollment(EnrollmentDTO enrollment) {
         Enrollment enrol = hepatitisMapper.mapEnrollmentDtoEntity(enrollment);
         return enrollmentRepository.save(enrol);
@@ -41,7 +42,6 @@ public class HepatitisEnrollmentService {
         Diagnosis diagnosis = hepatitisMapper.mapDiagnosisDtoEntity(diagnosisDTO, enrollment);
         diagnosisRepository.save(diagnosis);
     }
-
 
     public void saveTreatment(TreatmentDTO treatmentDTO, Enrollment enrollment) {
         Treatment treatment = hepatitisMapper.mapTreatmentDtoEntity(treatmentDTO, enrollment);

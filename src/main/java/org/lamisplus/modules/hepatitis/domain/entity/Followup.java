@@ -1,12 +1,10 @@
 package org.lamisplus.modules.hepatitis.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jdk.nashorn.internal.objects.annotations.Property;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.lamisplus.modules.hepatitis.domain.constants.status.BiopsyDiagnosis;
 import org.lamisplus.modules.hepatitis.domain.constants.status.Outcome;
-import org.springframework.data.annotation.Id;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -14,17 +12,20 @@ import java.time.LocalDate;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Table(name = "hepatitis_followup")
 public class Followup {
-    @javax.persistence.Id
+    @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "enrollment_id")
-    private int enrollmentId;
+    @OneToOne
+    @JoinColumn(name = "enrollment_id", referencedColumnName = "uuid", nullable = false)
+    private Enrollment enrollmentId;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "date_of_visit")
     private LocalDate dateOfVisit;
 
@@ -99,7 +100,7 @@ public class Followup {
 
     @Column(name = "encephalo_pathy")
     @Property
-    private int encephaloPathy;
+    private String encephaloPathy;
 
     @Column(name = "child_pugh_score")
     private String childPughScore;
@@ -110,6 +111,7 @@ public class Followup {
     @Column(name = "treatment_regimen_used")
     private String treatmentRegimenUsed;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "next_appointment_date")
     private LocalDate nextAppointmentDate;
 

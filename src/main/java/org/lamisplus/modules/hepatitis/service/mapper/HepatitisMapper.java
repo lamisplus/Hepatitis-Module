@@ -6,9 +6,11 @@ import org.lamisplus.modules.hepatitis.domain.constants.Enum.Sex;
 import org.lamisplus.modules.hepatitis.domain.constants.status.*;
 import org.lamisplus.modules.hepatitis.domain.dto.request.DiagnosisDTO;
 import org.lamisplus.modules.hepatitis.domain.dto.request.EnrollmentDTO;
+import org.lamisplus.modules.hepatitis.domain.dto.request.FollowupDTO;
 import org.lamisplus.modules.hepatitis.domain.dto.request.TreatmentDTO;
 import org.lamisplus.modules.hepatitis.domain.entity.Diagnosis;
 import org.lamisplus.modules.hepatitis.domain.entity.Enrollment;
+import org.lamisplus.modules.hepatitis.domain.entity.Followup;
 import org.lamisplus.modules.hepatitis.domain.entity.Treatment;
 import org.springframework.stereotype.Component;
 
@@ -116,5 +118,43 @@ public class HepatitisMapper{
         treatment.setRetreatmentHcvRnaSVR(dto.getSvr12RetreatmentHcvRna());
         treatment.setEnrollmentId(enrollment);
         return treatment;
+    }
+
+    public Followup mapFollowupDtoEntity (FollowupDTO dto, Enrollment enrollment){
+        Followup followup = new Followup();
+        followup.setAfp(dto.getAfp());
+        followup.setAst(dto.getAst());
+        followup.setAlt(dto.getAlt());
+        followup.setAscites(dto.getAscites());
+        followup.setBmi(dto.getBmi());
+        followup.setAlbumin(dto.getAlbumin());
+        followup.setCreatinine(dto.getCreatinine());
+        followup.setApriScore(dto.getApriScore());
+        followup.setFib4(dto.getFib4());
+        followup.setHeight(dto.getHeight());
+        followup.setUrea(dto.getUrea());
+        followup.setFibroscan(dto.getFibroscan());
+        followup.setBloodPressure(dto.getBloodPressure());
+        followup.setChildPughScore(dto.getChildPughScore());
+        followup.setClinicalDiagnosis(BiopsyDiagnosis.valueOf(dto.getClinicalDiagnosis()));
+        followup.setClinicalSignature(dto.getClinicalName());
+        followup.setCtScan(dto.getCtScan());
+        followup.setDateOfVisit(dto.getDateOfVisit());
+        followup.setDirectBilirubin(dto.getDirectBilirubin());
+        followup.setEncephaloPathy(dto.getGradeOfEncephalopathy());
+        followup.setHbeAg(dto.getHbeAg());
+        followup.setHbsAgQuantification(dto.getHbsAgQuantification());
+        followup.setHbvDNA(dto.getHbvDna());
+        followup.setNextAppointmentDate(dto.getNextAppointment());
+        followup.setOutcome(Outcome.valueOf(dto.getSeverityOfAscites()));
+        followup.setProthrombinTimeINR(dto.getProthrombinTime());
+        followup.setRemarks(dto.getRemark());
+        followup.setTotalBilirubin(dto.getTotalBilirubin());
+        followup.setTreatmentRegimenUsed(dto.getTreatmentReg());
+        followup.setUltrasoundScan(dto.getUltrasoundScan());
+        followup.setPlt(dto.getPlt());
+        followup.setWeight(dto.getWeight());
+        followup.setEnrollmentId(enrollment);
+        return followup;
     }
 }
