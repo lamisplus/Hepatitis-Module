@@ -11,6 +11,7 @@ import org.lamisplus.modules.hepatitis.domain.constants.status.Occupation;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -26,6 +27,12 @@ public class Enrollment {
 
     @Column(name = "uuid")
     private UUID uuid;
+
+    @OneToOne(mappedBy = "enrollmentId")
+    private Diagnosis diagnosis;
+
+    @OneToOne(mappedBy = "enrollmentId")
+    private Treatment treatment;
 
     @Column(name = "hospital_number")
     private String hospitalNo;

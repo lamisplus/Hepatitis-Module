@@ -19,7 +19,7 @@ public class Treatment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "enrollment_id", referencedColumnName = "uuid", nullable = false)
     private Enrollment enrollmentId;
 

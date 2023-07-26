@@ -1,8 +1,6 @@
 package org.lamisplus.modules.hepatitis.domain.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.lamisplus.modules.hepatitis.domain.constants.Enum.Detect;
 import org.lamisplus.modules.hepatitis.domain.constants.Enum.ReactiveState;
 import org.lamisplus.modules.hepatitis.domain.constants.Enum.Sex;
@@ -14,7 +12,8 @@ import java.time.LocalDate;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Table(name = "hepatitis_laboratory_register")
 public class LaboratoryRegister {
     @Id

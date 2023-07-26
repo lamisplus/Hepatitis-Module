@@ -22,7 +22,7 @@ public class Diagnosis {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "enrollment_id", referencedColumnName = "uuid", nullable = false)
     private Enrollment enrollmentId;
 
@@ -40,6 +40,9 @@ public class Diagnosis {
 
     @Column(name = "hbv_dna")
     private Detect hbvDNA;
+
+    @Column(name = "hbv_dna_value")
+    private String hbvDnaValue;
 
     @Column(name = "hbsag_qualification")
     private String hbsagQuantification;
@@ -71,11 +74,20 @@ public class Diagnosis {
     @Column(name = "ast")
     private String ast;
 
+    @Column(name = "ast_value")
+    private String astValue;
+
     @Column(name = "alt")
     private String alt;
 
+    @Column(name = "alt_value")
+    private String altValue;
+
     @Column(name = "pst")
     private String pst;
+
+    @Column(name = "albumin")
+    private String Albumin;
 
     @Column(name = "total_bilirubin")
     private String totalBilirubin;
@@ -107,6 +119,9 @@ public class Diagnosis {
     @Column(name = "ultrasound_scan")
     private String ultrasoundScan;
 
+    @Column(name = "ct_scan")
+    private String ctScan;
+
     @Column(name = "ascites")
     private Boolean ascites;
 
@@ -119,6 +134,16 @@ public class Diagnosis {
     @Column(name = "liver_biopsy_stage")
     private LiverBiopsyStage liverBiopsyStage;
 
+    @Column(name = "severity_of_ascites")
+    private String severityOfAscites;
+
     @Column(name = "diagnosis")
     private BiopsyDiagnosis diagnosis;
+
+    @Column(name = "specify_multiple_infection")
+    private String specifyMultipleInfection;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @Column(name = "staging_date_for_liver_biopsy")
+    private LocalDate stagingDateForLiverBiopsy;
 }
