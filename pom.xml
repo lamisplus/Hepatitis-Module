@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-
 	<parent>
 		<groupId>com.foreach.across</groupId>
 		<artifactId>across-application-parent</artifactId>
@@ -12,7 +11,7 @@
 
 	<groupId>org.lamisplus.modules</groupId>
 	<artifactId>hepatitis</artifactId>
-	<version>1.0.0</version>
+	<version>2.0.0</version>
 	<packaging>jar</packaging>
 	<name>hepatitis</name>
 	<description>Hepatitis Module</description>
@@ -24,7 +23,6 @@
 		<jjwt.version>0.11.2</jjwt.version>
 		<build.revision>1.0.0</build.revision>
 		<audit4j.version>2.5.0</audit4j.version>
-		<maven.test.skip>true</maven.test.skip>
 		<maven.lamisplus-baseui.skip>true</maven.lamisplus-baseui.skip>
 		<maven.build.timestamp.format>yyyy-MM-dd'T'HH:mm:ss'Z'</maven.build.timestamp.format>
 	</properties>
@@ -39,16 +37,6 @@
 			<id>foreach-nexus</id>
 			<name>Foreach nexus</name>
 			<url>https://repository.foreach.be/nexus/repository/public/</url>
-		</repository>
-		<repository>
-			<id>mvn-repo</id>
-			<url>https://raw.github.com/lamisplus/maven-repo/master</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
 		</repository>
 	</repositories>
 
@@ -200,11 +188,11 @@
 			<version>5.4.0.Final</version>
 		</dependency>
 
-		<dependency>
+		<!--<dependency>
 			<groupId>com.squareup.okhttp3</groupId>
 			<artifactId>okhttp</artifactId>
-			<version>4.9.1</version>
-		</dependency>
+			<version>3.14.9</version>
+		</dependency>-->
 
 		<dependency>
 			<groupId>io.github.jhipster</groupId>
@@ -217,12 +205,45 @@
 			<artifactId>across-hibernate-module</artifactId>
 		</dependency>
 
-		<dependency>
+		<!--<dependency>
 			<groupId>org.lamisplus.modules</groupId>
 			<artifactId>patient</artifactId>
-			<version>1.0.0</version>
-		</dependency>
+			<version>2.0.2</version>
+		</dependency>-->
 
+		<!--<dependency>
+			<groupId>org.lamisplus.modules</groupId>
+			<artifactId>laboratory</artifactId>
+			<version>2.0.3</version>
+		</dependency>-->
+
+		<!--<dependency>
+			<groupId>org.lamisplus.modules</groupId>
+			<artifactId>hiv</artifactId>
+			<version>2.1.0</version>
+		</dependency>-->
+
+		<!--<dependency>
+			<groupId>org.lamisplus.modules</groupId>
+			<artifactId>triage</artifactId>
+			<version>2.0.1</version>
+		</dependency>-->
+
+		<!--<dependency>
+			<groupId>org.lamisplus.modules</groupId>
+			<artifactId>biometric</artifactId>
+			<version>2.0.1</version>
+		</dependency>-->
+		<!--<dependency>
+			<groupId>org.lamisplus.modules</groupId>
+			<artifactId>prep</artifactId>
+			<version>2.0.2</version>
+		</dependency>-->
+		<!--		<dependency>-->
+		<!--			<groupId>net.lingala.zip4j</groupId>-->
+		<!--			<artifactId>zip4j</artifactId>-->
+		<!--			<version>2.11.5</version>-->
+		<!--		</dependency>-->
 	</dependencies>
 
 	<build>
@@ -263,57 +284,43 @@
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
-<!--			<plugin>-->
-<!--				<groupId>com.github.eirslett</groupId>-->
-<!--				<artifactId>frontend-maven-plugin</artifactId>-->
-<!--				<version>1.12.1</version>-->
-<!--				<executions>-->
-<!--					<execution>-->
-<!--						<id>install node and npm</id>-->
-<!--						<goals>-->
-<!--							<goal>install-node-and-npm</goal>-->
-<!--						</goals>-->
-<!--						<configuration>-->
-<!--							<nodeVersion>v16.13.2</nodeVersion>-->
-<!--							<npmVersion>8.1.2</npmVersion>-->
-<!--						</configuration>-->
-<!--					</execution>-->
-<!--					<execution>-->
-<!--						<id>npm install</id>-->
-<!--						<goals>-->
-<!--							<goal>npm</goal>-->
-<!--						</goals>-->
-<!--						<configuration>-->
-<!--							<arguments>install</arguments>-->
-<!--						</configuration>-->
-<!--					</execution>-->
-<!--					<execution>-->
-<!--						<id>npm run build</id>-->
-<!--						<goals>-->
-<!--							<goal>npm</goal>-->
-<!--						</goals>-->
-<!--						<configuration>-->
-<!--							<arguments>run build</arguments>-->
-<!--						</configuration>-->
-<!--					</execution>-->
-<!--				</executions>-->
-<!--			</plugin>-->
+			<!--<plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>-->
 			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
+				<version>1.12.1</version>
 				<executions>
-					<execution>
-						<phase>generate-resources</phase>
-						<configuration>
-							<target>
-								<copy todir="${project.build.directory}/classes/views/static/hepatitis">
-									<fileset dir="${project.basedir}/build" />
-								</copy>
-							</target>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
+					<!--						<execution>-->
+					<!--							<id>install node and npm</id>-->
+					<!--							<goals>-->
+					<!--								<goal>install-node-and-npm</goal>-->
+					<!--							</goals>-->
+					<!--							<configuration>-->
+					<!--								<nodeVersion>v16.13.2</nodeVersion>-->
+					<!--								<npmVersion>8.1.2</npmVersion>-->
+					<!--							</configuration>-->
+					<!--						</execution>-->
+					<!--						<execution>-->
+					<!--							<id>npm install</id>-->
+					<!--							<goals>-->
+					<!--								<goal>npm</goal>-->
+					<!--							</goals>-->
+					<!--							<configuration>-->
+					<!--								<arguments>install</arguments>-->
+					<!--							</configuration>-->
+					<!--						</execution>-->
+					<!--<execution>
+                        <id>npm run build</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>run build</arguments>
+                        </configuration>
+                    </execution>-->
 				</executions>
 			</plugin>
 		</plugins>
