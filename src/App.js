@@ -16,6 +16,7 @@ import PatientDetail from './main/webapp/jsx/components/Patient/PatientDetail'
 import EnrollPatientPage from './main/webapp/jsx/components/Patient/EnrollPatient';
 import UpdatePatientEnrollment from './main/webapp/jsx/components/Patient/UpdatePatientEnrollment';
 import ViralHepatitisFormsContainer from "./main/webapp/jsx/components/Patient/ViralHepatitisFormsContainer";
+import FollowupForm from "./main/webapp/jsx/components/Patient/ViralHepatitisForms/FollowUp";
 
 export default function App() {
   return (
@@ -26,7 +27,8 @@ export default function App() {
             renders the first one that matches the current URL. */}
         <Switch>
           <Route path="/patient-history">
-            <PatientDetail />
+            {/* <PatientDetail /> */}
+            <FollowupForm/>
           </Route> 
           <Route path="/register-patient">
             <ViralHepatitisFormsContainer />
