@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MatButton from "@material-ui/core/Button";
 import { FormGroup, Label, Spinner, Input, Form, InputGroup } from "reactstrap";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -19,6 +19,10 @@ import { useValidateForm3ValuesHook } from "../../../formSchemas/form1Validation
 import { Collapse, IconButton } from "@material-ui/core";
 import { ArrowForward, ExpandMore as ExpandMoreIcon } from "@material-ui/icons";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { getCookie, setCookie } from "../../../helpers/cookieStoragehelpers";
+import axios from "axios";
+import { url as apiUrl, token } from "../../../../api";
+import { toast } from "react-toastify";
 
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
@@ -92,17 +96,93 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ViralHepatitisForm3 = ({setStep}) => {
+const postDataWithToken = async (data) => {
+  try {
+    const response = await axios.post(`${apiUrl}enrollment`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+    // Handle the response if needed
+    console.log("Post successful:", response.data);
+    toast.success("Enrolment submitted successfully");
+    return response.data;
+  } catch (error) {
+    // Handle any errors that occurred during the request
+    console.error("Error posting data:", error.message);
+    throw error;
+  }
+};
+
+function deleteCookie(name) {
+  document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+}
+
+function convertStringBooleanValues(originalObj) {
+  const newObj = {};
+
+  for (const key in originalObj) {
+    if (originalObj.hasOwnProperty(key)) {
+      const value = originalObj[key];
+      if (typeof value === 'string') {
+        newObj[key] = value.toLowerCase() === 'true'|| value.toLowerCase() === 'yes' ? true : value.toLowerCase() === 'false' || value.toLowerCase() === 'no'? false : value;
+      } else {
+        newObj[key] = value;
+      }
+    }
+  }
+
+  return newObj;
+}
+const ViralHepatitisForm3 = ({ setStep }) => {
   const onSubmitHandler = (values) => {
-    console.log(values)
-}
-const moveBack = () => {
-  window.scrollTo(0, 0);
-  setStep(1)
-}
+    setCookie("hepatitis3", values, 1);
+    const enrolment = getCookie("hepatitis1");
+    const diagnosis = getCookie("hepatitis2");
+    const treatment = getCookie("hepatitis3");
+
+
+    const postData = {
+      diagnosis: convertStringBooleanValues(diagnosis),
+      enrollment: convertStringBooleanValues(enrolment),
+      treatment: convertStringBooleanValues(treatment)
+    };
+    postDataWithToken(postData)
+      .then((responseData) => {
+        toast.success("Enrolment successful");
+        deleteCookie("hepatitis1");
+        deleteCookie("hepatitis2");
+        deleteCookie("hepatitis3");
+        setStep(0);
+      })
+      .catch((error) => {
+        toast.error("enrolment failed")
+      });
+  };
+  const moveBack = () => {
+    window.scrollTo(0, 0);
+    setStep(1);
+  };
 
   const classes = useStyles();
   const { formik } = useValidateForm3ValuesHook(onSubmitHandler);
+
+
+  
+
+  const castCookieValueToForm = () => {
+    const cookieValue = getCookie("hepatitis3");
+    if (cookieValue) {
+      // convertStringBooleanValues(cookieValue)
+      formik.setValues(cookieValue);
+    }
+  };
+
+  useEffect(() => {
+    castCookieValueToForm();
+  }, []);
+
   const [isDropdownsOpen, setIsDropdownsOpen] = useState({
     hbvTreatmentRegimenSwitch: true,
     hbvTreatmentReasonforTreatment: true,
@@ -145,7 +225,6 @@ const moveBack = () => {
                             </Label>
                             <select
                               className="form-control"
-                              type="date"
                               name="hbvTreatmentExperience"
                               id="hbvTreatmentExperience"
                               value={formik.values.hbvTreatmentExperience}
@@ -156,9 +235,9 @@ const moveBack = () => {
                                 borderRadius: "0.2rem",
                               }}
                             >
-                              <option value="">Select</option>
-                              <option value="yes">Yes</option>
-                              <option value="no">No</option>
+                              <option>Select</option>
+                              <option value={true}>Yes</option>
+                              <option value={false}>No</option>
                             </select>
                             {formik.errors.hbvTreatmentExperience !== "" ? (
                               <span className={classes.error}>
@@ -170,7 +249,7 @@ const moveBack = () => {
                           </FormGroup>
                         </div>
 
-                        {formik.values.hbvTreatmentExperience === "yes" && (
+                        {formik.values.hbvTreatmentExperience && (
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
                               <Label for="hbvPastTreatmentRegimen">
@@ -271,13 +350,42 @@ const moveBack = () => {
                                 borderRadius: "0.2rem",
                               }}
                             >
-                              <option value="">Select</option>
-                              <option value="yes">Yes</option>
-                              <option value="no">No</option>
+                              <option>Select</option>
+                              <option value={true}>Yes</option>
+                              <option value={false}>No</option>
                             </select>
                             {formik.errors.hbvHistoryOfAdverseEffect !== "" ? (
                               <span className={classes.error}>
                                 {formik.errors.hbvHistoryOfAdverseEffect}
+                              </span>
+                            ) : (
+                              ""
+                            )}
+                          </FormGroup>
+                        </div>
+
+                        <div className="form-group mb-3 col-md-4">
+                          <FormGroup>
+                            <Label for="hbvPastTreatmentRegimen">
+                              Hbv Past treatment regimen
+                            </Label>
+                            <input
+                              className="form-control"
+                              type="text"
+                              name="hbvPastTreatmentRegimen"
+                              id="hbvPastTreatmentRegimen"
+                              value={formik.values.hbvPastTreatmentRegimen}
+                              onChange={formik.handleChange}
+                              onBlur={formik.handleBlur}
+                              style={{
+                                border: "1px solid #014D88",
+                                borderRadius: "0.2rem",
+                              }}
+                            />
+
+                            {formik.errors.hbvPastTreatmentRegimen !== "" ? (
+                              <span className={classes.error}>
+                                {formik.errors.hbvPastTreatmentRegimen}
                               </span>
                             ) : (
                               ""
@@ -415,9 +523,9 @@ const moveBack = () => {
                                   borderRadius: "0.2rem",
                                 }}
                               >
-                                <option value="">Select</option>
-                                <option value="yes">Yes</option>
-                                <option value="no">No</option>
+                                <option>Select</option>
+                                <option value={true}>Yes</option>
+                                <option value={false}>No</option>
                               </select>
                               {formik.errors
                                 .hbvRegimeSwitchHistoryOfAdverseEffect !==
@@ -563,7 +671,6 @@ const moveBack = () => {
                                   border: "1px solid #014D88",
                                   borderRadius: "0.2rem",
                                 }}
-                                multiple
                               >
                                 <option value={"treatment eligible"}>
                                   Treatment Eligible
@@ -663,9 +770,9 @@ const moveBack = () => {
                                 borderRadius: "0.2rem",
                               }}
                             >
-                              <option value="">Select</option>
-                              <option value="yes">Yes</option>
-                              <option value="no">No</option>
+                              <option>Select</option>
+                              <option value={true}>Yes</option>
+                              <option value={false}>No</option>
                             </select>
                             {formik.errors.hcvTreatmentExperience !== "" ? (
                               <span className={classes.error}>
@@ -677,7 +784,7 @@ const moveBack = () => {
                           </FormGroup>
                         </div>
 
-                        {formik.values.hcvTreatmentExperience === "yes" && (
+                        {formik.values.hcvTreatmentExperience && (
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
                               <Label for="hcvPastTreatmentExperience">
@@ -823,6 +930,35 @@ const moveBack = () => {
                             )}
                           </FormGroup>
                         </div>
+
+                        <div className="form-group mb-3 col-md-4">
+                          <FormGroup>
+                            <Label for="hcvNewRegimen">HCV new regimen</Label>
+                            <select
+                              className="form-control"
+                              name="hcvNewRegimen"
+                              id="hcvNewRegimen"
+                              value={formik.values.hcvNewRegimen}
+                              onChange={formik.handleChange}
+                              onBlur={formik.handleBlur}
+                              style={{
+                                border: "1px solid #014D88",
+                                borderRadius: "0.2rem",
+                              }}
+                            >
+                              <option>Select</option>
+                              <option value={true}>Yes</option>
+                              <option value={false}>No</option>
+                            </select>
+                            {formik.errors.hcvNewRegimen !== "" ? (
+                              <span className={classes.error}>
+                                {formik.errors.hcvNewRegimen}
+                              </span>
+                            ) : (
+                              ""
+                            )}
+                          </FormGroup>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -874,7 +1010,7 @@ const moveBack = () => {
                         style={{ padding: "0 50px 0 50px" }}
                       >
                         <div className="row">
-                          <div className="form-group mb-3 col-md-4">
+                          {/* <div className="form-group mb-3 col-md-4">
                             <FormGroup>
                               <Label for="hcvRegimeSwitchNewRegimen">
                                 New regime
@@ -901,7 +1037,7 @@ const moveBack = () => {
                                 ""
                               )}
                             </FormGroup>
-                          </div>
+                          </div> */}
 
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
@@ -961,7 +1097,7 @@ const moveBack = () => {
                             </FormGroup>
                           </div>
 
-                          <div className="form-group mb-3 col-md-4">
+                          {/* <div className="form-group mb-3 col-md-4">
                             <FormGroup>
                               <Label for="hcvRegimeSwitchPrescribedDuration">
                                 Prescribed duration
@@ -998,7 +1134,7 @@ const moveBack = () => {
                                 ""
                               )}
                             </FormGroup>
-                          </div>
+                          </div> */}
 
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
@@ -1139,8 +1275,8 @@ const moveBack = () => {
                                 }}
                               >
                                 <option value="">Select</option>
-                                <option value="detected">Detected</option>
-                                <option value="undetected">Undetected</option>
+                                <option value="DETECTED">Detected</option>
+                                <option value="UNDETECTED">Undetected</option>
                               </select>
                               {formik.errors.svr12TestingHcvRna !== "" ? (
                                 <span className={classes.error}>
@@ -1152,7 +1288,7 @@ const moveBack = () => {
                             </FormGroup>
                           </div>
 
-                          {formik.values.svr12TestingHcvRna === "detected" && (
+                          {formik.values.svr12TestingHcvRna === "DETECTED" && (
                             <div className="form-group mb-3 col-md-4">
                               <FormGroup>
                                 <Label for="svr12TestingHcvRnaValue">
@@ -1184,7 +1320,7 @@ const moveBack = () => {
                             </div>
                           )}
 
-                          <div className="form-group mb-3 col-md-4">
+                          {/* <div className="form-group mb-3 col-md-4">
                             <FormGroup>
                               <Label for="svr12TestingHcvRnaValue">
                                 Input HCV RNA value
@@ -1211,7 +1347,7 @@ const moveBack = () => {
                                 ""
                               )}
                             </FormGroup>
-                          </div>
+                          </div> */}
 
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
@@ -1261,8 +1397,8 @@ const moveBack = () => {
                                 }}
                               >
                                 <option value="">Select</option>
-                                <option value="detected">Detected</option>
-                                <option value="undetected">Undetected</option>
+                                <option value="DETECTED">Detected</option>
+                                <option value="UNDETECTED">Undetected</option>
                               </select>
                               {formik.errors.svr12RetreatmentHcvRna !== "" ? (
                                 <span className={classes.error}>
@@ -1275,7 +1411,7 @@ const moveBack = () => {
                           </div>
 
                           {formik.values.svr12RetreatmentHcvRna ===
-                            "detetcted" && (
+                            "DETECTED" && (
                             <div className="form-group mb-3 col-md-4">
                               <FormGroup>
                                 <Label for="svr12RetreatmentHcvRnaValue">
@@ -1432,11 +1568,11 @@ const moveBack = () => {
                               )}
                             </FormGroup>
                           </div>
-                         
+
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
                               <Label for="hcvRetreatmentDateStarted">
-                               Date started
+                                Date started
                               </Label>
                               <input
                                 className="form-control"
@@ -1452,7 +1588,8 @@ const moveBack = () => {
                                 }}
                               />
 
-                              {formik.errors.hcvRetreatmentDateStarted !== "" ? (
+                              {formik.errors.hcvRetreatmentDateStarted !==
+                              "" ? (
                                 <span className={classes.error}>
                                   {formik.errors.hcvRetreatmentDateStarted}
                                 </span>
@@ -1465,7 +1602,7 @@ const moveBack = () => {
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
                               <Label for="hcvRetreatmentDateStopped">
-                               Date stopped
+                                Date stopped
                               </Label>
                               <input
                                 className="form-control"
@@ -1481,7 +1618,8 @@ const moveBack = () => {
                                 }}
                               />
 
-                              {formik.errors.hcvRetreatmentDateStopped !== "" ? (
+                              {formik.errors.hcvRetreatmentDateStopped !==
+                              "" ? (
                                 <span className={classes.error}>
                                   {formik.errors.hcvRetreatmentDateStopped}
                                 </span>
@@ -1494,7 +1632,7 @@ const moveBack = () => {
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
                               <Label for="hcvRetreatmentAdverseEffect">
-                                Adverse effect
+                                Retreatment Adverse effect
                                 <span style={{ color: "red" }}> *</span>{" "}
                               </Label>
                               <select
@@ -1511,18 +1649,47 @@ const moveBack = () => {
                                   borderRadius: "0.2rem",
                                 }}
                               >
-                                <option value="">Select</option>
-                                <option value="yes">Yes</option>
-                                <option value="no">No</option>
-                                
+                                <option>Select</option>
+                                <option value={true}>Yes</option>
+                                <option value={false}>No</option>
                               </select>
-                              {formik.errors
-                                .hcvRetreatmentAdverseEffect !== "" ? (
+                              {formik.errors.hcvRetreatmentAdverseEffect !==
+                              "" ? (
                                 <span className={classes.error}>
-                                  {
-                                    formik.errors
-                                      .hcvRetreatmentAdverseEffect
-                                  }
+                                  {formik.errors.hcvRetreatmentAdverseEffect}
+                                </span>
+                              ) : (
+                                ""
+                              )}
+                            </FormGroup>
+                          </div>
+
+                          <div className="form-group mb-3 col-md-4">
+                            <FormGroup>
+                              <Label for="hcvHistoryOfAdverseEffect">
+                                History of adverse effect
+                                <span style={{ color: "red" }}> *</span>{" "}
+                              </Label>
+                              <select
+                                className="form-control"
+                                name="hcvHistoryOfAdverseEffect"
+                                id="hcvHistoryOfAdverseEffect"
+                                value={formik.values.hcvHistoryOfAdverseEffect}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                style={{
+                                  border: "1px solid #014D88",
+                                  borderRadius: "0.2rem",
+                                }}
+                              >
+                                <option>Select</option>
+                                <option value={true}>Yes</option>
+                                <option value={false}>No</option>
+                              </select>
+                              {formik.errors.hcvHistoryOfAdverseEffect !==
+                              "" ? (
+                                <span className={classes.error}>
+                                  {formik.errors.hcvHistoryOfAdverseEffect}
                                 </span>
                               ) : (
                                 ""
@@ -1549,7 +1716,8 @@ const moveBack = () => {
                                 }}
                               />
 
-                              {formik.errors.hcvRetreatmentHcvGenotype !== "" ? (
+                              {formik.errors.hcvRetreatmentHcvGenotype !==
+                              "" ? (
                                 <span className={classes.error}>
                                   {formik.errors.hcvRetreatmentHcvGenotype}
                                 </span>

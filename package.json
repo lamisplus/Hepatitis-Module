@@ -60,6 +60,7 @@
     "material-ui-color-picker": "^3.5.1",
     "material-ui-dropzone": "^3.4.0",
     "metismenujs": "^1.2.1",
+    "nookies": "^2.5.2",
     "nouislider-react": "^3.3.9",
     "p-min-delay": "^3.1.0",
     "rc-color-picker": "^1.2.6",
@@ -128,7 +129,6 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  
   "browserslist": {
     "production": [
       ">0.2%",

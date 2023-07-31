@@ -1,8 +1,8 @@
 Arguments: 
-  C:\Users\Data.FI\AppData\Roaming\nvm\v16.20.0\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js install
+  C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\yarn\bin\yarn.js install
 
 PATH: 
-  C:\Users\Data.FI\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\local\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\Data.FI\bin;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Python311\Scripts;C:\Python311;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Program Files\Git\cmd;C:\Program Files (x86)\Yarn\bin;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\chocolatey\bin;C:\Users\Data.FI\AppData\Local\Android\Sdk\platform-tools;C:\Program Files\Microsoft SQL Server\150\Tools\Binn;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn;C:\Program Files\dotnet;C:\Users\Data.FI\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Users\Data.FI\AppData\Local\Microsoft\WindowsApps;C:\Users\Data.FI\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Data.FI\AppData\Local\Yarn\bin;C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2023.1.3\bin;C:\Users\Data.FI\.dotnet\tools;C:\Program Files\Java\jdk1.8.0_202\bin;C:\Users\Data.FI\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Program Files\JetBrains\IntelliJ IDEA 2023.1.3\bin;C:\Program Files\Git\usr\bin\vendor_perl;C:\Program Files\Git\usr\bin\core_perl
+  C:\Users\Catherine Nnajiofor\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\local\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\Catherine Nnajiofor\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Program Files\Git\cmd;C:\Users\Catherine Nnajiofor\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Users\Catherine Nnajiofor\AppData\Local\Microsoft\WindowsApps;C:\Users\Catherine Nnajiofor\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Catherine Nnajiofor\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Program Files\Git\usr\bin\vendor_perl;C:\Program Files\Git\usr\bin\core_perl
 
 Yarn version: 
   1.22.19
@@ -14,8 +14,8 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@mui/icons-material/-/icons-material-5.11.16.tgz: ESOCKETTIMEDOUT
-      at ClientRequest.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli.js:141517:19)
+  Error: https://registry.yarnpkg.com/@fortawesome/free-solid-svg-icons/-/free-solid-svg-icons-6.4.0.tgz: ESOCKETTIMEDOUT
+      at ClientRequest.<anonymous> (C:\Users\Catherine Nnajiofor\AppData\Roaming\nvm\v16.20.0\node_modules\yarn\lib\cli.js:141517:19)
       at Object.onceWrapper (node:events:627:28)
       at ClientRequest.emit (node:events:513:28)
       at TLSSocket.emitRequestTimeout (node:_http_client:839:9)
@@ -152,16 +152,11 @@ npm manifest:
     },
     "scripts": {
       "start": "react-scripts start",
-      "build": "react-scripts --max-old-space-size=15096 build && xcopy /s /y build src\\main\\resources\\views\\static\\covid",
+      "build": "react-scripts --max-old-space-size=15096 build && xcopy /s /y build src\\main\\resources\\views\\static\\hepatitis",
       "test": "react-scripts test",
       "eject": "react-scripts eject"
     },
-    "eslintConfig": {
-      "extends": [
-        "react-app",
-        "react-app/jest"
-      ]
-    },
+    
     "browserslist": {
       "production": [
         ">0.2%",
@@ -173,6 +168,9 @@ npm manifest:
         "last 1 firefox version",
         "last 1 safari version"
       ]
+    },
+    "devDependencies": {
+      "eslint-config-react": "^1.1.7"
     }
   }
 

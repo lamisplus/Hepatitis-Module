@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import MatButton from "@material-ui/core/Button";
 import { FormGroup, Label, Spinner, Form } from "reactstrap";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -16,6 +16,7 @@ import "../patient.css";
 import "react-widgets/dist/css/react-widgets.css";
 import { useValidateForm1ValuesHook } from "../../../formSchemas/form1ValidationSchema";
 import { ArrowForward } from "@material-ui/icons";
+import { getCookie, setCookie } from "../../../helpers/cookieStoragehelpers";
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
 const useStyles = makeStyles((theme) => ({
@@ -91,11 +92,23 @@ const useStyles = makeStyles((theme) => ({
 const ViralHepatitisForm1 = ({ setStep }) => {
   const onSubmitHandler = (values) => {
     window.scrollTo(0, 0);
-    console.log(values);
+    setCookie("hepatitis1", values, 1);
     setStep(1);
   };
   const classes = useStyles();
   const { formik } = useValidateForm1ValuesHook(onSubmitHandler);
+  
+  const castCookieValueToForm = () => {
+    const cookieValue = getCookie("hepatitis1");
+    if (cookieValue) {
+      formik.setValues(cookieValue);
+    }
+  };
+
+  useEffect(() => {
+    castCookieValueToForm();
+  }, []);
+
   return (
     <>
       <Card className={classes.root}>
@@ -131,7 +144,7 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                             type="text"
                             name="hospitalNumber"
                             id="hospitalNumber"
-                            value={formik.initialValues.hospitalNumber}
+                            value={formik.values.hospitalNumber}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             style={{
@@ -158,7 +171,7 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                             type="text"
                             name="surname"
                             id="surname"
-                            value={formik.initialValues.surname}
+                            value={formik.values.surname}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             style={{
@@ -183,7 +196,7 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                             type="text"
                             name="otherName"
                             id="otherName"
-                            value={formik.initialValues.otherName}
+                            value={formik.values.otherName}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             style={{
@@ -212,7 +225,7 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                             type="text"
                             name="phone"
                             id="phone"
-                            value={formik.initialValues.phone}
+                            value={formik.values.phone}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             style={{
@@ -240,7 +253,7 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                             type="text"
                             name="residentialAddress"
                             id="residentialAddress"
-                            value={formik.initialValues.residentialAddress}
+                            value={formik.values.residentialAddress}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             style={{
@@ -265,7 +278,7 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                             type="text"
                             name="landmark"
                             id="landmark"
-                            value={formik.initialValues.landmark}
+                            value={formik.values.landmark}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             style={{
@@ -294,7 +307,7 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                             type="text"
                             name="country"
                             id="country"
-                            value={formik.initialValues.country}
+                            value={formik.values.country}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             style={{
@@ -321,7 +334,7 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                             type="text"
                             name="state"
                             id="state"
-                            value={formik.initialValues.state}
+                            value={formik.values.state}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             style={{
@@ -346,7 +359,7 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                             type="text"
                             name="lga"
                             id="lga"
-                            value={formik.initialValues.lga}
+                            value={formik.values.lga}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             style={{
@@ -376,7 +389,7 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                             type="date"
                             name="dateOfBirth"
                             id="dateOfBirth"
-                            value={formik.initialValues.dateOfBirth}
+                            value={formik.values.dateOfBirth}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             style={{
@@ -403,7 +416,7 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                             type="text"
                             name="age"
                             id="age"
-                            value={formik.initialValues.age}
+                            value={formik.values.age}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             style={{
@@ -428,7 +441,7 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                             type="text"
                             name="occupation"
                             id="occupation"
-                            value={formik.initialValues.occupation}
+                            value={formik.values.occupation}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             style={{
@@ -457,7 +470,7 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                             className="form-control"
                             name="maritalStatus"
                             id="maritalStatus"
-                            value={formik.initialValues.maritalStatus}
+                            value={formik.values.maritalStatus}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             style={{
@@ -472,7 +485,7 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                             <option value="seperated">Seperated</option>
                             <option value="cohabiting">Cohabiting</option>
                             <option value="widowed">Widowed</option>
-                            </select>
+                          </select>
                           {formik.errors.maritalStatus !== "" ? (
                             <span className={classes.error}>
                               {formik.errors.maritalStatus}
@@ -492,7 +505,7 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                             type="text"
                             name="education"
                             id="education"
-                            value={formik.initialValues.education}
+                            value={formik.values.education}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             style={{
@@ -542,7 +555,7 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                           type="text"
                           name="careEntryPoint"
                           id="careEntryPoint"
-                          value={formik.initialValues.careEntryPoint}
+                          value={formik.values.careEntryPoint}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           style={{
@@ -563,15 +576,77 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                   <div className="row">
                     <div className="form-group mb-3 col-md-4">
                       <FormGroup>
+                        <Label for="sex">
+                          Sex <span style={{ color: "red" }}> *</span>{" "}
+                        </Label>
+                        <select
+                          className="form-control"
+                          name="sex"
+                          id="sex"
+                          value={formik.values.sex}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          style={{
+                            border: "1px solid #014D88",
+                            borderRadius: "0.2rem",
+                          }}
+                        >
+                          <option value="">Select</option>
+                          <option value="male">Male</option>
+                          <option value="female">Female</option>
+                        </select>
+                        {formik.errors.sex !== "" ? (
+                          <span className={classes.error}>
+                            {formik.errors.sex}
+                          </span>
+                        ) : (
+                          ""
+                        )}
+                      </FormGroup>
+                    </div>
+
+                    <div className="form-group mb-3 col-md-4">
+                      <FormGroup>
+                        <Label for="pregnancy">
+                          Pregnancy <span style={{ color: "red" }}> *</span>{" "}
+                        </Label>
+                        <select
+                          className="form-control"
+                          name="pregnancy"
+                          id="pregnancy"
+                          value={formik.values.pregnancy}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          style={{
+                            border: "1px solid #014D88",
+                            borderRadius: "0.2rem",
+                          }}
+                        >
+                          <option value="">Select</option>
+                          <option value={true}>Yes</option>
+                          <option value={false}>No</option>
+                        </select>
+                        {formik.errors.pregnancy !== "" ? (
+                          <span className={classes.error}>
+                            {formik.errors.pregnancy}
+                          </span>
+                        ) : (
+                          ""
+                        )}
+                      </FormGroup>
+                    </div>
+
+                    <div className="form-group mb-3 col-md-4">
+                      <FormGroup>
                         <Label for="weight">
                           Weight <span style={{ color: "red" }}> *</span>{" "}
                         </Label>
                         <input
                           className="form-control"
-                          type="text"
+                          type="number"
                           name="weight"
                           id="weight"
-                          value={formik.initialValues.weight}
+                          value={formik.values.weight}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           style={{
@@ -595,10 +670,10 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                         </Label>
                         <input
                           className="form-control"
-                          type="text"
+                          type="number"
                           name="height"
                           id="height"
-                          value={formik.initialValues.height}
+                          value={formik.values.height}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           style={{
@@ -621,10 +696,10 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                         <Label for="bmi">BMI </Label>
                         <input
                           className="form-control"
-                          type="text"
+                          type="number"
                           name="bmi"
                           id="bmi"
-                          value={formik.initialValues.bmi}
+                          value={formik.values.bmi}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           style={{
@@ -645,16 +720,16 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                   <div className="row">
                     <div className="form-group mb-3 col-md-4">
                       <FormGroup>
-                        <Label for="hbsAg">
+                        <Label for="hepatitisBhbsAg">
                           Hepatitis B (HBsAg){" "}
                           <span style={{ color: "red" }}> *</span>{" "}
                         </Label>
                         <input
                           className="form-control"
                           type="text"
-                          name="hbsAg"
-                          id="hbsAg"
-                          value={formik.initialValues.hbsAg}
+                          name="hepatitisBhbsAg"
+                          id="hepatitisBhbsAg"
+                          value={formik.values.hepatitisBhbsAg}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           style={{
@@ -662,9 +737,9 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                             borderRadius: "0.2rem",
                           }}
                         />
-                        {formik.errors.hbsAg !== "" ? (
+                        {formik.errors.hepatitisBhbsAg !== "" ? (
                           <span className={classes.error}>
-                            {formik.errors.hbsAg}
+                            {formik.errors.hepatitisBhbsAg}
                           </span>
                         ) : (
                           ""
@@ -673,25 +748,28 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                     </div>
                     <div className="form-group mb-3 col-md-4">
                       <FormGroup>
-                        <Label for="breastfeeding">
-                          Breastfeeding <span style={{ color: "red" }}> *</span>{" "}
+                        <Label for="breastFeeding">
+                          BreastFeeding <span style={{ color: "red" }}> *</span>{" "}
                         </Label>
-                        <input
+                        <select
                           className="form-control"
-                          type="text"
-                          name="breastfeeding"
-                          id="breastfeeding"
-                          value={formik.initialValues.breastfeeding}
+                          name="breastFeeding"
+                          id="breastFeeding"
+                          value={formik.values.breastFeeding}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           style={{
                             border: "1px solid #014D88",
                             borderRadius: "0.2rem",
                           }}
-                        />
-                        {formik.errors.breastfeeding !== "" ? (
+                        >
+                          <option>Select</option>
+                          <option value={true}>Yes</option>
+                          <option value={false}>No</option>
+                        </select>
+                        {formik.errors.breastFeeding !== "" ? (
                           <span className={classes.error}>
-                            {formik.errors.breastfeeding}
+                            {formik.errors.breastFeeding}
                           </span>
                         ) : (
                           ""
@@ -703,21 +781,22 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                         <Label for="historyOfUsingAbusedSubstance">
                           History of using abused substance{" "}
                         </Label>
-                        <input
+                        <select
                           className="form-control"
-                          type="text"
                           name="historyOfUsingAbusedSubstance"
                           id="historyOfUsingAbusedSubstance"
-                          value={
-                            formik.initialValues.historyOfUsingAbusedSubstance
-                          }
+                          value={formik.values.historyOfUsingAbusedSubstance}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           style={{
                             border: "1px solid #014D88",
                             borderRadius: "0.2rem",
                           }}
-                        />
+                        >
+                          <option value="">Select</option>
+                          <option value={true}>Yes</option>
+                          <option value={false}>No</option>
+                        </select>
                         {formik.errors.historyOfUsingAbusedSubstance !== "" ? (
                           <span className={classes.error}>
                             {formik.errors.historyOfUsingAbusedSubstance}
@@ -750,34 +829,6 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                   <div className="row">
                     <div className="form-group mb-3 col-md-4">
                       <FormGroup>
-                        <Label for="hbsAg">
-                          Hepatitis B (HBsAg){" "}
-                          <span style={{ color: "red" }}> *</span>{" "}
-                        </Label>
-                        <input
-                          className="form-control"
-                          type="text"
-                          name="hbsAg"
-                          id="hbsAg"
-                          value={formik.initialValues.hbsAg}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          style={{
-                            border: "1px solid #014D88",
-                            borderRadius: "0.2rem",
-                          }}
-                        />
-                        {formik.errors.hbsAg !== "" ? (
-                          <span className={classes.error}>
-                            {formik.errors.hbsAg}
-                          </span>
-                        ) : (
-                          ""
-                        )}
-                      </FormGroup>
-                    </div>
-                    <div className="form-group mb-3 col-md-4">
-                      <FormGroup>
                         <Label for="dateOfHepatitisBPositiveScreening">
                           Date of first Hep. B positive screening{" "}
                           <span style={{ color: "red" }}> *</span>{" "}
@@ -788,8 +839,7 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                           name="dateOfHepatitisBPositiveScreening"
                           id="dateOfHepatitisBPositiveScreening"
                           value={
-                            formik.initialValues
-                              .dateOfHepatitisBPositiveScreening
+                            formik.values.dateOfHepatitisBPositiveScreening
                           }
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
@@ -810,13 +860,15 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                     </div>
                     <div className="form-group mb-3 col-md-4">
                       <FormGroup>
-                        <Label for="hcvAb">Hepatitis C (HCVAb) </Label>
+                        <Label for="hepatitisChcvAb">
+                          Hepatitis C (HCVAb){" "}
+                        </Label>
                         <input
                           className="form-control"
                           type="text"
-                          name="hcvAb"
-                          id="hcvAb"
-                          value={formik.initialValues.hcvAb}
+                          name="hepatitisChcvAb"
+                          id="hepatitisChcvAb"
+                          value={formik.values.hepatitisChcvAb}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           style={{
@@ -824,9 +876,9 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                             borderRadius: "0.2rem",
                           }}
                         />
-                        {formik.errors.hcvAb !== "" ? (
+                        {formik.errors.hepatitisChcvAb !== "" ? (
                           <span className={classes.error}>
-                            {formik.errors.hcvAb}
+                            {formik.errors.hepatitisChcvAb}
                           </span>
                         ) : (
                           ""
