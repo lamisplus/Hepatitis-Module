@@ -286,7 +286,6 @@ export const useValidateFollowupFormValuesHook = (onSubmit) => {
     stagingDateForLiverBiopsy: "",
     diagnosis: "",
     treatmentRegimen: "",
-    clinicalName: "",
     nextAppointment: "",
     remark: "",
 
