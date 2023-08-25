@@ -4,10 +4,10 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
-    <changeSet id="001" author="victor-july2023">
+    <changeSet id="001" author="favour-August2023">
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="0">
-                SELECT COUNT(table_name) FROM information_schema.tables WHERE table_name = 'hepatitis';
+                SELECT COUNT(table_name) FROM information_schema.tables WHERE table_name = 'hepatitis_enrollment';
             </sqlCheck>
         </preConditions>
         <sqlFile dbms="postgresql"
