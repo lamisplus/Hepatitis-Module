@@ -18,12 +18,12 @@ import javax.sql.DataSource;
 @Slf4j
 @Configuration
 @EnableJpaRepositories( transactionManagerRef = "hepatitisTransactionManger",
-        basePackages = {"org.lamisplus.modules.hepatitis.repositories"})
+        basePackages = {"org.lamisplus.modules.hepatitis.repository"})
 public class DomainConfiguration {
     private final DataSource dataSource;
 
     @PersistenceUnit
-    private  final EntityManagerFactory entityManagerFactory;
+    private final EntityManagerFactory entityManagerFactory;
 
 
     @Bean(name = "hepatitisTransactionManger")
