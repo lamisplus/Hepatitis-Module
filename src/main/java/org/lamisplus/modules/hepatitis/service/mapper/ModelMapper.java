@@ -1,4 +1,4 @@
-package org.lamisplus.modules.hepatitis.utils;
+package org.lamisplus.modules.hepatitis.service.mapper;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,13 +18,12 @@ import org.lamisplus.modules.hepatitis.domain.enums.Sex;
 import org.lamisplus.modules.hepatitis.domain.enums.Status;
 import lombok.RequiredArgsConstructor;
 import org.lamisplus.modules.patient.domain.entity.Person;
+import org.springframework.stereotype.Component;
 
 
 @RequiredArgsConstructor
-//@Component
+@Component
 public class ModelMapper {
-//    private final PersonRepository personRepository;
-
     public HepatitisEnrollment mapToEnrollment(HepatitisEnrollmentDto enrollmentDto, Person person) {
         String coreEntryPoint = enrollmentDto.getCoreEntryPoint();
         Sex sex = enrollmentDto.getSex();
@@ -46,7 +45,7 @@ public class ModelMapper {
         }
 
         return HepatitisEnrollment.builder()
-                .person(person)
+                .personUuid(person.getUuid())
                 .coreEntryPoint(coreEntryPoint)
                 .sex(sex)
                 .pregnancy(pregnancy)

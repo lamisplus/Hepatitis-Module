@@ -23,9 +23,9 @@ import javax.persistence.*;
 @ToString
 @Builder
 public class HepatitisEnrollment extends AbstractPersistableEntity {
-    @OneToOne
-    @JoinColumn(name = "person_uuid", referencedColumnName = "uuid", insertable = false, updatable = false)
-    private Person person;
+
+    /*@JoinColumn(name = "person_uuid", referencedColumnName = "uuid", insertable = false, updatable = false)
+    private Person person;*/
     @Basic
     @Column(name = "person_uuid")
     private String personUuid;

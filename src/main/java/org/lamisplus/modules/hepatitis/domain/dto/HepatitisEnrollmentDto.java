@@ -26,6 +26,8 @@ public class HepatitisEnrollmentDto implements Serializable {
 
     private String personUuid;
 
+
+    @NotEmpty(message  = "personDto can be null OR empty")
     private PersonDto personDto;
 
     @NotEmpty(message  = "coreEntryPoint can be null OR empty")
@@ -37,15 +39,15 @@ public class HepatitisEnrollmentDto implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Status pregnancy;
 
-    @NotEmpty(message  = "coreEntryPoint can be null OR empty")
-    @Positive
+    @NotEmpty(message  = "coreEntryPoint cannot be null OR empty")
+    @Positive(message  = "weight cannot be negative")
     private Double weight;
 
     @NotEmpty(message  = "coreEntryPoint can be null OR empty")
     @Positive
     private Double height;
 
-    @Positive
+    @Positive(message  = "bmi cannot be negative")
     private Double bmi;
 
     private String hepatitisB;
