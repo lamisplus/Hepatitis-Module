@@ -16,6 +16,7 @@ import "../patient.css";
 import "react-widgets/dist/css/react-widgets.css";
 import { useValidateFollowupFormValuesHook } from "../../../formSchemas/form1ValidationSchema";
 import { ArrowBack, ArrowForward } from "@material-ui/icons";
+import PatientCardFollowUp from "./PatientCardFollowUp";
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
 const useStyles = makeStyles((theme) => ({
@@ -89,22 +90,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const FollowupForm = () => {
-
-//   const onSubmitHandler = (values) => {
-//     window.scrollTo(0, 0);
-//     console.log(values)
-//     setStep(4)
-// }
-// const moveBack = () => {
-//   window.scrollTo(0, 0);
-//   setStep(2)
-// }
-
+  const onSubmitHandler = (values) => {
+    console.log(values);
+  };
 
   const classes = useStyles();
   const { formik } = useValidateFollowupFormValuesHook(onSubmitHandler);
   return (
     <>
+      <CardContent>
+        <PatientCardFollowUp />
+      </CardContent>
       <Card className={classes.root}>
         <CardContent>
           <div className="col-xl-12 col-lg-12">
@@ -130,7 +126,8 @@ const FollowupForm = () => {
                       <div className="form-group mb-3 col-md-4">
                         <FormGroup>
                           <Label for="dateOfVisit">
-                            Date of visit <span style={{ color: "red" }}> *</span>{" "}
+                            Date of visit{" "}
+                            <span style={{ color: "red" }}> *</span>{" "}
                           </Label>
                           <input
                             className="form-control"
@@ -158,7 +155,8 @@ const FollowupForm = () => {
                       <div className="form-group mb-3 col-md-4">
                         <FormGroup>
                           <Label for="bloodPressure">
-                            Blood pressure (mmHg)<span style={{ color: "red" }}> *</span>{" "}
+                            Blood pressure (mmHg)
+                            <span style={{ color: "red" }}> *</span>{" "}
                           </Label>
                           <input
                             className="form-control"
@@ -1078,7 +1076,7 @@ const FollowupForm = () => {
                     <div className="form-group mb-3 col-md-4">
                       <FormGroup>
                         <Label for="treatmentRegimen">
-                            Treatment regimen
+                          Treatment regimen
                           <span style={{ color: "red" }}> *</span>{" "}
                         </Label>
                         <input
@@ -1114,10 +1112,7 @@ const FollowupForm = () => {
                           type="text"
                           name="nextAppointment"
                           id="nextAppointment"
-                          value={
-                            formik.initialValues
-                              .nextAppointment
-                          }
+                          value={formik.initialValues.nextAppointment}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           style={{
@@ -1125,8 +1120,7 @@ const FollowupForm = () => {
                             borderRadius: "0.2rem",
                           }}
                         />
-                        {formik.errors.nextAppointment !==
-                        "" ? (
+                        {formik.errors.nextAppointment !== "" ? (
                           <span className={classes.error}>
                             {formik.errors.dateOfHepatitisBPositiveScreening}
                           </span>
@@ -1162,31 +1156,31 @@ const FollowupForm = () => {
                     </div>
 
                     <div className="form-group mb-3 col-md-4-12">
-                            <FormGroup>
-                              <Label for="remark">Remark</Label>
-                              <textarea
-                                className="form-control"
-                                name="remark"
-                                id="remark"
-                                onChange={formik.handleChange}
-                                value={formik.values.remark}
-                                cols="50"
-                                rows="30"
-                                style={{
-                                  border: "1px solid #014D88",
-                                  borderRadius: "0.2rem",
-                                  height: "120px",
-                                }}
-                              />
-                              {formik.errors.remark !== "" ? (
-                                <span className={classes.error}>
-                                  {formik.errors.remark}
-                                </span>
-                              ) : (
-                                ""
-                              )}
-                            </FormGroup>
-                          </div>
+                      <FormGroup>
+                        <Label for="remark">Remark</Label>
+                        <textarea
+                          className="form-control"
+                          name="remark"
+                          id="remark"
+                          onChange={formik.handleChange}
+                          value={formik.values.remark}
+                          cols="50"
+                          rows="30"
+                          style={{
+                            border: "1px solid #014D88",
+                            borderRadius: "0.2rem",
+                            height: "120px",
+                          }}
+                        />
+                        {formik.errors.remark !== "" ? (
+                          <span className={classes.error}>
+                            {formik.errors.remark}
+                          </span>
+                        ) : (
+                          ""
+                        )}
+                      </FormGroup>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1194,18 +1188,7 @@ const FollowupForm = () => {
               {false ? <Spinner /> : ""}
 
               <br />
-              <div className="d-flex justify-content-between">
-                <MatButton
-                  type="button"
-                  variant="contained"
-                  color="primary"
-                  className={classes.button}
-                  endIcon={<ArrowBack />}
-                  onClick={moveBack}
-                  style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}
-                >
-                  <span style={{ textTransform: "capitalize" }}>Previous</span>
-                </MatButton>
+              <div className="d-flex justify-content-end">
                 <MatButton
                   type="submit"
                   variant="contained"

@@ -58,7 +58,7 @@ function PatientCard(props) {
     const { classes } = props;
     const patientObj = history.location && history.location.state ? history.location.state.patientObj : {}
     const prepId = history.location && history.location.state ? history.location.state.prepId : {}
-    //console.log(patientObj)
+  
     useEffect(() => {
 
      }, [patientObj]);

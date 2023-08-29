@@ -23,7 +23,7 @@ public class DomainConfiguration {
     private final DataSource dataSource;
 
     @PersistenceUnit
-    private  final EntityManagerFactory entityManagerFactory;
+    private final EntityManagerFactory entityManagerFactory;
 
 
     @Bean(name = "hepatitisTransactionManger")

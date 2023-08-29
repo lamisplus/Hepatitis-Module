@@ -131,18 +131,18 @@ const Patients = (props) => {
             title="Find Patient "
             columns={[
             // { title: " ID", field: "Id" },
+            { title: "Patient Number", field: "hospital_number", filtering: false },
             {
-                title: "Patient Name",
+                title: "Name",
                 field: "name",
             },
-            { title: "Hospital Number", field: "hospital_number", filtering: false },
             // { title: "Batch number", field: "clientCode", filtering: false },
             { title: "Sex", field: "gender", filtering: false },
             { title: "Age", field: "age", filtering: false },
             
             //{ title: "ART Number", field: "v_status", filtering: false },
-            { title: "Vaccination Status", field: "count", filtering: false },
-            { title: "Actions", field: "actions", filtering: false }, 
+            // { title: "Vaccination Status", field: "count", filtering: false },
+            { title: "Actions", field: "actions", filtering: true }, 
             ]}
             //isLoading={loading}
             data={query =>

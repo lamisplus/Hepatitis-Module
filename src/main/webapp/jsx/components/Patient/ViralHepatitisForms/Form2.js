@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MatButton from "@material-ui/core/Button";
 import { FormGroup, Label, Spinner, Input, Form, InputGroup } from "reactstrap";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -19,6 +19,7 @@ import { useValidateForm2ValuesHook } from "../../../formSchemas/form1Validation
 import { Collapse, IconButton } from "@material-ui/core";
 import { ArrowForward, ExpandMore as ExpandMoreIcon } from "@material-ui/icons";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { getCookie, setCookie } from "../../../helpers/cookieStoragehelpers";
 
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
@@ -95,6 +96,7 @@ const useStyles = makeStyles((theme) => ({
 const ViralHepatitisForm2 = ({setStep}) => {
   const onSubmitHandler = (values) => {
     window.scrollTo(0, 0);
+    setCookie("hepatitis2", values, 1);
     console.log(values)
     setStep(2)
 }
@@ -104,6 +106,22 @@ const moveBack = () => {
 }
   const classes = useStyles();
   const { formik } = useValidateForm2ValuesHook(onSubmitHandler);
+  console.log(formik.errors)
+
+  
+  
+
+  const castCookieValueToForm = () => {
+    const cookieValue = getCookie("hepatitis2");
+    if (cookieValue) {
+      formik.setValues(cookieValue);
+    }
+  };
+
+  useEffect(() => {
+    castCookieValueToForm();
+  }, []);
+
   const [isDropdownsOpen, setIsDropdownsOpen] = useState({
     hepatitisBDropdown: true,
     hepatitisCDropdown: true,
@@ -230,6 +248,7 @@ const moveBack = () => {
                               )}
                             </FormGroup>
                           </div>
+
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
                               <Label for="dateHbvDnaResultReported">
@@ -257,6 +276,35 @@ const moveBack = () => {
                               )}
                             </FormGroup>
                           </div>
+
+                          <div className="form-group mb-3 col-md-4">
+                            <FormGroup>
+                              <Label for="stagingDateForLiverBiopsy">
+                                Staging date of liver biopsy{" "}
+                              </Label>
+                              <input
+                                className="form-control"
+                                type="date"
+                                name="stagingDateForLiverBiopsy"
+                                id="stagingDateForLiverBiopsy"
+                                value={formik.values.stagingDateForLiverBiopsy}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                style={{
+                                  border: "1px solid #014D88",
+                                  borderRadius: "0.2rem",
+                                }}
+                              />
+                              {formik.errors.stagingDateForLiverBiopsy !== "" ? (
+                                <span className={classes.error}>
+                                  {formik.errors.stagingDateForLiverBiopsy}
+                                </span>
+                              ) : (
+                                ""
+                              )}
+                            </FormGroup>
+                          </div>
+
                         </div>
                         <div className="row">
                           <div className="form-group mb-2 col-md-4">
@@ -269,7 +317,7 @@ const moveBack = () => {
                                 <label>
                                   <input
                                     type="radio"
-                                    value="detected"
+                                    value="DETECTED"
                                     name="hbvDna"
                                     onBlur={formik.handleBlur}
                                     onChange={formik.handleChange}
@@ -285,7 +333,7 @@ const moveBack = () => {
                                 <label>
                                   <input
                                     type="radio"
-                                    value="undetected"
+                                    value="UNDETECTED"
                                     name="hbvDna"
                                     onBlur={formik.handleBlur}
                                     onChange={formik.handleChange}
@@ -307,7 +355,7 @@ const moveBack = () => {
                               </div>
                             </FormGroup>
                           </div>
-                          {formik.values.hbvDna === "detected" && (
+                          {formik.values.hbvDna === "DETECTED" && (
                             <div className="form-group mb-3 col-md-4">
                               <FormGroup>
                                 <Label for="hbvDnaValue">
@@ -340,7 +388,7 @@ const moveBack = () => {
                           )}
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
-                              <Label for="landmark">HBsAG Quantification</Label>
+                              <Label for="hbsAgQuantification">HBsAG Quantification</Label>
                               <input
                                 className="form-control"
                                 type="text"
@@ -366,6 +414,58 @@ const moveBack = () => {
 
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
+                              <Label for="ctScan">CT scan</Label>
+                              <input
+                                className="form-control"
+                                type="text"
+                                name="ctScan"
+                                id="ctScan"
+                                value={formik.values.ctScan}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                style={{
+                                  border: "1px solid #014D88",
+                                  borderRadius: "0.2rem",
+                                }}
+                              />
+                              {formik.errors.ctScan ? (
+                                <span className={classes.error}>
+                                  {formik.errors.ctScan}
+                                </span>
+                              ) : (
+                                ""
+                              )}
+                            </FormGroup>
+                          </div>
+
+                          <div className="form-group mb-3 col-md-4">
+                            <FormGroup>
+                              <Label for="albumin">Albumin</Label>
+                              <input
+                                className="form-control"
+                                type="text"
+                                name="albumin"
+                                id="albumin"
+                                value={formik.values.albumin}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                style={{
+                                  border: "1px solid #014D88",
+                                  borderRadius: "0.2rem",
+                                }}
+                              />
+                              {formik.errors.albumin ? (
+                                <span className={classes.error}>
+                                  {formik.errors.albumin}
+                                </span>
+                              ) : (
+                                ""
+                              )}
+                            </FormGroup>
+                          </div>
+
+                          <div className="form-group mb-3 col-md-4">
+                            <FormGroup>
                               <Label for="hbeAg">HbeAG</Label>
                               <select
                                 className="form-control"
@@ -379,8 +479,8 @@ const moveBack = () => {
                                 }}
                               >
                                 <option value={""}>Select</option>
-                                <option value={"reactive"}>Reactive</option>
-                                <option value={"non-reactive"}>
+                                <option value={"REACTIVE"}>Reactive</option>
+                                <option value={"NON_REACTIVE"}>
                                   Non Reactive
                                 </option>
                               </select>
@@ -409,11 +509,11 @@ const moveBack = () => {
                                 }}
                               >
                                 <option value={""}>Select</option>
-                                <option value={"reactive"}>Reactive</option>
-                                <option value={"non-reactive"}>
+                                <option value={"REACTIVE"}>Reactive</option>
+                                <option value={"NON_REACTIVE"}>
                                   Non Reactive
                                 </option>
-                                <option value={"not done"}>Not Done</option>
+                                <option value={"NOT_DONE"}>Not Done</option>
                               </select>
                               {formik.errors.antiHdv !== "" ? (
                                 <span className={classes.error}>
@@ -442,8 +542,8 @@ const moveBack = () => {
                                 }}
                               >
                                 <option value={""}>Select</option>
-                                <option value={"yes"}>Yes</option>
-                                <option value={"no"}>No</option>
+                                <option value={true}>Yes</option>
+                                <option value={true}>No</option>
                               </select>
                               {formik.errors.treatmentEligible !== "" ? (
                                 <span className={classes.error}>
@@ -454,6 +554,37 @@ const moveBack = () => {
                               )}
                             </FormGroup>
                           </div>
+
+                          {/* <div className="form-group mb-3 col-md-4">
+                            <FormGroup>
+                              <Label for="treatmentEligible">Treatment Eligible</Label>
+                              <select
+                                className="form-control"
+                                name="treatmentEligible"
+                                id="treatmentEligible"
+                                onChange={formik.handleChange}
+                                value={formik.values.treatmentEligible}
+                                style={{
+                                  border: "1px solid #014D88",
+                                  borderRadius: "0.2rem",
+                                }}
+                              >
+                                <option value={""}>Select</option>
+                                <option value={true}>Yes</option>
+                                <option value={false}>
+                                  No
+                                </option>
+                              </select>
+                              {formik.errors.treatmentEligible !== "" ? (
+                                <span className={classes.error}>
+                                  {formik.errors.treatmentEligible}
+                                </span>
+                              ) : (
+                                ""
+                              )}
+                            </FormGroup>
+                          </div> */}
+
 
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
@@ -470,9 +601,9 @@ const moveBack = () => {
                                 }}
                               >
                                 <option value={""}>Select</option>
-                                <option value={"reactive"}>Reactive</option>
-                                <option value={"non-reactive"}>
-                                  Non Reactive
+                                <option value={true}>Yes</option>
+                                <option value={false}>
+                                  No
                                 </option>
                               </select>
                               {formik.errors.pmtctEligible !== "" ? (
@@ -578,8 +709,8 @@ const moveBack = () => {
                                 }}
                               >
                                 <option value={""}>select</option>
-                                <option value={"detected"}>Detected</option>
-                                <option value={"undetected"}>Undetected</option>
+                                <option value={"DETECTED"}>Detected</option>
+                                <option value={"UNDETECTED"}>Undetected</option>
                               </select>
                               {formik.errors.hcvRna !== "" ? (
                                 <span className={classes.error}>
@@ -590,7 +721,7 @@ const moveBack = () => {
                               )}
                             </FormGroup>
                           </div>
-                          {formik.values.hcvRna === "detected" && (
+                          {formik.values.hcvRna === "DETECTED" && (
                             <div className="form-group mb-3 col-md-4">
                               <FormGroup>
                                 <Label for="hcvValue">
@@ -636,13 +767,13 @@ const moveBack = () => {
                                   border: "1px solid #014D88",
                                   borderRadius: "0.2rem",
                                 }}
-                                multiple
+                              
                               >
                                 <option value={""}>Select</option>
-                                <option value={"hbv/hcv"}>HBV/HCV</option>
-                                <option value={"hcv/hiv"}>HCV/HIV</option>
-                                <option value={"hbv/hdv"}>HBV/HDV</option>
-                                <option value={"hbv/hcd/hiv"}>
+                                <option value={"HBV_HCV"}>HBV/HCV</option>
+                                <option value={"HCV_HIV"}>HCV/HIV</option>
+                                <option value={"HBV_HDV"}>HBV/HDV</option>
+                                <option value={"HBV_HCD_HIV"}>
                                   HBV/HCD/HIV
                                 </option>
                               </select>
@@ -678,6 +809,35 @@ const moveBack = () => {
                               {formik.errors.commobidities !== "" ? (
                                 <span className={classes.error}>
                                   {formik.errors.commobidities}
+                                </span>
+                              ) : (
+                                ""
+                              )}
+                            </FormGroup>
+                          </div>
+
+                          <div className="form-group mb-3 col-md-4">
+                            <FormGroup>
+                              <Label for="specifyMulitipleInfection">
+                                Specify multiple infection{" "}
+                                <span style={{ color: "red" }}> *</span>{" "}
+                              </Label>
+                              <input
+                                className="form-control"
+                                type="text"
+                                name="specifyMulitipleInfection"
+                                id="specifyMulitipleInfection"
+                                value={formik.values.specifyMulitipleInfection}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                style={{
+                                  border: "1px solid #014D88",
+                                  borderRadius: "0.2rem",
+                                }}
+                              />
+                              {formik.errors.specifyMulitipleInfection !== "" ? (
+                                <span className={classes.error}>
+                                  {formik.errors.specifyMulitipleInfection}
                                 </span>
                               ) : (
                                 ""
@@ -762,13 +922,13 @@ const moveBack = () => {
                     </div>
                     <div className="form-group mb-3 col-md-4">
                       <FormGroup>
-                        <Label for="pst">PST</Label>
+                        <Label for="plt">PLT</Label>
                         <select
                           className="form-control"
-                          name="pst"
-                          id="pst"
+                          name="plt"
+                          id="plt"
                           onChange={formik.handleChange}
-                          value={formik.values.pst}
+                          value={formik.values.plt}
                           style={{
                             border: "1px solid #014D88",
                             borderRadius: "0.2rem",
@@ -778,9 +938,9 @@ const moveBack = () => {
                           <option value={"yes"}>Yes</option>
                           <option value={"no"}>No</option>
                         </select>
-                        {formik.errors.pst !== "" ? (
+                        {formik.errors.plt !== "" ? (
                           <span className={classes.error}>
-                            {formik.errors.pst}
+                            {formik.errors.plt}
                           </span>
                         ) : null}
                       </FormGroup>
@@ -847,19 +1007,19 @@ const moveBack = () => {
                         </FormGroup>
                       </div>
                     )}
-                    {formik.values.pst === "yes" && (
+                    {formik.values.plt === "yes" && (
                       <div className="form-group mb-3 col-md-4">
                         <FormGroup>
-                          <Label for="pstValue">
-                            Input PST value{" "}
+                          <Label for="pltValue">
+                            Input PLT value{" "}
                             <span style={{ color: "red" }}> *</span>{" "}
                           </Label>
                           <input
                             className="form-control"
                             type="text"
-                            name="pstValue"
-                            id="pstValue"
-                            value={formik.values.pstValue}
+                            name="pltValue"
+                            id="pltValue"
+                            value={formik.values.pltValue}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             style={{
@@ -867,9 +1027,9 @@ const moveBack = () => {
                               borderRadius: "0.2rem",
                             }}
                           />
-                          {formik.errors.pstValue !== "" ? (
+                          {formik.errors.pltValue !== "" ? (
                             <span className={classes.error}>
-                              {formik.errors.pstValue}
+                              {formik.errors.pltValue}
                             </span>
                           ) : (
                             ""
@@ -1137,13 +1297,13 @@ const moveBack = () => {
 
                     <div className="form-group mb-3 col-md-4">
                       <FormGroup>
-                        <Label for="acites">Acites</Label>
+                        <Label for="ascites">Ascites</Label>
                         <select
                           className="form-control"
-                          name="acites"
-                          id="acites"
+                          name="ascites"
+                          id="ascites"
                           onChange={formik.handleChange}
-                          value={formik.values.acites}
+                          value={formik.values.ascites}
                           style={{
                             border: "1px solid #014D88",
                             borderRadius: "0.2rem",
@@ -1153,9 +1313,9 @@ const moveBack = () => {
                           <option value={"yes"}>Yes</option>
                           <option value={"no"}>No</option>
                         </select>
-                        {formik.errors.acites !== "" ? (
+                        {formik.errors.ascites !== "" ? (
                           <span className={classes.error}>
-                            {formik.errors.acites}
+                            {formik.errors.ascites}
                           </span>
                         ) : (
                           ""
@@ -1181,9 +1341,9 @@ const moveBack = () => {
                             }}
                           >
                             <option value={""}>Select</option>
-                            <option value={"mild"}>Mild</option>
-                            <option value={"moderate"}>Moderate</option>
-                            <option value={"massive/gross"}>
+                            <option value={"MILD"}>Mild</option>
+                            <option value={"MODERATE"}>Moderate</option>
+                            <option value={"MASSIVE_OR_GROSS"}>
                               Massive/Gross
                             </option>
                           </select>
@@ -1273,12 +1433,12 @@ const moveBack = () => {
                           }}
                         >
                           <option value={""}>Select</option>
-                          <option value={"F-0"}> No Fibrosis</option>
-                          <option value={"F-1"}>Mild Fibrosis</option>
-                          <option value={"F-2"}>Moderate Fibrosis</option>
-                          <option value={"F-3"}> Severe Fibrosis</option>
-                          <option value={"F-4"}>Cirrhosis</option>
-                          <option value={"not done"}>Not done</option>
+                          <option value={"F0__NO_FIBROSIS"}> No Fibrosis</option>
+                          <option value={"F1__MILD_FIBROSIS"}>Mild Fibrosis</option>
+                          <option value={"F2__MODERATE_FIBROSIS"}>Moderate Fibrosis</option>
+                          <option value={"F3__SEVERE_FIBROSIS"}> Severe Fibrosis</option>
+                          <option value={"F4__CIRRHOSIS"}>Cirrhosis</option>
+                          <option value={"NOT_DONE"}>Not done</option>
                     
                         </select>
                         {formik.errors.liverBiopsyStage !== "" ? (
@@ -1306,10 +1466,10 @@ const moveBack = () => {
                           }}
                         >
                           <option value={""}>Select</option>
-                          <option value={"no fibrosis"}> No Fibrosis</option>
-                          <option value={"fibrosis"}>Fibrosis</option>
-                          <option value={"cirrhosis"}>Cirrhosis</option>
-                          <option value={"hcc"}>HCC</option>
+                          <option value={"NO_FIBROSIS"}> No Fibrosis</option>
+                          <option value={"FIBROSIS"}>Fibrosis</option>
+                          <option value={"CIRRHOSIS"}>Cirrhosis</option>
+                          <option value={"HIGH_CC"}>HCC</option>
                     
                         </select>
                         {formik.errors.diagnosis !== "" ? (
