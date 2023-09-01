@@ -1,4 +1,4 @@
-package org.lamisplus.modules.hepatitis.domain.dto;
+package org.lamisplus.modules.hepatitis.domain.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.lamisplus.modules.hepatitis.domain.entity.HepatitisTreatment;
@@ -12,6 +12,8 @@ import lombok.ToString;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -22,19 +24,28 @@ import java.time.LocalDate;
 @ToString
 @Builder
 public class HepatitisBTreatmentDto implements Serializable {
-    private HepatitisTreatment hepatitisTreatment;
+
     private Status treatmentExperience;
+    @NotEmpty(message = "newRegimen can not be empty")
     private String newRegimen;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate dateStarted;
-    @Enumerated(EnumType.STRING)
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Status historyOfAdverseEffect;
+
+    @NotEmpty(message = "newRegimen can not be empty")
     private String hbvPastTreatmentRegimen;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate dateStopped;
 
-    HepatitisBRegimenSwitchDto hepatitisBRegimenSwitchDto;
-    ReasonForHepatitisBTreatmentDto reasonForHepatitisBTreatmentDto;
+    @NotNull(message = "hepatitisBRegimenSwitch cannot be null or empty")
+    private  HepatitisBRegimenSwitchDto hepatitisBRegimenSwitch;
+
+    @NotNull(message = "reasonForHepatitisBTreatment cannot be null or empty")
+    private  ReasonForHepatitisBTreatmentDto reasonForHepatitisBTreatment;
 
 }
 

@@ -1,4 +1,4 @@
-package org.lamisplus.modules.hepatitis.domain.dto;
+package org.lamisplus.modules.hepatitis.domain.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,7 +18,8 @@ import lombok.ToString;
 @Builder
 public class ReasonForHepatitisBTreatmentDto {
 
-    private HepatitisBTreatmentDto hepatitisBTreatmentDto;
-    private ReasonForHepatitisBTreatmentDto reasonForHepatitisBTreatmentDto;
+    private String reasonsForTreatment;
+    @Size(min = 8)
+    @NotEmpty(message = "comment can not be empty ")
     private String comment;
 }

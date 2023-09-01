@@ -1,20 +1,20 @@
-package org.lamisplus.modules.hepatitis.domain.dto;
+package org.lamisplus.modules.hepatitis.domain.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.lamisplus.modules.hepatitis.domain.enums.Sex;
-import org.lamisplus.modules.hepatitis.domain.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.lamisplus.modules.patient.domain.dto.PersonDto;
+import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisScreeningDto;
+import org.lamisplus.modules.hepatitis.domain.enums.Sex;
+import org.lamisplus.modules.hepatitis.domain.enums.Status;
+import org.lamisplus.modules.patient.domain.dto.PersonResponseDto;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
-import java.io.Serializable;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,15 +22,13 @@ import java.io.Serializable;
 @Setter
 @ToString
 @Builder
-public class HepatitisEnrollmentDto implements Serializable {
+public class HepatitisEnrollmentResponse {
 
     private String personUuid;
 
+    private PersonResponseDto personResponseDto;
 
-    @NotEmpty(message  = "personDto can be null OR empty")
-    private PersonDto personDto;
-
-    @NotEmpty(message  = "coreEntryPoint can be null OR empty")
+    @NotEmpty(message  = "coreEntryPoint can not be empty")
     private String coreEntryPoint;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
@@ -39,23 +37,24 @@ public class HepatitisEnrollmentDto implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Status pregnancy;
 
-    @NotEmpty(message  = "coreEntryPoint cannot be null OR empty")
-    @Positive(message  = "weight cannot be negative")
+    @NotNull(message = "weight can not be null")
+    @Positive
     private Double weight;
 
-    @NotEmpty(message  = "coreEntryPoint can be null OR empty")
+    @NotNull(message = "height can not be null")
     @Positive
     private Double height;
 
-    @Positive(message  = "bmi cannot be negative")
+    @Positive
     private Double bmi;
 
+    @NotEmpty(message = "hepatitisB can not be empty")
     private String hepatitisB;
 
+    @NotEmpty(message = "breastfeeding can not be empty")
     private Status Breastfeeding;
 
     private Status historyOfUsingAbusedSubstance;
 
     private HepatitisScreeningDto screening;
-
 }

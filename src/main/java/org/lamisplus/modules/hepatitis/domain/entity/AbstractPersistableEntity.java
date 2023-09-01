@@ -9,6 +9,7 @@ import com.vladmihalcea.hibernate.type.json.JsonStringType;
 import lombok.*;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
+//import org.lamisplus.modules.base.security.SecurityUtils;
 import org.lamisplus.modules.base.security.SecurityUtils;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -45,25 +46,25 @@ public abstract class AbstractPersistableEntity implements Serializable {
     @CreatedBy
     @Column(name = "created_by", nullable = false, updatable = false)
     @JsonIgnore
-    @ToString.Exclude
+//    @ToString.Exclude
     private String createdBy = SecurityUtils.getCurrentUserLogin().orElse(null);
 
     @CreatedDate
-    @Column(name = "date_created", nullable = false, updatable = false)
+    @Column(name = "created_date", nullable = false, updatable = false)
     @JsonIgnore
     @ToString.Exclude
-    private LocalDateTime date_created = LocalDateTime.now();
+    private LocalDateTime createdDate = LocalDateTime.now();
 
     @LastModifiedBy
-    @Column(name = "modified_by", nullable = false, updatable = false)
+    @Column(name = "last_modified_by", nullable = false, updatable = false)
     @JsonIgnore
     @ToString.Exclude
     private String modifiedBy = SecurityUtils.getCurrentUserLogin().orElse(null);
 
     @LastModifiedDate
-    @Column(name = "date_modified")
+    @Column(name = "last_modified_date")
     @JsonIgnore
     @ToString.Exclude
-    private LocalDateTime dateModified = LocalDateTime.now();
+    private LocalDateTime lastModifiedDate = LocalDateTime.now();
 
 }

@@ -25,7 +25,7 @@ import javax.persistence.Table;
 @Builder
 public class HepatitisDiagnosis extends AbstractPersistableEntity {
     @ManyToOne
-    @JoinColumn(name = "enrollment_id", referencedColumnName = "uuid")
+    @JoinColumn(name = "enrollment_uuid", referencedColumnName = "uuid")
     private HepatitisEnrollment hepatitisEnrollment;
     @Type(type = "jsonb-node")
     @Column(name = "hepatitis_b_test", columnDefinition = "jsonb")
