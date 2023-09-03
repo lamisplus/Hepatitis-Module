@@ -26,6 +26,8 @@ public class HepatitisEnrollmentDto implements Serializable {
 
     private PersonDto personDto;
 
+    private Long facilityId;
+
     @NotEmpty(message = "coreEntryPoint can not be empty")
     private String coreEntryPoint;
 

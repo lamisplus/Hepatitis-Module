@@ -6,10 +6,13 @@ import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import com.vladmihalcea.hibernate.type.json.JsonNodeBinaryType;
 import com.vladmihalcea.hibernate.type.json.JsonNodeStringType;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
-//import org.lamisplus.modules.base.security.SecurityUtils;
 import org.lamisplus.modules.base.security.SecurityUtils;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -43,10 +46,13 @@ public abstract class AbstractPersistableEntity implements Serializable {
     @Column(name = "uuid", updatable = false)
     private String uuid;
 
+    @Column(name = "facility_id")
+    private Long facilityId;
+
     @CreatedBy
     @Column(name = "created_by", nullable = false, updatable = false)
     @JsonIgnore
-//    @ToString.Exclude
+    @ToString.Exclude
     private String createdBy = SecurityUtils.getCurrentUserLogin().orElse(null);
 
     @CreatedDate
