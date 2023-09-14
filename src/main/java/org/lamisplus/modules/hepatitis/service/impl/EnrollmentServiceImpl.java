@@ -66,7 +66,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         enrollment.setFacilityId(facilityId);
         HepatitisEnrollment savedEnrollment = enrollmentRepository.save(enrollment);
 
-        log.info("savedEnrollment: {}", savedEnrollment);
+        log.info("savedEnrollment uuid: {}", savedEnrollment.getUuid());
         Map<String, Object> response = new HashMap<>();
         response.put("enrollmentId", savedEnrollment.getId());
         response.put("enrollmentUuid", savedEnrollment.getUuid());

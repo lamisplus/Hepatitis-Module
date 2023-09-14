@@ -43,6 +43,7 @@ public abstract class AbstractPersistableEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+   
     @Column(name = "uuid", updatable = false)
     private String uuid;
 
