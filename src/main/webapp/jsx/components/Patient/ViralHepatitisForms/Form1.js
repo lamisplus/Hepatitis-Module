@@ -162,6 +162,9 @@ const ViralHepatitisForm1 = ({ setStep }) => {
   const [topLevelUnitCountryOptions, settopLevelUnitCountryOptions] = useState(
     []
   );
+  const [carePoints, setCarePoints] = useState([]);
+  const [sourceReferral, setSourceReferral] = useState([]);
+  const [pregnancyStatus, setPregnancyStatus] = useState([]);
 
   const sexCodeset = async () => {
     const response = await axios.get(`${apiUrl}application-codesets/v2/SEX`, {
@@ -199,6 +202,48 @@ const ViralHepatitisForm1 = ({ setStep }) => {
       setOccupationOptions(response.data.sort());
     } catch (e) {}
   }, []);
+
+  const CareEntryPoint = () => {
+    axios
+      .get(`${apiUrl}application-codesets/v2/POINT_ENTRY`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        //console.log(response.data);
+        setCarePoints(response.data);
+      })
+      .catch((error) => {
+        //console.log(error);
+      });
+  };
+  //Get list of Source of Referral
+  const SourceReferral = () => {
+    axios
+      .get(`${apiUrl}application-codesets/v2/SOURCE_REFERRAL`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        //console.log(response.data);
+        setSourceReferral(response.data);
+      })
+      .catch((error) => {
+        //console.log(error);
+      });
+  };
+
+  const EnrollmentSetting = () => {
+    axios
+      .get(`${apiUrl}application-codesets/v2/ENROLLMENT_SETTING`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        //console.log(response.data);
+        setEnrollSetting(response.data);
+      })
+      .catch((error) => {
+        //console.log(error);
+      });
+  };
 
   const loadRelationships = useCallback(async () => {
     try {
@@ -320,77 +365,144 @@ const ViralHepatitisForm1 = ({ setStep }) => {
   const onSubmitHandler = (values) => {
     window.scrollTo(0, 0);
     const restructuredEnrolmentPayload = {
-      coreEntryPoint: values.coreEntryPoint,
-      pregnancy: values.pregnancy,
-      weight: values.weight,
-      height: values.height,
       bmi: values.weight / values.height,
-      hepatitisB: values.hepatitisB,
       breastfeeding: values.breastfeeding,
+      coreEntryPoint: "DF",
+      height: values.height,
+      hepatitisB: "string",
       historyOfUsingAbusedSubstance: values.historyOfUsingAbusedSubstance,
-      screening: {
-        dateOfFirstHepatitisBPositiveScreening:
-          values.dateOfFirstHepatitisBPositiveScreening,
-        hepatitisC: values.hepatitisC,
-      },
       personDto: {
+        active: true,
+        address: [
+          {
+            city: "Kano",
+            countryId: 40,
+            district: "string",
+            line: ["string"],
+            postalCode: "string",
+            stateId: 0,
+          },
+        ],
         contact: [
           {
             address: {
               city: "string",
-              countryId: 0,
+              countryId: 3,
               district: "string",
               line: ["string"],
               organisationUnitId: 0,
               postalCode: "string",
               stateId: 0,
             },
-            contactPoint: {
-              type: "string",
-              value: "string",
-            },
-            firstName: "string",
-            genderId: 0,
-            otherName: "string",
+            contactPoint: { type: "string", value: "string" },
+            firstName: "James",
+            genderId: null,
+            otherName: "Milner",
             relationshipId: 0,
             surname: "string",
           },
         ],
-        contactPoint: [
-          {
-            type: "string",
-            value: "string",
-          },
-        ],
-        dateOfBirth: values.dateOfBirth,
-        active: true,
-        address: [
-          {
-            city: "",
-            countryId: Number(values.countryId),
-            district: "",
-            line: [],
-            organisationUnitId: 0,
-            postalCode: "",
-            stateId: Number(values.stateId),
-          },
-        ],
-        age: calculate_age(values.dateOfBirth),
-        // stateId: values.stateId,
-        educationId: Number(values.educationId),
-        employmentStatusId: Number(values.employmentStatusId),
-        maritalStatusId: Number(values.maritalStatusId),
-        isDateOfBirthEstimated:
-          values.isDateOfBirthEstimated === "true" ? true : false,
-        ninNumber: values.ninNumber,
-        surname: values.surname,
-        firstName: values.firstName,
-        otherName: values.otherName,
-        sexId: Number(values.sexId),
-        genderId: Number(values.sexId),
+        contactPoint: [{ type: "string", value: "string" }],
+        dateOfBirth: "2021-02-05",
+        dateOfRegistration: "2021-02-03",
+        deceased: true,
+        deceasedDateTime: "2023-09-07T14:58:21.006Z",
+        educationId: null,
+        employmentStatusId: null,
+        emrId: "string",
+        facilityId: 1456,
+        firstName: "string",
+        genderId: null,
+        id: 0,
+        identifier: [{ assignerId: 0, type: "string", value: "string" }],
+        isDateOfBirthEstimated: true,
+        maritalStatusId: null,
+        ninNumber: "string",
         organizationId: 0,
+        otherName: "string",
+        sexId: 377,
+        surname: "string",
+        uuid: "string",
       },
+      pregnancy: values.pregnancy,
+      screening: {
+        dateOfFirstHepatitisBPositiveScreening: "2020-08-23",
+        hepatitisC: null,
+      },
+      weight: values.weight,
     };
+    //{
+    //   coreEntryPoint: values.coreEntryPoint,
+    //   pregnancy: values.pregnancy,
+    //   weight: values.weight,
+    //   height: values.height,
+    //   bmi: values.weight / values.height,
+    //   hepatitisB: values.hepatitisB,
+    //   breastfeeding: values.breastfeeding,
+    //   historyOfUsingAbusedSubstance: values.historyOfUsingAbusedSubstance,
+    //   screening: {
+    //     dateOfFirstHepatitisBPositiveScreening:
+    //       values.dateOfFirstHepatitisBPositiveScreening,
+    //     hepatitisC: values.hepatitisC,
+    //   },
+    //   personDto: {
+    //     contact: [
+    //       {
+    //         address: {
+    //           city: "string",
+    //           countryId: 0,
+    //           district: "string",
+    //           line: ["string"],
+    //           organisationUnitId: 0,
+    //           postalCode: "string",
+    //           stateId: 0,
+    //         },
+    //         contactPoint: {
+    //           type: "string",
+    //           value: "string",
+    //         },
+    //         firstName: "string",
+    //         genderId: 0,
+    //         otherName: "string",
+    //         relationshipId: 0,
+    //         surname: "string",
+    //       },
+    //     ],
+    //     contactPoint: [
+    //       {
+    //         type: "string",
+    //         value: "string",
+    //       },
+    //     ],
+    //     dateOfBirth: values.dateOfBirth,
+    //     active: true,
+    //     address: [
+    //       {
+    //         city: "",
+    //         countryId: Number(values.countryId),
+    //         district: "",
+    //         line: [],
+    //         organisationUnitId: 0,
+    //         postalCode: "",
+    //         stateId: Number(values.stateId),
+    //       },
+    //     ],
+    //     age: calculate_age(values.dateOfBirth),
+    //     // stateId: values.stateId,
+    //     educationId: Number(values.educationId),
+    //     employmentStatusId: Number(values.employmentStatusId),
+    //     maritalStatusId: Number(values.maritalStatusId),
+    //     isDateOfBirthEstimated:
+    //       values.isDateOfBirthEstimated === "true" ? true : false,
+    //     ninNumber: values.ninNumber,
+    //     surname: values.surname,
+    //     firstName: values.firstName,
+    //     otherName: values.otherName,
+    //     sexId: Number(values.sexId),
+    //     genderId: Number(values.sexId),
+    //     organizationId: 0,
+    //   },
+    // };
     setCookie("hepatitis1", values, 1);
     setCookie("heaptitis1PayloadValue", restructuredEnrolmentPayload, 1);
 
@@ -407,13 +519,31 @@ const ViralHepatitisForm1 = ({ setStep }) => {
     }
   };
 
+  const PregnancyStatus = () => {
+    axios
+      .get(`${apiUrl}application-codesets/v2/PREGNANCY_STATUS`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        //console.log(response.data);
+        setPregnancyStatus(response.data);
+      })
+      .catch((error) => {
+        //console.log(error);
+      });
+  };
+
   useEffect(() => {
     castCookieValueToForm();
     sexCodeset();
+    PregnancyStatus();
+    CareEntryPoint();
+    SourceReferral();
     loadMaritalStatus();
     loadTopLevelCountry();
     loadRelationships();
     loadOrganisationUnitsByParentId();
+    EnrollmentSetting();
     loadEducation();
     getProvinces();
     setStateByCountryId();
@@ -607,31 +737,7 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                           )}
                         </FormGroup>
                       </div> */}
-                      {/* <div className="form-group mb-3 col-md-4">
-                        <FormGroup>
-                          <Label for="landmark">Landmark </Label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            name="landmark"
-                            id="landmark"
-                            value={formik.values.landmark}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            style={{
-                              border: "1px solid #014D88",
-                              borderRadius: "0.2rem",
-                            }}
-                          />
-                          {formik.errors.landmark !== "" ? (
-                            <span className={classes.error}>
-                              {formik.errors.landmark}
-                            </span>
-                          ) : (
-                            ""
-                          )}
-                        </FormGroup>
-                      </div> */}
+
                       <div className="form-group mb-3 col-md-4">
                         <FormGroup>
                           <Label for="countryId">
@@ -693,6 +799,32 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                           {formik.errors.stateId !== "" ? (
                             <span className={classes.error}>
                               {formik.errors.stateId}
+                            </span>
+                          ) : (
+                            ""
+                          )}
+                        </FormGroup>
+                      </div>
+
+                      <div className="form-group mb-3 col-md-4">
+                        <FormGroup>
+                          <Label for="landmark">Landmark </Label>
+                          <input
+                            className="form-control"
+                            type="text"
+                            name="landmark"
+                            id="landmark"
+                            value={formik.values.landmark}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            style={{
+                              border: "1px solid #014D88",
+                              borderRadius: "0.2rem",
+                            }}
+                          />
+                          {formik.errors.landmark !== "" ? (
+                            <span className={classes.error}>
+                              {formik.errors.landmark}
                             </span>
                           ) : (
                             ""
@@ -1039,9 +1171,8 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                           Core entry point
                           <span style={{ color: "red" }}> *</span>{" "}
                         </Label>
-                        <input
+                        <select
                           className="form-control"
-                          type="text"
                           name="coreEntryPoint"
                           id="coreEntryPoint"
                           value={formik.values.coreEntryPoint}
@@ -1051,7 +1182,14 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                             border: "1px solid #014D88",
                             borderRadius: "0.2rem",
                           }}
-                        />
+                        >
+                          <option value=""> </option>
+                          {carePoints.map((value) => (
+                            <option key={value.id} value={value.id}>
+                              {value.display}
+                            </option>
+                          ))}
+                        </select>
                         {formik.errors.coreEntryPoint !== "" ? (
                           <span className={classes.error}>
                             {formik.errors.coreEntryPoint}
@@ -1109,9 +1247,12 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                             borderRadius: "0.2rem",
                           }}
                         >
-                          <option value="">Select</option>
-                          <option value={"YES"}>Yes</option>
-                          <option value={"NO"}>No</option>
+                          <option value="">Select </option>
+                          {pregnancyStatus.map((value) => (
+                            <option key={value.id} value={value.id}>
+                              {value.display}
+                            </option>
+                          ))}
                         </select>
                         {formik.errors.pregnancy !== "" ? (
                           <span className={classes.error}>
