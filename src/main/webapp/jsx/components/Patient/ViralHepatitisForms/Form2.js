@@ -96,8 +96,55 @@ const useStyles = makeStyles((theme) => ({
 const ViralHepatitisForm2 = ({ setStep }) => {
   const onSubmitHandler = (values) => {
     window.scrollTo(0, 0);
+    const restructuredDiagnosisPayload = {
+      hepatitisBTest: {
+        dateHbvTestRequested: values.dateHbvTestRequested,
+        dateHbvSampleRequested: values.dateHbvSampleRequested,
+        dateHbvDnaTestRequested: values.dateHbvDnaTestRequested,
+        stagingDateOfLiverBiopsy: values.stagingDateOfLiverBiopsy,
+        hbvDna: values.hbvDna,
+        hvbDnaValue: values.hvbDnaValue,
+        hbsAgQuantification: values.hbsAgQuantification,
+        ctScan: values.ctScan,
+        albumin: values.albumin,
+        hbeAG: values.hbeAG,
+        antiHDV: values.antiHDV,
+        treatmentEligible: values.treatmentEligible,
+        pmtctEligible: values.pmtctEligible,
+        comment: values.comment,
+      },
+      hepatitisCTest: {
+        hcvRNA: values.hcvRNA,
+        hcRnaValue: values.hcRnaValue,
+        hepatitisCoinfection: values.hepatitisCoinfection,
+        commobidities: values.commobidities,
+        multipleInfection: values.multipleInfection,
+      },
+      clinicalParameters: {
+        ast: values.ast,
+        alt: values.alt,
+        pst: values.plt,
+        astValue: values.astValue,
+        totalBiliRubin: values.totalBiliRubin,
+        directBiliribin: values.directBiliribin,
+        apriScore: "",
+        fib4: values.fib4,
+        prothrombinTimeNR: "",
+        urea: values.urea,
+        creatinine: values.creatinine,
+        afp: values.afp,
+        fibroscan: values.fibroscan,
+        ultrasoundScan: values.ultrasoundScan,
+        ascites: values.ascites,
+        severityOfAscites: values.severityOfAscites,
+        gradeOfEncephalopathy: values.gradeOfEncephalopathy,
+        childPughScore: values.childPughScore,
+        liverBiopsyStage: values.liverBiopsyStage,
+        diagnosis_result: values.diagnosis_result,
+      },
+    };
     setCookie("hepatitis2", values, 1);
-    console.log(values);
+    setCookie("heaptitis2PayloadValue", restructuredDiagnosisPayload, 1);
     setStep(2);
   };
   const moveBack = () => {
@@ -106,7 +153,6 @@ const ViralHepatitisForm2 = ({ setStep }) => {
   };
   const classes = useStyles();
   const { formik } = useValidateForm2ValuesHook(onSubmitHandler);
-  console.log(formik.errors);
 
   const castCookieValueToForm = () => {
     const cookieValue = getCookie("hepatitis2");
@@ -189,9 +235,6 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                         style={{ padding: "0 50px 0 50px" }}
                       >
                         <div className="row">
-                         
-                          
-
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
                               <Label for="dateHbvDnaTestRequested">
@@ -223,16 +266,16 @@ const ViralHepatitisForm2 = ({ setStep }) => {
 
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
-                              <Label for="dateHbvSampleCollected">
-                                Date HBV sample Requested{" "}
+                              <Label for="dateHbvTestRequested">
+                                Date HBV test requested{" "}
                                 <span style={{ color: "red" }}> *</span>{" "}
                               </Label>
                               <input
                                 className="form-control"
                                 type="date"
-                                name="dateHbvSampleCollected"
-                                id="dateHbvSampleCollected"
-                                value={formik.values.dateHbvSampleCollected}
+                                name="dateHbvTestRequested"
+                                id="dateHbvTestRequested"
+                                value={formik.values.dateHbvTestRequested}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                                 style={{
@@ -240,9 +283,38 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                                   borderRadius: "0.2rem",
                                 }}
                               />
-                              {formik.errors.dateHbvSampleCollected !== "" ? (
+                              {formik.errors.dateHbvTestRequested !== "" ? (
                                 <span className={classes.error}>
-                                  {formik.errors.dateHbvSampleCollected}
+                                  {formik.errors.dateHbvTestRequested}
+                                </span>
+                              ) : (
+                                ""
+                              )}
+                            </FormGroup>
+                          </div>
+
+                          <div className="form-group mb-3 col-md-4">
+                            <FormGroup>
+                              <Label for="dateHbvSampleRequested">
+                                Date HBV sample Requested{" "}
+                                <span style={{ color: "red" }}> *</span>{" "}
+                              </Label>
+                              <input
+                                className="form-control"
+                                type="date"
+                                name="dateHbvSampleRequested"
+                                id="dateHbvSampleRequested"
+                                value={formik.values.dateHbvSampleRequested}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                style={{
+                                  border: "1px solid #014D88",
+                                  borderRadius: "0.2rem",
+                                }}
+                              />
+                              {formik.errors.dateHbvSampleRequested !== "" ? (
+                                <span className={classes.error}>
+                                  {formik.errors.dateHbvSampleRequested}
                                 </span>
                               ) : (
                                 ""
@@ -296,8 +368,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                                   borderRadius: "0.2rem",
                                 }}
                               />
-                              {formik.errors.stagingDateOfLiverBiopsy !==
-                              "" ? (
+                              {formik.errors.stagingDateOfLiverBiopsy !== "" ? (
                                 <span className={classes.error}>
                                   {formik.errors.stagingDateOfLiverBiopsy}
                                 </span>
@@ -319,6 +390,9 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                                     type="radio"
                                     value="DETECTED"
                                     name="hbvDna"
+                                    checked={
+                                      formik?.values?.hbvDna === "DETECTED"
+                                    }
                                     onBlur={formik.handleBlur}
                                     onChange={formik.handleChange}
                                     style={{
@@ -335,6 +409,9 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                                     type="radio"
                                     value="UNDETECTED"
                                     name="hbvDna"
+                                    checked={
+                                      formik?.values?.hbvDna === "UNDETECTED"
+                                    }
                                     onBlur={formik.handleBlur}
                                     onChange={formik.handleChange}
                                     style={{
@@ -556,8 +633,6 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                               )}
                             </FormGroup>
                           </div>
-
-                         
 
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
@@ -805,8 +880,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                                   borderRadius: "0.2rem",
                                 }}
                               />
-                              {formik.errors.multipleInfection !==
-                              "" ? (
+                              {formik.errors.multipleInfection !== "" ? (
                                 <span className={classes.error}>
                                   {formik.errors.multipleInfection}
                                 </span>
@@ -1061,7 +1135,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                         )}
                       </FormGroup>
                     </div>
-                    
+
                     <div className="form-group mb-3 col-md-4">
                       <FormGroup>
                         <Label for="apriScore">APRI score </Label>

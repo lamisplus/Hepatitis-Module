@@ -110,6 +110,7 @@ const postDataWithToken = async (data, key) => {
     return response.data;
   } catch (error) {
     // Handle any errors that occurred during the request
+    toast.error("Enrolment failed");
     console.error("Error posting data:", error.message);
     throw error;
   }
@@ -151,37 +152,15 @@ const ViralHepatitisForm3 = ({ setStep }) => {
     const treatmentExtracted = convertStringBooleanValues(treatment);
     const enrolmentExtracted = convertStringBooleanValues(enrolment);
 
-    const restructuredEnrolmentPayload = {
-      personId: enrolmentExtracted.personId,
-      coreEntryPoint: enrolmentExtracted.coreEntryPoint,
-      pregnancy: enrolmentExtracted.pregnancy,
-      weight: enrolmentExtracted.weight,
-      height: enrolmentExtracted.height,
-      bmi: enrolmentExtracted.bmi,
-      hepatitisB: enrolmentExtracted.hepatitisB,
-      breastfeeding: enrolmentExtracted.breastfeeding,
-      historyOfUsingAbusedSubstance:
-        enrolmentExtracted.historyOfUsingAbusedSubstance,
-      screening: {
-        dateOfFirstHepatitisBPositiveScreening:
-          enrolmentExtracted.dateOfFirstHepatitisBPositiveScreening,
-        hepatitisC: enrolmentExtracted.hepatitisC,
-      },
-    };
+    const restructuredTreatmentPayload = {
+    
+    }
 
-    postDataWithToken(restructuredEnrolmentPayload, "hepatitis/diagnosis")
-      .then((responseData) => {
-        toast.success("Diagnosis successful");
-        console.log(responseData)
-        // deleteCookie("hepatitis1");
-        // deleteCookie("hepatitis2");
-        // deleteCookie("hepatitis3");
-        // setStep(0);
-      })
-      .catch((error) => {
-        toast.error("enrolment failed");
-      });
+    setCookie("heaptitis2PayloadValue", restructuredTreatmentPayload, 1);
+
   };
+
+
   const moveBack = () => {
     window.scrollTo(0, 0);
     setStep(1);
@@ -193,7 +172,6 @@ const ViralHepatitisForm3 = ({ setStep }) => {
   const castCookieValueToForm = () => {
     const cookieValue = getCookie("hepatitis3");
     if (cookieValue) {
-      // convertStringBooleanValues(cookieValue)
       formik.setValues(cookieValue);
     }
   };
