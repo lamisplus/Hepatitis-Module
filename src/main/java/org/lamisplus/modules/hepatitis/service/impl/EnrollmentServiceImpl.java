@@ -2,10 +2,14 @@ package org.lamisplus.modules.hepatitis.service.impl;
 
 
 
+import org.apache.commons.lang3.StringUtils;
 import org.lamisplus.modules.base.controller.apierror.EntityNotFoundException;
+import org.lamisplus.modules.base.controller.apierror.IllegalTypeException;
+import org.lamisplus.modules.base.controller.apierror.RecordExistException;
 import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisDiagnosisDto;
 import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisEnrollmentDto;
 import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisTreatmentDto;
+import org.lamisplus.modules.hepatitis.domain.dto.response.HepatitisEnrollmentPatientDTO;
 import org.lamisplus.modules.hepatitis.domain.entity.HepatitisDiagnosis;
 import org.lamisplus.modules.hepatitis.domain.entity.HepatitisEnrollment;
 import org.lamisplus.modules.hepatitis.domain.entity.HepatitisTreatment;
@@ -26,7 +30,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -77,43 +83,48 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 
     @Override
     public ResponseEntity<String> hepatitisDiagnosis(HepatitisDiagnosisDto diagnosisDto) {
-        if(diagnosisDto == null) throw new IllegalArgumentException("Please fill in the required fields");
+        if(diagnosisDto == null) throw new IllegalTypeException(EnrollmentServiceImpl.class, "Please fill in the required fields");
         String enrollmentId = diagnosisDto.getEnrollmentUuid();
-        HepatitisEnrollment enrollment = enrollmentRepository.findByUuid(enrollmentId == null ? "noId" : enrollmentId)
-                .orElseThrow(() -> new EntityNotFoundException(HepatitisDiagnosis.class, "Enrolled patient has no existing record"));
+        log.info("EnrollmentId: " + enrollmentId);
+        if(StringUtils.isBlank(enrollmentId)) throw new IllegalTypeException(EnrollmentServiceImpl.class,"Please enrollmentId can not be null");
+        HepatitisEnrollment enrollment = getHepatitisEnrollment(enrollmentId);
         HepatitisDiagnosis hepatitisDiagnosis = mapper.mapToDiagnosis(diagnosisDto);
-
-        if(!diagnosisRepository.existsByHepatitisEnrollment_Uuid(enrollment.getUuid())) {
-            throw new AlreadyExistException("Duplicate Enrollment: You have already enrolled for treatment");
+        log.info("I am here 1");
+        if(diagnosisRepository.existsByHepatitisEnrollment_Uuid(enrollment.getUuid())) {
+            throw new RecordExistException(HepatitisEnrollment.class, "uuid",
+                    enrollment.getUuid()+" Duplicate Enrollment: You have already enrolled for treatment");
         }
-
         hepatitisDiagnosis.setHepatitisEnrollment(enrollment);
         hepatitisDiagnosis.setFacilityId(enrollment.getFacilityId());
-
         diagnosisRepository.save(hepatitisDiagnosis);
         return ResponseEntity.status(201).body("Diagnosis saved");
     }
+    private HepatitisEnrollment getHepatitisEnrollment(String enrollmentId) {
+        return enrollmentRepository
+                .findByUuid(enrollmentId)
+                .orElseThrow(() -> new EntityNotFoundException(HepatitisEnrollment.class, "uuid",  enrollmentId +" Enrolled patient has no existing record"));
+    }
+    
     @Override
     public ResponseEntity<String> hepatitisTreatment(HepatitisTreatmentDto treatmentDto) {
-        if(treatmentDto == null) throw new IllegalArgumentException("Please fill in the required fields");
+        if(treatmentDto == null) throw new IllegalTypeException(EnrollmentServiceImpl.class,"empty values", "Please fill in the required fields");
         String enrollmentId = treatmentDto.getEnrollmentUuid();
-        HepatitisEnrollment enrollment = enrollmentRepository.findByUuid(enrollmentId == null ? "noId" : enrollmentId)
-                .orElseThrow(() -> new EntityNotFoundException(HepatitisTreatment.class, "Enrolled patient has no existing record"));
+        log.info("EnrollmentId: " + enrollmentId);
+        HepatitisEnrollment enrollment = getHepatitisEnrollment(enrollmentId);
         HepatitisTreatment hepatitisTreatment =  mapper.mapToTreatment(treatmentDto);
-
-        if(!treatmentRepository.existsByHepatitisEnrollment_Uuid(enrollment.getUuid())) {
-            throw new AlreadyExistException("Duplicate Enrollment: You have already enrolled for treatment");
+        if(treatmentRepository.existsByHepatitisEnrollment_Uuid(enrollment.getUuid())) {
+            throw new RecordExistException(HepatitisTreatment.class, "uuid",
+                    enrollment.getUuid()+" Duplicate Enrollment: You have already enrolled for treatment");
         }
-
         hepatitisTreatment.setHepatitisEnrollment(enrollment);
         hepatitisTreatment.setFacilityId(enrollment.getFacilityId());
-
         treatmentRepository.save(hepatitisTreatment);
         return ResponseEntity.status(200).body("Treatment saved");
     }
 
     @Override
-    public ResponseEntity<?> getAllHepatitisEnrollments() {
-        return null;
+    public List<HepatitisEnrollmentPatientDTO> getAllHepatitisEnrollments() {
+        long facilityId = currentUserOrganizationService.getCurrentUserOrganization();
+        return enrollmentRepository.getEnrolledPatientsByFacility(facilityId);
     }
 }

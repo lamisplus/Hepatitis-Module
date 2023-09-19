@@ -3,6 +3,8 @@ package org.lamisplus.modules.hepatitis.controller;
 import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisDiagnosisDto;
 import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisEnrollmentDto;
 import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisTreatmentDto;
+import org.lamisplus.modules.hepatitis.domain.dto.response.HepatitisEnrollmentPatientDTO;
+import org.lamisplus.modules.hepatitis.domain.entity.HepatitisEnrollment;
 import org.lamisplus.modules.hepatitis.service.EnrollmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 
 
@@ -38,7 +41,7 @@ public class EnrollmentController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllEnrollments() {
-        return enrollmentService.getAllHepatitisEnrollments();
+    public ResponseEntity<List<HepatitisEnrollmentPatientDTO>> getAllEnrollments() {
+        return ResponseEntity.ok(enrollmentService.getAllHepatitisEnrollments());
     }
 }

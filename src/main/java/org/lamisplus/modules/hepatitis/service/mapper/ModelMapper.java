@@ -80,6 +80,7 @@ public class ModelMapper {
                 .historyOfUsingAbusedSubstance(historyOfUsingAbusedSubstanceEnum)
                 .screening(screeningNode)
                 .build();
+        hepatitisEnrollment.setArchived(0);
         hepatitisEnrollment.setUuid(UUID.randomUUID().toString());
 
         return hepatitisEnrollment;
@@ -114,7 +115,7 @@ public class ModelMapper {
                 .clinicalParameters(clinicalParametersNode)
                 .build();
         hepatitisDiagnosis.setUuid(UUID.randomUUID().toString());
-
+        hepatitisDiagnosis.setArchived(0);
         return hepatitisDiagnosis;
     }
 
@@ -138,7 +139,7 @@ public class ModelMapper {
                 .hepatitisCTreatmentDto(hepatitisCNode)
                 .build();
         hepatitisTreatment.setUuid(UUID.randomUUID().toString());
-
+        hepatitisTreatment.setArchived(0);
         return hepatitisTreatment;
     }
 }
