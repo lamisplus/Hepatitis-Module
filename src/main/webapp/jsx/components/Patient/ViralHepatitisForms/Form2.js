@@ -20,6 +20,10 @@ import { Collapse, IconButton } from "@material-ui/core";
 import { ArrowForward, ExpandMore as ExpandMoreIcon } from "@material-ui/icons";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { getCookie, setCookie } from "../../../helpers/cookieStoragehelpers";
+import axios from "axios";
+import { url as apiUrl, token } from "../../../../api";
+import { toast } from "react-toastify";
+
 
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
@@ -94,9 +98,31 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ViralHepatitisForm2 = ({ setStep }) => {
+
+  const postDataWithToken = async (data, key) => {
+    try {
+      const response = await axios.post(`${apiUrl}${key}`, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      console.log("Post successful:", response.data);
+      toast.success("Diagnosis submitted successfully");
+      setStep(2);
+      return response.data;
+    } catch (error) {
+      toast.error("Diagnosis failed");
+      console.error("Error posting data:", error.message);
+      throw error;
+    }
+  };
+
   const onSubmitHandler = (values) => {
     window.scrollTo(0, 0);
+    const enrollmentIds = getCookie("enrollmentIds")
     const restructuredDiagnosisPayload = {
+      enrollmentUuid: enrollmentIds?.enrollmentUuid,
       hepatitisBTest: {
         dateHbvTestRequested: values.dateHbvTestRequested,
         dateHbvSampleRequested: values.dateHbvSampleRequested,
@@ -127,9 +153,9 @@ const ViralHepatitisForm2 = ({ setStep }) => {
         astValue: values.astValue,
         totalBiliRubin: values.totalBiliRubin,
         directBiliribin: values.directBiliribin,
-        apriScore: "",
+        apriScore: values.apriScore,
         fib4: values.fib4,
-        prothrombinTimeNR: "",
+        prothrombinTimeNR: values.prothrombinTimeNR,
         urea: values.urea,
         creatinine: values.creatinine,
         afp: values.afp,
@@ -145,8 +171,10 @@ const ViralHepatitisForm2 = ({ setStep }) => {
     };
     setCookie("hepatitis2", values, 1);
     setCookie("heaptitis2PayloadValue", restructuredDiagnosisPayload, 1);
-    setStep(2);
+    postDataWithToken(restructuredDiagnosisPayload, "hepatitis/diagnosis");
   };
+
+
   const moveBack = () => {
     window.scrollTo(0, 0);
     setStep(0);
@@ -1479,22 +1507,19 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                           }}
                         >
                           <option value={""}>Select</option>
-                          <option value={"F0__NO_FIBROSIS"}>
+                          <option value={"FIBROSIS"}>
+                            {" "}
+                            Fibrosis
+                          </option>
+                          <option value={"CIRRHOSIS"}>
+                            Cirrhosis
+                          </option>
+                          <option value={"NO_FIBROSIS"}>
                             {" "}
                             No Fibrosis
                           </option>
-                          <option value={"F1__MILD_FIBROSIS"}>
-                            Mild Fibrosis
-                          </option>
-                          <option value={"F2__MODERATE_FIBROSIS"}>
-                            Moderate Fibrosis
-                          </option>
-                          <option value={"F3__SEVERE_FIBROSIS"}>
-                            {" "}
-                            Severe Fibrosis
-                          </option>
-                          <option value={"F4__CIRRHOSIS"}>Cirrhosis</option>
-                          <option value={"NOT_DONE"}>Not done</option>
+                          {/* <option value={"CIRRHOSIS"}>Cirrhosis</option> */}
+                          <option value={"HIGH_CC"}>High CC </option>
                         </select>
                         {formik.errors.liverBiopsyStage !== "" ? (
                           <span className={classes.error}>

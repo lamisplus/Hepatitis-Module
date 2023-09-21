@@ -106,11 +106,19 @@ const postDataWithToken = async (data, key) => {
     });
     // Handle the response if needed
     console.log("Post successful:", response.data);
-    toast.success("Enrolment submitted successfully");
+    toast.success("Treatment submitted successfully");
+    deleteCookie("heaptitis3PayloadValue")
+    deleteCookie("hepatitis3")
+    deleteCookie("enrollmentIds")
+    deleteCookie("hepatitis2")
+    deleteCookie("heaptitis2PayloadValue")
+    deleteCookie("hepatitis1")
+    deleteCookie("heaptitis1PayloadValue")
+    setStep(0)
     return response.data;
   } catch (error) {
     // Handle any errors that occurred during the request
-    toast.error("Enrolment failed");
+    toast.error("Treatment failed");
     console.error("Error posting data:", error.message);
     throw error;
   }
@@ -141,25 +149,86 @@ function convertStringBooleanValues(originalObj) {
 
   return newObj;
 }
+
+function formatDate(inputDate) {
+  // Split the input date string into an array
+  var dateArray = inputDate.split('-');
+
+  // Check if the input date is in the correct format (yyyy-mm-dd)
+  if (dateArray.length !== 3) {
+    return 'Invalid date format';
+  }
+
+  // Extract the year, month, and day from the array
+  var year = dateArray[0];
+  var month = dateArray[1];
+  var day = dateArray[2];
+
+  // Create a new date string in the "dd-mm-yyyy" format
+  var newDateFormat = day + '-' + month + '-' + year;
+
+  return newDateFormat;
+}
+
 const ViralHepatitisForm3 = ({ setStep }) => {
   const onSubmitHandler = (values) => {
+    console.log(values.hbvDateStarted);
     setCookie("hepatitis3", values, 1);
-    const enrolment = getCookie("hepatitis1");
-    const diagnosis = getCookie("hepatitis2");
-    const treatment = getCookie("hepatitis3");
-
-    const diagnosisExtracted = convertStringBooleanValues(diagnosis);
-    const treatmentExtracted = convertStringBooleanValues(treatment);
-    const enrolmentExtracted = convertStringBooleanValues(enrolment);
-
+    const enrollmentIds = getCookie("enrollmentIds");
     const restructuredTreatmentPayload = {
-    
-    }
+      enrollmentUuid: enrollmentIds?.enrollmentUuid,
+      hepatitisBTreatment: {
+        dateStarted: formatDate(values.hbvDateStarted),
+        dateStopped: formatDate(values.hbvDateStopped),
+        hbvPastTreatmentRegimen: values.hbvPastTreatmentRegimen,
+        hepatitisBRegimenSwitch: {
+          adverseEffectReported: values.hbvAdverseEffectReported,
+          dateStarted: formatDate(values.hbvRegimeSwitchDateStarted),
+          dateStopped: formatDate(values.hbvRegimeSwitchDateStopped),
+          newRegime: values.hbvRegimeSwitchNewRegimen,
+          reasonForSwitch: values.hbvRegimeSwitchReason,
+        },
+        historyOfAdverseEffect: values.hbvHistoryOfAdverseEffect,
+        newRegimen: values.hbvNewRegimen,
+        reasonForHepatitisBTreatment: {
+          comment: values.hbvReasonsForTreatmentComment,
+          reasonsForTreatment: values.hbvReasonForTreatmentEligibility,
+        },
+        treatmentExperience: values.hbvTreatmentExperience,
+      },
+      hepatitisCTreatment: {
+        adverseEffectReported: values.hcvAdverseEventReported,
+        dateCompleted: formatDate(values.hcvDateCompleted),
+        dateStarted: formatDate(values.hcvDateStarted),
+        dateStopped: formatDate(values.hcvDateStopped),
+        hbvPastTreatmentRegimen: values.hbvPastTreatmentRegimenForHcv,
+        hcvRetreatment: {
+          dateStarted: formatDate(values.hcvRetreatmentDateStarted),
+          dateStopped: formatDate(values.hcvRetreatmentDateStopped),
+          hbvPastTreatmentRegimen: values.hbvPastTreatmentRegimenForHcv,
+          history_of_AdverseEffect: values.hcvRetreatmentHistoryOfAdverseEffect,
+          newRegimen: values.hcvRetreatmentNewRegimen,
+          prescribedDuration: values.hcvRetreatmentPrescribedDuration,
+          retreatmentAdverseEffect: values.hcvRetreatmentAdverseEffect,
+        },
+        hepatitisSvr12Testing: {
+          dateTested: formatDate(values.svr12TestingDateStarted),
+          hcvRNA: values.svr12TestingHcvRna,
+          hcvRNAValue: values.svr12TestingHcvRnaValue,
+          retreatmentDateTested: formatDate(values.svr12RetreatmentDateTested),
+          // retreatmentHcvRNA: "string",
+          // retreatmentHcvRNAValue: "string",
+        },
+        // pastTreatmentExperience: "string",
+        prescribedDuration: values.hcvRetreatmentPrescribedDuration,
+        treatmentExperience: values.hcvTreatmentExperience,
+      },
+    };
 
-    setCookie("heaptitis2PayloadValue", restructuredTreatmentPayload, 1);
-
+    setCookie("heaptitis3PayloadValue", restructuredTreatmentPayload, 1);
+    postDataWithToken(restructuredTreatmentPayload, "hepatitis/treatment");
+   
   };
-
 
   const moveBack = () => {
     window.scrollTo(0, 0);
@@ -559,17 +628,14 @@ const ViralHepatitisForm3 = ({ setStep }) => {
 
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
-                              <Label for="hbvRegimeSwitchHistoryOfAdverseEffect">
+                              <Label for="hbvAdverseEffectReported">
                                 Adverse effect reported
                               </Label>
                               <select
                                 className="form-control"
-                                name="hbvRegimeSwitchHistoryOfAdverseEffect"
-                                id="hbvRegimeSwitchHistoryOfAdverseEffect"
-                                value={
-                                  formik.values
-                                    .hbvRegimeSwitchHistoryOfAdverseEffect
-                                }
+                                name="hbvAdverseEffectReported"
+                                id="hbvAdverseEffectReported"
+                                value={formik.values.hbvAdverseEffectReported}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                                 style={{
@@ -581,14 +647,9 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                                 <option value={"YES"}>Yes</option>
                                 <option value={"NO"}>No</option>
                               </select>
-                              {formik.errors
-                                .hbvRegimeSwitchHistoryOfAdverseEffect !==
-                              "" ? (
+                              {formik.errors.hbvAdverseEffectReported !== "" ? (
                                 <span className={classes.error}>
-                                  {
-                                    formik.errors
-                                      .hbvRegimeSwitchHistoryOfAdverseEffect
-                                  }
+                                  {formik.errors.hbvAdverseEffectReported}
                                 </span>
                               ) : (
                                 ""
@@ -793,8 +854,8 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                               }}
                             >
                               <option value="">Select</option>
-                              <option value="yes">Yes</option>
-                              <option value="no">12 weeks</option>
+                              <option value="YES">Yes</option>
+                              <option value="NO">No</option>
                             </select>
                             {formik.errors.hcvAdverseEventReported !== "" ? (
                               <span className={classes.error}>
@@ -979,26 +1040,33 @@ const ViralHepatitisForm3 = ({ setStep }) => {
 
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
-                            <Label for="pastTreatmentExperience">
-                              Past treatment experience
+                            <Label for="hbvPastTreatmentRegimenForHcv">
+                              HBV past treatment regimen
                             </Label>
-                            <Input
+                            <select
                               type="text"
                               className="form-control"
-                              name="pastTreatmentExperience"
-                              id="pastTreatmentExperience"
-                              value={formik.values.pastTreatmentExperience}
+                              name="hbvPastTreatmentRegimenForHcv"
+                              id="hbvPastTreatmentRegimenForHcv"
+                              value={
+                                formik.values.hbvPastTreatmentRegimenForHcv
+                              }
                               onChange={formik.handleChange}
                               onBlur={formik.handleBlur}
                               style={{
                                 border: "1px solid #014D88",
                                 borderRadius: "0.2rem",
                               }}
-                            />
+                            >
+                              <option value={""}>Select</option>
+                              <option value={"YES"}>Yes</option>
+                              <option value={"NO"}>No</option>
+                            </select>
 
-                            {formik.errors.pastTreatmentExperience !== "" ? (
+                            {formik.errors.hbvPastTreatmentRegimenForHcv !==
+                            "" ? (
                               <span className={classes.error}>
-                                {formik.errors.pastTreatmentExperience}
+                                {formik.errors.hbvPastTreatmentRegimenForHcv}
                               </span>
                             ) : (
                               ""
@@ -1331,26 +1399,26 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                         <div className="row">
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
-                              <Label for="hcvRetreatmentNewRegime">
-                                New regime
+                              <Label for="hcvRetreatmentNewRegimen">
+                                New regimen
                               </Label>
                               <input
                                 className="form-control"
-                                name="hcvRetreatmentNewRegime"
-                                id="hcvRetreatmentNewRegime"
+                                name="hcvRetreatmentNewRegimen"
+                                id="hcvRetreatmentNewRegimen"
                                 type="text"
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
-                                value={formik.values.hcvRetreatmentNewRegime}
+                                value={formik.values.hcvRetreatmentNewRegimen}
                                 style={{
                                   border: "1px solid #014D88",
                                   borderRadius: "0.2rem",
                                 }}
                               />
 
-                              {formik.errors.hcvRetreatmentNewRegime !== "" ? (
+                              {formik.errors.hcvRetreatmentNewRegimen !== "" ? (
                                 <span className={classes.error}>
-                                  {formik.errors.hcvRetreatmentNewRegime}
+                                  {formik.errors.hcvRetreatmentNewRegimen}
                                 </span>
                               ) : (
                                 ""
@@ -1378,10 +1446,10 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                                   borderRadius: "0.2rem",
                                 }}
                               >
-                                <option value="">Select</option>
-                                <option value="8 weeks">8 weeks</option>
-                                <option value="12 weeks">12 weeks</option>
-                                <option value="24 weeks">24 weeks</option>
+                                <option value={0}>Select</option>
+                                <option value={8}>8 weeks</option>
+                                <option value={12}>12 weeks</option>
+                                <option value={24}>24 weeks</option>
                               </select>
                               {formik.errors
                                 .hcvRetreatmentPrescribedDuration !== "" ? (
@@ -1494,15 +1562,15 @@ const ViralHepatitisForm3 = ({ setStep }) => {
 
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
-                              <Label for="hcvHistoryOfAdverseEffect">
+                              <Label for="hcvRetreatmentHistoryOfAdverseEffect">
                                 History of adverse effect
                                 <span style={{ color: "red" }}> *</span>{" "}
                               </Label>
                               <select
                                 className="form-control"
-                                name="hcvHistoryOfAdverseEffect"
-                                id="hcvHistoryOfAdverseEffect"
-                                value={formik.values.hcvHistoryOfAdverseEffect}
+                                name="hcvRetreatmentHistoryOfAdverseEffect"
+                                id="hcvRetreatmentHistoryOfAdverseEffect"
+                                value={formik.values.hcvRetreatmentHistoryOfAdverseEffect}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                                 style={{
@@ -1514,10 +1582,10 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                                 <option value={"YES"}>Yes</option>
                                 <option value={"NO"}>No</option>
                               </select>
-                              {formik.errors.hcvHistoryOfAdverseEffect !==
+                              {formik.errors.hcvRetreatmentHistoryOfAdverseEffect !==
                               "" ? (
                                 <span className={classes.error}>
-                                  {formik.errors.hcvHistoryOfAdverseEffect}
+                                  {formik.errors.hcvRetreatmentHistoryOfAdverseEffect}
                                 </span>
                               ) : (
                                 ""
@@ -1525,34 +1593,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                             </FormGroup>
                           </div>
 
-                          <div className="form-group mb-3 col-md-4">
-                            <FormGroup>
-                              <Label for="hcvRetreatmentNewRegimen">
-                                New Regimen
-                              </Label>
-                              <input
-                                className="form-control"
-                                name="hcvRetreatmentNewRegimen"
-                                id="hcvRetreatmentNewRegimen"
-                                type="text"
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                value={formik.values.hcvRetreatmentNewRegimen}
-                                style={{
-                                  border: "1px solid #014D88",
-                                  borderRadius: "0.2rem",
-                                }}
-                              />
-
-                              {formik.errors.hcvRetreatmentNewRegimen !== "" ? (
-                                <span className={classes.error}>
-                                  {formik.errors.hcvRetreatmentNewRegimen}
-                                </span>
-                              ) : (
-                                ""
-                              )}
-                            </FormGroup>
-                          </div>
+                         
                         </div>
                       </div>
                     </Collapse>

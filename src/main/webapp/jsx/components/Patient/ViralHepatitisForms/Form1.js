@@ -95,25 +95,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const postDataWithToken = async (data, key) => {
-  try {
-    const response = await axios.post(`${apiUrl}${key}`, data, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
-    // Handle the response if needed
-    console.log("Post successful:", response.data);
-    toast.success("Enrolment submitted successfully");
-    return response.data;
-  } catch (error) {
-    // Handle any errors that occurred during the request
-    console.error("Error posting data:", error.message);
-    throw error;
-  }
-};
-
 const ViralHepatitisForm1 = ({ setStep }) => {
   const [basicInfo, setBasicInfo] = useState({
     active: true,
@@ -144,12 +125,6 @@ const ViralHepatitisForm1 = ({ setStep }) => {
     ninNumber: "",
   });
 
-  const [allContacts, setAllContacts] = useState([]);
-  const [saving, setSaving] = useState(false);
-  const [disabledAgeBaseOnAge, setDisabledAgeBaseOnAge] = useState(false);
-  const [ageDisabled, setAgeDisabled] = useState(true);
-  const [showRelative, setShowRelative] = useState(false);
-  const [patientFacilityId, setPatientFacilityId] = useState(null);
   const [genders, setGenders] = useState([]);
   const [maritalStatusOptions, setMaritalStatusOptions] = useState([]);
   const [educationOptions, setEducationOptions] = useState([]);
@@ -353,6 +328,15 @@ const ViralHepatitisForm1 = ({ setStep }) => {
       // Handle the response if needed
       console.log("Post successful:", response.data);
       toast.success("Enrolment submitted successfully");
+      setCookie(
+        "enrollmentIds",
+        {
+          enrollmentId: response.data?.enrollmentId,
+          enrollmentUuid: response.data?.enrollmentUuid,
+        },
+        1
+      );
+      setStep(1);
       return response.data;
     } catch (error) {
       // Handle any errors that occurred during the request
@@ -367,145 +351,52 @@ const ViralHepatitisForm1 = ({ setStep }) => {
     const restructuredEnrolmentPayload = {
       bmi: values.weight / values.height,
       breastfeeding: values.breastfeeding,
-      coreEntryPoint: "DF",
+      coreEntryPoint: values.coreEntryPoint,
       height: values.height,
-      hepatitisB: "string",
+      hepatitisB: values.hepatitisB,
       historyOfUsingAbusedSubstance: values.historyOfUsingAbusedSubstance,
+
       personDto: {
         active: true,
         address: [
           {
-            city: "Kano",
-            countryId: 40,
-            district: "string",
-            line: ["string"],
-            postalCode: "string",
-            stateId: 0,
+            countryId: values.countryId,
+            stateId: values.stateId,
           },
         ],
-        contact: [
+        dateOfBirth: values.dateOfBirth,
+        dateOfRegistration: values.dateOfRegistration,
+        educationId: values.educationId,
+        employmentStatusId: values.employmentStatusId,
+        firstName: values.firstName,
+        genderId: values.sexId,
+        identifier: [
           {
-            address: {
-              city: "string",
-              countryId: 3,
-              district: "string",
-              line: ["string"],
-              organisationUnitId: 0,
-              postalCode: "string",
-              stateId: 0,
-            },
-            contactPoint: { type: "string", value: "string" },
-            firstName: "James",
-            genderId: null,
-            otherName: "Milner",
-            relationshipId: 0,
-            surname: "string",
+            assignerId: 0,
+            type: "string",
+            value: "string",
           },
         ],
-        contactPoint: [{ type: "string", value: "string" }],
-        dateOfBirth: "2021-02-05",
-        dateOfRegistration: "2021-02-03",
-        deceased: true,
-        deceasedDateTime: "2023-09-07T14:58:21.006Z",
-        educationId: null,
-        employmentStatusId: null,
-        emrId: "string",
-        facilityId: 1456,
-        firstName: "string",
-        genderId: null,
-        id: 0,
-        identifier: [{ assignerId: 0, type: "string", value: "string" }],
-        isDateOfBirthEstimated: true,
-        maritalStatusId: null,
-        ninNumber: "string",
+        isDateOfBirthEstimated:
+          values.isDateOfBirthEstimated === "true" ? true : false,
+        maritalStatusId: values.maritalStatusId,
+        ninNumber: values.ninNumber,
         organizationId: 0,
-        otherName: "string",
-        sexId: 377,
-        surname: "string",
-        uuid: "string",
+        otherName: values.otherName,
+        sexId: values.sexId,
+        surname: values.surname,
       },
       pregnancy: values.pregnancy,
       screening: {
-        dateOfFirstHepatitisBPositiveScreening: "2020-08-23",
-        hepatitisC: null,
+        dateOfFirstHepatitisBPositiveScreening:
+          values.dateOfFirstHepatitisBPositiveScreening,
+        hepatitisC: values.hepatitisC,
       },
       weight: values.weight,
     };
-    //{
-    //   coreEntryPoint: values.coreEntryPoint,
-    //   pregnancy: values.pregnancy,
-    //   weight: values.weight,
-    //   height: values.height,
-    //   bmi: values.weight / values.height,
-    //   hepatitisB: values.hepatitisB,
-    //   breastfeeding: values.breastfeeding,
-    //   historyOfUsingAbusedSubstance: values.historyOfUsingAbusedSubstance,
-    //   screening: {
-    //     dateOfFirstHepatitisBPositiveScreening:
-    //       values.dateOfFirstHepatitisBPositiveScreening,
-    //     hepatitisC: values.hepatitisC,
-    //   },
-    //   personDto: {
-    //     contact: [
-    //       {
-    //         address: {
-    //           city: "string",
-    //           countryId: 0,
-    //           district: "string",
-    //           line: ["string"],
-    //           organisationUnitId: 0,
-    //           postalCode: "string",
-    //           stateId: 0,
-    //         },
-    //         contactPoint: {
-    //           type: "string",
-    //           value: "string",
-    //         },
-    //         firstName: "string",
-    //         genderId: 0,
-    //         otherName: "string",
-    //         relationshipId: 0,
-    //         surname: "string",
-    //       },
-    //     ],
-    //     contactPoint: [
-    //       {
-    //         type: "string",
-    //         value: "string",
-    //       },
-    //     ],
-    //     dateOfBirth: values.dateOfBirth,
-    //     active: true,
-    //     address: [
-    //       {
-    //         city: "",
-    //         countryId: Number(values.countryId),
-    //         district: "",
-    //         line: [],
-    //         organisationUnitId: 0,
-    //         postalCode: "",
-    //         stateId: Number(values.stateId),
-    //       },
-    //     ],
-    //     age: calculate_age(values.dateOfBirth),
-    //     // stateId: values.stateId,
-    //     educationId: Number(values.educationId),
-    //     employmentStatusId: Number(values.employmentStatusId),
-    //     maritalStatusId: Number(values.maritalStatusId),
-    //     isDateOfBirthEstimated:
-    //       values.isDateOfBirthEstimated === "true" ? true : false,
-    //     ninNumber: values.ninNumber,
-    //     surname: values.surname,
-    //     firstName: values.firstName,
-    //     otherName: values.otherName,
-    //     sexId: Number(values.sexId),
-    //     genderId: Number(values.sexId),
-    //     organizationId: 0,
-    //   },
-    // };
+
     setCookie("hepatitis1", values, 1);
     setCookie("heaptitis1PayloadValue", restructuredEnrolmentPayload, 1);
-
     postDataWithToken(restructuredEnrolmentPayload, "hepatitis/enrollment");
     // setStep(1);
   };
@@ -1248,11 +1139,13 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                           }}
                         >
                           <option value="">Select </option>
-                          {pregnancyStatus.map((value) => (
+                          <option value="NO">No </option>
+                          <option value="YES">Yes </option>
+                          {/* {pregnancyStatus.map((value) => (
                             <option key={value.id} value={value.id}>
                               {value.display}
                             </option>
-                          ))}
+                          ))} */}
                         </select>
                         {formik.errors.pregnancy !== "" ? (
                           <span className={classes.error}>
