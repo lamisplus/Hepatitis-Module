@@ -14,7 +14,7 @@ export function setCookie(name, value, daysToExpire) {
     cookieValue += ";expires=" + expirationDate.toUTCString() + ";path=/";
   
     document.cookie = cookieValue;
-  }
+}
   
   export function getCookie(name) {
     const decodedCookie = decodeURIComponent(document.cookie);
@@ -40,5 +40,5 @@ export function setCookie(name, value, daysToExpire) {
     }
   
     return null;
-  }
+}
   

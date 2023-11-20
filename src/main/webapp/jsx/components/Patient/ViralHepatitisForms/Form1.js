@@ -17,6 +17,12 @@ import "react-widgets/dist/css/react-widgets.css";
 import { useValidateForm1ValuesHook } from "../../../formSchemas/form1ValidationSchema";
 import { ArrowForward } from "@material-ui/icons";
 import { getCookie, setCookie } from "../../../helpers/cookieStoragehelpers";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { url as apiUrl, token } from "../../../../api";
+import { useCallback } from "react";
+import { useState } from "react";
+
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
 const useStyles = makeStyles((theme) => ({
@@ -90,14 +96,313 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ViralHepatitisForm1 = ({ setStep }) => {
+  const [basicInfo, setBasicInfo] = useState({
+    active: true,
+    streetAddress: "",
+    address: [],
+    contact: [],
+    contactPoint: [],
+    dateOfBirth: "",
+    deceased: false,
+    deceasedDateTime: null,
+    firstName: "",
+    genderId: "",
+    identifier: "",
+    otherName: "",
+    maritalStatusId: "",
+    educationId: "",
+    employmentStatusId: "",
+    dateOfRegistration: "",
+    isDateOfBirthEstimated: null,
+    age: "",
+    phoneNumber: "",
+    altPhonenumber: "",
+    dob: "",
+    countryId: 1,
+    stateId: "",
+    district: "",
+    sexId: "",
+    ninNumber: "",
+  });
+
+  const [genders, setGenders] = useState([]);
+  const [maritalStatusOptions, setMaritalStatusOptions] = useState([]);
+  const [educationOptions, setEducationOptions] = useState([]);
+  const [occupationOptions, setOccupationOptions] = useState([]);
+  const [relationshipOptions, setRelationshipOptions] = useState([]);
+  const [countries, setCountries] = useState([]);
+  const [states, setStates] = useState([]);
+  const [provinces, setProvinces] = useState([]);
+  const [errors, setErrors] = useState({});
+  const [topLevelUnitCountryOptions, settopLevelUnitCountryOptions] = useState(
+    []
+  );
+  const [carePoints, setCarePoints] = useState([]);
+  const [sourceReferral, setSourceReferral] = useState([]);
+  const [pregnancyStatus, setPregnancyStatus] = useState([]);
+
+  const sexCodeset = async () => {
+    const response = await axios.get(`${apiUrl}application-codesets/v2/SEX`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    setGenders(response.data.sort());
+  };
+
+  const loadMaritalStatus = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        `${apiUrl}application-codesets/v2/MARITAL_STATUS`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setMaritalStatusOptions(response.data.sort());
+    } catch (e) {}
+  }, []);
+
+  const loadEducation = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        `${apiUrl}application-codesets/v2/EDUCATION`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setEducationOptions(response.data.sort());
+    } catch (e) {}
+  }, []);
+
+  const loadOccupation = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        `${apiUrl}application-codesets/v2/OCCUPATION`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setOccupationOptions(response.data.sort());
+    } catch (e) {}
+  }, []);
+
+  const CareEntryPoint = () => {
+    axios
+      .get(`${apiUrl}application-codesets/v2/POINT_ENTRY`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        //console.log(response.data);
+        setCarePoints(response.data);
+      })
+      .catch((error) => {
+        //console.log(error);
+      });
+  };
+  //Get list of Source of Referral
+  const SourceReferral = () => {
+    axios
+      .get(`${apiUrl}application-codesets/v2/SOURCE_REFERRAL`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        //console.log(response.data);
+        setSourceReferral(response.data);
+      })
+      .catch((error) => {
+        //console.log(error);
+      });
+  };
+
+  const EnrollmentSetting = () => {
+    axios
+      .get(`${apiUrl}application-codesets/v2/ENROLLMENT_SETTING`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        //console.log(response.data);
+        setEnrollSetting(response.data);
+      })
+      .catch((error) => {
+        //console.log(error);
+      });
+  };
+
+  const loadRelationships = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        `${apiUrl}application-codesets/v2/RELATIONSHIP`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setRelationshipOptions(response.data.sort());
+    } catch (e) {}
+  }, []);
+
+  const loadTopLevelCountry = useCallback(async () => {
+    const response = await axios.get(
+      `${apiUrl}organisation-units/parent-organisation-units/0`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    settopLevelUnitCountryOptions(response.data.sort());
+  }, []);
+
+  const loadOrganisationUnitsByParentId = async (parentId) => {
+    const response = await axios.get(
+      `${apiUrl}organisation-units/parent-organisation-units/${parentId}`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    return response.data;
+  };
+  const calculate_age = (dob) => {
+    const today = new Date();
+    const dateParts = dob.split("-");
+    const birthDate = new Date(dob); // create a date object directlyfrom`dob1`argument
+    let age_now = today.getFullYear() - birthDate.getFullYear();
+
+    return age_now;
+  };
+  const phoneNumberFormatCheck = (phone) => {
+    //console.log("err", phone);
+    if (
+      phone != undefined &&
+      typeof phone?.value !== null &&
+      typeof phone?.value !== "undefined" &&
+      phone?.value?.charAt(0) === "0"
+    ) {
+      phone.value = phone.value.replace("0", "234");
+    }
+    return phone;
+  };
+  //Country List
+  const GetCountry = () => {
+    axios
+      .get(`${apiUrl}organisation-units/parent-organisation-units/0`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        setCountries(response.data);
+      })
+      .catch((error) => {
+        //console.log(error);
+      });
+  };
+  //Get States from selected country
+  const getStates = (e) => {
+    const getCountryId = e?.target?.value;
+    setStateByCountryId(1);
+    setBasicInfo({ ...basicInfo, countryId: getCountryId });
+  };
+  //Get list of State
+  function setStateByCountryId() {
+    axios
+      .get(`${apiUrl}organisation-units/parent-organisation-units/1`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        //console.log(response.data);
+        setStates(response.data.sort());
+      })
+      .catch((error) => {
+        //console.log(error);
+      });
+  }
+  //fetch province
+  const getProvinces = (e) => {
+    const stateId = e?.target?.value;
+    setBasicInfo({ ...basicInfo, stateId: e?.target?.value });
+    axios
+      .get(
+        `${apiUrl}organisation-units/parent-organisation-units/${formik?.values?.state}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .then((response) => {
+        setProvinces(response.data.sort());
+      })
+      .catch((error) => {
+        //console.log(error);
+      });
+  };
+
+  const postDataWithToken = async (data, key) => {
+    try {
+      const response = await axios.post(`${apiUrl}${key}`, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      // Handle the response if needed
+      console.log("Post successful:", response.data);
+      toast.success("Enrolment submitted successfully");
+      setCookie(
+        "enrollmentIds",
+        {
+          enrollmentId: response.data?.enrollmentId,
+          enrollmentUuid: response.data?.enrollmentUuid,
+        },
+        1
+      );
+      setStep(1);
+      return response.data;
+    } catch (error) {
+      // Handle any errors that occurred during the request
+      toast.error("Enrolment failed");
+      console.error("Error posting data:", error.message);
+      throw error;
+    }
+  };
+
   const onSubmitHandler = (values) => {
     window.scrollTo(0, 0);
+    const restructuredEnrolmentPayload = {
+      bmi: values.weight / values.height,
+      breastfeeding: values.breastfeeding,
+      coreEntryPoint: values.coreEntryPoint,
+      height: values.height,
+      hepatitisB: values.hepatitisB,
+      historyOfUsingAbusedSubstance: values.historyOfUsingAbusedSubstance,
+
+      personDto: {
+        active: true,
+        address: [
+          {
+            countryId: values.countryId,
+            stateId: values.stateId,
+          },
+        ],
+        dateOfBirth: values.dateOfBirth,
+        dateOfRegistration: values.dateOfRegistration,
+        educationId: values.educationId,
+        employmentStatusId: values.employmentStatusId,
+        firstName: values.firstName,
+        genderId: values.sexId,
+        identifier: [
+          {
+            assignerId: 0,
+            type: "string",
+            value: "string",
+          },
+        ],
+        isDateOfBirthEstimated:
+          values.isDateOfBirthEstimated === "true" ? true : false,
+        maritalStatusId: values.maritalStatusId,
+        ninNumber: values.ninNumber,
+        organizationId: 0,
+        otherName: values.otherName,
+        sexId: values.sexId,
+        surname: values.surname,
+      },
+      pregnancy: values.pregnancy,
+      screening: {
+        dateOfFirstHepatitisBPositiveScreening:
+          values.dateOfFirstHepatitisBPositiveScreening,
+        hepatitisC: values.hepatitisC,
+      },
+      weight: values.weight,
+    };
+
     setCookie("hepatitis1", values, 1);
-    setStep(1);
+    setCookie("heaptitis1PayloadValue", restructuredEnrolmentPayload, 1);
+    postDataWithToken(restructuredEnrolmentPayload, "hepatitis/enrollment");
+    // setStep(1);
   };
   const classes = useStyles();
   const { formik } = useValidateForm1ValuesHook(onSubmitHandler);
-  
+
   const castCookieValueToForm = () => {
     const cookieValue = getCookie("hepatitis1");
     if (cookieValue) {
@@ -105,8 +410,37 @@ const ViralHepatitisForm1 = ({ setStep }) => {
     }
   };
 
+  const PregnancyStatus = () => {
+    axios
+      .get(`${apiUrl}application-codesets/v2/PREGNANCY_STATUS`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        //console.log(response.data);
+        setPregnancyStatus(response.data);
+      })
+      .catch((error) => {
+        //console.log(error);
+      });
+  };
+
   useEffect(() => {
     castCookieValueToForm();
+    sexCodeset();
+    PregnancyStatus();
+    CareEntryPoint();
+    SourceReferral();
+    loadMaritalStatus();
+    loadTopLevelCountry();
+    loadRelationships();
+    loadOrganisationUnitsByParentId();
+    EnrollmentSetting();
+    loadEducation();
+    getProvinces();
+    setStateByCountryId();
+    loadOccupation();
+    getStates();
+    GetCountry();
   }, []);
 
   return (
@@ -133,18 +467,17 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                 <div className="card-body">
                   <div className="basic-form">
                     <div className="row">
-                      <div className="form-group mb-3 col-md-4">
+                      {/* <div className="form-group mb-3 col-md-4">
                         <FormGroup>
-                          <Label for="hospitalNumber">
-                            Hospital Number{" "}
-                            <span style={{ color: "red" }}> *</span>{" "}
+                          <Label for="facilityId">
+                            Facility Id <span style={{ color: "red" }}> *</span>{" "}
                           </Label>
                           <input
                             className="form-control"
-                            type="text"
-                            name="hospitalNumber"
-                            id="hospitalNumber"
-                            value={formik.values.hospitalNumber}
+                            type="number"
+                            name="facilityId"
+                            id="facilityId"
+                            value={formik.values.facilityId}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             style={{
@@ -152,15 +485,15 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                               borderRadius: "0.2rem",
                             }}
                           />
-                          {formik.errors.hospitalNumber !== "" ? (
+                          {formik.errors.facilityId !== "" ? (
                             <span className={classes.error}>
-                              {formik.errors.hospitalNumber}
+                              {formik.errors.facilityId}
                             </span>
                           ) : (
                             ""
                           )}
                         </FormGroup>
-                      </div>
+                      </div> */}
                       <div className="form-group mb-3 col-md-4">
                         <FormGroup>
                           <Label for="surname">
@@ -182,6 +515,33 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                           {formik.errors.surname !== "" ? (
                             <span className={classes.error}>
                               {formik.errors.surname}
+                            </span>
+                          ) : (
+                            ""
+                          )}
+                        </FormGroup>
+                      </div>
+                      <div className="form-group mb-3 col-md-4">
+                        <FormGroup>
+                          <Label for="firstName">
+                            Firstname <span style={{ color: "red" }}> *</span>{" "}
+                          </Label>
+                          <input
+                            className="form-control"
+                            type="text"
+                            name="firstName"
+                            id="firstName"
+                            value={formik.values.firstName}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            style={{
+                              border: "1px solid #014D88",
+                              borderRadius: "0.2rem",
+                            }}
+                          />
+                          {formik.errors.firstName !== "" ? (
+                            <span className={classes.error}>
+                              {formik.errors.firstName}
                             </span>
                           ) : (
                             ""
@@ -213,8 +573,6 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                           )}
                         </FormGroup>
                       </div>
-                    </div>
-                    <div className="row">
                       <div className="form-group mb-3 col-md-4">
                         <FormGroup>
                           <Label for="phone">
@@ -242,7 +600,7 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                           )}
                         </FormGroup>
                       </div>
-                      <div className="form-group mb-3 col-md-4">
+                      {/* <div className="form-group mb-3 col-md-4">
                         <FormGroup>
                           <Label for="residentialAddress">
                             Residential Address{" "}
@@ -269,7 +627,76 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                             ""
                           )}
                         </FormGroup>
+                      </div> */}
+
+                      <div className="form-group mb-3 col-md-4">
+                        <FormGroup>
+                          <Label for="countryId">
+                            Country <span style={{ color: "red" }}> *</span>{" "}
+                          </Label>
+                          <select
+                            className="form-control"
+                            // type="text"
+                            name="countryId"
+                            id="countryId"
+                            value={formik.values.countryId}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            style={{
+                              border: "1px solid #014D88",
+                              borderRadius: "0.2rem",
+                            }}
+                          >
+                            <option value="">Select</option>
+                            {countries.map((item, index) => (
+                              <option value={Number(item.id)} key={index}>
+                                {item.name}
+                              </option>
+                            ))}
+                          </select>
+                          {formik.errors.countryId !== "" ? (
+                            <span className={classes.error}>
+                              {formik.errors.countryId}
+                            </span>
+                          ) : (
+                            ""
+                          )}
+                        </FormGroup>
                       </div>
+                      <div className="form-group mb-3 col-md-4">
+                        <FormGroup>
+                          <Label for="stateId">
+                            State <span style={{ color: "red" }}> *</span>{" "}
+                          </Label>
+                          <select
+                            className="form-control"
+                            name="stateId"
+                            id="stateId"
+                            value={formik.values.stateId}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            style={{
+                              border: "1px solid #014D88",
+                              borderRadius: "0.2rem",
+                            }}
+                          >
+                            <option value="">Select</option>
+                            {states.map((item, index) => (
+                              <option value={Number(item.id)} key={index}>
+                                {item.name}
+                              </option>
+                            ))}
+                          </select>
+                          {formik.errors.stateId !== "" ? (
+                            <span className={classes.error}>
+                              {formik.errors.stateId}
+                            </span>
+                          ) : (
+                            ""
+                          )}
+                        </FormGroup>
+                      </div>
+
                       <div className="form-group mb-3 col-md-4">
                         <FormGroup>
                           <Label for="landmark">Landmark </Label>
@@ -295,63 +722,7 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                           )}
                         </FormGroup>
                       </div>
-                    </div>
-                    <div className="row">
-                      <div className="form-group mb-3 col-md-4">
-                        <FormGroup>
-                          <Label for="country">
-                            Country <span style={{ color: "red" }}> *</span>{" "}
-                          </Label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            name="country"
-                            id="country"
-                            value={formik.values.country}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            style={{
-                              border: "1px solid #014D88",
-                              borderRadius: "0.2rem",
-                            }}
-                          />
-                          {formik.errors.country !== "" ? (
-                            <span className={classes.error}>
-                              {formik.errors.country}
-                            </span>
-                          ) : (
-                            ""
-                          )}
-                        </FormGroup>
-                      </div>
-                      <div className="form-group mb-3 col-md-4">
-                        <FormGroup>
-                          <Label for="state">
-                            State <span style={{ color: "red" }}> *</span>{" "}
-                          </Label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            name="state"
-                            id="state"
-                            value={formik.values.state}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            style={{
-                              border: "1px solid #014D88",
-                              borderRadius: "0.2rem",
-                            }}
-                          />
-                          {formik.errors.state !== "" ? (
-                            <span className={classes.error}>
-                              {formik.errors.state}
-                            </span>
-                          ) : (
-                            ""
-                          )}
-                        </FormGroup>
-                      </div>
-                      <div className="form-group mb-3 col-md-4">
+                      {/* <div className="form-group mb-3 col-md-4">
                         <FormGroup>
                           <Label for="lga">LGA </Label>
                           <input
@@ -375,9 +746,7 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                             ""
                           )}
                         </FormGroup>
-                      </div>
-                    </div>
-                    <div className="row">
+                      </div> */}
                       <div className="form-group mb-3 col-md-4">
                         <FormGroup>
                           <Label for="dateOfBirth">
@@ -408,69 +777,74 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                       </div>
                       <div className="form-group mb-3 col-md-4">
                         <FormGroup>
-                          <Label for="age">
-                            Age <span style={{ color: "red" }}> *</span>{" "}
-                          </Label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            name="age"
-                            id="age"
-                            value={formik.values.age}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            style={{
-                              border: "1px solid #014D88",
-                              borderRadius: "0.2rem",
-                            }}
-                          />
-                          {formik.errors.age !== "" ? (
-                            <span className={classes.error}>
-                              {formik.errors.age}
-                            </span>
-                          ) : (
-                            ""
-                          )}
-                        </FormGroup>
-                      </div>
-                      <div className="form-group mb-3 col-md-4">
-                        <FormGroup>
-                          <Label for="occupation">Occupation</Label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            name="occupation"
-                            id="occupation"
-                            value={formik.values.occupation}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            style={{
-                              border: "1px solid #014D88",
-                              borderRadius: "0.2rem",
-                            }}
-                          />
-                          {formik.errors.occupation !== "" ? (
-                            <span className={classes.error}>
-                              {formik.errors.occupation}
-                            </span>
-                          ) : (
-                            ""
-                          )}
-                        </FormGroup>
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="form-group mb-3 col-md-4">
-                        <FormGroup>
-                          <Label for="maritalStatus">
-                            Marital status
+                          <Label for="isDateOfBirthEstimated">
+                            Is date Of estimated
                             <span style={{ color: "red" }}> *</span>{" "}
                           </Label>
                           <select
                             className="form-control"
-                            name="maritalStatus"
-                            id="maritalStatus"
-                            value={formik.values.maritalStatus}
+                            // type="date"
+                            name="isDateOfBirthEstimated"
+                            id="isDateOfBirthEstimated"
+                            value={formik.values.isDateOfBirthEstimated}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            style={{
+                              border: "1px solid #014D88",
+                              borderRadius: "0.2rem",
+                            }}
+                          >
+                            <option>Select</option>
+                            <option value={true}>Yes</option>
+                            <option value={false}>No</option>
+                          </select>
+                          {formik.errors.isDateOfBirthEstimated !== "" ? (
+                            <span className={classes.error}>
+                              {formik.errors.isDateOfBirthEstimated}
+                            </span>
+                          ) : (
+                            ""
+                          )}
+                        </FormGroup>
+                      </div>
+
+                      <div className="form-group mb-3 col-md-4">
+                        <FormGroup>
+                          <Label for="dateOfRegistration">
+                            Date of registration
+                            <span style={{ color: "red" }}> *</span>{" "}
+                          </Label>
+                          <input
+                            className="form-control"
+                            type="date"
+                            name="dateOfRegistration"
+                            id="dateOfRegistration"
+                            value={formik.values.dateOfRegistration}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            style={{
+                              border: "1px solid #014D88",
+                              borderRadius: "0.2rem",
+                            }}
+                          />
+                          {formik.errors.dateOfRegistration !== "" ? (
+                            <span className={classes.error}>
+                              {formik.errors.dateOfRegistration}
+                            </span>
+                          ) : (
+                            ""
+                          )}
+                        </FormGroup>
+                      </div>
+
+                      <div className="form-group mb-3 col-md-4">
+                        <FormGroup>
+                          <Label for="employmentStatusId">Occupation</Label>
+                          <select
+                            className="form-control"
+                            name="employmentStatusId"
+                            id="employmentStatusId"
+                            value={formik.values.employmentStatusId}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             style={{
@@ -479,16 +853,18 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                             }}
                           >
                             <option value="">Select</option>
-                            <option value="single">Single</option>
-                            <option value="married">Married</option>
-                            <option value="divorced">Divorced</option>
-                            <option value="seperated">Seperated</option>
-                            <option value="cohabiting">Cohabiting</option>
-                            <option value="widowed">Widowed</option>
+                            {occupationOptions.map((item, index) => (
+                              <option
+                                value={Number(item.id)}
+                                key={Number(item.id)}
+                              >
+                                {item.display}
+                              </option>
+                            ))}
                           </select>
-                          {formik.errors.maritalStatus !== "" ? (
+                          {formik.errors.employmentStatusId !== "" ? (
                             <span className={classes.error}>
-                              {formik.errors.maritalStatus}
+                              {formik.errors.employmentStatusId}
                             </span>
                           ) : (
                             ""
@@ -497,15 +873,151 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                       </div>
                       <div className="form-group mb-3 col-md-4">
                         <FormGroup>
-                          <Label for="education">
+                          <Label for="maritalStatusId">
+                            Marital status
+                            <span style={{ color: "red" }}> *</span>{" "}
+                          </Label>
+                          <select
+                            className="form-control"
+                            name="maritalStatusId"
+                            id="maritalStatusId"
+                            value={formik.values.maritalStatusId}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            style={{
+                              border: "1px solid #014D88",
+                              borderRadius: "0.2rem",
+                            }}
+                          >
+                            <option value="">Select</option>
+                            {maritalStatusOptions.map((item, index) => (
+                              <option value={Number(item.id)}>
+                                {item.display}
+                              </option>
+                            ))}
+                          </select>
+                          {formik.errors.maritalStatusId !== "" ? (
+                            <span className={classes.error}>
+                              {formik.errors.maritalStatusId}
+                            </span>
+                          ) : (
+                            ""
+                          )}
+                        </FormGroup>
+                      </div>
+                      <div className="form-group mb-3 col-md-4">
+                        <FormGroup>
+                          <Label for="educationId">
                             Education <span style={{ color: "red" }}> *</span>{" "}
                           </Label>
+                          <select
+                            className="form-control"
+                            // type="text"
+                            name="educationId"
+                            id="educationId"
+                            value={formik.values.educationId}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            style={{
+                              border: "1px solid #014D88",
+                              borderRadius: "0.2rem",
+                            }}
+                          >
+                            <option>Select</option>
+                            {educationOptions.map((item, index) => (
+                              <option value={Number(item.id)}>
+                                {item.display}
+                              </option>
+                            ))}
+                          </select>
+                          {formik.errors.educationId !== "" ? (
+                            <span className={classes.error}>
+                              {formik.errors.educationId}
+                            </span>
+                          ) : (
+                            ""
+                          )}
+                        </FormGroup>
+                      </div>
+
+                      <div className="form-group mb-3 col-md-4">
+                        <FormGroup>
+                          <Label for="relationship">
+                            Relationship{" "}
+                            <span style={{ color: "red" }}> *</span>{" "}
+                          </Label>
+                          <select
+                            className="form-control"
+                            name="relationship"
+                            id="relationship"
+                            value={formik.values.relationship}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            style={{
+                              border: "1px solid #014D88",
+                              borderRadius: "0.2rem",
+                            }}
+                          >
+                            <option>Select</option>
+                            {relationshipOptions.map((item, index) => (
+                              <option value={Number(item.id)}>
+                                {item.display}
+                              </option>
+                            ))}
+                          </select>
+                          {formik.errors.relationship !== "" ? (
+                            <span className={classes.error}>
+                              {formik.errors.relationship}
+                            </span>
+                          ) : (
+                            ""
+                          )}
+                        </FormGroup>
+                      </div>
+
+                      <div className="form-group mb-3 col-md-4">
+                        <FormGroup>
+                          <Label for="sexId">
+                            Sex <span style={{ color: "red" }}> *</span>{" "}
+                          </Label>
+                          <select
+                            className="form-control"
+                            name="sexId"
+                            id="sexId"
+                            value={formik.values.sexId}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            style={{
+                              border: "1px solid #014D88",
+                              borderRadius: "0.2rem",
+                            }}
+                          >
+                            <option>Select</option>
+                            {genders.map((item, index) => (
+                              <option value={Number(item.id)}>
+                                {item.display}
+                              </option>
+                            ))}
+                          </select>
+                          {formik.errors.sexId !== "" ? (
+                            <span className={classes.error}>
+                              {formik.errors.sexId}
+                            </span>
+                          ) : (
+                            ""
+                          )}
+                        </FormGroup>
+                      </div>
+
+                      <div className="form-group mb-3 col-md-4">
+                        <FormGroup>
+                          <Label for="ninNumber">NIN number </Label>
                           <input
                             className="form-control"
                             type="text"
-                            name="education"
-                            id="education"
-                            value={formik.values.education}
+                            name="ninNumber"
+                            id="ninNumber"
+                            value={formik.values.ninNumber}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             style={{
@@ -513,9 +1025,9 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                               borderRadius: "0.2rem",
                             }}
                           />
-                          {formik.errors.education !== "" ? (
+                          {formik.errors.ninNumber !== "" ? (
                             <span className={classes.error}>
-                              {formik.errors.education}
+                              {formik.errors.ninNumber}
                             </span>
                           ) : (
                             ""
@@ -538,7 +1050,7 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                   }}
                 >
                   <h5 className="card-title" style={{ color: "#fff" }}>
-                    Enrollment
+                    Enrolment
                   </h5>
                 </div>
 
@@ -546,35 +1058,39 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                   <div className="row">
                     <div className="form-group mb-3 col-md-4">
                       <FormGroup>
-                        <Label for="careEntryPoint">
-                          Care entry point
+                        <Label for="coreEntryPoint">
+                          Core entry point
                           <span style={{ color: "red" }}> *</span>{" "}
                         </Label>
-                        <input
+                        <select
                           className="form-control"
-                          type="text"
-                          name="careEntryPoint"
-                          id="careEntryPoint"
-                          value={formik.values.careEntryPoint}
+                          name="coreEntryPoint"
+                          id="coreEntryPoint"
+                          value={formik.values.coreEntryPoint}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           style={{
                             border: "1px solid #014D88",
                             borderRadius: "0.2rem",
                           }}
-                        />
-                        {formik.errors.careEntryPoint !== "" ? (
+                        >
+                          <option value=""> </option>
+                          {carePoints.map((value) => (
+                            <option key={value.id} value={value.id}>
+                              {value.display}
+                            </option>
+                          ))}
+                        </select>
+                        {formik.errors.coreEntryPoint !== "" ? (
                           <span className={classes.error}>
-                            {formik.errors.careEntryPoint}
+                            {formik.errors.coreEntryPoint}
                           </span>
                         ) : (
                           ""
                         )}
                       </FormGroup>
                     </div>
-                  </div>
-                  <div className="row">
-                    <div className="form-group mb-3 col-md-4">
+                    {/* <div className="form-group mb-3 col-md-4">
                       <FormGroup>
                         <Label for="sex">
                           Sex <span style={{ color: "red" }}> *</span>{" "}
@@ -603,7 +1119,7 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                           ""
                         )}
                       </FormGroup>
-                    </div>
+                    </div> */}
 
                     <div className="form-group mb-3 col-md-4">
                       <FormGroup>
@@ -622,9 +1138,14 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                             borderRadius: "0.2rem",
                           }}
                         >
-                          <option value="">Select</option>
-                          <option value={true}>Yes</option>
-                          <option value={false}>No</option>
+                          <option value="">Select </option>
+                          <option value="NO">No </option>
+                          <option value="YES">Yes </option>
+                          {/* {pregnancyStatus.map((value) => (
+                            <option key={value.id} value={value.id}>
+                              {value.display}
+                            </option>
+                          ))} */}
                         </select>
                         {formik.errors.pregnancy !== "" ? (
                           <span className={classes.error}>
@@ -639,7 +1160,8 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                     <div className="form-group mb-3 col-md-4">
                       <FormGroup>
                         <Label for="weight">
-                          Weight <span style={{ color: "red" }}> *</span>{" "}
+                          Weight (in KG){" "}
+                          <span style={{ color: "red" }}> *</span>{" "}
                         </Label>
                         <input
                           className="form-control"
@@ -663,10 +1185,11 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                         )}
                       </FormGroup>
                     </div>
+
                     <div className="form-group mb-3 col-md-4">
                       <FormGroup>
                         <Label for="height">
-                          Height <span style={{ color: "red" }}> *</span>{" "}
+                          Height (In M) <span style={{ color: "red" }}> *</span>{" "}
                         </Label>
                         <input
                           className="form-control"
@@ -691,7 +1214,7 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                       </FormGroup>
                     </div>
 
-                    <div className="form-group mb-3 col-md-4">
+                    {/* <div className="form-group mb-3 col-md-4">
                       <FormGroup>
                         <Label for="bmi">BMI </Label>
                         <input
@@ -715,21 +1238,20 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                           ""
                         )}
                       </FormGroup>
-                    </div>
-                  </div>
-                  <div className="row">
+                    </div> */}
+
                     <div className="form-group mb-3 col-md-4">
                       <FormGroup>
-                        <Label for="hepatitisBhbsAg">
+                        <Label for="hepatitisB">
                           Hepatitis B (HBsAg){" "}
                           <span style={{ color: "red" }}> *</span>{" "}
                         </Label>
                         <input
                           className="form-control"
                           type="text"
-                          name="hepatitisBhbsAg"
-                          id="hepatitisBhbsAg"
-                          value={formik.values.hepatitisBhbsAg}
+                          name="hepatitisB"
+                          id="hepatitisB"
+                          value={formik.values.hepatitisB}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           style={{
@@ -737,9 +1259,9 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                             borderRadius: "0.2rem",
                           }}
                         />
-                        {formik.errors.hepatitisBhbsAg !== "" ? (
+                        {formik.errors.hepatitisB !== "" ? (
                           <span className={classes.error}>
-                            {formik.errors.hepatitisBhbsAg}
+                            {formik.errors.hepatitisB}
                           </span>
                         ) : (
                           ""
@@ -748,14 +1270,14 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                     </div>
                     <div className="form-group mb-3 col-md-4">
                       <FormGroup>
-                        <Label for="breastFeeding">
-                          BreastFeeding <span style={{ color: "red" }}> *</span>{" "}
+                        <Label for="breastfeeding">
+                          Breastfeeding <span style={{ color: "red" }}> *</span>{" "}
                         </Label>
                         <select
                           className="form-control"
-                          name="breastFeeding"
-                          id="breastFeeding"
-                          value={formik.values.breastFeeding}
+                          name="breastfeeding"
+                          id="breastfeeding"
+                          value={formik.values.breastfeeding}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           style={{
@@ -764,12 +1286,12 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                           }}
                         >
                           <option>Select</option>
-                          <option value={true}>Yes</option>
-                          <option value={false}>No</option>
+                          <option value={"YES"}>Yes</option>
+                          <option value={"NO"}>No</option>
                         </select>
-                        {formik.errors.breastFeeding !== "" ? (
+                        {formik.errors.breastfeeding !== "" ? (
                           <span className={classes.error}>
-                            {formik.errors.breastFeeding}
+                            {formik.errors.breastfeeding}
                           </span>
                         ) : (
                           ""
@@ -794,8 +1316,8 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                           }}
                         >
                           <option value="">Select</option>
-                          <option value={true}>Yes</option>
-                          <option value={false}>No</option>
+                          <option value={"YES"}>Yes</option>
+                          <option value={"NO"}>No</option>
                         </select>
                         {formik.errors.historyOfUsingAbusedSubstance !== "" ? (
                           <span className={classes.error}>
@@ -829,17 +1351,17 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                   <div className="row">
                     <div className="form-group mb-3 col-md-4">
                       <FormGroup>
-                        <Label for="dateOfHepatitisBPositiveScreening">
+                        <Label for="dateOfFirstHepatitisBPositiveScreening">
                           Date of first Hep. B positive screening{" "}
                           <span style={{ color: "red" }}> *</span>{" "}
                         </Label>
                         <input
                           className="form-control"
                           type="date"
-                          name="dateOfHepatitisBPositiveScreening"
-                          id="dateOfHepatitisBPositiveScreening"
+                          name="dateOfFirstHepatitisBPositiveScreening"
+                          id="dateOfFirstHepatitisBPositiveScreening"
                           value={
-                            formik.values.dateOfHepatitisBPositiveScreening
+                            formik.values.dateOfFirstHepatitisBPositiveScreening
                           }
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
@@ -848,10 +1370,13 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                             borderRadius: "0.2rem",
                           }}
                         />
-                        {formik.errors.dateOfHepatitisBPositiveScreening !==
-                        "" ? (
+                        {formik.errors
+                          .dateOfFirstHepatitisBPositiveScreening !== "" ? (
                           <span className={classes.error}>
-                            {formik.errors.dateOfHepatitisBPositiveScreening}
+                            {
+                              formik.errors
+                                .dateOfFirstHepatitisBPositiveScreening
+                            }
                           </span>
                         ) : (
                           ""
@@ -860,15 +1385,13 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                     </div>
                     <div className="form-group mb-3 col-md-4">
                       <FormGroup>
-                        <Label for="hepatitisChcvAb">
-                          Hepatitis C (HCVAb){" "}
-                        </Label>
+                        <Label for="hepatitisC">Hepatitis C (HCVAb) </Label>
                         <input
                           className="form-control"
                           type="text"
-                          name="hepatitisChcvAb"
-                          id="hepatitisChcvAb"
-                          value={formik.values.hepatitisChcvAb}
+                          name="hepatitisC"
+                          id="hepatitisC"
+                          value={formik.values.hepatitisC}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           style={{
@@ -876,9 +1399,9 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                             borderRadius: "0.2rem",
                           }}
                         />
-                        {formik.errors.hepatitisChcvAb !== "" ? (
+                        {formik.errors.hepatitisC !== "" ? (
                           <span className={classes.error}>
-                            {formik.errors.hepatitisChcvAb}
+                            {formik.errors.hepatitisC}
                           </span>
                         ) : (
                           ""

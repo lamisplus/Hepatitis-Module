@@ -151,7 +151,7 @@ const Patients = (props) => {
                         .then(response => response)
                         .then(result => {
                             resolve({
-                                data: result.data.records.map((row) => ({
+                                data: result?.data?.records?.map?.((row) => ({
                                     name:row.firstName + " " + row.lastName,
                                     hospital_number: row.participantId,
                                     gender: row.gender!==null ? row.gender.display : "" ,
