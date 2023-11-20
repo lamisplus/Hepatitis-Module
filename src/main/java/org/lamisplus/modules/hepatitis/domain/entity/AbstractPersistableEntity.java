@@ -6,7 +6,11 @@ import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import com.vladmihalcea.hibernate.type.json.JsonNodeBinaryType;
 import com.vladmihalcea.hibernate.type.json.JsonNodeStringType;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 import org.lamisplus.modules.base.security.SecurityUtils;
@@ -39,8 +43,16 @@ public abstract class AbstractPersistableEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "uuid", updatable = false)
+    
+    @Column(name = "uuid", nullable = false, unique = true, updatable = false)
     private String uuid;
+    
+    @Column(name = "archived", nullable = false)
+    private int archived = 0;
+    
+    
+    @Column(name = "facility_id")
+    private Long facilityId;
 
     @CreatedBy
     @Column(name = "created_by", nullable = false, updatable = false)
@@ -49,21 +61,21 @@ public abstract class AbstractPersistableEntity implements Serializable {
     private String createdBy = SecurityUtils.getCurrentUserLogin().orElse(null);
 
     @CreatedDate
-    @Column(name = "date_created", nullable = false, updatable = false)
+    @Column(name = "created_date", nullable = false, updatable = false)
     @JsonIgnore
     @ToString.Exclude
-    private LocalDateTime date_created = LocalDateTime.now();
+    private LocalDateTime createdDate = LocalDateTime.now();
 
     @LastModifiedBy
-    @Column(name = "modified_by", nullable = false, updatable = false)
+    @Column(name = "last_modified_by", nullable = false, updatable = false)
     @JsonIgnore
     @ToString.Exclude
     private String modifiedBy = SecurityUtils.getCurrentUserLogin().orElse(null);
 
     @LastModifiedDate
-    @Column(name = "date_modified")
+    @Column(name = "last_modified_date")
     @JsonIgnore
     @ToString.Exclude
-    private LocalDateTime dateModified = LocalDateTime.now();
+    private LocalDateTime lastModifiedDate = LocalDateTime.now();
 
 }

@@ -4,4 +4,5 @@ import org.lamisplus.modules.hepatitis.domain.entity.HepatitisTreatment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TreatmentRepository extends JpaRepository<HepatitisTreatment, Long> {
+    boolean existsByHepatitisEnrollment_Uuid(String uuid);
 }

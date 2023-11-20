@@ -1,10 +1,13 @@
 package org.lamisplus.modules.hepatitis.service;
 
-import org.lamisplus.modules.hepatitis.domain.dto.HepatitisDiagnosisDto;
-import org.lamisplus.modules.hepatitis.domain.dto.HepatitisEnrollmentDto;
-import org.lamisplus.modules.hepatitis.domain.dto.HepatitisTreatmentDto;
+import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisDiagnosisDto;
+import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisEnrollmentDto;
+import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisTreatmentDto;
+import org.lamisplus.modules.hepatitis.domain.dto.response.HepatitisEnrollmentPatientDTO;
+import org.lamisplus.modules.hepatitis.domain.entity.HepatitisEnrollment;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
 import java.util.Map;
 
 public interface EnrollmentService {
@@ -14,6 +17,6 @@ public interface EnrollmentService {
     ResponseEntity<String> hepatitisDiagnosis(HepatitisDiagnosisDto diagnosisDto);
 
     ResponseEntity<String> hepatitisTreatment(HepatitisTreatmentDto treatmentDto);
-
-    ResponseEntity<?> getAllHepatitisEnrollments();
+    
+    List<HepatitisEnrollmentPatientDTO> getAllHepatitisEnrollments();
 }

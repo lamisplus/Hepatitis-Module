@@ -1,8 +1,10 @@
 package org.lamisplus.modules.hepatitis.controller;
 
-import org.lamisplus.modules.hepatitis.domain.dto.HepatitisDiagnosisDto;
-import org.lamisplus.modules.hepatitis.domain.dto.HepatitisEnrollmentDto;
-import org.lamisplus.modules.hepatitis.domain.dto.HepatitisTreatmentDto;
+import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisDiagnosisDto;
+import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisEnrollmentDto;
+import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisTreatmentDto;
+import org.lamisplus.modules.hepatitis.domain.dto.response.HepatitisEnrollmentPatientDTO;
+import org.lamisplus.modules.hepatitis.domain.entity.HepatitisEnrollment;
 import org.lamisplus.modules.hepatitis.service.EnrollmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,32 +15,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 
 
 @RestController
-@RequestMapping("/enrollment")
+@RequestMapping("/api/v1/hepatitis")
 @RequiredArgsConstructor
 public class EnrollmentController {
     private final EnrollmentService enrollmentService;
 
-    @PostMapping("/form-1")
+    @PostMapping("/enrollment")
     public ResponseEntity<Map<String, Object>> hepatitisEnrollment(@Valid @RequestBody HepatitisEnrollmentDto enrollmentDto) {
         return enrollmentService.newHepatitisEnrollment(enrollmentDto);
     }
 
-    @PostMapping("/form-2")
+    @PostMapping("/diagnosis")
     public ResponseEntity<String> hepatitisDiagnosis(@Valid @RequestBody HepatitisDiagnosisDto diagnosisDto) {
         return enrollmentService.hepatitisDiagnosis(diagnosisDto);
     }
 
-    @PostMapping("/form-3")
+    @PostMapping("/treatment")
     public ResponseEntity<String> hepatitisTreatment(@Valid @RequestBody HepatitisTreatmentDto treatmentDto) {
         return enrollmentService.hepatitisTreatment(treatmentDto);
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllEnrollments() {
-        return enrollmentService.getAllHepatitisEnrollments();
+    public ResponseEntity<List<HepatitisEnrollmentPatientDTO>> getAllEnrollments() {
+        return ResponseEntity.ok(enrollmentService.getAllHepatitisEnrollments());
     }
 }
