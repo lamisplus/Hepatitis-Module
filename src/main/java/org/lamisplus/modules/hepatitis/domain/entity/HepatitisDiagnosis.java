@@ -36,4 +36,6 @@ public class HepatitisDiagnosis extends AbstractPersistableEntity {
     @Type(type = "jsonb-node")
     @Column(name = "clinical_parameters", columnDefinition = "jsonb")
     private JsonNode clinicalParameters;
+    @Column(name = "hepatitis_enrollment_uuid")
+    private String hepatitisEnrollmentUuid;
 }

@@ -28,8 +28,8 @@ public class HepatitisEnrollmentDto implements Serializable {
 
     private Long facilityId;
 
-    @NotEmpty(message = "coreEntryPoint can not be empty")
-    private String coreEntryPoint;
+    @NotEmpty(message = "Care entry point can not be empty")
+    private String careEntryPoint;
 
 //    @JsonFormat(shape = JsonFormat.Shape.STRING)
 //    private String sex;

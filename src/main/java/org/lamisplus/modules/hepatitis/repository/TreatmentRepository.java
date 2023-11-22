@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TreatmentRepository extends JpaRepository<HepatitisTreatment, Long> {
     boolean existsByHepatitisEnrollment_Uuid(String uuid);
+    boolean existsHepatitisTreatmentByHepatitisEnrollment_Uuid(String enrollmentUuid);
+
 }

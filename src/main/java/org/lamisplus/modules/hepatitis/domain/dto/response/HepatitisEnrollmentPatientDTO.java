@@ -18,7 +18,7 @@ public interface HepatitisEnrollmentPatientDTO {
 		Boolean getIsDobEstimated();
 		Integer getAge();
 		Long getId();
-		Long getFacility();
+		Long getFacilityId();
 		Long getTargetGroupId();
 		Long getEnrollmentId();
 		LocalDate getDateOfBirth();

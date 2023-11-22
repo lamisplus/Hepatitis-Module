@@ -19,13 +19,13 @@ public interface EnrollmentRepository extends JpaRepository<HepatitisEnrollment,
             "         p.hospital_number AS hospitalNumber, CAST (EXTRACT(YEAR from AGE(NOW(), date_of_birth)) AS INTEGER) AS age, \n" +
             "                                    INITCAP(p.sex) AS gender, p.date_of_birth AS dateOfBirth, p.is_date_of_birth_estimated AS isDobEstimated, \n" +
             "                                    p.facility_id as facilityId , p.uuid as personUuid, \n" +
-            "                                    e.core_entry_point AS entryPoint, e.id as enrollmentId, e.uuid as uuid,\n" +
+            "                                    e.care_entry_point AS entryPoint, e.id as enrollmentId, e.uuid as uuid,\n" +
             "                                    b.biometric_type as biometricStatus \n" +
             "                                    FROM patient_person p LEFT Join biometric b ON b.person_uuid = p.uuid \n" +
             "                                    INNER JOIN hepatitis_enrollments e ON p.uuid = e.person_uuid \n" +
             "                                    WHERE p.archived=0 AND e.archived=0 AND p.facility_id= ?1\n" +
             "                                   GROUP BY p.id, p.first_name, \n" +
-            "                                   p.first_name,  e.core_entry_point,e.id, b.biometric_type, p.surname, p.other_name, p.hospital_number, p.date_of_birth\n" +
+            "                                   p.first_name,  e.care_entry_point,e.id, b.biometric_type, p.surname, p.other_name, p.hospital_number, p.date_of_birth\n" +
             "                                   ORDER BY p.id DESC",
             nativeQuery = true)
     List<HepatitisEnrollmentPatientDTO> getEnrolledPatientsByFacility(Long facilityId);
