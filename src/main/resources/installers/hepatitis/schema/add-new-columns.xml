@@ -141,5 +141,58 @@
             DROP CONSTRAINT hepatitis_diagnosis_hepatitis_enrollments_fk_uuid;
         </sql>
     </changeSet>
+<!--    hepatitis_treatments-->
+    <changeSet failOnError="true" author="peter-data-fi" id="20230209-012">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="hepatitis_treatments" columnName="archived" />
+            </not>
+        </preConditions>
+        <sql>
+            ALTER TABLE hepatitis_treatments
+                ADD COLUMN archived integer;
 
+        </sql>
+    </changeSet>
+
+    <changeSet failOnError="true" author="peter-data-fi" id="20230209-013">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="hepatitis_treatments" columnName="facility_id" />
+            </not>
+        </preConditions>
+        <sql>
+            ALTER TABLE hepatitis_treatments
+                ADD COLUMN facility_id bigint;
+
+        </sql>
+    </changeSet>
+
+    <changeSet failOnError="true" author="peter-data-fi" id="20230209-014">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="hepatitis_treatments" columnName="enrollment_uuid" />
+            </not>
+        </preConditions>
+        <addColumn tableName="hepatitis_treatments">
+            <column name="enrollment_uuid" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <addForeignKeyConstraint
+                baseTableName="hepatitis_treatments"
+                baseColumnNames="enrollment_uuid"
+                constraintName="fk_hepatitis_treatments_enrollment"
+                referencedTableName="hepatitis_enrollments"
+                referencedColumnNames="uuid"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"/>
+    </changeSet>
+
+    <changeSet failOnError="true" author="peter-data-fi" id="20230209-015">
+        <sql>
+            ALTER TABLE hepatitis_treatments
+            DROP CONSTRAINT hepatitis_treatments_hepatitis_enrollments_fk_uuid;
+        </sql>
+    </changeSet>
 </databaseChangeLog>

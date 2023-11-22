@@ -117,10 +117,6 @@ public class ModelMapper {
                 .hepatitisEnrollmentUuid(diagnosisDto.getEnrollmentUuid())
                 .build();
         hepatitisDiagnosis.setUuid(UUID.randomUUID().toString());
-        System.out.println("got here aga ch");
-        System.out.println(hepatitisDiagnosis.getUuid());
-        System.out.println("got here aga ch");
-        System.out.println(hepatitisDiagnosis.getHepatitisEnrollmentUuid());
         hepatitisDiagnosis.setArchived(0);
         return hepatitisDiagnosis;
     }
