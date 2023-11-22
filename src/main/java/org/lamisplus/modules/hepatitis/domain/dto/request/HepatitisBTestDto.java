@@ -31,6 +31,9 @@ public class HepatitisBTestDto implements Serializable {
     private LocalDate dateHbvSampleRequested;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate dateHbvDnaResultReported;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dateHbvDnaTestRequested;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
