@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import "react-toastify/dist/ReactToastify.css";
 import "react-widgets/dist/css/react-widgets.css";
@@ -14,14 +14,15 @@ import FollowupForm from "./ViralHepatitisForms/FollowUp";
 import LaboratoryRegister from "./ViralHepatitisForms/LaboratoryRegister";
 import { useLocalStorageState } from "../../hooks/useLocalStorageState";
 
-
 const ViralHepatitisFormsContainer = (props) => {
-  
-
   const [step, setStep] = useLocalStorageState(
     "hepatitis-enrollment-form-step",
     0
   );
+
+  useEffect(() => {
+    setStep(0);
+  }, []);
   const formMap = {
     0: <ViralHepatitisForm1 step={step} setStep={setStep} />,
     1: <ViralHepatitisForm2 step={step} setStep={setStep} />,
