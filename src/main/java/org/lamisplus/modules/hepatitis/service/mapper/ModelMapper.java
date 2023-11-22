@@ -29,7 +29,7 @@ import java.util.UUID;
 @Component
 public class ModelMapper {
     public HepatitisEnrollment mapToEnrollment(HepatitisEnrollmentDto enrollmentDto, Person person) {
-        String coreEntryPoint = enrollmentDto.getCoreEntryPoint();
+        String careEntryPoint = enrollmentDto.getCareEntryPoint();
         String pregnancy = enrollmentDto.getPregnancy().toUpperCase();
         Status pregnancyEnum;
         if(pregnancy.equals("YES") || pregnancy.equals("NO")) {
@@ -69,7 +69,7 @@ public class ModelMapper {
 
         HepatitisEnrollment hepatitisEnrollment = HepatitisEnrollment.builder()
                 .personUuid(person.getUuid())
-                .coreEntryPoint(coreEntryPoint)
+                .careEntryPoint(careEntryPoint)
                 .sex(Sex.valueOf(person.getSex().toUpperCase()))
                 .pregnancy(pregnancyEnum)
                 .weight(weight)
@@ -108,13 +108,19 @@ public class ModelMapper {
         if(clinicalParametersDto != null) {
             clinicalParametersNode = objectMapper.convertValue(clinicalParametersDto, JsonNode.class);
         }
-
+        System.out.println("got here chief");
+        System.out.println(diagnosisDto.getEnrollmentUuid());
         HepatitisDiagnosis hepatitisDiagnosis = HepatitisDiagnosis.builder()
                 .hepatitisBTest(hepatitisBNode)
                 .hepatitisCTest(hepatitisCNode)
                 .clinicalParameters(clinicalParametersNode)
+                .hepatitisEnrollmentUuid(diagnosisDto.getEnrollmentUuid())
                 .build();
         hepatitisDiagnosis.setUuid(UUID.randomUUID().toString());
+        System.out.println("got here aga ch");
+        System.out.println(hepatitisDiagnosis.getUuid());
+        System.out.println("got here aga ch");
+        System.out.println(hepatitisDiagnosis.getHepatitisEnrollmentUuid());
         hepatitisDiagnosis.setArchived(0);
         return hepatitisDiagnosis;
     }

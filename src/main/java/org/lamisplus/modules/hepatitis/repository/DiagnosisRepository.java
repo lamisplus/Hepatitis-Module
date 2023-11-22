@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DiagnosisRepository extends JpaRepository<HepatitisDiagnosis, Long> {
     boolean existsByHepatitisEnrollment_Uuid(String uuid);
+
+    boolean existsHepatitisDiagnosisByHepatitisEnrollmentUuid(String hepatitisEnrollmentUuid);
 }

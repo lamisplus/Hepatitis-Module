@@ -34,9 +34,6 @@ public class HepatitisEnrollment extends AbstractPersistableEntity {
     @Column(name = "person_uuid")
     private String personUuid;
 
-    @Column(name = "core_entry_point")
-    private String coreEntryPoint;
-
     @Column(name = "sex")
     @Enumerated(EnumType.STRING)
     private Sex sex;
@@ -68,4 +65,7 @@ public class HepatitisEnrollment extends AbstractPersistableEntity {
     @Column(columnDefinition = "jsonb")
     private JsonNode screening;
 
+
+    @Column(name = "care_entry_point")
+    private String careEntryPoint;
 }

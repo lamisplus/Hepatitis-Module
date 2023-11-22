@@ -32,6 +32,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -90,12 +91,13 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         HepatitisEnrollment enrollment = getHepatitisEnrollment(enrollmentId);
         HepatitisDiagnosis hepatitisDiagnosis = mapper.mapToDiagnosis(diagnosisDto);
         log.info("I am here 1");
-        if(diagnosisRepository.existsByHepatitisEnrollment_Uuid(enrollment.getUuid())) {
+        if(diagnosisRepository.existsHepatitisDiagnosisByHepatitisEnrollmentUuid(enrollment.getUuid())) {
             throw new RecordExistException(HepatitisEnrollment.class, "uuid",
                     enrollment.getUuid()+" Duplicate Enrollment: You have already enrolled for treatment");
         }
         hepatitisDiagnosis.setHepatitisEnrollment(enrollment);
         hepatitisDiagnosis.setFacilityId(enrollment.getFacilityId());
+        hepatitisDiagnosis.setArchived(0);
         diagnosisRepository.save(hepatitisDiagnosis);
         return ResponseEntity.status(201).body("Diagnosis saved");
     }
