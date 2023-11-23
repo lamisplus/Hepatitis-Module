@@ -2,10 +2,15 @@ package org.lamisplus.modules.hepatitis.service.impl;
 
 
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.lamisplus.modules.base.controller.apierror.EntityNotFoundException;
 import org.lamisplus.modules.base.controller.apierror.IllegalTypeException;
 import org.lamisplus.modules.base.controller.apierror.RecordExistException;
+import org.lamisplus.modules.base.domain.entities.User;
+import org.lamisplus.modules.base.service.UserService;
+import org.lamisplus.modules.hepatitis.domain.dto.PatientPerson;
 import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisDiagnosisDto;
 import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisEnrollmentDto;
 import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisTreatmentDto;
@@ -22,13 +27,19 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.lamisplus.modules.patient.controller.exception.AlreadyExistException;
 import org.lamisplus.modules.patient.domain.dto.PersonDto;
+import org.lamisplus.modules.patient.domain.dto.PersonMetaDataDto;
 import org.lamisplus.modules.patient.domain.dto.PersonResponseDto;
 import org.lamisplus.modules.patient.domain.entity.Person;
 import org.lamisplus.modules.patient.repository.PersonRepository;
 import org.lamisplus.modules.patient.service.PersonService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +57,8 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     private final PersonRepository personRepository;
     private final PersonService personService;
     private final CurrentUserOrganizationService currentUserOrganizationService;
+    private final UserService userService;
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public ResponseEntity<Map<String, Object>> newHepatitisEnrollment(HepatitisEnrollmentDto enrollmentDto) {
@@ -128,5 +141,85 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     public List<HepatitisEnrollmentPatientDTO> getAllHepatitisEnrollments() {
         long facilityId = currentUserOrganizationService.getCurrentUserOrganization();
         return enrollmentRepository.getEnrolledPatientsByFacility(facilityId);
+    }
+
+    public PersonMetaDataDto getAllPatientsEligibleForHepatitisEnrollment(String searchValue, int pageNo, int pageSize) {
+        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by("id").descending());
+        Optional<User> currentUser = this.userService.getUserWithRoles();
+        Long currentOrganisationUnitId = 0L;
+        if (currentUser.isPresent()) {
+            User user = (User) currentUser.get();
+            currentOrganisationUnitId = user.getCurrentOrganisationUnitId();
+
+        }
+        Page<PatientPerson> persons = null;
+        if (!((searchValue == null) || (searchValue.equals("*")))) {
+            searchValue = searchValue.replaceAll("\\s", "");
+            searchValue = searchValue.replaceAll(",", "");
+            String queryParam = "%" + searchValue + "%";
+            persons = enrollmentRepository.findPatientPersonByParameters(queryParam, 0, currentOrganisationUnitId, paging);
+        } else {
+            persons = enrollmentRepository.findPatientPerson(0, currentOrganisationUnitId, paging);
+        }
+
+        PersonMetaDataDto personMetaDataDto = new PersonMetaDataDto();
+        personMetaDataDto.setTotalRecords(persons.getTotalElements());
+        personMetaDataDto.setPageSize(persons.getSize());
+        personMetaDataDto.setTotalPages(persons.getTotalPages());
+        personMetaDataDto.setCurrentPage(persons.getNumber());
+        //personMetaDataDto.setRecords(personResponseDtos);
+        personMetaDataDto.setRecords(persons.getContent().stream().map(this::getDtoFromPerson).collect(Collectors.toList()));
+        return personMetaDataDto;
+    }
+
+    public PersonResponseDto getDtoFromPerson(PatientPerson person) {
+        //Log.info("person {}", person);
+        PersonResponseDto personResponseDto = new PersonResponseDto();
+        personResponseDto.setId(person.getId());
+        personResponseDto.setNinNumber(person.getNinNumber());
+        personResponseDto.setEmrId(person.getEmrId());
+        personResponseDto.setFacilityId(person.getFacilityId());
+        personResponseDto.setIsDateOfBirthEstimated(person.getIsDateOfBirthEstimated());
+        personResponseDto.setDateOfBirth(person.getDateOfBirth());
+        personResponseDto.setFirstName("");
+        personResponseDto.setSurname(this.getFullName(person.getFirstName(), person.getOtherName(), person.getSurname()));
+        personResponseDto.setOtherName("");
+        personResponseDto.setContactPoint(parseJsonString(person.getContactPoint()));
+        personResponseDto.setAddress(parseJsonString(person.getAddress()));
+        personResponseDto.setContact(parseJsonString(person.getContact()));
+        personResponseDto.setIdentifier(parseJsonString(person.getIdentifier()));
+        personResponseDto.setEducation(parseJsonString(person.getEducation()));
+        personResponseDto.setEmploymentStatus(parseJsonString(person.getEmploymentStatus()));
+        personResponseDto.setMaritalStatus(parseJsonString(person.getMaritalStatus()));
+        personResponseDto.setSex(person.getSex());
+        personResponseDto.setGender(parseJsonString(person.getGender()));
+//        personResponseDto.setDeceased(person.getDeceased());
+        personResponseDto.setDateOfRegistration(person.getDateOfRegistration());
+        personResponseDto.setActive(person.getActive());
+        personResponseDto.setDeceasedDateTime(person.getDeceasedDateTime());
+        personResponseDto.setOrganization(parseJsonString(person.getOrganization()));
+        personResponseDto.setUuid(person.getUuid());
+        return personResponseDto;
+    }
+
+    private JsonNode parseJsonString(String jsonString) {
+        try {
+            if (jsonString != null) {
+                return objectMapper.readTree(jsonString);
+            }
+            return null;
+        } catch (IOException e) {
+            System.err.println("Error parsing JSON string: " + e);
+            return null;
+        }
+    }
+
+    private String getFullName(String fn, String on, String sn) {
+        String fullName = "";
+        if (fn == null) fn = "";
+        if (sn == null) sn = "";
+        if (on == null) on = "";
+        fullName = fn + " " + on + " " + sn;
+        return fullName;
     }
 }

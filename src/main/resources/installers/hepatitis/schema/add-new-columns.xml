@@ -136,6 +136,14 @@
     </changeSet>
 
     <changeSet failOnError="true" author="peter-data-fi" id="20230209-011">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(*)
+                FROM information_schema.table_constraints
+                WHERE constraint_name = 'hepatitis_diagnosis_hepatitis_enrollments_fk_uuid'
+                  AND table_name = 'hepatitis_diagnosis';
+            </sqlCheck>
+        </preConditions>
         <sql>
             ALTER TABLE hepatitis_diagnosis
             DROP CONSTRAINT hepatitis_diagnosis_hepatitis_enrollments_fk_uuid;
@@ -190,6 +198,14 @@
     </changeSet>
 
     <changeSet failOnError="true" author="peter-data-fi" id="20230209-015">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(*)
+                FROM information_schema.table_constraints
+                WHERE constraint_name = 'hepatitis_treatments_hepatitis_enrollments_fk_uuid'
+                  AND table_name = 'hepatitis_treatments';
+            </sqlCheck>
+        </preConditions>
         <sql>
             ALTER TABLE hepatitis_treatments
             DROP CONSTRAINT hepatitis_treatments_hepatitis_enrollments_fk_uuid;

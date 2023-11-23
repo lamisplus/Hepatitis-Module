@@ -5,6 +5,8 @@ import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisEnrollmentDto
 import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisTreatmentDto;
 import org.lamisplus.modules.hepatitis.domain.dto.response.HepatitisEnrollmentPatientDTO;
 import org.lamisplus.modules.hepatitis.domain.entity.HepatitisEnrollment;
+import org.lamisplus.modules.patient.domain.dto.PersonMetaDataDto;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -19,4 +21,6 @@ public interface EnrollmentService {
     ResponseEntity<String> hepatitisTreatment(HepatitisTreatmentDto treatmentDto);
     
     List<HepatitisEnrollmentPatientDTO> getAllHepatitisEnrollments();
+
+    PersonMetaDataDto getAllPatientsEligibleForHepatitisEnrollment(String searchValue, int pageNo, int pageSize);
 }
