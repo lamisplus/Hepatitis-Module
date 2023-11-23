@@ -22,12 +22,12 @@ import java.time.LocalDate;
 public class HepatitisBRegimenSwitchDto implements Serializable {
     @NotEmpty(message = "newRegime can not be empty")
     private String newRegime;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dateStarted;
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Status adverseEffectReported;
     @NotEmpty(message = "reasonForSwitch can not be empty")
     private String reasonForSwitch;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dateStopped;
 }

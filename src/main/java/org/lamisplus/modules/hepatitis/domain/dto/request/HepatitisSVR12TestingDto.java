@@ -19,13 +19,13 @@ import java.time.LocalDate;
 @ToString
 @Builder
 public class HepatitisSVR12TestingDto {
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dateTested;
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Detect hcvRNA;
     @NotEmpty(message = "hcvRNAValue can not be empty")
     private String hcvRNAValue;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate retreatmentDateTested;
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Detect retreatmentHcvRNA;
