@@ -122,7 +122,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
       ultrasoundScan: "",
       urea: "",
     },
-    enrollmentUuid: userId.enrollmentUuid,
+    enrollmentUuid: userId?.enrollmentUuid,
     hepatitisBTest: {
       albumin: "",
       antiHDV: "",

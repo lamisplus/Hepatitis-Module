@@ -97,85 +97,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const postDataWithToken = async (data, key) => {
-  try {
-    const response = await axios.post(`${apiUrl}${key}`, data, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
-    // Handle the response if needed
-    console.log("Post successful:", response.data);
-    toast.success("Treatment submitted successfully");
-    deleteCookie("heaptitis3PayloadValue");
-    deleteCookie("hepatitis3");
-    deleteCookie("enrollmentIds");
-    deleteCookie("hepatitis2");
-    deleteCookie("heaptitis2PayloadValue");
-    deleteCookie("hepatitis1");
-    deleteCookie("heaptitis1PayloadValue");
-    setStep(0);
-    return response.data;
-  } catch (error) {
-    // Handle any errors that occurred during the request
-    toast.error("Treatment failed");
-    console.error("Error posting data:", error.message);
-    throw error;
-  }
-};
-
-function deleteCookie(name) {
-  document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-}
-
-function convertStringBooleanValues(originalObj) {
-  const newObj = {};
-
-  for (const key in originalObj) {
-    if (originalObj.hasOwnProperty(key)) {
-      const value = originalObj[key];
-      if (typeof value === "string") {
-        newObj[key] =
-          value.toLowerCase() === "yes"
-            ? "YES"
-            : value.toLowerCase() === "no"
-            ? "NO"
-            : value;
-      } else {
-        newObj[key] = value;
-      }
-    }
-  }
-
-  return newObj;
-}
-
-function formatDate(inputDate) {
-  // Split the input date string into an array
-  var dateArray = inputDate.split("-");
-
-  // Check if the input date is in the correct format (yyyy-mm-dd)
-  if (dateArray.length !== 3) {
-    return "Invalid date format";
-  }
-
-  // Extract the year, month, and day from the array
-  var year = dateArray[0];
-  var month = dateArray[1];
-  var day = dateArray[2];
-
-  // Create a new date string in the "dd-mm-yyyy" format
-  var newDateFormat = day + "-" + month + "-" + year;
-
-  return newDateFormat;
-}
-
 const ViralHepatitisForm3 = ({ setStep }) => {
   const [userId, setUserId] = useState(getCookie("enrollmentIds"));
 
   const [basicInfo, setBasicInfo] = useState({
-    enrollmentUuid: userId.enrollmentUuid,
+    enrollmentUuid: userId?.enrollmentUuid,
     hepatitisBTreatment: {
       dateStarted: "",
       dateStopped: "",
@@ -190,7 +116,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
       historyOfAdverseEffect: "",
       newRegimen: "",
       reasonForHepatitisBTreatment: {
-        comment: "string",
+        comment: "",
         reasonsForTreatment: "",
       },
       treatmentExperience: "",
@@ -749,7 +675,80 @@ const ViralHepatitisForm3 = ({ setStep }) => {
       formik.setValues(cookieValue);
     }
   };
+  const postDataWithToken = async (data, key) => {
+    try {
+      const response = await axios.post(`${apiUrl}${key}`, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      // Handle the response if needed
+      console.log("Post successful:", response.data);
+      toast.success("Treatment submitted successfully");
+      deleteCookie("heaptitis3PayloadValue");
+      deleteCookie("hepatitis3");
+      deleteCookie("enrollmentIds");
+      deleteCookie("hepatitis2");
+      deleteCookie("heaptitis2PayloadValue");
+      deleteCookie("hepatitis1");
+      deleteCookie("heaptitis1PayloadValue");
+      setStep(0);
+      return response.data;
+    } catch (error) {
+      // Handle any errors that occurred during the request
+      toast.error("Treatment failed");
+      console.error("Error posting data:", error.message);
+      throw error;
+    }
+  };
 
+  function deleteCookie(name) {
+    document.cookie =
+      name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  }
+
+  function convertStringBooleanValues(originalObj) {
+    const newObj = {};
+
+    for (const key in originalObj) {
+      if (originalObj.hasOwnProperty(key)) {
+        const value = originalObj[key];
+        if (typeof value === "string") {
+          newObj[key] =
+            value.toLowerCase() === "yes"
+              ? "YES"
+              : value.toLowerCase() === "no"
+              ? "NO"
+              : value;
+        } else {
+          newObj[key] = value;
+        }
+      }
+    }
+
+    return newObj;
+  }
+
+  function formatDate(inputDate) {
+    // Split the input date string into an array
+    var dateArray = inputDate.split("-");
+
+    // Check if the input date is in the correct format (yyyy-mm-dd)
+    if (dateArray.length !== 3) {
+      return "Invalid date format";
+    }
+
+    // Extract the year, month, and day from the array
+    var year = dateArray[0];
+    var month = dateArray[1];
+    var day = dateArray[2];
+
+    // Create a new date string in the "dd-mm-yyyy" format
+    var newDateFormat = day + "-" + month + "-" + year;
+
+    return newDateFormat;
+  }
   useEffect(() => {
     castCookieValueToForm();
   }, []);

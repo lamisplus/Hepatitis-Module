@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import { FaUserPlus } from "react-icons/fa";
 //import PageTitle from "./../layouts/PageTitle";
+import HepatitisPatients from "./Patient/HepatitisPatient";
 import ViralHepatitis from "./Patient/ViralHepatitisForms/Form1";
 import ViralHepatitisSummaryFormContainer from "./Patient/ViralHepatitisSummaryFormContainer";
 const divStyle = {
@@ -28,7 +29,15 @@ const Home = () => {
           </li>
         </ol>
       </div>
-      <Link to={"register-patient"}>
+      <Link
+        to={{
+          pathname: "/register-patient",
+          state: {
+            existingPatient: "new",
+          },
+        }}
+      >
+        {" "}
         <Button
           variant="contained"
           color="primary"
@@ -59,7 +68,7 @@ const Home = () => {
                   </Tab>
 
                   <Tab eventKey="visualization" title="Hepatitis Patients">
-                    <PatientList />
+                    <HepatitisPatients />
                   </Tab>
 
                   <Tab eventKey="vaccinated" title="Summary">

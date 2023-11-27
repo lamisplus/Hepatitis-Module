@@ -106,7 +106,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Patients = (props) => {
+const HepatitisPatients = (props) => {
   //   const [permissions, setPermissions] = useState(props.permissions);
   const calculate_age = (dob) => {
     const today = new Date();
@@ -138,11 +138,12 @@ const Patients = (props) => {
     new Promise((resolve, reject) => {
       axios
         .get(
-          `${baseUrl}hepatitis/patient?pageSize=${query.pageSize}&pageNo=${query.page}&searchParam=${query.search}`,
+          `${baseUrl}hepatitis?pageSize=${query.pageSize}&pageNo=${query.page}&searchParam=${query.search}`,
           { headers: { Authorization: `Bearer ${token}` } }
         )
         .then((response) => response)
         .then((result) => {
+          console.log(result.data);
           if (result.data === "") {
             resolve({
               data: [],
@@ -151,14 +152,16 @@ const Patients = (props) => {
             });
           } else {
             resolve({
-              data: result.data.records.map((row) => ({
-                name: [row.firstName, row.otherName, row.surname]
+              data: result.data.map((row) => ({
+                name: [row?.firstName, row?.otherName, row?.surname]
                   .filter(Boolean)
                   .join(", "),
-                id: getHospitalNumber(row.identifier),
-                sex:
-                  row.sex.toLowerCase().charAt(0).toUpperCase() +
-                  row.sex.slice(1).toLowerCase(),
+                id: row?.hospitalNumber,
+                sex: row?.sex
+                  ? row.sex.toLowerCase().charAt(0).toUpperCase() +
+                    row.sex.slice(1).toLowerCase()
+                  : row.gender.toLowerCase().charAt(0).toUpperCase() +
+                    row.gender.slice(1).toLowerCase(),
                 dateOfBirth: row.dateOfBirth,
                 age:
                   row.dateOfBirth === 0 ||
@@ -171,11 +174,10 @@ const Patients = (props) => {
                   <div>
                     <Link
                       to={{
-                        pathname: "/register-patient",
+                        pathname: "/patient-history",
                         state: {
                           patientId: row.id,
                           patientObj: row,
-                          existingPatient: "existing",
                         },
                       }}
                     >
@@ -206,7 +208,7 @@ const Patients = (props) => {
                               fontWeight: "bolder",
                             }}
                           >
-                            Enroll Patient
+                            Patient Dashboard
                           </span>
                         </Button>
                       </ButtonGroup>
@@ -437,4 +439,4 @@ const Patients = (props) => {
   );
 };
 
-export default Patients;
+export default HepatitisPatients;

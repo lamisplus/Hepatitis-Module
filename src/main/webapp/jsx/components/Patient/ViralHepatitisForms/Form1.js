@@ -24,6 +24,7 @@ import { toast } from "react-toastify";
 import { url as apiUrl, token } from "../../../../api";
 import { useCallback } from "react";
 import { useState } from "react";
+
 // import { FormGroup, Label, Spinner, Input, Form, InputGroup } from "reactstrap";
 
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
@@ -98,7 +99,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ViralHepatitisForm1 = ({ setStep }) => {
+const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
   const [info, setInfo] = useState({
     countryId: 1,
     stateId: "",
@@ -106,26 +107,18 @@ const ViralHepatitisForm1 = ({ setStep }) => {
     educationId: "",
     employmentStatusId: "",
     district: "",
+    value: "",
   });
-
   const [basicInfo, setBasicInfo] = useState({
     bmi: "",
     hepatitisB: "",
     height: "",
-    streetAddress: "",
-    address: [],
-    // contact: [],
+    // streetAddress: "",
+    // address: [],
     careEntryPoint: "",
-    // contactPoint: [],
-    // deceased: false,
-    // deceasedDateTime: null,
-    genderId: "",
-    // identifier: "",
     age: "",
     phoneNumber: "",
     altPhonenumber: "",
-    // dob: "",
-    // district: "",
     pregnancy: "",
     breastfeeding: "",
     historyOfUsingAbusedSubstance: "",
@@ -155,16 +148,17 @@ const ViralHepatitisForm1 = ({ setStep }) => {
           value: "",
         },
       ],
-      isDateOfBirthEstimated: true,
-      maritalStatusId: "9",
+      isDateOfBirthEstimated: "",
+      maritalStatusId: "",
       ninNumber: "",
-      organizationId: 1928,
+      organizationId: "",
       otherName: "",
-      sexId: "376",
+      sexId: "",
       surname: "",
-      weight: "",
     },
+    weight: "",
   });
+  const [hospitalNumStatus, setHospitalNumStatus] = useState(false);
 
   const [genders, setGenders] = useState([]);
   const [maritalStatusOptions, setMaritalStatusOptions] = useState([]);
@@ -185,6 +179,7 @@ const ViralHepatitisForm1 = ({ setStep }) => {
   );
 
   const [ageDisabled, setAgeDisabled] = useState(true);
+  // const [isDateOfBirthEstimated, setIsDateOfBirthEstimated] = useState(false);
 
   const [carePoints, setCarePoints] = useState([]);
   const [sourceReferral, setSourceReferral] = useState([]);
@@ -192,7 +187,6 @@ const ViralHepatitisForm1 = ({ setStep }) => {
   const [disabledAgeBaseOnAge, setDisabledAgeBaseOnAge] = useState(false);
 
   const [open, setOpen] = React.useState(false);
-
   const toggle = () => setOpen(!open);
 
   const sexCodeset = async () => {
@@ -363,14 +357,47 @@ const ViralHepatitisForm1 = ({ setStep }) => {
       const estDob = moment(currentDate.toISOString());
       const dobNew = estDob.add(e.target.value * -1, "years");
       //setBasicInfo({...basicInfo, dob: moment(dobNew).format("YYYY-MM-DD")});
-      basicInfo.dob = moment(dobNew).format("YYYY-MM-DD");
+
+      basicInfo.personDto.dateOfBirth = moment(dobNew).format("YYYY-MM-DD");
+
+      setInfo({ ...info, dateOfBirth: moment(dobNew).format("YYYY-MM-DD") });
     }
     setBasicInfo({ ...basicInfo, age: Math.abs(e.target.value) });
   };
 
+  //Date of Birth and Age handle
+  const handleDobChange = (e) => {
+    if (e.target.value) {
+      const today = new Date();
+      const birthDate = new Date(e.target.value);
+      let age_now = today.getFullYear() - birthDate.getFullYear();
+      const m = today.getMonth() - birthDate.getMonth();
+
+      if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age_now--;
+      }
+      basicInfo.age = age_now;
+      //setBasicInfo({...basicInfo, age: age_now});
+    } else {
+      setBasicInfo({ ...basicInfo, age: "" });
+    }
+    // setBasicInfo({
+    //   ...basicInfo,
+    //   personDto: {
+    //     ...basicInfo.personDto,
+    //     dateOfRegistration: e.target.value,
+    //   },
+    // });
+
+    // setBasicInfo({ ...basicInfo, dob: e.target.value });
+    if (basicInfo.age !== "" && basicInfo.age >= 60) {
+      toggle();
+    }
+  };
+
   //Get States from selected country
   const getStates = () => {
-    const getCountryId = basicInfo.countryId;
+    const getCountryId = info?.countryId;
     setStateByCountryId(1);
     setInfo({ ...info, countryId: getCountryId });
   };
@@ -528,34 +555,73 @@ const ViralHepatitisForm1 = ({ setStep }) => {
 
   const handleDateOfBirthChange = (e) => {
     if (e.target.value == "Actual") {
-      setAgeDisabled(true);
+      setBasicInfo({
+        ...basicInfo,
+        personDto: {
+          ...basicInfo.personDto,
+          isDateOfBirthEstimated: false,
+        },
+      });
     } else if (e.target.value == "Estimated") {
       setAgeDisabled(false);
+      setBasicInfo({
+        ...basicInfo,
+        personDto: {
+          ...basicInfo.personDto,
+          isDateOfBirthEstimated: true,
+        },
+      });
     }
   };
 
   // to capture the error
   let temp = { ...errors };
   const validate = () => {
-    temp.surname = basicInfo.personDto.surname ? "" : "Surname is required";
-    temp.firstName = basicInfo.personDto.firstName
-      ? ""
-      : "First name is required";
-    temp.phone = basicInfo.phone ? "" : "Phone Number  is required.";
-    temp.district = info.district ? "" : "Province/LGA is required.";
-    temp.stateId = info.stateId ? "" : "State is required.";
-    temp.dateOfBirth = info.dateOfBirth ? "" : "Date of Birth is required.";
-    temp.dateOfRegistration = info.dateOfRegistration
-      ? ""
-      : "Date of Registration is required.";
-    temp.maritalStatusId = basicInfo.maritalStatusId
-      ? ""
-      : "Marital Status is required";
-    temp.educationId = info.educationId ? "" : "Education is required";
-    temp.relationship = basicInfo.relationship
-      ? ""
-      : "Relationship is required";
-    temp.genderId = basicInfo.personDto.genderId ? "" : "sex is required";
+    if (userStatus === "new") {
+      //date of registration
+      temp.dateOfRegistration = info.dateOfRegistration
+        ? ""
+        : "Date of Registration is required.";
+
+      //hospital number
+      temp.hospitalNumber = info.value ? "" : "Hospital Id is required";
+
+      //Names
+
+      temp.surname = basicInfo.personDto.surname ? "" : "Surname is required";
+      temp.firstName = basicInfo.personDto.firstName
+        ? ""
+        : "First name is required";
+
+      //phone number
+      temp.phone = basicInfo.phone ? "" : "Phone Number  is required.";
+
+      //state and district
+
+      temp.stateId = info.stateId ? "" : "State is required.";
+      temp.district = info.district ? "" : "Province/LGA is required.";
+
+      //date of birth
+      temp.dateOfBirth = info.dateOfBirth ? "" : "Date of Birth is required.";
+
+      // Marital Status
+
+      temp.maritalStatusId = basicInfo.maritalStatusId
+        ? ""
+        : "Marital Status is required";
+
+      // Education
+      temp.educationId = info.educationId ? "" : "Education is required";
+
+      //Relationship
+      temp.relationship = basicInfo.relationship
+        ? ""
+        : "Relationship is required";
+
+      //sex
+      temp.genderId = basicInfo.personDto.genderId ? "" : "sex is required";
+    }
+
     temp.careEntryPoint = basicInfo.careEntryPoint
       ? ""
       : "careEntryPoint is required";
@@ -571,7 +637,6 @@ const ViralHepatitisForm1 = ({ setStep }) => {
       ? ""
       : "Date of first HepatitisB positive screening is required";
 
-    //
     setErrors({ ...temp });
     return Object.values(temp).every((x) => x == "");
   };
@@ -589,12 +654,12 @@ const ViralHepatitisForm1 = ({ setStep }) => {
     //   setfemaleStatus(true);
     // }
     if (e.target.name === "firstName") {
-      // const name = alphabetOnly(e.target.value);
+      const name = alphabetOnly(e.target.value);
       setBasicInfo({
         ...basicInfo,
         personDto: {
           ...basicInfo.personDto,
-          [e.target.name]: e.target.value,
+          [e.target.name]: name,
         },
       });
     } else if (e.target.name === "genderId" && e.target.value !== "") {
@@ -613,7 +678,7 @@ const ViralHepatitisForm1 = ({ setStep }) => {
         ...basicInfo,
         personDto: {
           ...basicInfo.personDto,
-          [e.target.name]: e.target.value,
+          [e.target.name]: name,
         },
       });
     } else if (
@@ -646,6 +711,14 @@ const ViralHepatitisForm1 = ({ setStep }) => {
           [e.target.name]: e.target.value,
         },
       });
+    } else if (e.target.name === "maritalStatusId" && e.target.value !== "") {
+      setBasicInfo({
+        ...basicInfo,
+        personDto: {
+          ...basicInfo.personDto,
+          [e.target.name]: e.target.value,
+        },
+      });
     } else {
       setBasicInfo({ ...basicInfo, [e.target.name]: e.target.value });
     }
@@ -653,8 +726,54 @@ const ViralHepatitisForm1 = ({ setStep }) => {
 
   const handleInputChangesForInfo = (e) => {
     setErrors({ ...temp, [e.target.name]: "" });
-    setInfo({ ...info, [e.target.name]: e.target.value });
+
+    if (e.target.name === "hospitalNumber") {
+      setInfo({ ...info, value: e.target.value });
+    } else {
+      setInfo({ ...info, [e.target.name]: e.target.value });
+    }
     //manupulate inpute fields base on gender/sex
+    if (e.target.name === "hospitalNumber") {
+      if (e.target.value !== "") {
+        async function getHosiptalNumber() {
+          const hosiptalNumber = e.target.value;
+          const response = await axios.post(
+            `${apiUrl}patient/exist/hospital-number`,
+            hosiptalNumber,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "text/plain",
+              },
+            }
+          );
+          if (response.data !== true) {
+            setHospitalNumStatus(false);
+            errors.hospitalNumber = "";
+          } else {
+            errors.hospitalNumber = "";
+            toast.error("Error! Hosiptal Number already exist");
+            setHospitalNumStatus(true);
+          }
+        }
+        getHosiptalNumber();
+      }
+      setBasicInfo({
+        ...basicInfo,
+        personDto: {
+          ...basicInfo.personDto,
+          identifier: [
+            {
+              assignerId: 1,
+              type: "HospitalNumber",
+              value: e.target.value,
+            },
+          ],
+        },
+      });
+
+      getProvinces(e);
+    }
     if (e.target.name === "stateId" && e.target.value !== "") {
       setBasicInfo({
         ...basicInfo,
@@ -672,8 +791,25 @@ const ViralHepatitisForm1 = ({ setStep }) => {
 
       getProvinces(e);
     }
+    if (e.target.name === "district") {
+      setBasicInfo({
+        ...basicInfo,
+        personDto: {
+          ...basicInfo.personDto,
+          address: [
+            {
+              countryId: info.countryId,
+              stateId: info.stateId,
+              district: e.target.value,
+            },
+          ],
+        },
+      });
 
+      // getProvinces(e);
+    }
     if (e.target.name === "dateOfBirth" && e.target.value !== "") {
+      handleDobChange(e);
       setBasicInfo({
         ...basicInfo,
         personDto: {
@@ -752,12 +888,22 @@ const ViralHepatitisForm1 = ({ setStep }) => {
     // validating the input
     window.scrollTo(0, 0);
 
-    console.log(basicInfo);
-    console.log(info);
-
     if (validate()) {
-      console.log("good to go", basicInfo);
-      postDataWithToken(basicInfo, "hepatitis/enrollment");
+      if (userStatus === "new") {
+        postDataWithToken(basicInfo, "hepatitis/enrollment");
+      } else {
+        let userInfo = basicInfo;
+        delete userInfo.personDto;
+        delete userInfo.address;
+
+        let newUserInfo = {
+          ...userInfo,
+          personId: patientObj.id,
+        };
+        postDataWithToken(newUserInfo, "hepatitis/enrollment");
+
+        console.log(newUserInfo);
+      }
     }
   };
 
@@ -780,7 +926,6 @@ const ViralHepatitisForm1 = ({ setStep }) => {
     GetCountry();
     // getHepatitisPoint();
   }, []);
-
   // calculate bmi when weight and height changes
   useEffect(() => {
     if (basicInfo.weight && basicInfo.height) {
@@ -793,25 +938,26 @@ const ViralHepatitisForm1 = ({ setStep }) => {
         <CardContent>
           <div className="col-xl-12 col-lg-12">
             {/* <Form onSubmit={formik.handleSubmit}> */}
-            <div className="card">
-              <div
-                className="card-header"
-                style={{
-                  backgroundColor: "#014d88",
-                  color: "#fff",
-                  fontWeight: "bolder",
-                  borderRadius: "0.2rem",
-                }}
-              >
-                <h5 className="card-title" style={{ color: "#fff" }}>
-                  Demography
-                </h5>
-              </div>
+            {userStatus === "new" && (
+              <div className="card">
+                <div
+                  className="card-header"
+                  style={{
+                    backgroundColor: "#014d88",
+                    color: "#fff",
+                    fontWeight: "bolder",
+                    borderRadius: "0.2rem",
+                  }}
+                >
+                  <h5 className="card-title" style={{ color: "#fff" }}>
+                    Demography
+                  </h5>
+                </div>
 
-              <div className="card-body">
-                <div className="basic-form">
-                  <div className="row">
-                    {/* <div className="form-group mb-3 col-md-4">
+                <div className="card-body">
+                  <div className="basic-form">
+                    <div className="row">
+                      {/* <div className="form-group mb-3 col-md-4">
                         <FormGroup>
                           <Label for="facilityId">
                             Facility Id <span style={{ color: "red" }}> *</span>{" "}
@@ -838,148 +984,195 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                           )}
                         </FormGroup>
                       </div> */}
-                    <div className="form-group mb-3 col-md-4">
-                      <FormGroup>
-                        <Label for="dateOfRegistration">
-                          Date of registration
-                          <span style={{ color: "red" }}> *</span>{" "}
-                        </Label>
-                        <input
-                          className="form-control"
-                          type="date"
-                          name="dateOfRegistration"
-                          id="dateOfRegistration"
-                          value={info.dateOfRegistration}
-                          onChange={handleInputChangesForInfo}
-                          max={moment(new Date()).format("YYYY-MM-DD")}
-                          // onBlur={formik.handleBlur}
-                          style={{
-                            border: "1px solid #014D88",
-                            borderRadius: "0.2rem",
-                          }}
-                        />
-                        {errors.dateOfRegistration !== "" ? (
-                          <span className={classes.error}>
-                            {errors.dateOfRegistration}
+                      <div className="form-group mb-3 col-md-4">
+                        <FormGroup>
+                          <Label for="dateOfRegistration">
+                            Date of registration
+                            <span style={{ color: "red" }}> *</span>{" "}
+                          </Label>
+                          <input
+                            className="form-control"
+                            type="date"
+                            name="dateOfRegistration"
+                            id="dateOfRegistration"
+                            value={info.dateOfRegistration}
+                            onChange={handleInputChangesForInfo}
+                            max={moment(new Date()).format("YYYY-MM-DD")}
+                            // onBlur={formik.handleBlur}
+                            style={{
+                              border: "1px solid #014D88",
+                              borderRadius: "0.2rem",
+                            }}
+                          />
+                          {errors.dateOfRegistration !== "" ? (
+                            <span className={classes.error}>
+                              {errors.dateOfRegistration}
+                            </span>
+                          ) : (
+                            ""
+                          )}
+                        </FormGroup>
+                      </div>
+                      <div className="form-group mb-3 col-md-4">
+                        <FormGroup>
+                          <Label for="patientId">
+                            Hospital Number{" "}
+                            <span style={{ color: "red" }}> *</span>{" "}
+                          </Label>
+                          <input
+                            className="form-control"
+                            type="text"
+                            name="hospitalNumber"
+                            id="hospitalNumber"
+                            value={info.value}
+                            onChange={handleInputChangesForInfo}
+                            style={{
+                              border: "1px solid #014D88",
+                              borderRadius: "0.2rem",
+                            }}
+                          />
+                          {errors.hospitalNumber !== "" ? (
+                            <span className={classes.error}>
+                              {errors.hospitalNumber}
+                            </span>
+                          ) : (
+                            ""
+                          )}
+                          {hospitalNumStatus === true ? (
+                            <span className={classes.error}>
+                              {"Hospital number already exist"}
+                            </span>
+                          ) : (
+                            ""
+                          )}
+                          {/* {hospitalNumStatus2 === true ? (
+                          <span className={classes.success}>
+                            {"Hospital number is OK."}
                           </span>
                         ) : (
                           ""
-                        )}
-                      </FormGroup>
-                    </div>
+                        )} */}
+                        </FormGroup>
+                      </div>
 
-                    <div className="form-group mb-3 col-md-4">
-                      <FormGroup>
-                        <Label for="surname">
-                          Surname <span style={{ color: "red" }}> *</span>{" "}
-                        </Label>
-                        <input
-                          className="form-control"
-                          type="text"
-                          name="surname"
-                          id="surname"
-                          value={basicInfo.personDto.surname}
-                          onChange={handleInputChangeBasic}
-                          style={{
-                            border: "1px solid #014D88",
-                            borderRadius: "0.2rem",
-                          }}
-                        />
-                        {errors.surname !== "" ? (
-                          <span className={classes.error}>
-                            {errors.surname}
-                          </span>
-                        ) : (
-                          ""
-                        )}
-                      </FormGroup>
-                    </div>
-                    <div className="form-group mb-3 col-md-4">
-                      <FormGroup>
-                        <Label for="firstName">
-                          Firstname <span style={{ color: "red" }}> *</span>{" "}
-                        </Label>
-                        <input
-                          className="form-control"
-                          type="text"
-                          name="firstName"
-                          id="firstName"
-                          value={basicInfo.personDto.firstName}
-                          onChange={handleInputChangeBasic}
-                          style={{
-                            border: "1px solid #014D88",
-                            borderRadius: "0.2rem",
-                          }}
-                        />
-                        {errors.firstName !== "" ? (
-                          <span className={classes.error}>
-                            {errors.firstName}
-                          </span>
-                        ) : (
-                          ""
-                        )}
-                      </FormGroup>
-                    </div>
-                    <div className="form-group mb-3 col-md-4">
-                      <FormGroup>
-                        <Label for="otherName">Other name </Label>
-                        <input
-                          className="form-control"
-                          type="text"
-                          name="otherName"
-                          id="otherName"
-                          value={basicInfo.personDto.otherName}
-                          onChange={handleInputChangeBasic}
-                          style={{
-                            border: "1px solid #014D88",
-                            borderRadius: "0.2rem",
-                          }}
-                        />
-                        {errors.otherName !== "" ? (
-                          <span className={classes.error}>
-                            {errors.otherName}
-                          </span>
-                        ) : (
-                          ""
-                        )}
-                      </FormGroup>
-                    </div>
-                    <div className="form-group mb-3 col-md-4">
-                      <FormGroup>
-                        <Label>
-                          Phone Number <span style={{ color: "red" }}> *</span>
-                        </Label>
-                        <PhoneInput
-                          containerStyle={{
-                            width: "100%",
-                            border: "1px solid #014D88",
-                          }}
-                          inputStyle={{ width: "100%", borderRadius: "0px" }}
-                          country={"ng"}
-                          placeholder="(234)7099999999"
-                          maxLength={5}
-                          name="phoneNumber"
-                          id="phoneNumber"
-                          masks={{ ng: "...-...-....", at: "(....) ...-...." }}
-                          value={basicInfo.phoneNumber}
-                          onChange={(e) => {
-                            setErrors({ ...errors, phone: "" });
-                            checkPhoneNumberBasic(e, "phone");
-                          }}
-                          //onChange={(e)=>{handleInputChangeBasic(e,'phoneNumber')}}
-                        />
-                        {errors.phone !== "" ? (
-                          <span className={classes.error}>{errors.phone}</span>
-                        ) : (
-                          ""
-                        )}
-                        {/* {basicInfo.phoneNumber.length >13 ||  basicInfo.phoneNumber.length <13? (
+                      <div className="form-group mb-3 col-md-4">
+                        <FormGroup>
+                          <Label for="surname">
+                            Surname <span style={{ color: "red" }}> *</span>{" "}
+                          </Label>
+                          <input
+                            className="form-control"
+                            type="text"
+                            name="surname"
+                            id="surname"
+                            value={basicInfo.personDto.surname}
+                            onChange={handleInputChangeBasic}
+                            style={{
+                              border: "1px solid #014D88",
+                              borderRadius: "0.2rem",
+                            }}
+                          />
+                          {errors.surname !== "" ? (
+                            <span className={classes.error}>
+                              {errors.surname}
+                            </span>
+                          ) : (
+                            ""
+                          )}
+                        </FormGroup>
+                      </div>
+                      <div className="form-group mb-3 col-md-4">
+                        <FormGroup>
+                          <Label for="firstName">
+                            Firstname <span style={{ color: "red" }}> *</span>{" "}
+                          </Label>
+                          <input
+                            className="form-control"
+                            type="text"
+                            name="firstName"
+                            id="firstName"
+                            value={basicInfo.personDto.firstName}
+                            onChange={handleInputChangeBasic}
+                            style={{
+                              border: "1px solid #014D88",
+                              borderRadius: "0.2rem",
+                            }}
+                          />
+                          {errors.firstName !== "" ? (
+                            <span className={classes.error}>
+                              {errors.firstName}
+                            </span>
+                          ) : (
+                            ""
+                          )}
+                        </FormGroup>
+                      </div>
+                      <div className="form-group mb-3 col-md-4">
+                        <FormGroup>
+                          <Label for="otherName">Other name </Label>
+                          <input
+                            className="form-control"
+                            type="text"
+                            name="otherName"
+                            id="otherName"
+                            value={basicInfo.personDto.otherName}
+                            onChange={handleInputChangeBasic}
+                            style={{
+                              border: "1px solid #014D88",
+                              borderRadius: "0.2rem",
+                            }}
+                          />
+                          {errors.otherName !== "" ? (
+                            <span className={classes.error}>
+                              {errors.otherName}
+                            </span>
+                          ) : (
+                            ""
+                          )}
+                        </FormGroup>
+                      </div>
+                      <div className="form-group mb-3 col-md-4">
+                        <FormGroup>
+                          <Label>
+                            Phone Number{" "}
+                            <span style={{ color: "red" }}> *</span>
+                          </Label>
+                          <PhoneInput
+                            containerStyle={{
+                              width: "100%",
+                              border: "1px solid #014D88",
+                            }}
+                            inputStyle={{ width: "100%", borderRadius: "0px" }}
+                            country={"ng"}
+                            placeholder="(234)7099999999"
+                            maxLength={5}
+                            name="phoneNumber"
+                            id="phoneNumber"
+                            masks={{
+                              ng: "...-...-....",
+                              at: "(....) ...-....",
+                            }}
+                            value={basicInfo.phoneNumber}
+                            onChange={(e) => {
+                              setErrors({ ...errors, phone: "" });
+                              checkPhoneNumberBasic(e, "phone");
+                            }}
+                            //onChange={(e)=>{handleInputChangeBasic(e,'phoneNumber')}}
+                          />
+                          {errors.phone !== "" ? (
+                            <span className={classes.error}>
+                              {errors.phone}
+                            </span>
+                          ) : (
+                            ""
+                          )}
+                          {/* {basicInfo.phoneNumber.length >13 ||  basicInfo.phoneNumber.length <13? (
                                                 <span className={classes.error}>{"The maximum and minimum required number is 13 digit"}</span>
                                                 ) : "" } */}
-                      </FormGroup>
-                    </div>
+                        </FormGroup>
+                      </div>
 
-                    {/* <div className="form-group mb-3 col-md-4">
+                      {/* <div className="form-group mb-3 col-md-4">
                         <FormGroup>
                           <Label for="residentialAddress">
                             Residential Address{" "}
@@ -1008,231 +1201,231 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                         </FormGroup>
                       </div> */}
 
-                    <div className="form-group mb-3 col-md-4">
-                      <FormGroup>
-                        <Label for="countryId">
-                          Country <span style={{ color: "red" }}> *</span>{" "}
-                        </Label>
-                        <select
-                          className="form-control"
-                          // type="text"
-                          name="countryId"
-                          id="countryId"
-                          value={info.countryId}
-                          onChange={handleInputChangesForInfo}
-                          style={{
-                            border: "1px solid #014D88",
-                            borderRadius: "0.2rem",
-                          }}
-                          disabled
-                        >
-                          {countries.map((item, index) => (
-                            <option value={Number(item.id)} key={index}>
-                              {item.name}
-                            </option>
-                          ))}
-                        </select>
-                        {errors.countryId !== "" ? (
-                          <span className={classes.error}>
-                            {errors.countryId}
-                          </span>
-                        ) : (
-                          ""
-                        )}
-                      </FormGroup>
-                    </div>
-                    <div className="form-group mb-3 col-md-4">
-                      <FormGroup>
-                        <Label for="stateId">
-                          State <span style={{ color: "red" }}> *</span>{" "}
-                        </Label>
-                        <select
-                          className="form-control"
-                          name="stateId"
-                          id="stateId"
-                          value={info.stateId}
-                          onChange={handleInputChangesForInfo}
-                          style={{
-                            border: "1px solid #014D88",
-                            borderRadius: "0.2rem",
-                          }}
-                        >
-                          <option value="">Select</option>
-                          {states.map((item, index) => (
-                            <option value={Number(item.id)} key={index}>
-                              {item.name}
-                            </option>
-                          ))}
-                        </select>
-                        {errors.stateId !== "" ? (
-                          <span className={classes.error}>
-                            {errors.stateId}
-                          </span>
-                        ) : (
-                          ""
-                        )}
-                      </FormGroup>
-                    </div>
+                      <div className="form-group mb-3 col-md-4">
+                        <FormGroup>
+                          <Label for="countryId">
+                            Country <span style={{ color: "red" }}> *</span>{" "}
+                          </Label>
+                          <select
+                            className="form-control"
+                            // type="text"
+                            name="countryId"
+                            id="countryId"
+                            value={info.countryId}
+                            onChange={handleInputChangesForInfo}
+                            style={{
+                              border: "1px solid #014D88",
+                              borderRadius: "0.2rem",
+                            }}
+                            disabled
+                          >
+                            {countries.map((item, index) => (
+                              <option value={Number(item.id)} key={index}>
+                                {item.name}
+                              </option>
+                            ))}
+                          </select>
+                          {errors.countryId !== "" ? (
+                            <span className={classes.error}>
+                              {errors.countryId}
+                            </span>
+                          ) : (
+                            ""
+                          )}
+                        </FormGroup>
+                      </div>
+                      <div className="form-group mb-3 col-md-4">
+                        <FormGroup>
+                          <Label for="stateId">
+                            State <span style={{ color: "red" }}> *</span>{" "}
+                          </Label>
+                          <select
+                            className="form-control"
+                            name="stateId"
+                            id="stateId"
+                            value={info.stateId}
+                            onChange={handleInputChangesForInfo}
+                            style={{
+                              border: "1px solid #014D88",
+                              borderRadius: "0.2rem",
+                            }}
+                          >
+                            <option value="">Select</option>
+                            {states.map((item, index) => (
+                              <option value={Number(item.id)} key={index}>
+                                {item.name}
+                              </option>
+                            ))}
+                          </select>
+                          {errors.stateId !== "" ? (
+                            <span className={classes.error}>
+                              {errors.stateId}
+                            </span>
+                          ) : (
+                            ""
+                          )}
+                        </FormGroup>
+                      </div>
 
-                    <div className="form-group mb-3 col-md-4">
-                      <FormGroup>
-                        <Label>
-                          Province/District/LGA{" "}
-                          <span style={{ color: "red" }}> *</span>
-                        </Label>
-                        <select
-                          className="form-control"
-                          type="text"
-                          name="district"
-                          id="district"
-                          value={info.district}
-                          style={{
-                            border: "1px solid #014D88",
-                            borderRadius: "0.2rem",
-                          }}
-                          onChange={handleInputChangesForInfo}
-                        >
-                          <option value="">Select</option>
-                          {provinces.map((value, index) => (
-                            <option key={index} value={value.id}>
-                              {value.name}
-                            </option>
-                          ))}
-                        </select>
-                        {errors.district !== "" ? (
-                          <span className={classes.error}>
-                            {errors.district}
-                          </span>
-                        ) : (
-                          ""
-                        )}
-                      </FormGroup>
-                    </div>
+                      <div className="form-group mb-3 col-md-4">
+                        <FormGroup>
+                          <Label>
+                            Province/District/LGA{" "}
+                            <span style={{ color: "red" }}> *</span>
+                          </Label>
+                          <select
+                            className="form-control"
+                            type="text"
+                            name="district"
+                            id="district"
+                            value={info.district}
+                            style={{
+                              border: "1px solid #014D88",
+                              borderRadius: "0.2rem",
+                            }}
+                            onChange={handleInputChangesForInfo}
+                          >
+                            <option value="">Select</option>
+                            {provinces.map((value, index) => (
+                              <option key={index} value={value.id}>
+                                {value.name}
+                              </option>
+                            ))}
+                          </select>
+                          {errors.district !== "" ? (
+                            <span className={classes.error}>
+                              {errors.district}
+                            </span>
+                          ) : (
+                            ""
+                          )}
+                        </FormGroup>
+                      </div>
 
-                    <div className="form-group mb-3 col-md-4">
-                      <FormGroup>
-                        <Label for="landmark">Landmark </Label>
-                        <input
-                          className="form-control"
-                          type="text"
-                          name="landmark"
-                          id="landmark"
-                          value={basicInfo.landmark}
-                          onChange={handleInputChangeBasic}
-                          // onBlur={formik.handleBlur}
-                          style={{
-                            border: "1px solid #014D88",
-                            borderRadius: "0.2rem",
-                          }}
-                        />
-                        {/* {formik.errors.landmark !== "" ? (
+                      <div className="form-group mb-3 col-md-4">
+                        <FormGroup>
+                          <Label for="landmark">Landmark </Label>
+                          <input
+                            className="form-control"
+                            type="text"
+                            name="landmark"
+                            id="landmark"
+                            value={basicInfo.landmark}
+                            onChange={handleInputChangeBasic}
+                            // onBlur={formik.handleBlur}
+                            style={{
+                              border: "1px solid #014D88",
+                              borderRadius: "0.2rem",
+                            }}
+                          />
+                          {/* {formik.errors.landmark !== "" ? (
                           <span className={classes.error}>
                             {formik.errors.landmark}
                           </span>
                         ) : (
                           ""
                         )} */}
-                      </FormGroup>
-                    </div>
+                        </FormGroup>
+                      </div>
 
-                    {/* new date of registration with actual/estimated date  */}
-                    <div className="form-group mb-3 col-md-4">
-                      <FormGroup>
-                        <Label>Date Of Birth</Label>
-                        <div className="radio">
-                          <label>
-                            <input
-                              type="radio"
-                              value="Actual"
-                              name="dateOfBirth"
-                              defaultChecked
-                              onChange={(e) => handleDateOfBirthChange(e)}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            />{" "}
-                            Actual
-                          </label>
-                        </div>
-                        <div className="radio">
-                          <label>
-                            <input
-                              type="radio"
-                              value="Estimated"
-                              name="dateOfBirth"
-                              onChange={(e) => handleDateOfBirthChange(e)}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            />{" "}
-                            Estimated
-                          </label>
-                        </div>
-                      </FormGroup>
-                    </div>
+                      {/* new date of registration with actual/estimated date  */}
+                      <div className="form-group mb-3 col-md-4">
+                        <FormGroup>
+                          <Label>Date Of Birth</Label>
+                          <div className="radio">
+                            <label>
+                              <input
+                                type="radio"
+                                value="Actual"
+                                name="dateOfBirth"
+                                defaultChecked
+                                onChange={(e) => handleDateOfBirthChange(e)}
+                                style={{
+                                  border: "1px solid #014D88",
+                                  borderRadius: "0.2rem",
+                                }}
+                              />{" "}
+                              Actual
+                            </label>
+                          </div>
+                          <div className="radio">
+                            <label>
+                              <input
+                                type="radio"
+                                value="Estimated"
+                                name="dateOfBirth"
+                                onChange={(e) => handleDateOfBirthChange(e)}
+                                style={{
+                                  border: "1px solid #014D88",
+                                  borderRadius: "0.2rem",
+                                }}
+                              />{" "}
+                              Estimated
+                            </label>
+                          </div>
+                        </FormGroup>
+                      </div>
 
-                    {/* end of new date of reg with actual/estimated  date */}
+                      {/* end of new date of reg with actual/estimated  date */}
 
-                    <div className="form-group mb-3 col-md-4">
-                      <FormGroup>
-                        <Label for="dateOfBirth">
-                          Date of birth
-                          <span style={{ color: "red" }}> *</span>{" "}
-                        </Label>
-                        <input
-                          className="form-control"
-                          type="date"
-                          name="dateOfBirth"
-                          id="dateOfBirth"
-                          max={moment(new Date()).format("YYYY-MM-DD")}
-                          value={info.dateOfBirth}
-                          onChange={handleInputChangesForInfo}
-                          // onBlur={formik.handleBlur}
-                          style={{
-                            border: "1px solid #014D88",
-                            borderRadius: "0.2rem",
-                          }}
-                        />
-                        {errors.dateOfBirth !== "" ? (
-                          <span className={classes.error}>
-                            {errors.dateOfBirth}
-                          </span>
-                        ) : (
-                          ""
-                        )}
-                      </FormGroup>
-                    </div>
+                      <div className="form-group mb-3 col-md-4">
+                        <FormGroup>
+                          <Label for="dateOfBirth">
+                            Date of birth
+                            <span style={{ color: "red" }}> *</span>{" "}
+                          </Label>
+                          <input
+                            className="form-control"
+                            type="date"
+                            name="dateOfBirth"
+                            id="dateOfBirth"
+                            max={moment(new Date()).format("YYYY-MM-DD")}
+                            value={info.dateOfBirth}
+                            onChange={handleInputChangesForInfo}
+                            // onBlur={formik.handleBlur}
+                            style={{
+                              border: "1px solid #014D88",
+                              borderRadius: "0.2rem",
+                            }}
+                          />
+                          {errors.dateOfBirth !== "" ? (
+                            <span className={classes.error}>
+                              {errors.dateOfBirth}
+                            </span>
+                          ) : (
+                            ""
+                          )}
+                        </FormGroup>
+                      </div>
 
-                    <div className="form-group mb-3 col-md-4">
-                      <FormGroup>
-                        <Label>Age</Label>
-                        <input
-                          type="number"
-                          name="age"
-                          className="form-control"
-                          id="age"
-                          min="10"
-                          value={basicInfo.age}
-                          disabled={ageDisabled}
-                          onChange={handleAgeChange}
-                          style={{
-                            border: "1px solid #014D88",
-                            borderRadius: "0.2rem",
-                          }}
-                        />
-                      </FormGroup>
-                      <p>
+                      <div className="form-group mb-3 col-md-4">
+                        <FormGroup>
+                          <Label>Age</Label>
+                          <input
+                            type="number"
+                            name="age"
+                            className="form-control"
+                            id="age"
+                            min="10"
+                            value={basicInfo.age}
+                            disabled={ageDisabled}
+                            onChange={handleAgeChange}
+                            style={{
+                              border: "1px solid #014D88",
+                              borderRadius: "0.2rem",
+                            }}
+                          />
+                        </FormGroup>
+                        {/* <p>
                         <b style={{ color: "red" }}>
                           {basicInfo.age !== "" && basicInfo.age < 10
                             ? "The minimum age is 10"
                             : " "}{" "}
                         </b>
-                      </p>
-                    </div>
+                      </p> */}
+                      </div>
 
-                    {/* <div className="form-group mb-3 col-md-4">
+                      {/* <div className="form-group mb-3 col-md-4">
                       <FormGroup>
                         <Label for="isDateOfBirthEstimated">
                           Is date Of estimated
@@ -1265,207 +1458,208 @@ const ViralHepatitisForm1 = ({ setStep }) => {
                       </FormGroup>
                     </div> */}
 
-                    <div className="form-group mb-3 col-md-4">
-                      <FormGroup>
-                        <Label for="employmentStatusId">Occupation</Label>
-                        <select
-                          className="form-control"
-                          name="employmentStatusId"
-                          id="employmentStatusId"
-                          value={info.employmentStatusId}
-                          onChange={handleInputChangesForInfo}
-                          // onBlur={formik.handleBlur}
-                          style={{
-                            border: "1px solid #014D88",
-                            borderRadius: "0.2rem",
-                          }}
-                        >
-                          <option value="">Select</option>
-                          {occupationOptions.map((item, index) => (
-                            <option
-                              value={Number(item.id)}
-                              key={Number(item.id)}
-                            >
-                              {item.display}
-                            </option>
-                          ))}
-                        </select>
-                        {/* {errors.district !== "" ? (
+                      <div className="form-group mb-3 col-md-4">
+                        <FormGroup>
+                          <Label for="employmentStatusId">Occupation</Label>
+                          <select
+                            className="form-control"
+                            name="employmentStatusId"
+                            id="employmentStatusId"
+                            value={info.employmentStatusId}
+                            onChange={handleInputChangesForInfo}
+                            // onBlur={formik.handleBlur}
+                            style={{
+                              border: "1px solid #014D88",
+                              borderRadius: "0.2rem",
+                            }}
+                          >
+                            <option value="">Select</option>
+                            {occupationOptions.map((item, index) => (
+                              <option
+                                value={Number(item.id)}
+                                key={Number(item.id)}
+                              >
+                                {item.display}
+                              </option>
+                            ))}
+                          </select>
+                          {/* {errors.district !== "" ? (
                           <span className={classes.error}>
                             {errors.district}
                           </span>
                         ) : (
                           ""
                         )} */}
-                      </FormGroup>
-                    </div>
-                    <div className="form-group mb-3 col-md-4">
-                      <FormGroup>
-                        <Label for="maritalStatusId">
-                          Marital status
-                          <span style={{ color: "red" }}> *</span>{" "}
-                        </Label>
-                        <select
-                          className="form-control"
-                          name="maritalStatusId"
-                          id="maritalStatusId"
-                          value={basicInfo.maritalStatusId}
-                          onChange={handleInputChangeBasic}
-                          // onBlur={formik.handleBlur}
-                          style={{
-                            border: "1px solid #014D88",
-                            borderRadius: "0.2rem",
-                          }}
-                        >
-                          <option value="">Select</option>
-                          {maritalStatusOptions.map((item, index) => (
-                            <option value={Number(item.id)}>
-                              {item.display}
-                            </option>
-                          ))}
-                        </select>
-                        {errors.maritalStatusId !== "" ? (
-                          <span className={classes.error}>
-                            {errors.maritalStatusId}
-                          </span>
-                        ) : (
-                          ""
-                        )}
-                      </FormGroup>
-                    </div>
-                    <div className="form-group mb-3 col-md-4">
-                      <FormGroup>
-                        <Label for="educationId">
-                          Education <span style={{ color: "red" }}> *</span>{" "}
-                        </Label>
-                        <select
-                          className="form-control"
-                          // type="text"
-                          name="educationId"
-                          id="educationId"
-                          value={info.educationId}
-                          onChange={handleInputChangesForInfo}
-                          // onBlur={formik.handleBlur}
-                          style={{
-                            border: "1px solid #014D88",
-                            borderRadius: "0.2rem",
-                          }}
-                        >
-                          <option>Select</option>
-                          {educationOptions.map((item, index) => (
-                            <option value={Number(item.id)}>
-                              {item.display}
-                            </option>
-                          ))}
-                        </select>
-                        {errors.educationId !== "" ? (
-                          <span className={classes.error}>
-                            {errors.educationId}
-                          </span>
-                        ) : (
-                          ""
-                        )}
-                      </FormGroup>
-                    </div>
+                        </FormGroup>
+                      </div>
+                      <div className="form-group mb-3 col-md-4">
+                        <FormGroup>
+                          <Label for="maritalStatusId">
+                            Marital status
+                            <span style={{ color: "red" }}> *</span>{" "}
+                          </Label>
+                          <select
+                            className="form-control"
+                            name="maritalStatusId"
+                            id="maritalStatusId"
+                            value={basicInfo.maritalStatusId}
+                            onChange={handleInputChangeBasic}
+                            // onBlur={formik.handleBlur}
+                            style={{
+                              border: "1px solid #014D88",
+                              borderRadius: "0.2rem",
+                            }}
+                          >
+                            <option value="">Select</option>
+                            {maritalStatusOptions.map((item, index) => (
+                              <option value={Number(item.id)}>
+                                {item.display}
+                              </option>
+                            ))}
+                          </select>
+                          {errors.maritalStatusId !== "" ? (
+                            <span className={classes.error}>
+                              {errors.maritalStatusId}
+                            </span>
+                          ) : (
+                            ""
+                          )}
+                        </FormGroup>
+                      </div>
+                      <div className="form-group mb-3 col-md-4">
+                        <FormGroup>
+                          <Label for="educationId">
+                            Education <span style={{ color: "red" }}> *</span>{" "}
+                          </Label>
+                          <select
+                            className="form-control"
+                            // type="text"
+                            name="educationId"
+                            id="educationId"
+                            value={info.educationId}
+                            onChange={handleInputChangesForInfo}
+                            // onBlur={formik.handleBlur}
+                            style={{
+                              border: "1px solid #014D88",
+                              borderRadius: "0.2rem",
+                            }}
+                          >
+                            <option>Select</option>
+                            {educationOptions.map((item, index) => (
+                              <option value={Number(item.id)}>
+                                {item.display}
+                              </option>
+                            ))}
+                          </select>
+                          {errors.educationId !== "" ? (
+                            <span className={classes.error}>
+                              {errors.educationId}
+                            </span>
+                          ) : (
+                            ""
+                          )}
+                        </FormGroup>
+                      </div>
 
-                    <div className="form-group mb-3 col-md-4">
-                      <FormGroup>
-                        <Label for="relationship">
-                          Relationship <span style={{ color: "red" }}> *</span>{" "}
-                        </Label>
-                        <select
-                          className="form-control"
-                          name="relationship"
-                          id="relationship"
-                          value={basicInfo.relationship}
-                          onChange={handleInputChangeBasic}
-                          // onBlur={formik.handleBlur}
-                          style={{
-                            border: "1px solid #014D88",
-                            borderRadius: "0.2rem",
-                          }}
-                        >
-                          <option>Select</option>
-                          {relationshipOptions.map((item, index) => (
-                            <option value={Number(item.id)}>
-                              {item.display}
-                            </option>
-                          ))}
-                        </select>
-                        {errors.relationship !== "" ? (
-                          <span className={classes.error}>
-                            {errors.relationship}
-                          </span>
-                        ) : (
-                          ""
-                        )}
-                      </FormGroup>
-                    </div>
+                      <div className="form-group mb-3 col-md-4">
+                        <FormGroup>
+                          <Label for="relationship">
+                            Relationship{" "}
+                            <span style={{ color: "red" }}> *</span>{" "}
+                          </Label>
+                          <select
+                            className="form-control"
+                            name="relationship"
+                            id="relationship"
+                            value={basicInfo.relationship}
+                            onChange={handleInputChangeBasic}
+                            // onBlur={formik.handleBlur}
+                            style={{
+                              border: "1px solid #014D88",
+                              borderRadius: "0.2rem",
+                            }}
+                          >
+                            <option>Select</option>
+                            {relationshipOptions.map((item, index) => (
+                              <option value={Number(item.id)}>
+                                {item.display}
+                              </option>
+                            ))}
+                          </select>
+                          {errors.relationship !== "" ? (
+                            <span className={classes.error}>
+                              {errors.relationship}
+                            </span>
+                          ) : (
+                            ""
+                          )}
+                        </FormGroup>
+                      </div>
 
-                    <div className="form-group mb-3 col-md-4">
-                      <FormGroup>
-                        <Label for="sexId">
-                          Sex <span style={{ color: "red" }}> *</span>{" "}
-                        </Label>
-                        <select
-                          className="form-control"
-                          name="genderId"
-                          id="genderId"
-                          value={basicInfo.personDto.genderId}
-                          onChange={handleInputChangeBasic}
-                          // onBlur={formik.handleBlur}
-                          style={{
-                            border: "1px solid #014D88",
-                            borderRadius: "0.2rem",
-                          }}
-                        >
-                          <option>Select</option>
-                          {genders.map((item, index) => (
-                            <option value={Number(item.id)}>
-                              {item.display}
-                            </option>
-                          ))}
-                        </select>
-                        {errors.genderId !== "" ? (
-                          <span className={classes.error}>
-                            {errors.genderId}
-                          </span>
-                        ) : (
-                          ""
-                        )}
-                      </FormGroup>
-                    </div>
+                      <div className="form-group mb-3 col-md-4">
+                        <FormGroup>
+                          <Label for="sexId">
+                            Sex <span style={{ color: "red" }}> *</span>{" "}
+                          </Label>
+                          <select
+                            className="form-control"
+                            name="genderId"
+                            id="genderId"
+                            value={basicInfo.personDto.genderId}
+                            onChange={handleInputChangeBasic}
+                            // onBlur={formik.handleBlur}
+                            style={{
+                              border: "1px solid #014D88",
+                              borderRadius: "0.2rem",
+                            }}
+                          >
+                            <option>Select</option>
+                            {genders.map((item, index) => (
+                              <option value={Number(item.id)}>
+                                {item.display}
+                              </option>
+                            ))}
+                          </select>
+                          {errors.genderId !== "" ? (
+                            <span className={classes.error}>
+                              {errors.genderId}
+                            </span>
+                          ) : (
+                            ""
+                          )}
+                        </FormGroup>
+                      </div>
 
-                    <div className="form-group mb-3 col-md-4">
-                      <FormGroup>
-                        <Label for="ninNumber">NIN number </Label>
-                        <input
-                          className="form-control"
-                          type="text"
-                          name="ninNumber"
-                          id="ninNumber"
-                          value={basicInfo.ninNumber}
-                          onChange={handleInputChangeBasic}
-                          onBlur={formik.handleBlur}
-                          style={{
-                            border: "1px solid #014D88",
-                            borderRadius: "0.2rem",
-                          }}
-                        />
-                        {/* {formik.errors.ninNumber !== "" ? (
+                      <div className="form-group mb-3 col-md-4">
+                        <FormGroup>
+                          <Label for="ninNumber">NIN number </Label>
+                          <input
+                            className="form-control"
+                            type="text"
+                            name="ninNumber"
+                            id="ninNumber"
+                            value={basicInfo.ninNumber}
+                            onChange={handleInputChangeBasic}
+                            onBlur={formik.handleBlur}
+                            style={{
+                              border: "1px solid #014D88",
+                              borderRadius: "0.2rem",
+                            }}
+                          />
+                          {/* {formik.errors.ninNumber !== "" ? (
                           <span className={classes.error}>
                             {formik.errors.ninNumber}
                           </span>
                         ) : (
                           ""
                         )} */}
-                      </FormGroup>
+                        </FormGroup>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-
+            )}
             <div className="card">
               <div
                 className="card-header"
