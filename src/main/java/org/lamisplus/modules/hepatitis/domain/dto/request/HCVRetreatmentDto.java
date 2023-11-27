@@ -24,9 +24,9 @@ public class HCVRetreatmentDto implements Serializable {
     private String newRegimen;
     @NotEmpty(message = "prescribedDuration; can not be empty")
     private Integer prescribedDuration;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dateStarted;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dateStopped;
     private Status retreatmentAdverseEffect;
     private Status history_of_AdverseEffect;

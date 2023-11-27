@@ -27,10 +27,10 @@ public class HepatitisCTreatmentDto {
     @NotEmpty(message = "pastTreatmentExperience can not be empty")
     private String pastTreatmentExperience;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dateStarted;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dateCompleted;
     @Size(min = 1)
     @NotNull(message = "prescribedDuration can not be null")
@@ -41,7 +41,7 @@ public class HepatitisCTreatmentDto {
     @NotEmpty(message = "hbvPastTreatmentRegimen can not be empty")
     private String hbvPastTreatmentRegimen;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dateStopped;
 
     @NotNull(message = "hepatitisSvr12TestingDto cannot be null or empty")

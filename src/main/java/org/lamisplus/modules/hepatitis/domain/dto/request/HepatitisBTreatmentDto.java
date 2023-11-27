@@ -29,7 +29,7 @@ public class HepatitisBTreatmentDto implements Serializable {
     @NotEmpty(message = "newRegimen can not be empty")
     private String newRegimen;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dateStarted;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
@@ -38,7 +38,7 @@ public class HepatitisBTreatmentDto implements Serializable {
     @NotEmpty(message = "newRegimen can not be empty")
     private String hbvPastTreatmentRegimen;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dateStopped;
 
     @NotNull(message = "hepatitisBRegimenSwitch cannot be null or empty")
