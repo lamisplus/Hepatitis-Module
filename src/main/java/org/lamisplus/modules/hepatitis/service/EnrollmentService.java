@@ -4,7 +4,10 @@ import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisDiagnosisDto;
 import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisEnrollmentDto;
 import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisTreatmentDto;
 import org.lamisplus.modules.hepatitis.domain.dto.response.HepatitisEnrollmentPatientDTO;
+import org.lamisplus.modules.hepatitis.domain.dto.response.HepatitisEnrollmentResponse;
+import org.lamisplus.modules.hepatitis.domain.entity.HepatitisDiagnosis;
 import org.lamisplus.modules.hepatitis.domain.entity.HepatitisEnrollment;
+import org.lamisplus.modules.hepatitis.domain.entity.HepatitisTreatment;
 import org.lamisplus.modules.patient.domain.dto.PersonMetaDataDto;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -23,4 +26,18 @@ public interface EnrollmentService {
     List<HepatitisEnrollmentPatientDTO> getAllHepatitisEnrollments();
 
     PersonMetaDataDto getAllPatientsEligibleForHepatitisEnrollment(String searchValue, int pageNo, int pageSize);
+
+    HepatitisEnrollment viewHepatitisEnrollmentByPersonUuid(String personUuid);
+
+    HepatitisDiagnosis viewHepatitisDiagnosisByEnrollmentUuid(String enrollmentUuid);
+
+    HepatitisTreatment viewHepatitisTreatmentByEnrollmentUuid(String enrollmentUuid);
+
+    HepatitisEnrollmentDto updateHepatitisEnrollment(Long id, HepatitisEnrollmentDto enrollmentDto);
+
+    HepatitisDiagnosisDto updateHepatitisDiagnosis(Long id, HepatitisDiagnosisDto diagnosisDto);
+
+    HepatitisTreatmentDto updateHepatitisTreatment(Long id, HepatitisTreatmentDto treatmentDto);
+
+//    HepatitisEnrollment update-hepatitis-enrollment
 }

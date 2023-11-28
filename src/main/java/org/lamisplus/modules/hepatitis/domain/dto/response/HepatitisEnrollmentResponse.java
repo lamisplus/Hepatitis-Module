@@ -28,8 +28,8 @@ public class HepatitisEnrollmentResponse {
 
     private PersonResponseDto personResponseDto;
 
-    @NotEmpty(message  = "coreEntryPoint can not be empty")
-    private String coreEntryPoint;
+    @NotEmpty(message  = "care entry point can not be empty")
+    private String careEntryPoint;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Sex sex;

@@ -4,7 +4,10 @@ import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisDiagnosisDto;
 import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisEnrollmentDto;
 import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisTreatmentDto;
 import org.lamisplus.modules.hepatitis.domain.dto.response.HepatitisEnrollmentPatientDTO;
+import org.lamisplus.modules.hepatitis.domain.dto.response.HepatitisEnrollmentResponse;
+import org.lamisplus.modules.hepatitis.domain.entity.HepatitisDiagnosis;
 import org.lamisplus.modules.hepatitis.domain.entity.HepatitisEnrollment;
+import org.lamisplus.modules.hepatitis.domain.entity.HepatitisTreatment;
 import org.lamisplus.modules.hepatitis.service.EnrollmentService;
 import lombok.RequiredArgsConstructor;
 import org.lamisplus.modules.patient.domain.dto.PersonMetaDataDto;
@@ -51,5 +54,35 @@ public class EnrollmentController {
             @RequestParam(defaultValue = "10") Integer pageSize)  {
         PersonMetaDataDto personMetaDataDto = enrollmentService.getAllPatientsEligibleForHepatitisEnrollment(searchParam, pageNo, pageSize);
         return new ResponseEntity<> (personMetaDataDto, new HttpHeaders(), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "view-hepatitis-enrollment/{personUuid}")
+    public ResponseEntity<HepatitisEnrollment> viewHepatitisEnrollment(@PathVariable("personUuid") String personUuid) {
+        return ResponseEntity.ok (enrollmentService.viewHepatitisEnrollmentByPersonUuid(personUuid));
+    }
+
+    @GetMapping(value = "view-hepatitis-diagnosis/{enrollmentUuid}")
+    public ResponseEntity<HepatitisDiagnosis> viewHepatitisDiagnosis(@PathVariable("enrollmentUuid") String enrollmentUuid) {
+        return ResponseEntity.ok (enrollmentService.viewHepatitisDiagnosisByEnrollmentUuid(enrollmentUuid));
+    }
+
+    @GetMapping(value = "view-hepatitis-treatment/{enrollmentUuid}")
+    public ResponseEntity<HepatitisTreatment> viewHepatitisTreatment(@PathVariable("enrollmentUuid") String enrollmentUuid) {
+        return ResponseEntity.ok (enrollmentService.viewHepatitisTreatmentByEnrollmentUuid(enrollmentUuid));
+    }
+
+    @PutMapping(value = "update-hepatitis-enrollment/{id}")
+    public ResponseEntity<HepatitisEnrollmentDto> updateHepatitisEnrollment(@PathVariable("id") Long id, @Valid @RequestBody HepatitisEnrollmentDto enrollmentDto) {
+        return ResponseEntity.ok (enrollmentService.updateHepatitisEnrollment(id, enrollmentDto));
+    }
+
+    @PutMapping(value = "update-hepatitis-diagnosis/{id}")
+    public ResponseEntity<HepatitisDiagnosisDto> updateHepatitisDiagnosis(@PathVariable("id") Long id, @Valid @RequestBody HepatitisDiagnosisDto diagnosisDto) {
+        return ResponseEntity.ok (enrollmentService.updateHepatitisDiagnosis(id, diagnosisDto));
+    }
+
+    @PutMapping(value = "update-hepatitis-treatment/{id}")
+    public ResponseEntity<HepatitisTreatmentDto> updateHepatitisTreatment(@PathVariable("id") Long id, @Valid @RequestBody HepatitisTreatmentDto treatmentDto) {
+        return ResponseEntity.ok (enrollmentService.updateHepatitisTreatment(id, treatmentDto));
     }
 }

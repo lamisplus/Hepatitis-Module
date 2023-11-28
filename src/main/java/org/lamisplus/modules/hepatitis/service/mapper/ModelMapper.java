@@ -144,4 +144,94 @@ public class ModelMapper {
         hepatitisTreatment.setArchived(0);
         return hepatitisTreatment;
     }
+
+    public HepatitisEnrollment updateHepatitisEnrollmentMapper(HepatitisEnrollment existingEnrollment, HepatitisEnrollmentDto enrollmentDto) {
+        String careEntryPoint = enrollmentDto.getCareEntryPoint();
+        String pregnancy = enrollmentDto.getPregnancy().toUpperCase();
+        Status pregnancyEnum = mapToStatusEnum(pregnancy);
+
+        Double weight = enrollmentDto.getWeight();
+        Double height = enrollmentDto.getHeight();
+        Double bmi = enrollmentDto.getBmi();
+        String hepatitisB = enrollmentDto.getHepatitisB();
+
+        String breastfeeding = enrollmentDto.getBreastfeeding().toUpperCase();
+        Status breastfeedingEnum = mapToStatusEnum(breastfeeding);
+
+        String historyOfUsingAbusedSubstance = enrollmentDto.getHistoryOfUsingAbusedSubstance();
+        Status historyOfUsingAbusedSubstanceEnum = mapToStatusEnum(historyOfUsingAbusedSubstance);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        HepatitisScreeningDto hepatitisScreeningDto = enrollmentDto.getScreening();
+        JsonNode screeningNode = null;
+        if (hepatitisScreeningDto != null) {
+            screeningNode = objectMapper.convertValue(hepatitisScreeningDto, JsonNode.class);
+        }
+
+        // Update the fields of the existing entity
+        existingEnrollment.setCareEntryPoint(careEntryPoint);
+        existingEnrollment.setPregnancy(pregnancyEnum);
+        existingEnrollment.setWeight(weight);
+        existingEnrollment.setHeight(height);
+        existingEnrollment.setBmi(bmi);
+        existingEnrollment.setHepatitisB(hepatitisB);
+        existingEnrollment.setBreastfeeding(breastfeedingEnum);
+        existingEnrollment.setHistoryOfUsingAbusedSubstance(historyOfUsingAbusedSubstanceEnum);
+        existingEnrollment.setScreening(screeningNode);
+
+        // Optionally, update other fields if needed
+
+        return existingEnrollment;
+    }
+
+    public HepatitisDiagnosis updateHepatitisDiagnosisMapper(HepatitisDiagnosis existingDiagnosis, HepatitisDiagnosisDto diagnosisDto) {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        HepatitisBTestDto hepatitisBTestDto = diagnosisDto.getHepatitisBTest();
+        JsonNode hepatitisBNode = (hepatitisBTestDto != null) ? objectMapper.convertValue(hepatitisBTestDto, JsonNode.class) : null;
+
+        HepatitisCTestDto hepatitisCTestDto = diagnosisDto.getHepatitisCTest();
+        JsonNode hepatitisCNode = (hepatitisCTestDto != null) ? objectMapper.convertValue(hepatitisCTestDto, JsonNode.class) : null;
+
+        ClinicalParametersDto clinicalParametersDto = diagnosisDto.getClinicalParameters();
+        JsonNode clinicalParametersNode = (clinicalParametersDto != null) ? objectMapper.convertValue(clinicalParametersDto, JsonNode.class) : null;
+
+        // Update the fields of the existing entity
+        existingDiagnosis.setHepatitisBTest(hepatitisBNode);
+        existingDiagnosis.setHepatitisCTest(hepatitisCNode);
+        existingDiagnosis.setClinicalParameters(clinicalParametersNode);
+
+        // Optionally, update other fields if needed
+
+        return existingDiagnosis;
+    }
+
+    public HepatitisTreatment updateHepatitisTreatmentMapper(HepatitisTreatment existingTreatment, HepatitisTreatmentDto treatmentDto) {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        HepatitisBTreatmentDto hepatitisBTreatmentDto = treatmentDto.getHepatitisBTreatment();
+        JsonNode hepatitisBNode = (hepatitisBTreatmentDto != null) ? objectMapper.convertValue(hepatitisBTreatmentDto, JsonNode.class) : null;
+
+        HepatitisCTreatmentDto hepatitisCTreatmentDto = treatmentDto.getHepatitisCTreatment();
+        JsonNode hepatitisCNode = (hepatitisCTreatmentDto != null) ? objectMapper.convertValue(hepatitisCTreatmentDto, JsonNode.class) : null;
+
+        // Update the fields of the existing entity
+        existingTreatment.setHepatitisBTreatmentDto(hepatitisBNode);
+        existingTreatment.setHepatitisCTreatmentDto(hepatitisCNode);
+
+        // Optionally, update other fields if needed
+
+        return existingTreatment;
+    }
+
+
+
+    private Status mapToStatusEnum(String status) {
+        if ("YES".equalsIgnoreCase(status) || "NO".equalsIgnoreCase(status)) {
+            return Status.valueOf(status);
+        } else {
+            return Status.NO;
+        }
+    }
+
 }
