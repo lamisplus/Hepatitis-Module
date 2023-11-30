@@ -160,6 +160,7 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
   });
   const [hospitalNumStatus, setHospitalNumStatus] = useState(false);
 
+  console.log();
   const [genders, setGenders] = useState([]);
   const [maritalStatusOptions, setMaritalStatusOptions] = useState([]);
   const [educationOptions, setEducationOptions] = useState([]);
@@ -606,7 +607,7 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
 
       // Marital Status
 
-      temp.maritalStatusId = basicInfo.maritalStatusId
+      temp.maritalStatusId = basicInfo.personDto.maritalStatusId
         ? ""
         : "Marital Status is required";
 
@@ -864,7 +865,23 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
       });
     }
 
+    // }
+    // if (e.target.name === "firstName" && e.target.value !== "") {
+    //   const name = alphabetOnly(e.target.value);
+    //   setBasicInfo({ ...basicInfo, [e.target.name]: name });
+    // }
+    // if (e.target.name === "surname" && e.target.value !== "") {
+    //   const name = alphabetOnly(e.target.value);
+    //   setBasicInfo({ ...basicInfo, [e.target.name]: name });
+    // }
+    // if (e.target.name === "otherName" && e.target.value !== "") {
+    //   const name = alphabetOnly(e.target.value);
+    //   setBasicInfo({ ...basicInfo, [e.target.name]: name });
+    // }
 
+    // if (e.target.name === "stateId" && e.target.value !== "") {
+    //   getProvinces(e);
+    // }
   };
 
   const handleSubmit = async (e) => {
@@ -1486,7 +1503,7 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
                             className="form-control"
                             name="maritalStatusId"
                             id="maritalStatusId"
-                            value={basicInfo.maritalStatusId}
+                            value={basicInfo.personDto.maritalStatusId}
                             onChange={handleInputChangeBasic}
                             // onBlur={formik.handleBlur}
                             style={{

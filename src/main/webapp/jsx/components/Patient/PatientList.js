@@ -156,9 +156,11 @@ const Patients = (props) => {
                   .filter(Boolean)
                   .join(", "),
                 id: getHospitalNumber(row.identifier),
-                sex:
-                  row.sex.toLowerCase().charAt(0).toUpperCase() +
-                  row.sex.slice(1).toLowerCase(),
+                sex: row.sex
+                  ? row.sex.toLowerCase().charAt(0).toUpperCase() +
+                    row?.sex.slice(1).toLowerCase()
+                  : "",
+
                 dateOfBirth: row.dateOfBirth,
                 age:
                   row.dateOfBirth === 0 ||
