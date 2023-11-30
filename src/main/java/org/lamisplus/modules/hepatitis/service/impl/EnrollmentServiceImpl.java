@@ -15,6 +15,7 @@ import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisDiagnosisDto;
 import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisEnrollmentDto;
 import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisTreatmentDto;
 import org.lamisplus.modules.hepatitis.domain.dto.response.HepatitisEnrollmentPatientDTO;
+import org.lamisplus.modules.hepatitis.domain.dto.response.HepatitisEnrollmentResponse;
 import org.lamisplus.modules.hepatitis.domain.entity.HepatitisDiagnosis;
 import org.lamisplus.modules.hepatitis.domain.entity.HepatitisEnrollment;
 import org.lamisplus.modules.hepatitis.domain.entity.HepatitisTreatment;
@@ -38,6 +39,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.BeanUtils;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -222,4 +224,80 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         fullName = fn + " " + on + " " + sn;
         return fullName;
     }
+
+    public HepatitisEnrollment viewHepatitisEnrollmentByPersonUuid(String personUuid) {
+        HepatitisEnrollment enrollment = enrollmentRepository.findHepatitisEnrollmentByPersonUuidAndArchived(personUuid, 0);
+        return enrollment;
+//        return enrollmentEntityToDTO(enrollment);
+    }
+
+    public HepatitisDiagnosis viewHepatitisDiagnosisByEnrollmentUuid(String enrollmentUuid) {
+        HepatitisDiagnosis hepatitisDiagnosis = diagnosisRepository.findHepatitisDiagnosisByHepatitisEnrollmentUuidAndArchived(enrollmentUuid, 0);
+        return hepatitisDiagnosis;
+    }
+
+    public HepatitisTreatment viewHepatitisTreatmentByEnrollmentUuid(String enrollmentUuid) {
+        HepatitisEnrollment enrollment = enrollmentRepository.findHepatitisEnrollmentByUuidAndArchived(enrollmentUuid, 0);
+//                .orElseThrow(() -> new EntityNotFoundException(HepatitisEnrollment.class,
+//                        "Hepatitis with" + enrollmentUuid + "does not exist"));
+//        HepatitisEnrollment enrollment;
+        if(enrollment == null) {
+            throw new EntityNotFoundException(HepatitisEnrollment.class, "Hepatitis with" + enrollmentUuid + "does not exist");
+        }
+        HepatitisTreatment hepatitisTreatment = treatmentRepository.findHepatitisTreatmentByHepatitisEnrollmentAndArchived(enrollment, 0);
+        return hepatitisTreatment;
+    }
+
+
+
+    private HepatitisEnrollmentResponse enrollmentEntityToDTO(HepatitisEnrollment enrollment) {
+        HepatitisEnrollmentResponse hepatitisResponseDto = new HepatitisEnrollmentResponse();
+        BeanUtils.copyProperties(enrollment, hepatitisResponseDto);
+        return hepatitisResponseDto;
+    }
+
+    public HepatitisEnrollmentDto updateHepatitisEnrollment(Long id, HepatitisEnrollmentDto enrollmentDto) {
+        PersonDto personDto = enrollmentDto.getPersonDto();
+        Long personId;
+        PersonResponseDto personResponseDto;
+        personId = enrollmentDto.getPersonId();
+        if(personId == null) {
+            throw new EntityNotFoundException(HepatitisEnrollment.class, "Person id cannot be null. ",
+                    "pass ID of existing patient.");
+        }
+        if(personDto != null) {
+             personService.updatePerson(personId, personDto);
+        }
+        Person person = personRepository.findById(personId)
+                .orElseThrow(() -> new EntityNotFoundException(HepatitisEnrollment.class,
+                        "Person with"+ personId + "does not exist"));
+        personResponseDto = personService.getDtoFromPerson(person);
+
+        HepatitisEnrollment existingEnrollment = enrollmentRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(HepatitisEnrollment.class, "Hepatitis Enrollment not found with id: " + id));
+        HepatitisEnrollment enrollment = mapper.updateHepatitisEnrollmentMapper(existingEnrollment, enrollmentDto);
+        HepatitisEnrollment savedEnrollment = enrollmentRepository.save(enrollment);
+        return enrollmentDto;
+    }
+
+    public HepatitisDiagnosisDto updateHepatitisDiagnosis(Long id, HepatitisDiagnosisDto diagnosisDto) {
+        HepatitisDiagnosis existingHepatitisDiagnosis = diagnosisRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(HepatitisDiagnosis.class, "Hepatitis Diagnosis not found with id: " + id));
+        HepatitisDiagnosis hepatitisDiagnosis = mapper.updateHepatitisDiagnosisMapper(existingHepatitisDiagnosis, diagnosisDto);
+        HepatitisDiagnosis savedDiagnosis = diagnosisRepository.save(hepatitisDiagnosis);
+        return diagnosisDto;
+    }
+
+    public HepatitisTreatmentDto updateHepatitisTreatment(Long id, HepatitisTreatmentDto treatmentDto) {
+        HepatitisTreatment existingHepatitisTreatment = treatmentRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(HepatitisTreatment.class, "Hepatitis Treatment not found with id: " + id));
+        HepatitisTreatment hepatitisTreatment = mapper.updateHepatitisTreatmentMapper(existingHepatitisTreatment, treatmentDto);
+        treatmentRepository.save(hepatitisTreatment);
+        return treatmentDto;
+    }
+
+
+
+
+
 }

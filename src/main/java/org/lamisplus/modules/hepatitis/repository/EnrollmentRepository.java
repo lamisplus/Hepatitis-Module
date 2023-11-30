@@ -15,6 +15,8 @@ import java.util.Optional;
 @Repository
 public interface EnrollmentRepository extends JpaRepository<HepatitisEnrollment, Long> {
     Optional<HepatitisEnrollment> findByUuid(String uuid);
+
+    HepatitisEnrollment findHepatitisEnrollmentByUuidAndArchived(String uuid, Integer archived);
     
     @Query(value = "SELECT p.id AS id,p.created_by \n" +
             "         as createBy, p.date_of_registration as dateOfRegistration, p.first_name as firstName, p.surname AS surname, \n" +
@@ -38,4 +40,6 @@ public interface EnrollmentRepository extends JpaRepository<HepatitisEnrollment,
 
     @Query(value = "SELECT active, deceased_date_time, deceased, date_of_registration AS dateOfRegistration, CAST(identifier AS TEXT) AS identifier, CAST(education AS TEXT) AS education, CAST(employment_status AS TEXT) AS employmentStatus, CAST(marital_status AS TEXT) AS maritalStatus, CAST(gender AS TEXT) AS gender, CAST(organization AS TEXT) AS organization, CAST(contact_point AS TEXT) AS contactPoint, CAST(address AS TEXT) AS address,CAST(contact AS TEXT) AS contact, is_date_of_birth_estimated AS isDateOfBirthEstimated, facility_id AS facilityId, emr_id AS emrId, nin_number AS niNumber, date_of_birth AS dateOfBirth, pp.id, pp.uuid, sex, first_name AS firstName, surname, other_name AS otherName, full_name AS fullName, pp.hospital_number AS hospitalNumber FROM patient_person pp WHERE uuid NOT IN (SELECT person_uuid FROM hepatitis_enrollments he where he.archived = 0) AND (pp.first_name ilike ?1 OR pp.surname ilike ?1 OR pp.other_name ilike ?1 OR pp.full_name ilike ?1 OR pp.hospital_number ilike ?1)  and pp.archived=?2 AND pp.facility_id=?3 ORDER BY pp.id desc", nativeQuery = true)
     Page<PatientPerson> findPatientPersonByParameters(String queryParam, Integer archived, Long facilityId, Pageable pageable);
+
+    HepatitisEnrollment findHepatitisEnrollmentByPersonUuidAndArchived(String personUuid, Integer archived);
 }

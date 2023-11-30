@@ -10,4 +10,6 @@ public interface DiagnosisRepository extends JpaRepository<HepatitisDiagnosis, L
     boolean existsByHepatitisEnrollment_Uuid(String uuid);
 
     boolean existsHepatitisDiagnosisByHepatitisEnrollmentUuid(String hepatitisEnrollmentUuid);
+
+    HepatitisDiagnosis findHepatitisDiagnosisByHepatitisEnrollmentUuidAndArchived(String enrollmentUuid, Integer archived);
 }
