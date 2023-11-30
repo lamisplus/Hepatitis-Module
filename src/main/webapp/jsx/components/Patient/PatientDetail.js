@@ -99,13 +99,13 @@ function PatientCard(props) {
             setActiveContent={setActiveContent}
           />
           <br />
-          {/* {activeContent.route === "recent-history" && (
+          {activeContent.route === "recent-history" && (
             <RecentHistory
               patientObj={patientObj}
               setActiveContent={setActiveContent}
               activeContent={activeContent}
             />
-          )} */}
+          )}
           {/*  {activeContent.route==='biometrics' &&(<Biometrics patientObj={patientObj} setActiveContent={setActiveContent} activeContent={activeContent}/>)}
           {activeContent.route==='addmission' &&( <AddmissionHome patientObj={patientObj} setActiveContent={setActiveContent} activeContent={activeContent} />)}
           {activeContent.route==='vaccination' &&( <PatientVaccinationHistory patientObj={patientObj} setActiveContent={setActiveContent} activeContent={activeContent}/>)}
