@@ -97,7 +97,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ViralHepatitisForm3 = ({ setStep }) => {
+const TreatmentSubmittedForm = ({
+  setStep,
+  treatmentInfo,
+  action,
+  patientObj,
+  enrollmentUuid,
+}) => {
+  console.log(treatmentInfo);
+
   const [userId, setUserId] = useState(getCookie("enrollmentIds"));
 
   const [basicInfo, setBasicInfo] = useState({
@@ -149,7 +157,6 @@ const ViralHepatitisForm3 = ({ setStep }) => {
       treatmentExperience: "",
     },
   });
-  console.log(basicInfo.hepatitisBTreatment.treatmentExperience);
 
   const [errors, setErrors] = useState({});
   // handle input changes
@@ -675,29 +682,35 @@ const ViralHepatitisForm3 = ({ setStep }) => {
       formik.setValues(cookieValue);
     }
   };
-  const postDataWithToken = async (data, key) => {
+  const postDataWithToken = async (data) => {
     try {
-      const response = await axios.post(`${apiUrl}${key}`, data, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axios.put(
+        `${apiUrl}hepatitis/update-hepatitis-treatment/${enrollmentUuid}`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
       // Handle the response if needed
       console.log("Post successful:", response.data);
-      toast.success("Treatment submitted successfully");
-      deleteCookie("heaptitis3PayloadValue");
-      deleteCookie("hepatitis3");
-      deleteCookie("enrollmentIds");
-      deleteCookie("hepatitis2");
-      deleteCookie("heaptitis2PayloadValue");
-      deleteCookie("hepatitis1");
-      deleteCookie("heaptitis1PayloadValue");
-      setStep(0);
+      toast.success("Enrolment submitted successfully");
+
+      setCookie(
+        "enrollmentIds",
+        {
+          enrollmentId: response.data?.enrollmentId,
+          enrollmentUuid: response.data?.enrollmentUuid,
+        },
+        1
+      );
+      //   setStep(1);
       return response.data;
     } catch (error) {
       // Handle any errors that occurred during the request
-      toast.error("Treatment failed");
+      toast.error("Enrolment failed");
       console.error("Error posting data:", error.message);
       throw error;
     }
@@ -751,8 +764,220 @@ const ViralHepatitisForm3 = ({ setStep }) => {
   }
   useEffect(() => {
     castCookieValueToForm();
-  }, []);
+    setBasicInfo({
+      enrollmentUuid: enrollmentUuid,
+      hepatitisBTreatment: {
+        dateStarted: `${
+          treatmentInfo?.hepatitisBTreatmentDto?.dateStarted.year
+        }-${treatmentInfo?.hepatitisBTreatmentDto?.dateStarted.monthValue}-${
+          treatmentInfo?.hepatitisBTreatmentDto?.dateStarted.dayOfMonth.toString()
+            .length > 1
+            ? treatmentInfo?.hepatitisBTreatmentDto?.dateStarted.dayOfMonth
+            : "0" +
+              treatmentInfo?.hepatitisBTreatmentDto?.dateStarted.dayOfMonth
+        }`,
+        dateStopped: `${
+          treatmentInfo?.hepatitisBTreatmentDto?.dateStopped.year
+        }-${treatmentInfo?.hepatitisBTreatmentDto?.dateStopped.monthValue}-${
+          treatmentInfo?.hepatitisBTreatmentDto?.dateStopped.dayOfMonth.toString()
+            .length > 1
+            ? treatmentInfo?.hepatitisBTreatmentDto?.dateStopped.dayOfMonth
+            : "0" +
+              treatmentInfo?.hepatitisBTreatmentDto?.dateStopped.dayOfMonth
+        }`,
+        hbvPastTreatmentRegimen:
+          treatmentInfo?.hepatitisBTreatmentDto?.hbvPastTreatmentRegimen,
+        hepatitisBRegimenSwitch: {
+          adverseEffectReported:
+            treatmentInfo?.hepatitisBTreatmentDto?.hepatitisBRegimenSwitch
+              .adverseEffectReported,
+          dateStarted: `${
+            treatmentInfo?.hepatitisBTreatmentDto?.hepatitisBRegimenSwitch
+              .dateStarted.year
+          }-${
+            treatmentInfo?.hepatitisBTreatmentDto?.hepatitisBRegimenSwitch
+              .dateStarted.monthValue
+          }-${
+            treatmentInfo?.hepatitisBTreatmentDto?.hepatitisBRegimenSwitch.dateStarted.dayOfMonth.toString()
+              .length > 1
+              ? treatmentInfo?.hepatitisBTreatmentDto?.hepatitisBRegimenSwitch
+                  .dateStarted.dayOfMonth
+              : "0" +
+                treatmentInfo?.hepatitisBTreatmentDto?.hepatitisBRegimenSwitch
+                  .dateStarted.dayOfMonth
+          }`,
+          dateStopped: `${
+            treatmentInfo?.hepatitisBTreatmentDto?.hepatitisBRegimenSwitch
+              .dateStopped.year
+          }-${
+            treatmentInfo?.hepatitisBTreatmentDto?.hepatitisBRegimenSwitch
+              .dateStopped.monthValue
+          }-${
+            treatmentInfo?.hepatitisBTreatmentDto?.hepatitisBRegimenSwitch.dateStopped.dayOfMonth.toString()
+              .length > 1
+              ? treatmentInfo?.hepatitisBTreatmentDto?.hepatitisBRegimenSwitch
+                  .dateStopped.dayOfMonth
+              : "0" +
+                treatmentInfo?.hepatitisBTreatmentDto?.hepatitisBRegimenSwitch
+                  .dateStopped.dayOfMonth
+          }`,
+          newRegime:
+            treatmentInfo?.hepatitisBTreatmentDto?.hepatitisBRegimenSwitch
+              .newRegime,
+          reasonForSwitch:
+            treatmentInfo?.hepatitisBTreatmentDto?.hepatitisBRegimenSwitch
+              .reasonForSwitch,
+        },
+        historyOfAdverseEffect:
+          treatmentInfo?.hepatitisBTreatmentDto?.historyOfAdverseEffect,
+        newRegimen: treatmentInfo?.hepatitisBTreatmentDto?.newRegimen,
+        reasonForHepatitisBTreatment: {
+          comment:
+            treatmentInfo?.hepatitisBTreatmentDto?.reasonForHepatitisBTreatment
+              .comment,
+          reasonsForTreatment:
+            treatmentInfo?.hepatitisBTreatmentDto?.reasonForHepatitisBTreatment
+              .comment,
+        },
+        treatmentExperience:
+          treatmentInfo?.hepatitisBTreatmentDto?.treatmentExperience,
+      },
+      hepatitisCTreatment: {
+        adverseEffectReported:
+          treatmentInfo?.hepatitisCTreatmentDto?.adverseEffectReported,
+        dateCompleted: `${
+          treatmentInfo?.hepatitisCTreatmentDto?.dateCompleted.year
+        }-${treatmentInfo?.hepatitisCTreatmentDto?.dateCompleted.monthValue}-${
+          treatmentInfo?.hepatitisCTreatmentDto?.dateCompleted.dayOfMonth.toString()
+            .length > 1
+            ? treatmentInfo?.hepatitisCTreatmentDto?.dateCompleted.dayOfMonth
+            : "0" +
+              treatmentInfo?.hepatitisCTreatmentDto?.dateCompleted.dayOfMonth
+        }`,
+        dateStarted: `${
+          treatmentInfo?.hepatitisCTreatmentDto?.dateStarted.year
+        }-${treatmentInfo?.hepatitisCTreatmentDto?.dateStarted.monthValue}-${
+          treatmentInfo?.hepatitisCTreatmentDto?.dateStarted.dayOfMonth.toString()
+            .length > 1
+            ? treatmentInfo?.hepatitisCTreatmentDto?.dateStarted.dayOfMonth
+            : "0" +
+              treatmentInfo?.hepatitisCTreatmentDto?.dateStarted.dayOfMonth
+        }`,
 
+        dateStopped: `${
+          treatmentInfo?.hepatitisCTreatmentDto?.dateStopped.year
+        }-${treatmentInfo?.hepatitisCTreatmentDto?.dateStopped.monthValue}-${
+          treatmentInfo?.hepatitisCTreatmentDto?.dateStopped.dayOfMonth.toString()
+            .length > 1
+            ? treatmentInfo?.hepatitisCTreatmentDto?.dateStopped.dayOfMonth
+            : "0" +
+              treatmentInfo?.hepatitisCTreatmentDto?.dateStopped.dayOfMonth
+        }`,
+        hbvPastTreatmentRegimen:
+          treatmentInfo?.hepatitisCTreatmentDto?.hbvPastTreatmentRegimen,
+        hcvRetreatment: {
+          dateStarted: `${
+            treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment.dateStarted
+              .year
+          }-${
+            treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment.dateStarted
+              .monthValue
+          }-${
+            treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment.dateStarted.dayOfMonth.toString()
+              .length > 1
+              ? treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment
+                  .dateStarted.dayOfMonth
+              : "0" +
+                treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment
+                  .dateStarted.dayOfMonth
+          }`,
+          dateStopped: `${
+            treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment.dateStopped
+              .year
+          }-${
+            treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment.dateStopped
+              .monthValue
+          }-${
+            treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment.dateStopped.dayOfMonth.toString()
+              .length > 1
+              ? treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment
+                  .dateStopped.dayOfMonth
+              : "0" +
+                treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment
+                  .dateStopped.dayOfMonth
+          }`,
+
+          hbvPastTreatmentRegimen:
+            treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment
+              .hbvPastTreatmentRegimen,
+          history_of_AdverseEffect:
+            treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment
+              .history_of_AdverseEffect,
+          newRegimen:
+            treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment.newRegimen,
+          prescribedDuration: 0,
+          retreatmentAdverseEffect:
+            treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment
+              .retreatmentAdverseEffect,
+          prescribedDuration:
+            treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment
+              .prescribedDuration,
+        },
+        hepatitisSvr12Testing: {
+          dateTested: `${
+            treatmentInfo?.hepatitisCTreatmentDto?.hepatitisSvr12Testing
+              .dateTested.year
+          }-${
+            treatmentInfo?.hepatitisCTreatmentDto?.hepatitisSvr12Testing
+              .dateTested.monthValue
+          }-${
+            treatmentInfo?.hepatitisCTreatmentDto?.hepatitisSvr12Testing.dateTested.dayOfMonth.toString()
+              .length > 1
+              ? treatmentInfo?.hepatitisCTreatmentDto?.hepatitisSvr12Testing
+                  .dateTested.dayOfMonth
+              : "0" +
+                treatmentInfo?.hepatitisCTreatmentDto?.hepatitisSvr12Testing
+                  .dateTested.dayOfMonth
+          }`,
+          hcvRNA:
+            treatmentInfo?.hepatitisCTreatmentDto?.hepatitisSvr12Testing.hcvRNA,
+          hcvRNAValue:
+            treatmentInfo?.hepatitisCTreatmentDto?.hepatitisSvr12Testing
+              .hcvRNAValue,
+          retreatmentDateTested: `${
+            treatmentInfo?.hepatitisCTreatmentDto?.hepatitisSvr12Testing
+              .retreatmentDateTested.year
+          }-${
+            treatmentInfo?.hepatitisCTreatmentDto?.hepatitisSvr12Testing
+              .retreatmentDateTested.monthValue
+          }-${
+            treatmentInfo?.hepatitisCTreatmentDto?.hepatitisSvr12Testing.retreatmentDateTested.dayOfMonth.toString()
+              .length > 1
+              ? treatmentInfo?.hepatitisCTreatmentDto?.hepatitisSvr12Testing
+                  .retreatmentDateTested.dayOfMonth
+              : "0" +
+                treatmentInfo?.hepatitisCTreatmentDto?.hepatitisSvr12Testing
+                  .retreatmentDateTested.dayOfMonth
+          }`,
+          retreatmentHcvRNA:
+            treatmentInfo?.hepatitisCTreatmentDto?.hepatitisSvr12Testing
+              .retreatmentHcvRNA,
+          retreatmentHcvRNAValue:
+            treatmentInfo?.hepatitisCTreatmentDto?.hepatitisSvr12Testing
+              .retreatmentHcvRNAValue,
+        },
+        pastTreatmentExperience:
+          treatmentInfo?.hepatitisCTreatmentDto?.pastTreatmentExperience,
+
+        prescribedDuration:
+          treatmentInfo?.hepatitisCTreatmentDto?.prescribedDuration,
+        treatmentExperience:
+          treatmentInfo?.hepatitisCTreatmentDto?.treatmentExperience,
+      },
+    });
+  }, [treatmentInfo, enrollmentUuid]);
+
+  console.log(treatmentInfo?.hepatitisBTreatment?.treatmentExperience);
   const [isDropdownsOpen, setIsDropdownsOpen] = useState({
     hbvTreatmentRegimenSwitch: true,
     hbvTreatmentReasonforTreatment: true,
@@ -797,6 +1022,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                             className="form-control"
                             name="treatmentExperience"
                             id="treatmentExperience"
+                            disabled={action === "view" ? true : false}
                             value={
                               basicInfo.hepatitisBTreatment.treatmentExperience
                             }
@@ -856,6 +1082,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                           <Label for="hbvNewRegimen">New regime</Label>
                           <input
                             className="form-control"
+                            disabled={action === "view" ? true : false}
                             type="text"
                             name="newRegimen"
                             id="newRegimen"
@@ -885,6 +1112,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                           <input
                             className="form-control"
                             type="text"
+                            disabled={action === "view" ? true : false}
                             name="hbvPastTreatmentRegimen"
                             id="hbvPastTreatmentRegimen"
                             value={
@@ -919,6 +1147,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                                 type="date"
                                 name="dateStarted"
                                 id="dateStarted"
+                                disabled={action === "view" ? true : false}
                                 max={moment(new Date()).format("YYYY-MM-DD")}
                                 value={
                                   basicInfo.hepatitisBTreatment.dateStarted
@@ -947,6 +1176,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                                 type="date"
                                 name="dateStopped"
                                 id="dateStopped"
+                                disabled={action === "view" ? true : false}
                                 max={moment(new Date()).format("YYYY-MM-DD")}
                                 value={
                                   basicInfo.hepatitisBTreatment.dateStopped
@@ -978,6 +1208,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                           <select
                             className="form-control"
                             name="historyOfAdverseEffect"
+                            disabled={action === "view" ? true : false}
                             id="historyOfAdverseEffect"
                             value={
                               basicInfo.hepatitisBTreatment
@@ -1064,6 +1295,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                               className="form-control"
                               type="text"
                               name="hbvRegimeSwitchNewRegimen"
+                              disabled={action === "view" ? true : false}
                               id="hbvRegimeSwitchNewRegimen"
                               value={
                                 basicInfo.hepatitisBTreatment
@@ -1097,6 +1329,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                               type="date"
                               name="hbvRegimeSwitchDateStarted"
                               id="hbvRegimeSwitchDateStarted"
+                              disabled={action === "view" ? true : false}
                               value={
                                 basicInfo.hepatitisBTreatment
                                   .hepatitisBRegimenSwitch.dateStarted
@@ -1129,6 +1362,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                               type="date"
                               name="hbvRegimeSwitchDateStopped"
                               id="hbvRegimeSwitchDateStopped"
+                              disabled={action === "view" ? true : false}
                               value={
                                 basicInfo.hepatitisBTreatment
                                   .hepatitisBRegimenSwitch.dateStopped
@@ -1159,6 +1393,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                               className="form-control"
                               name="hbvAdverseEffectReported"
                               id="hbvAdverseEffectReported"
+                              disabled={action === "view" ? true : false}
                               value={
                                 basicInfo.hepatitisBTreatment
                                   .hepatitisBRegimenSwitch.adverseEffectReported
@@ -1193,6 +1428,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                             <input
                               className="form-control"
                               type="text"
+                              disabled={action === "view" ? true : false}
                               name="hbvRegimeSwitchReason"
                               id="hbvRegimeSwitchReason"
                               value={
@@ -1276,6 +1512,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                               className="form-control"
                               name="hbvReasonForTreatmentEligibility"
                               id="hbvReasonForTreatmentEligibility"
+                              disabled={action === "view" ? true : false}
                               onChange={handleInputChangeBasicHBReason}
                               value={
                                 basicInfo.hepatitisBTreatment
@@ -1315,6 +1552,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                               name="hbvReasonsForTreatmentComment"
                               id="hbvReasonsForTreatmentComment"
                               onChange={handleInputChangeBasicHBReason}
+                              disabled={action === "view" ? true : false}
                               value={
                                 basicInfo.hepatitisBTreatment
                                   .reasonForHepatitisBTreatment.comment
@@ -1373,6 +1611,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                           </Label>
                           <select
                             className="form-control"
+                            disabled={action === "view" ? true : false}
                             name="hcvAdverseEventReported"
                             id="hcvAdverseEventReported"
                             value={
@@ -1410,6 +1649,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                             className="form-control"
                             type="date"
                             name="hcvTreatmentExperience"
+                            disabled={action === "view" ? true : false}
                             id="hcvTreatmentExperience"
                             value={
                               basicInfo.hepatitisCTreatment.treatmentExperience
@@ -1444,6 +1684,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                           <input
                             className="form-control"
                             type="text"
+                            disabled={action === "view" ? true : false}
                             name="pastTreatmentExperience"
                             id="pastTreatmentExperience"
                             value={
@@ -1475,6 +1716,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                             type="date"
                             name="hcvDateStarted"
                             id="hcvDateStarted"
+                            disabled={action === "view" ? true : false}
                             value={basicInfo.hepatitisCTreatment.dateStarted}
                             onChange={handleInputChangeBasicHC}
                             // onBlur={formik.handleBlur}
@@ -1500,6 +1742,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                             className="form-control"
                             type="date"
                             name="hcvDateCompleted"
+                            disabled={action === "view" ? true : false}
                             id="hcvDateCompleted"
                             value={basicInfo.hepatitisCTreatment.dateCompleted}
                             onChange={handleInputChangeBasicHC}
@@ -1526,6 +1769,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                             type="date"
                             name="hcvDateStopped"
                             id="hcvDateStopped"
+                            disabled={action === "view" ? true : false}
                             value={basicInfo.hepatitisCTreatment.dateStopped}
                             onChange={handleInputChangeBasicHC}
                             // onBlur={formik.handleBlur}
@@ -1553,6 +1797,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                             className="form-control"
                             name="hcvPrescribedDuration"
                             id="hcvPrescribedDuration"
+                            disabled={action === "view" ? true : false}
                             value={
                               basicInfo.hepatitisCTreatment.prescribedDuration
                             }
@@ -1586,6 +1831,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                           <select
                             type="text"
                             className="form-control"
+                            disabled={action === "view" ? true : false}
                             name="hbvPastTreatmentRegimenForHcv"
                             id="hbvPastTreatmentRegimenForHcv"
                             value={
@@ -1675,6 +1921,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                               name="svr12TestingDateStarted"
                               id="svr12TestingDateStarted"
                               type="date"
+                              disabled={action === "view" ? true : false}
                               value={
                                 basicInfo.hepatitisCTreatment
                                   .hepatitisSvr12Testing.dateTested
@@ -1705,6 +1952,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                               className="form-control"
                               name="svr12TestingHcvRna"
                               id="svr12TestingHcvRna"
+                              disabled={action === "view" ? true : false}
                               value={
                                 basicInfo.hepatitisCTreatment
                                   .hepatitisSvr12Testing.hcvRNA
@@ -1740,6 +1988,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                               <input
                                 className="form-control"
                                 name="svr12TestingHcvRnaValue"
+                                disabled={action === "view" ? true : false}
                                 id="svr12TestingHcvRnaValue"
                                 type="text"
                                 value={
@@ -1802,6 +2051,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                               className="form-control"
                               name="svr12RetreatmentDateTested"
                               id="svr12RetreatmentDateTested"
+                              disabled={action === "view" ? true : false}
                               value={
                                 basicInfo.hepatitisCTreatment
                                   .hepatitisSvr12Testing.retreatmentDateTested
@@ -1834,6 +2084,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                               className="form-control"
                               name="svr12RetreatmentHcvRna"
                               id="svr12RetreatmentHcvRna"
+                              disabled={action === "view" ? true : false}
                               value={
                                 basicInfo.hepatitisCTreatment
                                   .hepatitisSvr12Testing.retreatmentHcvRNA
@@ -1872,6 +2123,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                                 type="text"
                                 name="svr12RetreatmentHcvRnaValue"
                                 id="svr12RetreatmentHcvRnaValue"
+                                disabled={action === "view" ? true : false}
                                 value={
                                   basicInfo.hepatitisCTreatment
                                     .hepatitisSvr12Testing
@@ -1962,6 +2214,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                               name="hcvRetreatmentNewRegimen"
                               id="hcvRetreatmentNewRegimen"
                               type="text"
+                              disabled={action === "view" ? true : false}
                               value={
                                 basicInfo.hepatitisCTreatment.hcvRetreatment
                                   .newRegimen
@@ -1993,6 +2246,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                               className="form-control"
                               name="hcvRetreatmentPrescribedDuration"
                               id="hcvRetreatmentPrescribedDuration"
+                              disabled={action === "view" ? true : false}
                               value={
                                 basicInfo.hepatitisCTreatment.hcvRetreatment
                                   .prescribedDuration
@@ -2029,6 +2283,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                               className="form-control"
                               name="hcvRetreatmentDateStarted"
                               id="hcvRetreatmentDateStarted"
+                              disabled={action === "view" ? true : false}
                               type="date"
                               value={
                                 basicInfo.hepatitisCTreatment.hcvRetreatment
@@ -2060,6 +2315,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                               className="form-control"
                               name="hcvRetreatmentDateStopped"
                               id="hcvRetreatmentDateStopped"
+                              disabled={action === "view" ? true : false}
                               type="date"
                               value={
                                 basicInfo.hepatitisCTreatment.hcvRetreatment
@@ -2092,6 +2348,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                               className="form-control"
                               name="hcvRetreatmentAdverseEffect"
                               id="hcvRetreatmentAdverseEffect"
+                              disabled={action === "view" ? true : false}
                               value={
                                 basicInfo.hepatitisCTreatment.hcvRetreatment
                                   .retreatmentAdverseEffect
@@ -2127,6 +2384,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                               className="form-control"
                               name="hcvRetreatmentHistoryOfAdverseEffect"
                               id="hcvRetreatmentHistoryOfAdverseEffect"
+                              disabled={action === "view" ? true : false}
                               value={
                                 basicInfo.hepatitisCTreatment.hcvRetreatment
                                   .history_of_AdverseEffect
@@ -2162,8 +2420,9 @@ const ViralHepatitisForm3 = ({ setStep }) => {
             </div>
             {false ? <Spinner /> : ""}
             <br />
-            <div className="d-flex justify-content-between">
-              <MatButton
+            {action === "update" && (
+              <div className="d-flex justify-content-end">
+                {/* <MatButton
                 type="button"
                 variant="contained"
                 color="primary"
@@ -2173,19 +2432,21 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                 style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}
               >
                 <span style={{ textTransform: "capitalize" }}>Previous</span>
-              </MatButton>
-              <MatButton
-                type="submit"
-                variant="contained"
-                color="primary"
-                className={classes.button}
-                onClick={handleSubmit}
-                // endIcon={<ArrowForward />}
-                style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}
-              >
-                <span style={{ textTransform: "capitalize" }}>Submit</span>
-              </MatButton>
-            </div>
+              </MatButton> */}
+                <MatButton
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  className={classes.button}
+                  onClick={handleSubmit}
+                  // endIcon={<ArrowForward />}
+                  style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}
+                >
+                  <span style={{ textTransform: "capitalize" }}>Submit</span>
+                </MatButton>
+              </div>
+            )}
+
             {/* </Form> */}
           </div>
         </CardContent>
@@ -2194,4 +2455,4 @@ const ViralHepatitisForm3 = ({ setStep }) => {
   );
 };
 
-export default ViralHepatitisForm3;
+export default TreatmentSubmittedForm;

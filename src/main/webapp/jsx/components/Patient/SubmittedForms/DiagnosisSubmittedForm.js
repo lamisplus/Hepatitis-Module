@@ -96,9 +96,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ViralHepatitisForm2 = ({ setStep }) => {
+const DiagnosisSubmitedForm = ({
+  action,
+  setStep,
+  userStatus,
+  patientObj,
+  diagnosisInfo,
+  enrollmentUuid,
+}) => {
   const [userId, setUserId] = useState(getCookie("enrollmentIds"));
-  console.log(getCookie("enrollmentIds"));
+
   const [basicInfo, setBasicInfo] = useState({
     clinicalParameters: {
       afp: "",
@@ -122,15 +129,15 @@ const ViralHepatitisForm2 = ({ setStep }) => {
       ultrasoundScan: "",
       urea: "",
     },
-    enrollmentUuid: userId?.enrollmentUuid,
+    enrollmentUuid: enrollmentUuid,
     hepatitisBTest: {
       albumin: "",
       antiHDV: "",
       comment: "",
       ctScan: "",
-      dateHbvDnaTestRequested: "",
-      dateHbvSampleRequested: "",
-      dateHbvTestRequested: "",
+      dateHbvDnaTestRequested: `${diagnosisInfo?.hepatitisBTest?.dateHbvDnaTestRequested.year}-${diagnosisInfo?.hepatitisBTest?.dateHbvDnaTestRequested.monthValue}-${diagnosisInfo?.hepatitisBTest?.dateHbvDnaTestRequested.dayOfMonth}`,
+      dateHbvSampleRequested: `${diagnosisInfo?.hepatitisBTest?.dateHbvSampleRequested.year}-${diagnosisInfo?.hepatitisBTest?.dateHbvSampleRequested.monthValue}-${diagnosisInfo?.hepatitisBTest?.dateHbvSampleRequested.dayOfMonth}`,
+      dateHbvTestRequested: `${diagnosisInfo?.hepatitisBTest?.dateHbvTestRequested.year}-${diagnosisInfo?.hepatitisBTest?.dateHbvTestRequested.monthValue}-${diagnosisInfo?.hepatitisBTest?.dateHbvTestRequested.dayOfMonth}`,
       hbeAG: "",
       // attaching missing props
       dateHbvDnaResultReported: "",
@@ -149,6 +156,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
       multipleInfection: "",
     },
   });
+  //   console.log(diagnosisInfo?.hepatitisBTest?.dateHbvDnaTestRequested);
 
   const [errors, setErrors] = useState({});
 
@@ -163,71 +171,6 @@ const ViralHepatitisForm2 = ({ setStep }) => {
         [e.target.name]: e.target.value,
       },
     });
-    //   if (e.target.name === "dateHbvTestRequested" && e.target.value !== "") {
-    //     setBasicInfo({
-    //       ...basicInfo,
-    //       hepatitisBTest: {
-    //         ...basicInfo.hepatitisBTest,
-    //         [e.target.name]: e.target.value,
-    //       },
-    //     });
-    //   }
-    //   if (e.target.name === "dateHbvDnaResultReported" && e.target.value !== "") {
-    //     setBasicInfo({
-    //       ...basicInfo,
-    //       hepatitisBTest: {
-    //         ...basicInfo.hepatitisBTest,
-    //         [e.target.name]: e.target.value,
-    //       },
-    //     });
-    //   }
-    //   if (e.target.name === "stagingDateOfLiverBiopsy" && e.target.value !== "") {
-    //     setBasicInfo({
-    //       ...basicInfo,
-    //       hepatitisBTest: {
-    //         ...basicInfo.hepatitisBTest,
-    //         [e.target.name]: e.target.value,
-    //       },
-    //     });
-    //   }
-    //   if (e.target.name === "hbvDna" && e.target.value !== "") {
-    //     setBasicInfo({
-    //       ...basicInfo,
-    //       hepatitisBTest: {
-    //         ...basicInfo.hepatitisBTest,
-    //         [e.target.name]: e.target.value,
-    //       },
-    //     });
-    //   }
-    //   if (e.target.name === "hvbDnaValue" && e.target.value !== "") {
-    //     setBasicInfo({
-    //       ...basicInfo,
-    //       hepatitisBTest: {
-    //         ...basicInfo.hepatitisBTest,
-    //         [e.target.name]: e.target.value,
-    //       },
-    //     });
-    //   }
-
-    //   if (e.target.name === "hbsAgQuantification" && e.target.value !== "") {
-    //     setBasicInfo({
-    //       ...basicInfo,
-    //       hepatitisBTest: {
-    //         ...basicInfo.hepatitisBTest,
-    //         [e.target.name]: e.target.value,
-    //       },
-    //     });
-    //   }
-
-    //   if (e.target.name === "hbsAgQuantification" && e.target.value !== "") {
-    //     setBasicInfo({
-    //       ...basicInfo,
-    //       hepatitisBTest: {
-    //         ...basicInfo.hepatitisBTest,
-    //         [e.target.name]: e.target.value,
-    //       },
-    //     });
-    //   }
   };
 
   const handleInputChangeBasicForHC = (e) => {
@@ -269,27 +212,11 @@ const ViralHepatitisForm2 = ({ setStep }) => {
       ? ""
       : "Date HBV Sample requested is required";
 
-    // temp.dateHbvDnaResultReported = basicInfo.hepatitisBTest
-    //   .dateHbvDnaResultReported
-    //   ? ""
-    //   : "Date HBV DNA result requested is required";
-
-    // temp.stagingDateOfLiverBiopsy = basicInfo.hepatitisBTest
-    //   .stagingDateOfLiverBiopsy
-    //   ? ""
-    //   : "Staging date of liver biopsy is required";
-
     temp.hvbDnaValue =
       basicInfo.hepatitisBTest.hvbDnaValue &&
       basicInfo.hepatitisBTest.hbvDna === "DETECTED"
         ? ""
         : " Input HBV DNA value is required";
-
-    // temp.hcRnaValue =
-    //   basicInfo.hepatitisCTest.hcRnaValue &&
-    //   basicInfo.hepatitisCTest.hcvRNA === "DETECTED"
-    //     ? ""
-    //     : " Input HCV RNA Value is required";
 
     temp.commobidities = basicInfo.hepatitisCTest.commobidities
       ? ""
@@ -298,55 +225,39 @@ const ViralHepatitisForm2 = ({ setStep }) => {
       ? ""
       : "Multiple Infection required";
 
-    // temp.district = info.district ? "" : "Province/LGA is required.";
-    // temp.stateId = info.stateId ? "" : "State is required.";
-    // temp.dateOfBirth = info.dateOfBirth ? "" : "Date of Birth is required.";
-    // temp.dateOfRegistration = info.dateOfRegistration
-    //   ? ""
-    //   : "Date of Registration is required.";
-    // temp.maritalStatusId = basicInfo.maritalStatusId
-    //   ? ""
-    //   : "Marital Status is required";
-    // temp.educationId = info.educationId ? "" : "Education is required";
-    // temp.relationship = basicInfo.relationship
-    //   ? ""
-    //   : "Relationship is required";
-    // temp.genderId = basicInfo.personDto.genderId ? "" : "sex is required";
-    // temp.careEntryPoint = basicInfo.careEntryPoint
-    //   ? ""
-    //   : "careEntryPoint is required";
-    // temp.pregnancy = basicInfo.pregnancy ? "" : "pregnancy status is required";
-    // temp.weight = basicInfo.weight ? "" : "Weight is required";
-    // temp.height = basicInfo.height ? "" : "Height is required";
-    // temp.hepatitisB = basicInfo.hepatitisB ? "" : "HepatitisB is required";
-    // temp.breastfeeding = basicInfo.breastfeeding
-    //   ? ""
-    //   : "Breastfeeding status is required";
-    // temp.dateOfFirstHepatitisBPositiveScreening = basicInfo.screening
-    //   .dateOfFirstHepatitisBPositiveScreening
-    //   ? ""
-    //   : "Date of first HepatitisB positive screening is required";
-
-    //
-    console.log(temp);
     setErrors({ ...temp });
     return Object.values(temp).every((x) => x == "");
   };
 
-  const postDataWithToken = async (data, key) => {
+  const postDataWithToken = async (data) => {
     try {
-      const response = await axios.post(`${apiUrl}${key}`, data, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axios.put(
+        `${apiUrl}hepatitis/update-hepatitis-diagnosis/${enrollmentUuid}`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      // Handle the response if needed
       console.log("Post successful:", response.data);
-      toast.success("Diagnosis submitted successfully");
-      setStep(2);
+      toast.success("Enrolment submitted successfully");
+
+      setCookie(
+        "enrollmentIds",
+        {
+          enrollmentId: response.data?.enrollmentId,
+          enrollmentUuid: response.data?.enrollmentUuid,
+        },
+        1
+      );
+      //   setStep(1);
       return response.data;
     } catch (error) {
-      toast.error("Diagnosis failed");
+      // Handle any errors that occurred during the request
+      toast.error("Enrolment failed");
       console.error("Error posting data:", error.message);
       throw error;
     }
@@ -435,9 +346,108 @@ const ViralHepatitisForm2 = ({ setStep }) => {
     }
   };
 
+  console.log(" userId?.enrollmentUuid", enrollmentUuid);
   useEffect(() => {
     castCookieValueToForm();
-  }, []);
+    setBasicInfo({
+      clinicalParameters: {
+        afp: diagnosisInfo?.clinicalParameters?.afp,
+        alt: diagnosisInfo?.clinicalParameters?.alt,
+        apriScore: diagnosisInfo?.clinicalParameters?.apriScore,
+        ascites: diagnosisInfo?.clinicalParameters?.ascites,
+        ast: diagnosisInfo?.clinicalParameters?.ast,
+        astValue: diagnosisInfo?.clinicalParameters?.astValue,
+        childPughScore: diagnosisInfo?.clinicalParameters?.childPughScore,
+        creatinine: diagnosisInfo?.clinicalParameters?.creatinine,
+        diagnosis_result: diagnosisInfo?.clinicalParameters?.diagnosis_result,
+        directBiliribin: diagnosisInfo?.clinicalParameters?.directBiliribin,
+        fib4: diagnosisInfo?.clinicalParameters?.fib4,
+        fibroscan: diagnosisInfo?.clinicalParameters?.fibroscan,
+        gradeOfEncephalopathy:
+          diagnosisInfo?.clinicalParameters?.gradeOfEncephalopathy,
+        liverBiopsyStage: diagnosisInfo?.clinicalParameters?.liverBiopsyStage,
+        prothrombinTimeNR: diagnosisInfo?.clinicalParameters?.prothrombinTimeNR,
+        pst: diagnosisInfo?.clinicalParameters?.pst,
+        severityOfAscites: diagnosisInfo?.clinicalParameters?.severityOfAscites,
+        totalBiliRubin: diagnosisInfo?.clinicalParameters?.totalBiliRubin,
+        ultrasoundScan: diagnosisInfo?.clinicalParameters?.ultrasoundScan,
+        urea: diagnosisInfo?.clinicalParameters?.urea,
+      },
+      enrollmentUuid: enrollmentUuid,
+      hepatitisBTest: {
+        albumin: diagnosisInfo?.hepatitisBTest?.albumin,
+        antiHDV: diagnosisInfo?.hepatitisBTest?.antiHDV,
+        comment: diagnosisInfo?.hepatitisBTest?.comment,
+        ctScan: diagnosisInfo?.hepatitisBTest?.ctScan,
+        dateHbvDnaTestRequested: `${
+          diagnosisInfo?.hepatitisBTest?.dateHbvDnaTestRequested.year
+        }-${
+          diagnosisInfo?.hepatitisBTest?.dateHbvDnaTestRequested.monthValue
+        }-${
+          diagnosisInfo?.hepatitisBTest?.dateHbvDnaTestRequested.dayOfMonth.toString()
+            .length > 1
+            ? diagnosisInfo?.hepatitisBTest?.dateHbvDnaTestRequested.dayOfMonth
+            : "0" +
+              diagnosisInfo?.hepatitisBTest?.dateHbvDnaTestRequested.dayOfMonth
+        }`,
+        dateHbvSampleRequested: `${
+          diagnosisInfo?.hepatitisBTest?.dateHbvSampleRequested.year
+        }-${diagnosisInfo?.hepatitisBTest?.dateHbvSampleRequested.monthValue}-${
+          diagnosisInfo?.hepatitisBTest?.dateHbvSampleRequested.dayOfMonth.toString()
+            .length > 1
+            ? diagnosisInfo?.hepatitisBTest?.dateHbvSampleRequested.dayOfMonth
+            : "0" +
+              diagnosisInfo?.hepatitisBTest?.dateHbvSampleRequested.dayOfMonth
+        }`,
+        dateHbvTestRequested: `${
+          diagnosisInfo?.hepatitisBTest?.dateHbvTestRequested.year
+        }-${diagnosisInfo?.hepatitisBTest?.dateHbvTestRequested.monthValue}-${
+          diagnosisInfo?.hepatitisBTest?.dateHbvTestRequested.dayOfMonth.toString()
+            .length > 1
+            ? diagnosisInfo?.hepatitisBTest?.dateHbvTestRequested.dayOfMonth
+            : "0" +
+              diagnosisInfo?.hepatitisBTest?.dateHbvTestRequested.dayOfMonth
+        }`,
+        hbeAG: diagnosisInfo?.hepatitisBTest?.hbeAG,
+        // attaching missing props
+        dateHbvDnaResultReported: `${
+          diagnosisInfo?.hepatitisBTest?.dateHbvDnaResultReported.year
+        }-${
+          diagnosisInfo?.hepatitisBTest?.dateHbvDnaResultReported.monthValue
+        }-${
+          diagnosisInfo?.hepatitisBTest?.dateHbvDnaResultReported.dayOfMonth.toString()
+            .length > 1
+            ? diagnosisInfo?.hepatitisBTest?.dateHbvDnaResultReported.dayOfMonth
+            : "0" +
+              diagnosisInfo?.hepatitisBTest?.dateHbvDnaResultReported.dayOfMonth
+        }`,
+        hbsAgQuantification: diagnosisInfo?.hepatitisBTest?.hbsAgQuantification,
+        hbvDna: diagnosisInfo?.hepatitisBTest?.hbvDna,
+        hvbDnaValue: diagnosisInfo?.hepatitisBTest?.hvbDnaValue,
+        pmtctEligible: diagnosisInfo?.hepatitisBTest?.pmtctEligible,
+        stagingDateOfLiverBiopsy: `${
+          diagnosisInfo?.hepatitisBTest?.stagingDateOfLiverBiopsy.year
+        }-${
+          diagnosisInfo?.hepatitisBTest?.stagingDateOfLiverBiopsy.monthValue
+        }-${
+          diagnosisInfo?.hepatitisBTest?.stagingDateOfLiverBiopsy.dayOfMonth.toString()
+            .length > 1
+            ? diagnosisInfo?.hepatitisBTest?.stagingDateOfLiverBiopsy.dayOfMonth
+            : "0" +
+              diagnosisInfo?.hepatitisBTest?.stagingDateOfLiverBiopsy.dayOfMonth
+        }`,
+        treatmentEligible: diagnosisInfo?.hepatitisBTest?.treatmentEligible,
+      },
+      hepatitisCTest: {
+        commobidities: diagnosisInfo?.hepatitisCTest?.commobidities,
+        hcRnaValue: diagnosisInfo?.hepatitisCTest?.hcRnaValue,
+        hcvRNA: diagnosisInfo?.hepatitisCTest?.hcvRNA,
+        hepatitisCoinfection:
+          diagnosisInfo?.hepatitisCTest?.hepatitisCoinfection,
+        multipleInfection: diagnosisInfo?.hepatitisCTest?.multipleInfection,
+      },
+    });
+  }, [diagnosisInfo, enrollmentUuid]);
 
   const [isDropdownsOpen, setIsDropdownsOpen] = useState({
     hepatitisBDropdown: true,
@@ -520,6 +530,9 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                               type="date"
                               name="dateHbvDnaTestRequested"
                               id="dateHbvDnaTestRequested"
+                              //   value={
+                              //     basicInfo.hepatitisBTest.dateHbvDnaTestRequested
+                              //   }
                               value={
                                 basicInfo.hepatitisBTest.dateHbvDnaTestRequested
                               }
@@ -529,7 +542,9 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                                 border: "1px solid #014D88",
                                 borderRadius: "0.2rem",
                               }}
+                              disabled={action === "view" ? true : false}
                             />
+
                             {errors.dateHbvDnaTestRequested !== "" ? (
                               <span className={classes.error}>
                                 {errors.dateHbvDnaTestRequested}
@@ -554,6 +569,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                               value={
                                 basicInfo.hepatitisBTest.dateHbvTestRequested
                               }
+                              disabled={action === "view" ? true : false}
                               onChange={handleInputChangeBasic}
                               // onBlur={formik.handleBlur}
                               style={{
@@ -586,12 +602,14 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                                 basicInfo.hepatitisBTest.dateHbvSampleRequested
                               }
                               onChange={handleInputChangeBasic}
+                              disabled={action === "view" ? true : false}
                               // onBlur={formik.handleBlur}
                               style={{
                                 border: "1px solid #014D88",
                                 borderRadius: "0.2rem",
                               }}
                             />
+
                             {errors.dateHbvSampleRequested !== "" ? (
                               <span className={classes.error}>
                                 {errors.dateHbvSampleRequested}
@@ -616,6 +634,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                                 basicInfo.hepatitisBTest
                                   .dateHbvDnaResultReported
                               }
+                              disabled={action === "view" ? true : false}
                               onChange={handleInputChangeBasic}
                               // onBlur={formik.handleBlur}
                               style={{
@@ -643,24 +662,17 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                               type="date"
                               name="stagingDateOfLiverBiopsy"
                               id="stagingDateOfLiverBiopsy"
+                              disabled={action === "view" ? true : false}
                               value={
                                 basicInfo.hepatitisBTest
                                   .stagingDateOfLiverBiopsy
                               }
                               onChange={handleInputChangeBasic}
-                              // onBlur={formik.handleBlur}
                               style={{
                                 border: "1px solid #014D88",
                                 borderRadius: "0.2rem",
                               }}
                             />
-                            {/* {errors.stagingDateOfLiverBiopsy !== "" ? (
-                              <span className={classes.error}>
-                                {errors.stagingDateOfLiverBiopsy}
-                              </span>
-                            ) : (
-                              ""
-                            )} */}
                           </FormGroup>
                         </div>
 
@@ -676,6 +688,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                                   type="radio"
                                   value="DETECTED"
                                   name="hbvDna"
+                                  disabled={action === "view" ? true : false}
                                   checked={
                                     basicInfo.hepatitisBTest.hbvDna ===
                                     "DETECTED"
@@ -696,6 +709,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                                   type="radio"
                                   value="UNDETECTED"
                                   name="hbvDna"
+                                  disabled={action === "view" ? true : false}
                                   checked={
                                     basicInfo.hepatitisBTest.hbvDna ===
                                     "UNDETECTED"
@@ -731,6 +745,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                                 className="form-control"
                                 type="text"
                                 name="hvbDnaValue"
+                                disabled={action === "view" ? true : false}
                                 id="hvbDnaValue"
                                 value={basicInfo.hepatitisBTest.hvbDnaValue}
                                 onChange={handleInputChangeBasic}
@@ -759,6 +774,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                               className="form-control"
                               type="text"
                               name="hbsAgQuantification"
+                              disabled={action === "view" ? true : false}
                               id="hbsAgQuantification"
                               value={
                                 basicInfo.hepatitisBTest.hbsAgQuantification
@@ -789,6 +805,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                               name="ctScan"
                               id="ctScan"
                               value={basicInfo.hepatitisBTest.ctScan}
+                              disabled={action === "view" ? true : false}
                               onChange={handleInputChangeBasic}
                               // onBlur={formik.handleBlur}
                               style={{
@@ -813,6 +830,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                               className="form-control"
                               type="text"
                               name="albumin"
+                              disabled={action === "view" ? true : false}
                               id="albumin"
                               value={basicInfo.hepatitisBTest.albumin}
                               onChange={handleInputChangeBasic}
@@ -838,6 +856,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                             <select
                               className="form-control"
                               name="hbeAG"
+                              disabled={action === "view" ? true : false}
                               id="hbeAG"
                               onChange={handleInputChangeBasic}
                               value={basicInfo.hepatitisBTest.hbeAG}
@@ -869,6 +888,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                               className="form-control"
                               name="antiHDV"
                               id="antiHDV"
+                              disabled={action === "view" ? true : false}
                               onChange={handleInputChangeBasic}
                               value={basicInfo.hepatitisBTest.antiHDV}
                               style={{
@@ -902,6 +922,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                               className="form-control"
                               name="treatmentEligible"
                               id="treatmentEligible"
+                              disabled={action === "view" ? true : false}
                               onChange={handleInputChangeBasic}
                               value={basicInfo.hepatitisBTest.treatmentEligible}
                               style={{
@@ -929,6 +950,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                             <select
                               className="form-control"
                               name="pmtctEligible"
+                              disabled={action === "view" ? true : false}
                               id="pmtctEligible"
                               onChange={handleInputChangeBasic}
                               value={basicInfo.hepatitisBTest.pmtctEligible}
@@ -957,6 +979,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                             <textarea
                               className="form-control"
                               name="comment"
+                              disabled={action === "view" ? true : false}
                               id="comment"
                               onChange={handleInputChangeBasic}
                               value={basicInfo.hepatitisBTest.comment}
@@ -1035,6 +1058,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                               className="form-control"
                               name="hcvRNA"
                               id="hcvRNA"
+                              disabled={action === "view" ? true : false}
                               onChange={handleInputChangeBasicForHC}
                               // onBlur={formik.handleBlur}
                               value={basicInfo.hepatitisCTest.hcvRNA}
@@ -1068,6 +1092,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                                 type="text"
                                 name="hcRnaValue"
                                 id="hcRnaValue"
+                                disabled={action === "view" ? true : false}
                                 value={basicInfo.hepatitisCTest.hcRnaValue}
                                 onChange={handleInputChangeBasicForHC}
                                 // onBlur={formik.handleBlur}
@@ -1096,6 +1121,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                               className="form-control"
                               name="hepatitisCoinfection"
                               id="hepatitisCoinfection"
+                              disabled={action === "view" ? true : false}
                               onChange={handleInputChangeBasicForHC}
                               value={
                                 basicInfo.hepatitisCTest.hepatitisCoinfection
@@ -1132,6 +1158,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                               type="text"
                               name="commobidities"
                               id="commobidities"
+                              disabled={action === "view" ? true : false}
                               value={basicInfo.hepatitisCTest.commobidities}
                               onChange={handleInputChangeBasicForHC}
                               // onBlur={formik.handleBlur}
@@ -1161,6 +1188,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                               type="text"
                               name="multipleInfection"
                               id="multipleInfection"
+                              disabled={action === "view" ? true : false}
                               value={basicInfo.hepatitisCTest.multipleInfection}
                               onChange={handleInputChangeBasicForHC}
                               // onBlur={formik.handleBlur}
@@ -1208,6 +1236,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                       <select
                         className="form-control"
                         name="ast"
+                        disabled={action === "view" ? true : false}
                         id="ast"
                         onChange={handleInputChangeBasicForClinic}
                         value={basicInfo.clinicalParameters.ast}
@@ -1236,6 +1265,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                         className="form-control"
                         name="alt"
                         id="alt"
+                        disabled={action === "view" ? true : false}
                         onChange={handleInputChangeBasicForClinic}
                         value={basicInfo.clinicalParameters.alt}
                         style={{
@@ -1261,6 +1291,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                         className="form-control"
                         name="pst"
                         id="pst"
+                        disabled={action === "view" ? true : false}
                         onChange={handleInputChangeBasicForClinic}
                         value={basicInfo.clinicalParameters.pst}
                         style={{
@@ -1292,6 +1323,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                           className="form-control"
                           type="text"
                           name="astValue"
+                          disabled={action === "view" ? true : false}
                           id="astValue"
                           value={basicInfo.clinicalParameters.astValue}
                           onChange={handleInputChangeBasicForClinic}
@@ -1322,6 +1354,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                           className="form-control"
                           type="text"
                           name="altValue"
+                          disabled={action === "view" ? true : false}
                           id="altValue"
                           value={basicInfo.clinicalParameters.altValue}
                           onChange={handleInputChangeBasicForClinic}
@@ -1352,6 +1385,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                           className="form-control"
                           type="text"
                           name="pstValue"
+                          disabled={action === "view" ? true : false}
                           id="pstValue"
                           value={basicInfo.clinicalParameters.pstValue}
                           onChange={handleInputChangeBasicForClinic}
@@ -1381,6 +1415,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                         type="text"
                         name="totalBiliRubin"
                         id="totalBiliRubin"
+                        disabled={action === "view" ? true : false}
                         value={basicInfo.clinicalParameters.totalBiliRubin}
                         onChange={handleInputChangeBasicForClinic}
                         // onBlur={formik.handleBlur}
@@ -1405,6 +1440,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                         className="form-control"
                         type="text"
                         name="directBiliribin"
+                        disabled={action === "view" ? true : false}
                         id="directBiliribin"
                         value={basicInfo.clinicalParameters.directBiliribin}
                         onChange={handleInputChangeBasicForClinic}
@@ -1432,6 +1468,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                         type="text"
                         name="apriScore"
                         id="apriScore"
+                        disabled={action === "view" ? true : false}
                         value={basicInfo.clinicalParameters.apriScore}
                         onChange={handleInputChangeBasicForClinic}
                         // onBlur={formik.handleBlur}
@@ -1456,6 +1493,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                         className="form-control"
                         type="text"
                         name="fib4"
+                        disabled={action === "view" ? true : false}
                         id="fib4"
                         value={basicInfo.clinicalParameters.fib4}
                         onChange={handleInputChangeBasicForClinic}
@@ -1483,6 +1521,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                         className="form-control"
                         type="text"
                         name="prothrombinTimeNR"
+                        disabled={action === "view" ? true : false}
                         id="prothrombinTimeNR"
                         value={basicInfo.clinicalParameters.prothrombinTimeNR}
                         onChange={handleInputChangeBasicForClinic}
@@ -1509,6 +1548,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                         type="text"
                         name="urea"
                         id="urea"
+                        disabled={action === "view" ? true : false}
                         value={basicInfo.clinicalParameters.urea}
                         onChange={handleInputChangeBasicForClinic}
                         // onBlur={formik.handleBlur}
@@ -1534,6 +1574,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                         className="form-control"
                         type="text"
                         name="creatinine"
+                        disabled={action === "view" ? true : false}
                         id="creatinine"
                         value={basicInfo.clinicalParameters.creatinine}
                         onChange={handleInputChangeBasicForClinic}
@@ -1564,6 +1605,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                         value={basicInfo.clinicalParameters.afp}
                         onChange={handleInputChangeBasicForClinic}
                         // onBlur={formik.handleBlur}
+                        disabled={action === "view" ? true : false}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
@@ -1586,6 +1628,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                         name="fibroscan"
                         id="fibroscan"
                         value={basicInfo.clinicalParameters.fibroscan}
+                        disabled={action === "view" ? true : false}
                         onChange={handleInputChangeBasicForClinic}
                         // onBlur={formik.handleBlur}
                         style={{
@@ -1611,6 +1654,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                         type="text"
                         name="ultrasoundScan"
                         id="ultrasoundScan"
+                        disabled={action === "view" ? true : false}
                         value={basicInfo.clinicalParameters.ultrasoundScan}
                         onChange={handleInputChangeBasicForClinic}
                         // onBlur={formik.handleBlur}
@@ -1638,6 +1682,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                         id="ascites"
                         onChange={handleInputChangeBasicForClinic}
                         value={basicInfo.clinicalParameters.ascites}
+                        disabled={action === "view" ? true : false}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
@@ -1666,6 +1711,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                         <select
                           className="form-control"
                           name="severityOfAscites"
+                          disabled={action === "view" ? true : false}
                           id="severityOfAscites"
                           onChange={handleInputChangeBasicForClinic}
                           value={basicInfo.clinicalParameters.severityOfAscites}
@@ -1703,6 +1749,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                         value={
                           basicInfo.clinicalParameters.gradeOfEncephalopathy
                         }
+                        disabled={action === "view" ? true : false}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
@@ -1736,6 +1783,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                         id="childPughScore"
                         value={basicInfo.clinicalParameters.childPughScore}
                         onChange={handleInputChangeBasicForClinic}
+                        disabled={action === "view" ? true : false}
                         // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
@@ -1760,6 +1808,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                         name="liverBiopsyStage"
                         id="liverBiopsyStage"
                         onChange={handleInputChangeBasicForClinic}
+                        disabled={action === "view" ? true : false}
                         value={basicInfo.clinicalParameters.liverBiopsyStage}
                         style={{
                           border: "1px solid #014D88",
@@ -1791,6 +1840,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                         name="diagnosis_result"
                         id="diagnosis_result"
                         onChange={handleInputChangeBasicForClinic}
+                        disabled={action === "view" ? true : false}
                         value={basicInfo.clinicalParameters.diagnosis_result}
                         style={{
                           border: "1px solid #014D88",
@@ -1817,8 +1867,9 @@ const ViralHepatitisForm2 = ({ setStep }) => {
             </div>
             {false ? <Spinner /> : ""}
             <br />
-            <div className="d-flex justify-content-between">
-              <MatButton
+            {action === "update" && (
+              <div className="d-flex justify-content-end">
+                {/* <MatButton
                 type="button"
                 variant="contained"
                 color="primary"
@@ -1828,19 +1879,20 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                 style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}
               >
                 <span style={{ textTransform: "capitalize" }}>Previous</span>
-              </MatButton>
-              <MatButton
-                type="submit"
-                variant="contained"
-                color="primary"
-                className={classes.button}
-                endIcon={<ArrowForward />}
-                onClick={handleSubmit}
-                style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}
-              >
-                <span style={{ textTransform: "capitalize" }}>Next</span>
-              </MatButton>
-            </div>
+              </MatButton> */}
+                <MatButton
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  className={classes.button}
+                  endIcon={<ArrowForward />}
+                  onClick={handleSubmit}
+                  style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}
+                >
+                  <span style={{ textTransform: "capitalize" }}>Update</span>
+                </MatButton>
+              </div>
+            )}
             {/* </Form> */}
           </div>
         </CardContent>
@@ -1849,4 +1901,4 @@ const ViralHepatitisForm2 = ({ setStep }) => {
   );
 };
 
-export default ViralHepatitisForm2;
+export default DiagnosisSubmitedForm;

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
+
 import Button from "@material-ui/core/Button";
 import "react-toastify/dist/ReactToastify.css";
 import "react-widgets/dist/css/react-widgets.css";
-import { Link } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import { TiArrowBack } from "react-icons/ti";
 import { ToastContainer } from "react-toastify";
 import Steppers from "./Stepper/Stepper";
@@ -19,12 +20,22 @@ const ViralHepatitisFormsContainer = (props) => {
     "hepatitis-enrollment-form-step",
     0
   );
+  const location = useLocation();
+  const locationState = location.state;
 
+  console.log(locationState);
   useEffect(() => {
     setStep(0);
   }, []);
   const formMap = {
-    0: <ViralHepatitisForm1 step={step} setStep={setStep} />,
+    0: (
+      <ViralHepatitisForm1
+        step={step}
+        setStep={setStep}
+        userStatus={locationState.existingPatient}
+        patientObj={locationState.patientObj}
+      />
+    ),
     1: <ViralHepatitisForm2 step={step} setStep={setStep} />,
     2: <ViralHepatitisForm3 step={step} setStep={setStep} />,
     // 3: <FollowupForm step={step} setStep={setStep}/>,
