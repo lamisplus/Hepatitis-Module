@@ -663,7 +663,7 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
           [e.target.name]: name,
         },
       });
-    } else if (e.target.name === "genderId" && e.target.value !== "") {
+    } else if (e.target.name === "genderId") {
       console.log(e.target.name);
 
       setBasicInfo({
@@ -671,8 +671,16 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
         personDto: {
           ...basicInfo.personDto,
           [e.target.name]: e.target.value,
+          sexId: e.target.value,
         },
       });
+      // setBasicInfo({
+      //   ...basicInfo,
+      //   personDto: {
+      //     ...basicInfo.personDto,
+      //    
+      //   },
+      // });
     } else if (e.target.name === "surname") {
       const name = alphabetOnly(e.target.value);
       setBasicInfo({
@@ -704,7 +712,7 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
       });
     } else if (e.target.name === "stateId" && e.target.value !== "") {
       getProvinces(e);
-    } else if (e.target.name === "hepatitisC" && e.target.value !== "") {
+    } else if (e.target.name === "hepatitisC") {
       setBasicInfo({
         ...basicInfo,
         screening: {
@@ -712,7 +720,7 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
           [e.target.name]: e.target.value,
         },
       });
-    } else if (e.target.name === "maritalStatusId" && e.target.value !== "") {
+    } else if (e.target.name === "maritalStatusId") {
       setBasicInfo({
         ...basicInfo,
         personDto: {
