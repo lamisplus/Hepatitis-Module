@@ -262,8 +262,11 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         PersonResponseDto personResponseDto;
         personId = enrollmentDto.getPersonId();
         if(personId == null) {
-            throw new EntityNotFoundException(HepatitisEnrollment.class, "Person details cannot be null. ",
+            throw new EntityNotFoundException(HepatitisEnrollment.class, "Person id cannot be null. ",
                     "pass ID of existing patient.");
+        }
+        if(personDto != null) {
+             personService.updatePerson(personId, personDto);
         }
         Person person = personRepository.findById(personId)
                 .orElseThrow(() -> new EntityNotFoundException(HepatitisEnrollment.class,
