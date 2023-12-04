@@ -3,6 +3,7 @@ package org.lamisplus.modules.hepatitis.controller;
 import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisDiagnosisDto;
 import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisEnrollmentDto;
 import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisTreatmentDto;
+import org.lamisplus.modules.hepatitis.domain.dto.response.ActivityTracker;
 import org.lamisplus.modules.hepatitis.domain.dto.response.HepatitisEnrollmentPatientDTO;
 import org.lamisplus.modules.hepatitis.domain.dto.response.HepatitisEnrollmentResponse;
 import org.lamisplus.modules.hepatitis.domain.entity.HepatitisDiagnosis;
@@ -84,5 +85,10 @@ public class EnrollmentController {
     @PutMapping(value = "update-hepatitis-treatment/{id}")
     public ResponseEntity<HepatitisTreatmentDto> updateHepatitisTreatment(@PathVariable("id") Long id, @Valid @RequestBody HepatitisTreatmentDto treatmentDto) {
         return ResponseEntity.ok (enrollmentService.updateHepatitisTreatment(id, treatmentDto));
+    }
+
+    @GetMapping(value = "activities/{personUuid}")
+    public ResponseEntity<List<ActivityTracker>> getActivitiesByPersonUuid(@PathVariable("personUuid") String personUuid) {
+        return ResponseEntity.ok (enrollmentService.getActivityTracker(personUuid));
     }
 }

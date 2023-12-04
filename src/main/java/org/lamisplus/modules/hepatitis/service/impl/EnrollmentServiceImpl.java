@@ -14,6 +14,7 @@ import org.lamisplus.modules.hepatitis.domain.dto.PatientPerson;
 import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisDiagnosisDto;
 import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisEnrollmentDto;
 import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisTreatmentDto;
+import org.lamisplus.modules.hepatitis.domain.dto.response.ActivityTracker;
 import org.lamisplus.modules.hepatitis.domain.dto.response.HepatitisEnrollmentPatientDTO;
 import org.lamisplus.modules.hepatitis.domain.dto.response.HepatitisEnrollmentResponse;
 import org.lamisplus.modules.hepatitis.domain.entity.HepatitisDiagnosis;
@@ -42,10 +43,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.beans.BeanUtils;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -296,7 +294,58 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         return treatmentDto;
     }
 
+    public List<ActivityTracker> getActivityTracker(String personUuid) {
+        ArrayList<ActivityTracker> activityTrackers = new ArrayList<>();
 
+        HepatitisEnrollment hepatitisEnrollment = this.enrollmentRepository.findHepatitisEnrollmentByPersonUuidAndArchived(personUuid, 0);
+
+        if (hepatitisEnrollment != null) {
+            ActivityTracker activityTracker = new ActivityTracker();
+
+            activityTracker.setActivityName("Hepatitis Enrollment");
+            activityTracker.setPath("hepatitis_enrollment");
+            activityTracker.setEditable(true);
+            activityTracker.setDeletable(true);
+            activityTracker.setViewable(true);
+            activityTracker.setRecordId(hepatitisEnrollment.getId());
+            activityTracker.setActivityDate(hepatitisEnrollment.getCreatedDate().toLocalDate());
+            activityTrackers.add(activityTracker);
+        }
+
+        HepatitisDiagnosis hepatitisDiagnosis;
+        HepatitisTreatment hepatitisTreatment;
+        if(hepatitisEnrollment != null) {
+            hepatitisDiagnosis = this.diagnosisRepository.findHepatitisDiagnosisByHepatitisEnrollmentUuidAndArchived(hepatitisEnrollment.getUuid(), 0);
+            if(hepatitisDiagnosis != null) {
+                ActivityTracker activityTracker = new ActivityTracker();
+
+                activityTracker.setActivityName("Hepatitis Diagnosis");
+                activityTracker.setPath("hepatitis_diagnosis");
+                activityTracker.setEditable(true);
+                activityTracker.setDeletable(true);
+                activityTracker.setViewable(true);
+                activityTracker.setRecordId(hepatitisDiagnosis.getId());
+                activityTracker.setActivityDate(hepatitisDiagnosis.getCreatedDate().toLocalDate());
+                activityTrackers.add(activityTracker);
+            }
+
+            hepatitisTreatment = this.treatmentRepository.findHepatitisTreatmentByHepatitisEnrollmentAndArchived(hepatitisEnrollment, 0);
+
+            if(hepatitisTreatment != null) {
+                ActivityTracker activityTracker = new ActivityTracker();
+
+                activityTracker.setActivityName("Hepatitis Treatment");
+                activityTracker.setPath("hepatitis_treatment");
+                activityTracker.setEditable(true);
+                activityTracker.setDeletable(true);
+                activityTracker.setViewable(true);
+                activityTracker.setRecordId(hepatitisTreatment.getId());
+                activityTracker.setActivityDate(hepatitisTreatment.getCreatedDate().toLocalDate());
+                activityTrackers.add(activityTracker);
+            }
+        }
+        return activityTrackers;
+    }
 
 
 

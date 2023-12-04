@@ -3,6 +3,7 @@ package org.lamisplus.modules.hepatitis.service;
 import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisDiagnosisDto;
 import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisEnrollmentDto;
 import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisTreatmentDto;
+import org.lamisplus.modules.hepatitis.domain.dto.response.ActivityTracker;
 import org.lamisplus.modules.hepatitis.domain.dto.response.HepatitisEnrollmentPatientDTO;
 import org.lamisplus.modules.hepatitis.domain.dto.response.HepatitisEnrollmentResponse;
 import org.lamisplus.modules.hepatitis.domain.entity.HepatitisDiagnosis;
@@ -38,6 +39,8 @@ public interface EnrollmentService {
     HepatitisDiagnosisDto updateHepatitisDiagnosis(Long id, HepatitisDiagnosisDto diagnosisDto);
 
     HepatitisTreatmentDto updateHepatitisTreatment(Long id, HepatitisTreatmentDto treatmentDto);
+
+    List<ActivityTracker> getActivityTracker(String personUuid);
 
 //    HepatitisEnrollment update-hepatitis-enrollment
 }
