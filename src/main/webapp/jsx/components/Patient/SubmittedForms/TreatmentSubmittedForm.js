@@ -200,6 +200,16 @@ const TreatmentSubmittedForm = ({
       });
     }
 
+    if (e.target.name === "treatmentExperienceB") {
+      setBasicInfo({
+        ...basicInfo,
+        hepatitisBTreatment: {
+          ...basicInfo.hepatitisBTreatment,
+          treatmentExperience: e.target.value,
+        },
+      });
+    }
+
     // if (e.target.name === "hbvRegimeSwitchDateStarted") {
     //   setBasicInfo({
     //     ...basicInfo,
@@ -557,10 +567,10 @@ const TreatmentSubmittedForm = ({
   // to capture the error
   let temp = { ...errors };
   const validate = () => {
-    // temp.treatmentExperienceB = basicInfo.hepatitisBTreatment
-    //   .treatmentExperience
-    //   ? ""
-    //   : "Treatment experience is required";
+    temp.treatmentExperienceB = basicInfo.hepatitisBTreatment
+      .treatmentExperience
+      ? ""
+      : "Treatment experience is required";
 
     temp.hbvRegimeSwitchNewRegimen = basicInfo.hepatitisBTreatment
       .hepatitisBRegimenSwitch.newRegime
@@ -591,11 +601,129 @@ const TreatmentSubmittedForm = ({
       .pastTreatmentExperience
       ? ""
       : "Past Treatment experience is required";
+
+    temp.hbvAdverseEffectReported = basicInfo.hepatitisBTreatment
+      .hepatitisBRegimenSwitch.adverseEffectReported
+      ? ""
+      : "Adverse effect is required";
+
+    temp.historyOfAdverseEffect = basicInfo.hepatitisBTreatment
+      .historyOfAdverseEffect
+      ? ""
+      : "History ofAdverse effect is required";
+
+    temp.newRegimen = basicInfo.hepatitisBTreatment.newRegimen
+      ? ""
+      : "New Regime is required";
+
+    temp.hbvPastTreatmentRegimen = basicInfo.hepatitisBTreatment
+      .hbvPastTreatmentRegimen
+      ? ""
+      : "Hbv Past treatment regimen is required";
+
+    // temp.newRegimenB = basicInfo.hepatitisBTreatment.newRegimen
+    //   ? ""
+    //   : "New Regime is required";
+
+    temp.dateStarted = basicInfo.hepatitisBTreatment.dateStarted
+      ? ""
+      : "Date started is required";
+
+    temp.dateStopped = basicInfo.hepatitisBTreatment.dateStopped
+      ? ""
+      : "Date Stopped is required";
+
+    temp.hbvReasonForTreatmentEligibility = basicInfo.hepatitisBTreatment
+      .reasonForHepatitisBTreatment.reasonsForTreatment
+      ? ""
+      : "Reason for Treatment is required";
+
+    temp.hbvReasonsForTreatmentComment = basicInfo.hepatitisBTreatment
+      .reasonForHepatitisBTreatment.comment
+      ? ""
+      : "Comment is required";
+
+    temp.hcvAdverseEventReported = basicInfo.hepatitisCTreatment
+      .adverseEffectReported
+      ? ""
+      : "Adverse Effect Reported is required";
+
+    temp.hcvDateStarted = basicInfo.hepatitisCTreatment.dateStarted
+      ? ""
+      : "Date started is required";
+
+    temp.hcvDateCompleted = basicInfo.hepatitisCTreatment.dateCompleted
+      ? ""
+      : "Date completed is required";
+
+    temp.hcvDateStopped = basicInfo.hepatitisCTreatment.dateStopped
+      ? ""
+      : "Date stopped is required";
+
+    temp.hcvPrescribedDuration = basicInfo.hepatitisCTreatment
+      .prescribedDuration
+      ? ""
+      : "Prescribed duration is required";
+
+    temp.svr12TestingDateStarted = basicInfo.hepatitisCTreatment
+      .hepatitisSvr12Testing.dateTested
+      ? ""
+      : "Date tested is required";
+
+    temp.svr12TestingHcvRna = basicInfo.hepatitisCTreatment
+      .hepatitisSvr12Testing.hcvRNA
+      ? ""
+      : "HCV RNA is required";
+
+    temp.svr12RetreatmentDateTested = basicInfo.hepatitisCTreatment
+      .hepatitisSvr12Testing.retreatmentDateTested
+      ? ""
+      : "Retreatment date tested is required";
+
+    temp.svr12RetreatmentHcvRna = basicInfo.hepatitisCTreatment
+      .hepatitisSvr12Testing.retreatmentDateTested
+      ? ""
+      : " Retreatment HCV RNA is required";
+
+    temp.svr12RetreatmentHcvRna = basicInfo.hepatitisCTreatment
+      .hepatitisSvr12Testing.retreatmentHcvRNA
+      ? ""
+      : " Retreatment HCV RNA  is required";
+
+    temp.hcvRetreatmentNewRegimen = basicInfo.hepatitisCTreatment.hcvRetreatment
+      .newRegimen
+      ? ""
+      : " New regimen  is required";
+
+    temp.hcvRetreatmentPrescribedDuration = basicInfo.hepatitisCTreatment
+      .hcvRetreatment.prescribedDuration
+      ? ""
+      : "Prescribed Duration is required";
+
+    temp.hcvRetreatmentDateStarted = basicInfo.hepatitisCTreatment
+      .hcvRetreatment.dateStarted
+      ? ""
+      : "Date started is required";
+
+    temp.hcvRetreatmentDateStopped = basicInfo.hepatitisCTreatment
+      .hcvRetreatment.dateStarted
+      ? ""
+      : "Date stopped is required";
+
+    temp.hcvRetreatmentAdverseEffect = basicInfo.hepatitisCTreatment
+      .hcvRetreatment.retreatmentAdverseEffect
+      ? ""
+      : " Retreatment Adverse effect is required";
+
+    temp.hcvRetreatmentHistoryOfAdverseEffect = basicInfo.hepatitisCTreatment
+      .hcvRetreatment.history_of_AdverseEffect
+      ? ""
+      : " History of adverse effect is required";
+
     // console.log(temp);
     setErrors({ ...temp });
     return Object.values(temp).every((x) => x == "");
   };
-
   // submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -1020,20 +1148,20 @@ const TreatmentSubmittedForm = ({
                           </Label>
                           <select
                             className="form-control"
-                            name="treatmentExperience"
+                            name="treatmentExperienceB"
                             id="treatmentExperience"
                             disabled={action === "view" ? true : false}
                             value={
                               basicInfo.hepatitisBTreatment.treatmentExperience
                             }
-                            onChange={handleInputChangeBasicHB}
+                            onChange={handleInputChangeBasicHBReason}
                             // onBlur={formik.handleBlur}
                             style={{
                               border: "1px solid #014D88",
                               borderRadius: "0.2rem",
                             }}
                           >
-                            <option>Select</option>
+                            <option value="">Select</option>
                             <option value={"YES"}>Yes</option>
                             <option value={"NO"}>No</option>
                           </select>
@@ -1080,10 +1208,11 @@ const TreatmentSubmittedForm = ({
                       <div className="form-group mb-3 col-md-4">
                         <FormGroup>
                           <Label for="hbvNewRegimen">New regime</Label>
+                          <span style={{ color: "red" }}> *</span>{" "}
                           <input
                             className="form-control"
-                            disabled={action === "view" ? true : false}
                             type="text"
+                            disabled={action === "view" ? true : false}
                             name="newRegimen"
                             id="newRegimen"
                             value={basicInfo.hepatitisBTreatment.newRegimen}
@@ -1094,13 +1223,13 @@ const TreatmentSubmittedForm = ({
                               borderRadius: "0.2rem",
                             }}
                           />
-                          {/* {formik.errors.hbvNewRegimen !== "" ? (
+                          {errors.newRegimen !== "" ? (
                             <span className={classes.error}>
-                              {formik.errors.hbvNewRegimen}
+                              {errors.newRegimen}
                             </span>
                           ) : (
                             ""
-                          )} */}
+                          )}
                         </FormGroup>
                       </div>
 
@@ -1109,6 +1238,7 @@ const TreatmentSubmittedForm = ({
                           <Label for="hbvPastTreatmentRegimen">
                             Hbv Past treatment regimen
                           </Label>
+                          <span style={{ color: "red" }}> *</span>{" "}
                           <input
                             className="form-control"
                             type="text"
@@ -1126,14 +1256,13 @@ const TreatmentSubmittedForm = ({
                               borderRadius: "0.2rem",
                             }}
                           />
-                          {/* 
-                          {formik.errors.hbvPastTreatmentRegimen !== "" ? (
+                          {errors.hbvPastTreatmentRegimen !== "" ? (
                             <span className={classes.error}>
-                              {formik.errors.hbvPastTreatmentRegimen}
+                              {errors.hbvPastTreatmentRegimen}
                             </span>
                           ) : (
                             ""
-                          )} */}
+                          )}
                         </FormGroup>
                       </div>
 
@@ -1142,12 +1271,13 @@ const TreatmentSubmittedForm = ({
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
                               <Label for="hbvDateStarted">Date started</Label>
+                              <span style={{ color: "red" }}> *</span>{" "}
                               <input
                                 className="form-control"
                                 type="date"
                                 name="dateStarted"
-                                id="dateStarted"
                                 disabled={action === "view" ? true : false}
+                                id="dateStarted"
                                 max={moment(new Date()).format("YYYY-MM-DD")}
                                 value={
                                   basicInfo.hepatitisBTreatment.dateStarted
@@ -1159,24 +1289,25 @@ const TreatmentSubmittedForm = ({
                                   borderRadius: "0.2rem",
                                 }}
                               />
-                              {/* {formik.errors.hbvDateStarted !== "" ? (
+                              {errors.dateStarted !== "" ? (
                                 <span className={classes.error}>
-                                  {formik.errors.hbvDateStarted}
+                                  {errors.dateStarted}
                                 </span>
                               ) : (
                                 ""
-                              )} */}
+                              )}
                             </FormGroup>
                           </div>
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
                               <Label for="hbvDateStopped">Date stopped</Label>
+                              <span style={{ color: "red" }}> *</span>{" "}
                               <input
                                 className="form-control"
                                 type="date"
                                 name="dateStopped"
-                                id="dateStopped"
                                 disabled={action === "view" ? true : false}
+                                id="dateStopped"
                                 max={moment(new Date()).format("YYYY-MM-DD")}
                                 value={
                                   basicInfo.hepatitisBTreatment.dateStopped
@@ -1188,13 +1319,13 @@ const TreatmentSubmittedForm = ({
                                   borderRadius: "0.2rem",
                                 }}
                               />
-                              {/* {formik.errors.hbvDateStopped !== "" ? (
+                              {errors.dateStopped !== "" ? (
                                 <span className={classes.error}>
-                                  {formik.errors.hbvDateStopped}
+                                  {errors.dateStopped}
                                 </span>
                               ) : (
                                 ""
-                              )} */}
+                              )}
                             </FormGroup>
                           </div>
                         </>
@@ -1205,10 +1336,11 @@ const TreatmentSubmittedForm = ({
                           <Label for="hbvHistoryOfAdverseEffect">
                             History of adverse effect
                           </Label>
+                          <span style={{ color: "red" }}> *</span>{" "}
                           <select
                             className="form-control"
-                            name="historyOfAdverseEffect"
                             disabled={action === "view" ? true : false}
+                            name="historyOfAdverseEffect"
                             id="historyOfAdverseEffect"
                             value={
                               basicInfo.hepatitisBTreatment
@@ -1221,17 +1353,17 @@ const TreatmentSubmittedForm = ({
                               borderRadius: "0.2rem",
                             }}
                           >
-                            <option>Select</option>
+                            <option value="">Select</option>
                             <option value={"YES"}>Yes</option>
                             <option value={"NO"}>No</option>
                           </select>
-                          {/* {formik.errors.hbvHistoryOfAdverseEffect !== "" ? (
+                          {errors.historyOfAdverseEffect !== "" ? (
                             <span className={classes.error}>
-                              {formik.errors.hbvHistoryOfAdverseEffect}
+                              {errors.historyOfAdverseEffect}
                             </span>
                           ) : (
                             ""
-                          )} */}
+                          )}
                         </FormGroup>
                       </div>
                     </div>
@@ -1294,8 +1426,8 @@ const TreatmentSubmittedForm = ({
                             <input
                               className="form-control"
                               type="text"
-                              name="hbvRegimeSwitchNewRegimen"
                               disabled={action === "view" ? true : false}
+                              name="hbvRegimeSwitchNewRegimen"
                               id="hbvRegimeSwitchNewRegimen"
                               value={
                                 basicInfo.hepatitisBTreatment
@@ -1328,8 +1460,8 @@ const TreatmentSubmittedForm = ({
                               className="form-control"
                               type="date"
                               name="hbvRegimeSwitchDateStarted"
-                              id="hbvRegimeSwitchDateStarted"
                               disabled={action === "view" ? true : false}
+                              id="hbvRegimeSwitchDateStarted"
                               value={
                                 basicInfo.hepatitisBTreatment
                                   .hepatitisBRegimenSwitch.dateStarted
@@ -1387,13 +1519,14 @@ const TreatmentSubmittedForm = ({
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="hbvAdverseEffectReported">
-                              Adverse effect reported
+                              Adverse effect reported{" "}
                             </Label>
+                            <span style={{ color: "red" }}> *</span>{" "}
                             <select
                               className="form-control"
                               name="hbvAdverseEffectReported"
-                              id="hbvAdverseEffectReported"
                               disabled={action === "view" ? true : false}
+                              id="hbvAdverseEffectReported"
                               value={
                                 basicInfo.hepatitisBTreatment
                                   .hepatitisBRegimenSwitch.adverseEffectReported
@@ -1405,13 +1538,13 @@ const TreatmentSubmittedForm = ({
                                 borderRadius: "0.2rem",
                               }}
                             >
-                              <option>Select</option>
+                              <option value="">Select</option>
                               <option value={"YES"}>Yes</option>
                               <option value={"NO"}>No</option>
                             </select>
-                            {formik.errors.hbvAdverseEffectReported !== "" ? (
+                            {errors.hbvAdverseEffectReported !== "" ? (
                               <span className={classes.error}>
-                                {formik.errors.hbvAdverseEffectReported}
+                                {errors.hbvAdverseEffectReported}
                               </span>
                             ) : (
                               ""
@@ -1427,8 +1560,8 @@ const TreatmentSubmittedForm = ({
                             </Label>
                             <input
                               className="form-control"
-                              type="text"
                               disabled={action === "view" ? true : false}
+                              type="text"
                               name="hbvRegimeSwitchReason"
                               id="hbvRegimeSwitchReason"
                               value={
@@ -1508,6 +1641,7 @@ const TreatmentSubmittedForm = ({
                             <Label for="hbvReasonForTreatmentEligibility">
                               Reasons for treatment
                             </Label>
+                            <span style={{ color: "red" }}> *</span>{" "}
                             <select
                               className="form-control"
                               name="hbvReasonForTreatmentEligibility"
@@ -1531,14 +1665,13 @@ const TreatmentSubmittedForm = ({
                               </option>
                               <option value={"hbv pmtct"}>HBV PMTCT</option>
                             </select>
-                            {/* {formik.errors.hbvReasonForTreatmentEligibility !==
-                            "" ? (
+                            {errors.hbvReasonForTreatmentEligibility !== "" ? (
                               <span className={classes.error}>
-                                {formik.errors.hbvReasonForTreatmentEligibility}
+                                {errors.hbvReasonForTreatmentEligibility}
                               </span>
                             ) : (
                               ""
-                            )} */}
+                            )}
                           </FormGroup>
                         </div>
 
@@ -1547,12 +1680,13 @@ const TreatmentSubmittedForm = ({
                             <Label for="hbvReasonsForTreatmentComment">
                               Comment
                             </Label>
+                            <span style={{ color: "red" }}> *</span>{" "}
                             <textarea
                               className="form-control"
                               name="hbvReasonsForTreatmentComment"
+                              disabled={action === "view" ? true : false}
                               id="hbvReasonsForTreatmentComment"
                               onChange={handleInputChangeBasicHBReason}
-                              disabled={action === "view" ? true : false}
                               value={
                                 basicInfo.hepatitisBTreatment
                                   .reasonForHepatitisBTreatment.comment
@@ -1564,15 +1698,13 @@ const TreatmentSubmittedForm = ({
                                 height: "80px",
                               }}
                             />
-                            {/* 
-                            {formik.errors.hbvReasonsForTreatmentComment !==
-                            "" ? (
+                            {errors.hbvReasonsForTreatmentComment !== "" ? (
                               <span className={classes.error}>
-                                {formik.errors.hbvReasonsForTreatmentComment}
+                                {errors.hbvReasonsForTreatmentComment}
                               </span>
                             ) : (
                               ""
-                            )} */}
+                            )}
                           </FormGroup>
                         </div>
                       </div>
@@ -1609,11 +1741,12 @@ const TreatmentSubmittedForm = ({
                           <Label for="hcvAdverseEventReported">
                             Adverse Effect reported
                           </Label>
+                          <span style={{ color: "red" }}> *</span>{" "}
                           <select
                             className="form-control"
-                            disabled={action === "view" ? true : false}
                             name="hcvAdverseEventReported"
                             id="hcvAdverseEventReported"
+                            disabled={action === "view" ? true : false}
                             value={
                               basicInfo.hepatitisCTreatment
                                 .adverseEffectReported
@@ -1629,13 +1762,13 @@ const TreatmentSubmittedForm = ({
                             <option value="YES">Yes</option>
                             <option value="NO">No</option>
                           </select>
-                          {/* {formik.errors.hcvAdverseEventReported !== "" ? (
+                          {errors.hcvAdverseEventReported !== "" ? (
                             <span className={classes.error}>
-                              {formik.errors.hcvAdverseEventReported}
+                              {errors.hcvAdverseEventReported}
                             </span>
                           ) : (
                             ""
-                          )} */}
+                          )}
                         </FormGroup>
                       </div>
 
@@ -1661,7 +1794,7 @@ const TreatmentSubmittedForm = ({
                               borderRadius: "0.2rem",
                             }}
                           >
-                            <option>Select</option>
+                            <option value="">Select</option>
                             <option value={"YES"}>Yes</option>
                             <option value={"NO"}>No</option>
                           </select>
@@ -1715,8 +1848,8 @@ const TreatmentSubmittedForm = ({
                             className="form-control"
                             type="date"
                             name="hcvDateStarted"
-                            id="hcvDateStarted"
                             disabled={action === "view" ? true : false}
+                            id="hcvDateStarted"
                             value={basicInfo.hepatitisCTreatment.dateStarted}
                             onChange={handleInputChangeBasicHC}
                             // onBlur={formik.handleBlur}
@@ -1725,19 +1858,20 @@ const TreatmentSubmittedForm = ({
                               borderRadius: "0.2rem",
                             }}
                           />
-                          {/* {formik.errors.hcvDateStarted !== "" ? (
+                          {errors.hcvDateStarted !== "" ? (
                             <span className={classes.error}>
-                              {formik.errors.hcvDateStarted}
+                              {errors.hcvDateStarted}
                             </span>
                           ) : (
                             ""
-                          )} */}
+                          )}
                         </FormGroup>
                       </div>
 
                       <div className="form-group mb-3 col-md-4">
                         <FormGroup>
                           <Label for="hcvDateCompleted">Date completed</Label>
+                          <span style={{ color: "red" }}> *</span>{" "}
                           <input
                             className="form-control"
                             type="date"
@@ -1752,24 +1886,25 @@ const TreatmentSubmittedForm = ({
                               borderRadius: "0.2rem",
                             }}
                           />
-                          {/* {formik.errors.hcvDateCompleted !== "" ? (
+                          {errors.hcvDateCompleted !== "" ? (
                             <span className={classes.error}>
-                              {formik.errors.hcvDateCompleted}
+                              {errors.hcvDateCompleted}
                             </span>
                           ) : (
                             ""
-                          )} */}
+                          )}
                         </FormGroup>
                       </div>
                       <div className="form-group mb-3 col-md-4">
                         <FormGroup>
                           <Label for="hcvDateStopped">Date stopped</Label>
+                          <span style={{ color: "red" }}> *</span>{" "}
                           <input
                             className="form-control"
                             type="date"
+                            disabled={action === "view" ? true : false}
                             name="hcvDateStopped"
                             id="hcvDateStopped"
-                            disabled={action === "view" ? true : false}
                             value={basicInfo.hepatitisCTreatment.dateStopped}
                             onChange={handleInputChangeBasicHC}
                             // onBlur={formik.handleBlur}
@@ -1778,13 +1913,13 @@ const TreatmentSubmittedForm = ({
                               borderRadius: "0.2rem",
                             }}
                           />
-                          {/* {formik.errors.hcvDateStopped !== "" ? (
+                          {errors.hcvDateStopped !== "" ? (
                             <span className={classes.error}>
-                              {formik.errors.hcvDateStopped}
+                              {errors.hcvDateStopped}
                             </span>
                           ) : (
                             ""
-                          )} */}
+                          )}
                         </FormGroup>
                       </div>
 
@@ -1793,11 +1928,12 @@ const TreatmentSubmittedForm = ({
                           <Label for="hcvPrescribedDuration">
                             Prescribed duration
                           </Label>
+                          <span style={{ color: "red" }}> *</span>{" "}
                           <select
                             className="form-control"
                             name="hcvPrescribedDuration"
-                            id="hcvPrescribedDuration"
                             disabled={action === "view" ? true : false}
+                            id="hcvPrescribedDuration"
                             value={
                               basicInfo.hepatitisCTreatment.prescribedDuration
                             }
@@ -1813,13 +1949,13 @@ const TreatmentSubmittedForm = ({
                             <option value={12}>12 weeks</option>
                             <option value={24}>24 weeks</option>
                           </select>
-                          {/* {formik.errors.hcvPrescribedDuration !== "" ? (
+                          {errors.hcvPrescribedDuration !== "" ? (
                             <span className={classes.error}>
-                              {formik.errors.hcvPrescribedDuration}
+                              {errors.hcvPrescribedDuration}
                             </span>
                           ) : (
                             ""
-                          )} */}
+                          )}
                         </FormGroup>
                       </div>
 
@@ -1828,12 +1964,13 @@ const TreatmentSubmittedForm = ({
                           <Label for="hbvPastTreatmentRegimenForHcv">
                             HBV past treatment regimen
                           </Label>
+                          <span style={{ color: "red" }}> *</span>{" "}
                           <select
                             type="text"
                             className="form-control"
-                            disabled={action === "view" ? true : false}
                             name="hbvPastTreatmentRegimenForHcv"
                             id="hbvPastTreatmentRegimenForHcv"
+                            disabled={action === "view" ? true : false}
                             value={
                               basicInfo.hepatitisCTreatment
                                 .hbvPastTreatmentRegimen
@@ -1849,15 +1986,13 @@ const TreatmentSubmittedForm = ({
                             <option value={"YES"}>Yes</option>
                             <option value={"NO"}>No</option>
                           </select>
-                          {/* 
-                          {formik.errors.hbvPastTreatmentRegimenForHcv !==
-                          "" ? (
+                          {errors.treatmentExperienceB !== "" ? (
                             <span className={classes.error}>
-                              {formik.errors.hbvPastTreatmentRegimenForHcv}
+                              {errors.treatmentExperienceB}
                             </span>
                           ) : (
                             ""
-                          )} */}
+                          )}
                         </FormGroup>
                       </div>
                     </div>
@@ -1916,12 +2051,13 @@ const TreatmentSubmittedForm = ({
                             <Label for="svr12TestingDateStarted">
                               Date tested
                             </Label>
+                            <span style={{ color: "red" }}> *</span>{" "}
                             <input
                               className="form-control"
                               name="svr12TestingDateStarted"
                               id="svr12TestingDateStarted"
-                              type="date"
                               disabled={action === "view" ? true : false}
+                              type="date"
                               value={
                                 basicInfo.hepatitisCTreatment
                                   .hepatitisSvr12Testing.dateTested
@@ -1932,14 +2068,13 @@ const TreatmentSubmittedForm = ({
                                 borderRadius: "0.2rem",
                               }}
                             />
-                            {/* 
-                            {formik.errors.svr12TestingDateStarted !== "" ? (
+                            {errors.svr12TestingDateStarted !== "" ? (
                               <span className={classes.error}>
-                                {formik.errors.svr12TestingDateStarted}
+                                {errors.svr12TestingDateStarted}
                               </span>
                             ) : (
                               ""
-                            )} */}
+                            )}
                           </FormGroup>
                         </div>
 
@@ -1951,8 +2086,8 @@ const TreatmentSubmittedForm = ({
                             <select
                               className="form-control"
                               name="svr12TestingHcvRna"
-                              id="svr12TestingHcvRna"
                               disabled={action === "view" ? true : false}
+                              id="svr12TestingHcvRna"
                               value={
                                 basicInfo.hepatitisCTreatment
                                   .hepatitisSvr12Testing.hcvRNA
@@ -1968,13 +2103,13 @@ const TreatmentSubmittedForm = ({
                               <option value="DETECTED">Detected</option>
                               <option value="UNDETECTED">Undetected</option>
                             </select>
-                            {/* {errors.hbvRegimeSwitchReason !== "" ? (
+                            {errors.svr12TestingHcvRna !== "" ? (
                               <span className={classes.error}>
-                                {errors.hbvRegimeSwitchReason}
+                                {errors.svr12TestingHcvRna}
                               </span>
                             ) : (
                               ""
-                            )} */}
+                            )}
                           </FormGroup>
                         </div>
 
@@ -2001,14 +2136,6 @@ const TreatmentSubmittedForm = ({
                                   borderRadius: "0.2rem",
                                 }}
                               />
-                              {/* 
-                              {formik.errors.svr12TestingHcvRnaValue !== "" ? (
-                                <span className={classes.error}>
-                                  {formik.errors.svr12TestingHcvRnaValue}
-                                </span>
-                              ) : (
-                                ""
-                              )} */}
                             </FormGroup>
                           </div>
                         )}
@@ -2050,8 +2177,8 @@ const TreatmentSubmittedForm = ({
                             <input
                               className="form-control"
                               name="svr12RetreatmentDateTested"
-                              id="svr12RetreatmentDateTested"
                               disabled={action === "view" ? true : false}
+                              id="svr12RetreatmentDateTested"
                               value={
                                 basicInfo.hepatitisCTreatment
                                   .hepatitisSvr12Testing.retreatmentDateTested
@@ -2064,13 +2191,13 @@ const TreatmentSubmittedForm = ({
                               type="date"
                             />
 
-                            {/* {formik.errors.svr12RetreatmentDateTested !== "" ? (
+                            {errors.svr12RetreatmentDateTested !== "" ? (
                               <span className={classes.error}>
-                                {formik.errors.svr12RetreatmentDateTested}
+                                {errors.svr12RetreatmentDateTested}
                               </span>
                             ) : (
                               ""
-                            )} */}
+                            )}
                           </FormGroup>
                         </div>
 
@@ -2100,13 +2227,14 @@ const TreatmentSubmittedForm = ({
                               <option value="DETECTED">Detected</option>
                               <option value="UNDETECTED">Undetected</option>
                             </select>
-                            {/* {formik.errors.svr12RetreatmentHcvRna !== "" ? (
+
+                            {errors.svr12RetreatmentHcvRna !== "" ? (
                               <span className={classes.error}>
-                                {formik.errors.svr12RetreatmentHcvRna}
+                                {errors.svr12RetreatmentHcvRna}
                               </span>
                             ) : (
                               ""
-                            )} */}
+                            )}
                           </FormGroup>
                         </div>
 
@@ -2123,7 +2251,6 @@ const TreatmentSubmittedForm = ({
                                 type="text"
                                 name="svr12RetreatmentHcvRnaValue"
                                 id="svr12RetreatmentHcvRnaValue"
-                                disabled={action === "view" ? true : false}
                                 value={
                                   basicInfo.hepatitisCTreatment
                                     .hepatitisSvr12Testing
@@ -2137,14 +2264,13 @@ const TreatmentSubmittedForm = ({
                                 }}
                               />
 
-                              {formik.errors.svr12RetreatmentHcvRnaValue !==
-                              "" ? (
+                              {/* {errors.svr12TestingHcvRna !== "" ? (
                                 <span className={classes.error}>
-                                  {formik.errors.svr12RetreatmentHcvRnaValue}
+                                  {errors.svr12TestingHcvRna}
                                 </span>
                               ) : (
                                 ""
-                              )}
+                              )} */}
                             </FormGroup>
                           </div>
                         )}
@@ -2209,12 +2335,13 @@ const TreatmentSubmittedForm = ({
                             <Label for="hcvRetreatmentNewRegimen">
                               New regimen
                             </Label>
+                            <span style={{ color: "red" }}> *</span>
                             <input
                               className="form-control"
                               name="hcvRetreatmentNewRegimen"
                               id="hcvRetreatmentNewRegimen"
-                              type="text"
                               disabled={action === "view" ? true : false}
+                              type="text"
                               value={
                                 basicInfo.hepatitisCTreatment.hcvRetreatment
                                   .newRegimen
@@ -2225,14 +2352,13 @@ const TreatmentSubmittedForm = ({
                                 borderRadius: "0.2rem",
                               }}
                             />
-
-                            {/* {formik.errors.hcvRetreatmentNewRegimen !== "" ? (
+                            {errors.hcvRetreatmentNewRegimen !== "" ? (
                               <span className={classes.error}>
-                                {formik.errors.hcvRetreatmentNewRegimen}
+                                {errors.hcvRetreatmentNewRegimen}
                               </span>
                             ) : (
                               ""
-                            )} */}
+                            )}
                           </FormGroup>
                         </div>
 
@@ -2245,8 +2371,8 @@ const TreatmentSubmittedForm = ({
                             <select
                               className="form-control"
                               name="hcvRetreatmentPrescribedDuration"
-                              id="hcvRetreatmentPrescribedDuration"
                               disabled={action === "view" ? true : false}
+                              id="hcvRetreatmentPrescribedDuration"
                               value={
                                 basicInfo.hepatitisCTreatment.hcvRetreatment
                                   .prescribedDuration
@@ -2263,14 +2389,13 @@ const TreatmentSubmittedForm = ({
                               <option value={12}>12 weeks</option>
                               <option value={24}>24 weeks</option>
                             </select>
-                            {/* {formik.errors.hcvRetreatmentPrescribedDuration !==
-                            "" ? (
+                            {errors.hcvRetreatmentPrescribedDuration !== "" ? (
                               <span className={classes.error}>
-                                {formik.errors.hcvRetreatmentPrescribedDuration}
+                                {errors.hcvRetreatmentPrescribedDuration}
                               </span>
                             ) : (
                               ""
-                            )} */}
+                            )}
                           </FormGroup>
                         </div>
 
@@ -2279,16 +2404,17 @@ const TreatmentSubmittedForm = ({
                             <Label for="hcvRetreatmentDateStarted">
                               Date started
                             </Label>
+                            <span style={{ color: "red" }}> *</span>
                             <input
                               className="form-control"
                               name="hcvRetreatmentDateStarted"
                               id="hcvRetreatmentDateStarted"
-                              disabled={action === "view" ? true : false}
                               type="date"
                               value={
                                 basicInfo.hepatitisCTreatment.hcvRetreatment
                                   .dateStarted
                               }
+                              disabled={action === "view" ? true : false}
                               onChange={handleInputChangeBasicHHCV}
                               style={{
                                 border: "1px solid #014D88",
@@ -2296,13 +2422,13 @@ const TreatmentSubmittedForm = ({
                               }}
                             />
 
-                            {/* {formik.errors.hcvRetreatmentDateStarted !== "" ? (
+                            {errors.hcvRetreatmentDateStarted !== "" ? (
                               <span className={classes.error}>
-                                {formik.errors.hcvRetreatmentDateStarted}
+                                {errors.hcvRetreatmentDateStarted}
                               </span>
                             ) : (
                               ""
-                            )} */}
+                            )}
                           </FormGroup>
                         </div>
 
@@ -2311,6 +2437,7 @@ const TreatmentSubmittedForm = ({
                             <Label for="hcvRetreatmentDateStopped">
                               Date stopped
                             </Label>
+                            <span style={{ color: "red" }}> *</span>
                             <input
                               className="form-control"
                               name="hcvRetreatmentDateStopped"
@@ -2327,14 +2454,13 @@ const TreatmentSubmittedForm = ({
                                 borderRadius: "0.2rem",
                               }}
                             />
-                            {/* 
-                            {formik.errors.hcvRetreatmentDateStopped !== "" ? (
+                            {errors.hcvRetreatmentDateStopped !== "" ? (
                               <span className={classes.error}>
-                                {formik.errors.hcvRetreatmentDateStopped}
+                                {errors.hcvRetreatmentDateStopped}
                               </span>
                             ) : (
                               ""
-                            )} */}
+                            )}
                           </FormGroup>
                         </div>
 
@@ -2348,29 +2474,28 @@ const TreatmentSubmittedForm = ({
                               className="form-control"
                               name="hcvRetreatmentAdverseEffect"
                               id="hcvRetreatmentAdverseEffect"
-                              disabled={action === "view" ? true : false}
                               value={
                                 basicInfo.hepatitisCTreatment.hcvRetreatment
                                   .retreatmentAdverseEffect
                               }
+                              disabled={action === "view" ? true : false}
                               onChange={handleInputChangeBasicHHCV}
                               style={{
                                 border: "1px solid #014D88",
                                 borderRadius: "0.2rem",
                               }}
                             >
-                              <option>Select</option>
+                              <option value="">Select</option>
                               <option value={"YES"}>Yes</option>
                               <option value={"NO"}>No</option>
                             </select>
-                            {/* {formik.errors.hcvRetreatmentAdverseEffect !==
-                            "" ? (
+                            {errors.hcvRetreatmentAdverseEffect !== "" ? (
                               <span className={classes.error}>
-                                {formik.errors.hcvRetreatmentAdverseEffect}
+                                {errors.hcvRetreatmentAdverseEffect}
                               </span>
                             ) : (
                               ""
-                            )} */}
+                            )}
                           </FormGroup>
                         </div>
 
@@ -2384,32 +2509,29 @@ const TreatmentSubmittedForm = ({
                               className="form-control"
                               name="hcvRetreatmentHistoryOfAdverseEffect"
                               id="hcvRetreatmentHistoryOfAdverseEffect"
-                              disabled={action === "view" ? true : false}
                               value={
                                 basicInfo.hepatitisCTreatment.hcvRetreatment
                                   .history_of_AdverseEffect
                               }
+                              disabled={action === "view" ? true : false}
                               onChange={handleInputChangeBasicHHCV}
                               style={{
                                 border: "1px solid #014D88",
                                 borderRadius: "0.2rem",
                               }}
                             >
-                              <option>Select</option>
+                              <option value="">Select</option>
                               <option value={"YES"}>Yes</option>
                               <option value={"NO"}>No</option>
                             </select>
-                            {/* {formik.errors
-                              .hcvRetreatmentHistoryOfAdverseEffect !== "" ? (
+                            {errors.hcvRetreatmentHistoryOfAdverseEffect !==
+                            "" ? (
                               <span className={classes.error}>
-                                {
-                                  formik.errors
-                                    .hcvRetreatmentHistoryOfAdverseEffect
-                                }
+                                {errors.hcvRetreatmentHistoryOfAdverseEffect}
                               </span>
                             ) : (
                               ""
-                            )} */}
+                            )}
                           </FormGroup>
                         </div>
                       </div>
@@ -2418,6 +2540,7 @@ const TreatmentSubmittedForm = ({
                 </div>
               </div>
             </div>
+
             {false ? <Spinner /> : ""}
             <br />
             {action === "update" && (

@@ -50,10 +50,8 @@ const RecentHistory = (props) => {
     useState(0);
 
   useEffect(() => {
-    // InfantInfo();
-    // RecentActivities();
-    // SummaryChart();
-  }, [props.patientObj.id]);
+    setRecentActivities(props.allRecentActivities);
+  }, [props.patientObj.id, props.allRecentActivities]);
   ///GET LIST OF Infants
 
   const InfantInfo = () => {

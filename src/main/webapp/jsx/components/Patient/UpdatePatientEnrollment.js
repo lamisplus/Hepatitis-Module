@@ -86,6 +86,7 @@ const UserRegistration = (props) => {
   const [treatmentInfo, setTreatmentInfo] = useState({});
   const [enrollmentUuid, setEnrollmentUuid] = useState("");
   const [enrollmentUuidT, setEnrollmentUuidT] = useState("");
+  const [allPatientInfo, setAllPatientInfo] = useState({});
 
   const viewHepatitisDiagnosis = (eId) => {
     axios
@@ -132,8 +133,22 @@ const UserRegistration = (props) => {
       });
   };
 
+  const getFullPatientDetail = (value) => {
+    axios
+      .get(`${baseUrl}patient/${locationState.patientObj.id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        console.log(response.data);
+        setAllPatientInfo(response.data);
+      })
+      .catch((error) => {
+        //console.log(error);
+      });
+  };
   useEffect(() => {
     viewHepatitisEnrollment();
+    getFullPatientDetail();
   }, []);
   return (
     <>
@@ -164,6 +179,7 @@ const UserRegistration = (props) => {
             <EnrolmentSubmittedForm
               action={locationState.actionType}
               patientObj={locationState.patientObj}
+              allPatientInfo={allPatientInfo}
             />
           )}
 

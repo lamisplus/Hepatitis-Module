@@ -7,12 +7,16 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import PatientCardDetail from "./PatientCard";
 import { useHistory } from "react-router-dom";
+import { token, url as baseUrl } from "../../../api";
+import axios from "axios";
 import SubMenu from "./SubMenu";
 import RecentHistory from "./../History/RecentHistory";
 import PatientHistory from "./../History/PatientHistory";
 import Biometrics from "./Biometric";
 import AddmissionHome from "./../Admission/AddmissionHome";
 import PatientVaccinationHistory from "./../Vaccination/VaccinationHistory";
+import DashboardForm2 from "./ViralHepatitisForms/DashboardForm2";
+import DasboardTreatmentForm from "./ViralHepatitisForms/DashboardTreatmentForm";
 
 const styles = (theme) => ({
   root: {
@@ -52,6 +56,8 @@ const styles = (theme) => ({
 function PatientCard(props) {
   let history = useHistory();
   const [art, setArt] = useState(false);
+  const [recentActivities, setRecentActivities] = useState([]);
+
   const [activeContent, setActiveContent] = useState({
     route: "recent-history",
     id: "",
@@ -69,7 +75,23 @@ function PatientCard(props) {
       ? history.location.state.prepId
       : {};
 
-  useEffect(() => {}, [patientObj]);
+  const getRecentActivties = () => {
+    axios
+      .get(`${baseUrl}hepatitis/activities/${patientObj.personUuid}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        setRecentActivities(response.data);
+        console.log(response.data);
+      })
+
+      .catch((error) => {
+        //console.log(error);
+      });
+  };
+  useEffect(() => {
+    getRecentActivties();
+  }, []);
 
   return (
     <div className={classes.root}>
@@ -97,6 +119,7 @@ function PatientCard(props) {
             patientObj={patientObj}
             art={art}
             setActiveContent={setActiveContent}
+            recentActivities={recentActivities}
           />
           <br />
           {activeContent.route === "recent-history" && (
@@ -104,8 +127,24 @@ function PatientCard(props) {
               patientObj={patientObj}
               setActiveContent={setActiveContent}
               activeContent={activeContent}
+              allRecentActivities={recentActivities}
             />
           )}
+          {activeContent.route === "diagnosis" && (
+            <DashboardForm2
+              patientObj={patientObj}
+              setActiveContent={setActiveContent}
+              activeContent={activeContent}
+            />
+          )}
+          {activeContent.route === "treatment" && (
+            <DasboardTreatmentForm
+              patientObj={patientObj}
+              setActiveContent={setActiveContent}
+              activeContent={activeContent}
+            />
+          )}
+
           {/*  {activeContent.route==='biometrics' &&(<Biometrics patientObj={patientObj} setActiveContent={setActiveContent} activeContent={activeContent}/>)}
           {activeContent.route==='addmission' &&( <AddmissionHome patientObj={patientObj} setActiveContent={setActiveContent} activeContent={activeContent} />)}
           {activeContent.route==='vaccination' &&( <PatientVaccinationHistory patientObj={patientObj} setActiveContent={setActiveContent} activeContent={activeContent}/>)}

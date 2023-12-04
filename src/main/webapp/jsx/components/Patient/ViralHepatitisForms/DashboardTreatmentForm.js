@@ -97,7 +97,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ViralHepatitisForm3 = ({ setStep }) => {
+const DasboardTreatmentForm = ({}) => {
   const [userId, setUserId] = useState(getCookie("enrollmentIds"));
 
   const [basicInfo, setBasicInfo] = useState({
@@ -790,7 +790,6 @@ const ViralHepatitisForm3 = ({ setStep }) => {
 
   const moveBack = () => {
     window.scrollTo(0, 0);
-    setStep(1);
   };
 
   const classes = useStyles();
@@ -819,7 +818,6 @@ const ViralHepatitisForm3 = ({ setStep }) => {
       deleteCookie("heaptitis2PayloadValue");
       deleteCookie("hepatitis1");
       deleteCookie("heaptitis1PayloadValue");
-      setStep(0);
       return response.data;
     } catch (error) {
       // Handle any errors that occurred during the request
@@ -2283,8 +2281,8 @@ const ViralHepatitisForm3 = ({ setStep }) => {
             </div>
             {false ? <Spinner /> : ""}
             <br />
-            <div className="d-flex justify-content-between">
-              <MatButton
+            <div className="d-flex justify-content-end">
+              {/* <MatButton
                 type="button"
                 variant="contained"
                 color="primary"
@@ -2294,7 +2292,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                 style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}
               >
                 <span style={{ textTransform: "capitalize" }}>Previous</span>
-              </MatButton>
+              </MatButton> */}
               <MatButton
                 type="submit"
                 variant="contained"
@@ -2315,4 +2313,4 @@ const ViralHepatitisForm3 = ({ setStep }) => {
   );
 };
 
-export default ViralHepatitisForm3;
+export default DasboardTreatmentForm;

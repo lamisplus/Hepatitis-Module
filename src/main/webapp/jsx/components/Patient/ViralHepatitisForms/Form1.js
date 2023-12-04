@@ -615,9 +615,9 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
       temp.educationId = info.educationId ? "" : "Education is required";
 
       //Relationship
-      temp.relationship = basicInfo.relationship
-        ? ""
-        : "Relationship is required";
+      // temp.relationship = basicInfo.relationship
+      //   ? ""
+      //   : "Relationship is required";
 
       //sex
       temp.genderId = basicInfo.personDto.genderId ? "" : "sex is required";
@@ -678,7 +678,7 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
       //   ...basicInfo,
       //   personDto: {
       //     ...basicInfo.personDto,
-      //    
+      //
       //   },
       // });
     } else if (e.target.name === "surname") {
@@ -966,33 +966,6 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
                 <div className="card-body">
                   <div className="basic-form">
                     <div className="row">
-                      {/* <div className="form-group mb-3 col-md-4">
-                        <FormGroup>
-                          <Label for="facilityId">
-                            Facility Id <span style={{ color: "red" }}> *</span>{" "}
-                          </Label>
-                          <input
-                            className="form-control"
-                            type="number"
-                            name="facilityId"
-                            id="facilityId"
-                            value={basicInfo.facilityId}
-                            onChange={handleInputChangeBasic}
-                            onBlur={formik.handleBlur}
-                            style={{
-                              border: "1px solid #014D88",
-                              borderRadius: "0.2rem",
-                            }}
-                          />
-                          {formik.errors.facilityId !== "" ? (
-                            <span className={classes.error}>
-                              {formik.errors.facilityId}
-                            </span>
-                          ) : (
-                            ""
-                          )}
-                        </FormGroup>
-                      </div> */}
                       <div className="form-group mb-3 col-md-4">
                         <FormGroup>
                           <Label for="dateOfRegistration">
@@ -1570,7 +1543,7 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
                         </FormGroup>
                       </div>
 
-                      <div className="form-group mb-3 col-md-4">
+                      {/* <div className="form-group mb-3 col-md-4">
                         <FormGroup>
                           <Label for="relationship">
                             Relationship{" "}
@@ -1603,7 +1576,7 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
                             ""
                           )}
                         </FormGroup>
-                      </div>
+                      </div> */}
 
                       <div className="form-group mb-3 col-md-4">
                         <FormGroup>
@@ -1839,31 +1812,31 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
                     </FormGroup>
                   </div>
 
-                  {/* <div className="form-group mb-3 col-md-4">
-                      <FormGroup>
-                        <Label for="bmi">BMI </Label>
-                        <input
-                          className="form-control"
-                          type="number"
-                          name="bmi"
-                          id="bmi"
-                          value={basicInfo.bmi}
-                          onChange={handleInputChangeBasic}
-                          onBlur={formik.handleBlur}
-                          style={{
-                            border: "1px solid #014D88",
-                            borderRadius: "0.2rem",
-                          }}
-                        />
-                        {formik.errors.bmi !== "" ? (
+                  <div className="form-group mb-3 col-md-4">
+                    <FormGroup>
+                      <Label for="bmi">BMI </Label>
+
+                      <input
+                        className="form-control"
+                        type="number"
+                        disabled
+                        name="bmi"
+                        id="bmi"
+                        value={basicInfo.bmi}
+                        style={{
+                          border: "1px solid #014D88",
+                          borderRadius: "0.2rem",
+                        }}
+                      />
+                      {/* {formik.errors.bmi !== "" ? (
                           <span className={classes.error}>
                             {formik.errors.bmi}
                           </span>
                         ) : (
                           ""
-                        )}
-                      </FormGroup>
-                    </div> */}
+                        )} */}
+                    </FormGroup>
+                  </div>
 
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>

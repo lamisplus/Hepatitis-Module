@@ -104,6 +104,7 @@ const EnrolmentSubmittedForm = ({
   setStep,
   userStatus,
   patientObj,
+  allPatientInfo,
 }) => {
   const [patientInfo, setPatientInfo] = useState({ ...patientObj });
 
@@ -936,11 +937,11 @@ const EnrolmentSubmittedForm = ({
   useEffect(() => {
     setInfo({
       countryId: 1,
-      stateId: patientInfo?.stateId,
+      stateId: allPatientInfo?.address?.address[0]?.stateId,
       dateOfBirth: patientInfo?.dateOfBirth,
       educationId: patientInfo?.educationId,
       employmentStatusId: patientInfo?.employmentStatusId,
-      district: patientInfo?.district,
+      district: allPatientInfo?.address?.address[0]?.district,
       value: patientInfo?.hospitalNumber,
     });
 
@@ -980,7 +981,7 @@ const EnrolmentSubmittedForm = ({
           {
             countryId: info.countryId,
             stateId: info.stateId,
-            district: "",
+            district: info.district,
           },
         ],
         dateOfBirth: patientInfo.dateOfBirth,
@@ -1007,7 +1008,7 @@ const EnrolmentSubmittedForm = ({
       personId: patientInfo?.id,
       weight: patientInfo?.weight,
     });
-  }, [patientInfo]);
+  }, [patientInfo, allPatientInfo]);
 
   // calculate bmi when weight and height changes
   useEffect(() => {
@@ -1338,6 +1339,7 @@ const EnrolmentSubmittedForm = ({
                     </div>
 
                     <div className="form-group mb-3 col-md-4">
+                      {console.log(info.district)}
                       <FormGroup>
                         <Label>
                           Province/District/LGA{" "}

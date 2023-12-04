@@ -212,11 +212,11 @@ const DiagnosisSubmitedForm = ({
       ? ""
       : "Date HBV Sample requested is required";
 
-    temp.hvbDnaValue =
-      basicInfo.hepatitisBTest.hvbDnaValue &&
-      basicInfo.hepatitisBTest.hbvDna === "DETECTED"
-        ? ""
-        : " Input HBV DNA value is required";
+    // temp.hvbDnaValue =
+    //   basicInfo.hepatitisBTest.hvbDnaValue &&
+    //   basicInfo.hepatitisBTest.hbvDna === "DETECTED"
+    //     ? ""
+    //     : " Input HBV DNA value is required";
 
     temp.commobidities = basicInfo.hepatitisCTest.commobidities
       ? ""
@@ -651,31 +651,6 @@ const DiagnosisSubmitedForm = ({
                             )} */}
                           </FormGroup>
                         </div>
-
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="stagingDateOfLiverBiopsy">
-                              Staging date of liver biopsy{" "}
-                            </Label>
-                            <input
-                              className="form-control"
-                              type="date"
-                              name="stagingDateOfLiverBiopsy"
-                              id="stagingDateOfLiverBiopsy"
-                              disabled={action === "view" ? true : false}
-                              value={
-                                basicInfo.hepatitisBTest
-                                  .stagingDateOfLiverBiopsy
-                              }
-                              onChange={handleInputChangeBasic}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            />
-                          </FormGroup>
-                        </div>
-
                         <div className="form-group mb-2 col-md-4">
                           <FormGroup>
                             <Label>
@@ -755,20 +730,14 @@ const DiagnosisSubmitedForm = ({
                                   borderRadius: "0.2rem",
                                 }}
                               />
-                              {errors.hvbDnaValue !== "" ? (
-                                <span className={classes.error}>
-                                  {errors.hvbDnaValue}
-                                </span>
-                              ) : (
-                                ""
-                              )}
                             </FormGroup>
                           </div>
                         )}
+
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="hbsAgQuantification">
-                              HBsAG Quantification
+                              HBsAG Quantification (IU/ml)
                             </Label>
                             <input
                               className="form-control"
@@ -795,61 +764,6 @@ const DiagnosisSubmitedForm = ({
                             )} */}
                           </FormGroup>
                         </div>
-
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="ctScan">CT scan</Label>
-                            <input
-                              className="form-control"
-                              type="text"
-                              name="ctScan"
-                              id="ctScan"
-                              value={basicInfo.hepatitisBTest.ctScan}
-                              disabled={action === "view" ? true : false}
-                              onChange={handleInputChangeBasic}
-                              // onBlur={formik.handleBlur}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            />
-                            {/* {formik.errors.ctScan ? (
-                              <span className={classes.error}>
-                                {formik.errors.ctScan}
-                              </span>
-                            ) : (
-                              ""
-                            )} */}
-                          </FormGroup>
-                        </div>
-
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="albumin">Albumin</Label>
-                            <input
-                              className="form-control"
-                              type="text"
-                              name="albumin"
-                              disabled={action === "view" ? true : false}
-                              id="albumin"
-                              value={basicInfo.hepatitisBTest.albumin}
-                              onChange={handleInputChangeBasic}
-                              // onBlur={formik.handleBlur}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            />
-                            {/* {formik.errors.albumin ? (
-                              <span className={classes.error}>
-                                {formik.errors.albumin}
-                              </span>
-                            ) : (
-                              ""
-                            )} */}
-                          </FormGroup>
-                        </div>
-
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="hbeAG">HbeAG</Label>
@@ -880,7 +794,6 @@ const DiagnosisSubmitedForm = ({
                             )} */}
                           </FormGroup>
                         </div>
-
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="antiHDV">Anti-HDV</Label>
@@ -972,7 +885,6 @@ const DiagnosisSubmitedForm = ({
                             )} */}
                           </FormGroup>
                         </div>
-
                         <div className="form-group mb-3 col-md-4-12">
                           <FormGroup>
                             <Label for="comment">Comment</Label>
@@ -998,6 +910,31 @@ const DiagnosisSubmitedForm = ({
                             ) : (
                               ""
                             )} */}
+                          </FormGroup>
+                        </div>
+
+                        {/* testttttttting */}
+                        <div className="form-group mb-3 col-md-4">
+                          <FormGroup>
+                            <Label for="stagingDateOfLiverBiopsy">
+                              Staging date of liver biopsy{" "}
+                            </Label>
+                            <input
+                              className="form-control"
+                              type="date"
+                              name="stagingDateOfLiverBiopsy"
+                              id="stagingDateOfLiverBiopsy"
+                              disabled={action === "view" ? true : false}
+                              value={
+                                basicInfo.hepatitisBTest
+                                  .stagingDateOfLiverBiopsy
+                              }
+                              onChange={handleInputChangeBasic}
+                              style={{
+                                border: "1px solid #014D88",
+                                borderRadius: "0.2rem",
+                              }}
+                            />
                           </FormGroup>
                         </div>
                       </div>
@@ -1232,7 +1169,7 @@ const DiagnosisSubmitedForm = ({
                 <div className="row">
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
-                      <Label for="ast">AST</Label>
+                      <Label for="ast">AST (IU/ml)</Label>
                       <select
                         className="form-control"
                         name="ast"
@@ -1260,7 +1197,7 @@ const DiagnosisSubmitedForm = ({
                   </div>
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
-                      <Label for="alt">ALT</Label>
+                      <Label for="alt">ALT (IU/ml)</Label>
                       <select
                         className="form-control"
                         name="alt"
@@ -1286,7 +1223,7 @@ const DiagnosisSubmitedForm = ({
                   </div>
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
-                      <Label for="pst">PST</Label>
+                      <Label for="pst">PST(mm3)</Label>
                       <select
                         className="form-control"
                         name="pst"
@@ -1408,7 +1345,8 @@ const DiagnosisSubmitedForm = ({
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="totalBiliRubin">
-                        Total Bilirubin <span style={{ color: "red" }}> *</span>{" "}
+                        Total Bilirubin (μmol/L){" "}
+                        <span style={{ color: "red" }}> *</span>{" "}
                       </Label>
                       <input
                         className="form-control"
@@ -1435,7 +1373,9 @@ const DiagnosisSubmitedForm = ({
                   </div>
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
-                      <Label for="directBiliribin">Direct Bilirubin </Label>
+                      <Label for="directBiliribin">
+                        Direct Bilirubin (μmol/L)
+                      </Label>
                       <input
                         className="form-control"
                         type="text"
@@ -1457,6 +1397,33 @@ const DiagnosisSubmitedForm = ({
                       ) : (
                         ""
                       )} */}
+                    </FormGroup>
+                  </div>
+
+                  <div className="form-group mb-3 col-md-4">
+                    <FormGroup>
+                      <Label for="albumin">Albumin (g/dl)</Label>
+                      <input
+                        className="form-control"
+                        type="text"
+                        name="albumin"
+                        disabled={action === "view" ? true : false}
+                        id="albumin"
+                        value={basicInfo.hepatitisBTest.albumin}
+                        onChange={handleInputChangeBasic}
+                        // onBlur={formik.handleBlur}
+                        style={{
+                          border: "1px solid #014D88",
+                          borderRadius: "0.2rem",
+                        }}
+                      />
+                      {/* {formik.errors.albumin ? (
+                              <span className={classes.error}>
+                                {formik.errors.albumin}
+                              </span>
+                            ) : (
+                              ""
+                            )} */}
                     </FormGroup>
                   </div>
 
@@ -1596,6 +1563,35 @@ const DiagnosisSubmitedForm = ({
 
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
+                      <Label for="ultrasoundScan">
+                        Ultrasound scan (μmol/L)
+                      </Label>
+                      <input
+                        className="form-control"
+                        type="text"
+                        name="ultrasoundScan"
+                        id="ultrasoundScan"
+                        disabled={action === "view" ? true : false}
+                        value={basicInfo.clinicalParameters.ultrasoundScan}
+                        onChange={handleInputChangeBasicForClinic}
+                        // onBlur={formik.handleBlur}
+                        style={{
+                          border: "1px solid #014D88",
+                          borderRadius: "0.2rem",
+                        }}
+                      />
+                      {/* {formik.errors.ultrasoundScan !== "" ? (
+                        <span className={classes.error}>
+                          {formik.errors.ultrasoundScan}
+                        </span>
+                      ) : (
+                        ""
+                      )} */}
+                    </FormGroup>
+                  </div>
+
+                  <div className="form-group mb-3 col-md-4">
+                    <FormGroup>
                       <Label for="creatinine">AFP (ng/ml)</Label>
                       <input
                         className="form-control"
@@ -1621,7 +1617,7 @@ const DiagnosisSubmitedForm = ({
 
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
-                      <Label for="fibroscan">Fibroscan (kPa)</Label>
+                      <Label for="fibroscan">Fibroscan (ng/ml)</Label>
                       <input
                         className="form-control"
                         type="text"
@@ -1643,33 +1639,30 @@ const DiagnosisSubmitedForm = ({
                       ) : null} */}
                     </FormGroup>
                   </div>
-
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
-                      <Label for="ultrasoundScan">
-                        Ultrasound scan (μmol/L)
-                      </Label>
+                      <Label for="ctScan">CT scan</Label>
                       <input
                         className="form-control"
                         type="text"
-                        name="ultrasoundScan"
-                        id="ultrasoundScan"
+                        name="ctScan"
+                        id="ctScan"
+                        value={basicInfo.hepatitisBTest.ctScan}
                         disabled={action === "view" ? true : false}
-                        value={basicInfo.clinicalParameters.ultrasoundScan}
-                        onChange={handleInputChangeBasicForClinic}
+                        onChange={handleInputChangeBasic}
                         // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {/* {formik.errors.ultrasoundScan !== "" ? (
-                        <span className={classes.error}>
-                          {formik.errors.ultrasoundScan}
-                        </span>
-                      ) : (
-                        ""
-                      )} */}
+                      {/* {formik.errors.ctScan ? (
+                              <span className={classes.error}>
+                                {formik.errors.ctScan}
+                              </span>
+                            ) : (
+                              ""
+                            )} */}
                     </FormGroup>
                   </div>
 

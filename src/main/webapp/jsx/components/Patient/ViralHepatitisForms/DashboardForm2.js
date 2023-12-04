@@ -96,7 +96,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ViralHepatitisForm2 = ({ setStep }) => {
+const DashboardForm2 = () => {
   const [userId, setUserId] = useState(getCookie("enrollmentIds"));
   console.log(getCookie("enrollmentIds"));
   const [basicInfo, setBasicInfo] = useState({
@@ -269,8 +269,6 @@ const ViralHepatitisForm2 = ({ setStep }) => {
       ? ""
       : "Date HBV Sample requested is required";
 
-    
-
     // temp.hvbDnaValue =
     //   basicInfo.hepatitisBTest.hvbDnaValue &&
     //   basicInfo.hepatitisBTest.hbvDna === "DETECTED"
@@ -335,7 +333,6 @@ const ViralHepatitisForm2 = ({ setStep }) => {
       });
       console.log("Post successful:", response.data);
       toast.success("Diagnosis submitted successfully");
-      setStep(2);
       return response.data;
     } catch (error) {
       toast.error("Diagnosis failed");
@@ -415,7 +412,6 @@ const ViralHepatitisForm2 = ({ setStep }) => {
 
   const moveBack = () => {
     window.scrollTo(0, 0);
-    setStep(0);
   };
   const classes = useStyles();
   const { formik } = useValidateForm2ValuesHook(onSubmitHandler);
@@ -1809,8 +1805,8 @@ const ViralHepatitisForm2 = ({ setStep }) => {
             </div>
             {false ? <Spinner /> : ""}
             <br />
-            <div className="d-flex justify-content-between">
-              <MatButton
+            <div className="d-flex justify-content-end">
+              {/* <MatButton
                 type="button"
                 variant="contained"
                 color="primary"
@@ -1820,7 +1816,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                 style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}
               >
                 <span style={{ textTransform: "capitalize" }}>Previous</span>
-              </MatButton>
+              </MatButton> */}
               <MatButton
                 type="submit"
                 variant="contained"
@@ -1830,7 +1826,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                 onClick={handleSubmit}
                 style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}
               >
-                <span style={{ textTransform: "capitalize" }}>Next</span>
+                <span style={{ textTransform: "capitalize" }}>Update</span>
               </MatButton>
             </div>
             {/* </Form> */}
@@ -1841,4 +1837,4 @@ const ViralHepatitisForm2 = ({ setStep }) => {
   );
 };
 
-export default ViralHepatitisForm2;
+export default DashboardForm2;
