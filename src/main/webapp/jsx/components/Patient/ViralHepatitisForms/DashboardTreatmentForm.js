@@ -97,11 +97,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DasboardTreatmentForm = ({}) => {
+const DasboardTreatmentForm = ({ patientObj, setActiveContent }) => {
   const [userId, setUserId] = useState(getCookie("enrollmentIds"));
+  const [enrollmentUuid, setEnrollmentUuid] = useState("");
 
   const [basicInfo, setBasicInfo] = useState({
-    enrollmentUuid: userId?.enrollmentUuid,
+    enrollmentUuid: patientObj?.enrollmentId,
     hepatitisBTreatment: {
       dateStarted: "",
       dateStopped: "",
@@ -684,7 +685,7 @@ const DasboardTreatmentForm = ({}) => {
     temp.hcvRetreatmentNewRegimen = basicInfo.hepatitisCTreatment.hcvRetreatment
       .newRegimen
       ? ""
-      : " New regimen  is required";
+      : " New regime  is required";
 
     temp.hcvRetreatmentPrescribedDuration = basicInfo.hepatitisCTreatment
       .hcvRetreatment.prescribedDuration
@@ -714,6 +715,23 @@ const DasboardTreatmentForm = ({}) => {
     // console.log(temp);
     setErrors({ ...temp });
     return Object.values(temp).every((x) => x == "");
+  };
+
+  const viewHepatitisEnrollment = (value) => {
+    axios
+      .get(
+        `${apiUrl}hepatitis/view-hepatitis-enrollment/${patientObj?.personUuid}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .then((response) => {
+        console.log(response.data.uuid);
+        setEnrollmentUuid(response.data.uuid);
+      })
+      .catch((error) => {
+        //console.log(error);
+      });
   };
 
   // submit form
@@ -811,6 +829,13 @@ const DasboardTreatmentForm = ({}) => {
       });
       // Handle the response if needed
       toast.success("Treatment submitted successfully");
+      setActiveContent({
+        route: "recent-history",
+        id: "",
+        activeTab: "home",
+        actionType: "create",
+        obj: {},
+      });
       deleteCookie("heaptitis3PayloadValue");
       deleteCookie("hepatitis3");
       deleteCookie("enrollmentIds");
@@ -875,8 +900,15 @@ const DasboardTreatmentForm = ({}) => {
   }
   useEffect(() => {
     castCookieValueToForm();
+    viewHepatitisEnrollment();
   }, []);
 
+  useEffect(() => {
+    setBasicInfo({
+      ...basicInfo,
+      enrollmentUuid: enrollmentUuid,
+    });
+  }, [enrollmentUuid]);
   const [isDropdownsOpen, setIsDropdownsOpen] = useState({
     hbvTreatmentRegimenSwitch: true,
     hbvTreatmentReasonforTreatment: true,
@@ -1185,7 +1217,7 @@ const DasboardTreatmentForm = ({}) => {
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="hbvRegimeSwitchNewRegimen">
-                              New Regimen
+                              New Regime
                               <span style={{ color: "red" }}> *</span>{" "}
                             </Label>
                             <input
@@ -1223,6 +1255,7 @@ const DasboardTreatmentForm = ({}) => {
                             <input
                               className="form-control"
                               type="date"
+                              max={moment(new Date()).format("YYYY-MM-DD")}
                               name="hbvRegimeSwitchDateStarted"
                               id="hbvRegimeSwitchDateStarted"
                               value={
@@ -1255,6 +1288,7 @@ const DasboardTreatmentForm = ({}) => {
                             <input
                               className="form-control"
                               type="date"
+                              max={moment(new Date()).format("YYYY-MM-DD")}
                               name="hbvRegimeSwitchDateStopped"
                               id="hbvRegimeSwitchDateStopped"
                               value={
@@ -1538,6 +1572,7 @@ const DasboardTreatmentForm = ({}) => {
                           <select
                             className="form-control"
                             type="date"
+                            max={moment(new Date()).format("YYYY-MM-DD")}
                             name="hcvTreatmentExperience"
                             id="hcvTreatmentExperience"
                             value={
@@ -1604,6 +1639,7 @@ const DasboardTreatmentForm = ({}) => {
                             type="date"
                             name="hcvDateStarted"
                             id="hcvDateStarted"
+                            max={moment(new Date()).format("YYYY-MM-DD")}
                             value={basicInfo.hepatitisCTreatment.dateStarted}
                             onChange={handleInputChangeBasicHC}
                             // onBlur={formik.handleBlur}
@@ -1631,6 +1667,7 @@ const DasboardTreatmentForm = ({}) => {
                             type="date"
                             name="hcvDateCompleted"
                             id="hcvDateCompleted"
+                            max={moment(new Date()).format("YYYY-MM-DD")}
                             value={basicInfo.hepatitisCTreatment.dateCompleted}
                             onChange={handleInputChangeBasicHC}
                             // onBlur={formik.handleBlur}
@@ -1657,6 +1694,7 @@ const DasboardTreatmentForm = ({}) => {
                             type="date"
                             name="hcvDateStopped"
                             id="hcvDateStopped"
+                            max={moment(new Date()).format("YYYY-MM-DD")}
                             value={basicInfo.hepatitisCTreatment.dateStopped}
                             onChange={handleInputChangeBasicHC}
                             // onBlur={formik.handleBlur}
@@ -1807,6 +1845,7 @@ const DasboardTreatmentForm = ({}) => {
                               name="svr12TestingDateStarted"
                               id="svr12TestingDateStarted"
                               type="date"
+                              max={moment(new Date()).format("YYYY-MM-DD")}
                               value={
                                 basicInfo.hepatitisCTreatment
                                   .hepatitisSvr12Testing.dateTested
@@ -1924,6 +1963,7 @@ const DasboardTreatmentForm = ({}) => {
                             <input
                               className="form-control"
                               name="svr12RetreatmentDateTested"
+                              max={moment(new Date()).format("YYYY-MM-DD")}
                               id="svr12RetreatmentDateTested"
                               value={
                                 basicInfo.hepatitisCTreatment
@@ -2078,7 +2118,7 @@ const DasboardTreatmentForm = ({}) => {
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="hcvRetreatmentNewRegimen">
-                              New regimen
+                              New regime
                             </Label>
                             <span style={{ color: "red" }}> *</span>
                             <input
@@ -2151,6 +2191,7 @@ const DasboardTreatmentForm = ({}) => {
                             <input
                               className="form-control"
                               name="hcvRetreatmentDateStarted"
+                              max={moment(new Date()).format("YYYY-MM-DD")}
                               id="hcvRetreatmentDateStarted"
                               type="date"
                               value={
@@ -2185,6 +2226,7 @@ const DasboardTreatmentForm = ({}) => {
                               name="hcvRetreatmentDateStopped"
                               id="hcvRetreatmentDateStopped"
                               type="date"
+                              max={moment(new Date()).format("YYYY-MM-DD")}
                               value={
                                 basicInfo.hepatitisCTreatment.hcvRetreatment
                                   .dateStopped

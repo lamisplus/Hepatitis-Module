@@ -75,6 +75,7 @@ function PatientCard(props) {
       ? history.location.state.prepId
       : {};
 
+  console.log(patientObj);
   const getRecentActivties = () => {
     axios
       .get(`${baseUrl}hepatitis/activities/${patientObj.personUuid}`, {
@@ -91,7 +92,7 @@ function PatientCard(props) {
   };
   useEffect(() => {
     getRecentActivties();
-  }, []);
+  }, [activeContent]);
 
   return (
     <div className={classes.root}>

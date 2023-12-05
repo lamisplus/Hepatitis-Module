@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MatButton from "@material-ui/core/Button";
 import { FormGroup, Label, Spinner, Input, Form, InputGroup } from "reactstrap";
+import moment from "moment";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faCheckSquare,
@@ -269,57 +270,114 @@ const ViralHepatitisForm2 = ({ setStep }) => {
       ? ""
       : "Date HBV Sample requested is required";
 
-    
+    temp.dateHbvDnaResultReported = basicInfo.hepatitisBTest
+      .dateHbvDnaResultReported
+      ? ""
+      : "Date of HBV DNA result reported is required";
 
-    // temp.hvbDnaValue =
-    //   basicInfo.hepatitisBTest.hvbDnaValue &&
-    //   basicInfo.hepatitisBTest.hbvDna === "DETECTED"
-    //     ? ""
-    //     : " Input HBV DNA value is required";
+    temp.hbsAgQuantification = basicInfo.hepatitisBTest.hbsAgQuantification
+      ? ""
+      : "HBsAG Quantification is required";
 
-    // temp.hcRnaValue =
-    //   basicInfo.hepatitisCTest.hcRnaValue &&
-    //   basicInfo.hepatitisCTest.hcvRNA === "DETECTED"
-    //     ? ""
-    //     : " Input HCV RNA Value is required";
+    temp.hbeAG = basicInfo.hepatitisBTest.hbeAG ? "" : "HbeAG is required";
+
+    temp.antiHDV = basicInfo.hepatitisBTest.antiHDV
+      ? ""
+      : "Anti-HDV is required";
+
+    temp.treatmentEligible = basicInfo.hepatitisBTest.treatmentEligible
+      ? ""
+      : " Treatment Eligible is required";
+
+    temp.pmtctEligible = basicInfo.hepatitisBTest.pmtctEligible
+      ? ""
+      : " PMTCT Eligible is required";
+
+    temp.comment = basicInfo.hepatitisBTest.pmtctEligible
+      ? ""
+      : " PMTCT Eligible is required";
+
+    temp.ast = basicInfo.hepatitisBTest.pmtctEligible ? "" : " AST is required";
+    temp.alt = basicInfo.clinicalParameters.alt ? "" : " ALT is required";
+    temp.hcvRNA = basicInfo.hepatitisCTest.hcvRNA ? "" : "HCV RNA is required";
+    temp.hepatitisCoinfection = basicInfo.hepatitisCTest.hepatitisCoinfection
+      ? ""
+      : "Hepatitis Coinfection is required";
+
+    temp.pst = basicInfo.clinicalParameters.pst ? "" : " PST is required";
+    temp.totalBiliRubin = basicInfo.clinicalParameters.totalBiliRubin
+      ? ""
+      : " ALT is required";
+    temp.directBiliribin = basicInfo.clinicalParameters.directBiliribin
+      ? ""
+      : "Direct Bilirubin is required";
+
+    temp.albumin = basicInfo.hepatitisBTest.albumin
+      ? ""
+      : "Albumin is required";
+
+    temp.apriScore = basicInfo.clinicalParameters.apriScore
+      ? ""
+      : "APRI score is required";
+
+    temp.fib4 = basicInfo.clinicalParameters.fib4 ? "" : "FIB-4 is required";
+
+    temp.prothrombinTimeNR = basicInfo.clinicalParameters.prothrombinTimeNR
+      ? ""
+      : "Prothrombin time/INR is required";
+
+    temp.urea = basicInfo.clinicalParameters.urea ? "" : "Urea is required";
+
+    temp.creatinine = basicInfo.clinicalParameters.creatinine
+      ? ""
+      : "Creatinine is required";
+
+    temp.ultrasoundScan = basicInfo.clinicalParameters.ultrasoundScan
+      ? ""
+      : "Ultrasound scan is required";
+
+    temp.afp = basicInfo.clinicalParameters.afp ? "" : "AFP  is required";
+    temp.fibroscan = basicInfo.clinicalParameters.fibroscan
+      ? ""
+      : "Fibroscan  is required";
+
+    temp.ctScan = basicInfo.hepatitisBTest.ctScan ? "" : "CT scan  is required";
+    temp.ascites = basicInfo.clinicalParameters.ascites
+      ? ""
+      : "Acites  is required";
+    temp.gradeOfEncephalopathy = basicInfo.clinicalParameters
+      .gradeOfEncephalopathy
+      ? ""
+      : "Grade of Encephalopathy  is required";
+
+    temp.childPughScore = basicInfo.clinicalParameters.childPughScore
+      ? ""
+      : "Child pugh score  is required";
+
+    temp.liverBiopsyStage = basicInfo.clinicalParameters.liverBiopsyStage
+      ? ""
+      : "Liver biopsy stage  is required";
+
+    temp.stagingDateOfLiverBiopsy = basicInfo.hepatitisBTest
+      .stagingDateOfLiverBiopsy
+      ? ""
+      : "Staging date of liver biopsy is required";
+
+    temp.diagnosis_result = basicInfo.clinicalParameters.diagnosis_result
+      ? ""
+      : "Diagnosis is required";
+    //
+
+    //
 
     temp.commobidities = basicInfo.hepatitisCTest.commobidities
       ? ""
-      : "Commobiditiesis required";
-    temp.multipleInfection = basicInfo.hepatitisCTest.multipleInfection
+      : "Commobiditie is required";
+    temp.multipleInfection = basicInfo.clinicalParameters.ast
       ? ""
       : "Multiple Infection required";
 
-    // temp.district = info.district ? "" : "Province/LGA is required.";
-    // temp.stateId = info.stateId ? "" : "State is required.";
-    // temp.dateOfBirth = info.dateOfBirth ? "" : "Date of Birth is required.";
-    // temp.dateOfRegistration = info.dateOfRegistration
-    //   ? ""
-    //   : "Date of Registration is required.";
-    // temp.maritalStatusId = basicInfo.maritalStatusId
-    //   ? ""
-    //   : "Marital Status is required";
-    // temp.educationId = info.educationId ? "" : "Education is required";
-    // temp.relationship = basicInfo.relationship
-    //   ? ""
-    //   : "Relationship is required";
-    // temp.genderId = basicInfo.personDto.genderId ? "" : "sex is required";
-    // temp.careEntryPoint = basicInfo.careEntryPoint
-    //   ? ""
-    //   : "careEntryPoint is required";
-    // temp.pregnancy = basicInfo.pregnancy ? "" : "pregnancy status is required";
-    // temp.weight = basicInfo.weight ? "" : "Weight is required";
-    // temp.height = basicInfo.height ? "" : "Height is required";
-    // temp.hepatitisB = basicInfo.hepatitisB ? "" : "HepatitisB is required";
-    // temp.breastfeeding = basicInfo.breastfeeding
-    //   ? ""
-    //   : "Breastfeeding status is required";
-    // temp.dateOfFirstHepatitisBPositiveScreening = basicInfo.screening
-    //   .dateOfFirstHepatitisBPositiveScreening
-    //   ? ""
-    //   : "Date of first HepatitisB positive screening is required";
-
-    //
+    // set the temp errors to error
     console.log(temp);
     setErrors({ ...temp });
     return Object.values(temp).every((x) => x == "");
@@ -426,7 +484,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
       formik.setValues(cookieValue);
     }
   };
-
+  //      disabled={action === "view" ? true : false}
   useEffect(() => {
     castCookieValueToForm();
   }, []);
@@ -511,6 +569,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                               className="form-control"
                               type="date"
                               name="dateHbvDnaTestRequested"
+                              max={moment(new Date()).format("YYYY-MM-DD")}
                               id="dateHbvDnaTestRequested"
                               value={
                                 basicInfo.hepatitisBTest.dateHbvDnaTestRequested
@@ -541,6 +600,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                             <input
                               className="form-control"
                               type="date"
+                              max={moment(new Date()).format("YYYY-MM-DD")}
                               name="dateHbvTestRequested"
                               id="dateHbvTestRequested"
                               value={
@@ -573,6 +633,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                               className="form-control"
                               type="date"
                               name="dateHbvSampleRequested"
+                              max={moment(new Date()).format("YYYY-MM-DD")}
                               id="dateHbvSampleRequested"
                               value={
                                 basicInfo.hepatitisBTest.dateHbvSampleRequested
@@ -598,11 +659,13 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                           <FormGroup>
                             <Label for="dateHbvDnaResultReported">
                               Date of HBV DNA result reported{" "}
+                              <span style={{ color: "red" }}> *</span>{" "}
                             </Label>
                             <input
                               className="form-control"
                               type="date"
                               name="dateHbvDnaResultReported"
+                              max={moment(new Date()).format("YYYY-MM-DD")}
                               id="dateHbvDnaResultReported"
                               value={
                                 basicInfo.hepatitisBTest
@@ -615,13 +678,13 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                                 borderRadius: "0.2rem",
                               }}
                             />
-                            {/* {errors.dateHbvDnaResultReported !== "" ? (
+                            {errors.dateHbvDnaResultReported !== "" ? (
                               <span className={classes.error}>
                                 {errors.dateHbvDnaResultReported}
                               </span>
                             ) : (
                               ""
-                            )} */}
+                            )}
                           </FormGroup>
                         </div>
 
@@ -668,7 +731,8 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                                     borderRadius: "0.2rem",
                                   }}
                                 />{" "}
-                                Undetected
+                                Undetected{" "}
+                                <span style={{ color: "red" }}> *</span>{" "}
                               </label>
                               {/* 
                               {errors.stagingDateOfLiverBiopsy !== "" ? (
@@ -715,7 +779,8 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="hbsAgQuantification">
-                              HBsAG Quantification (IU/ml)
+                              HBsAG Quantification (IU/ml){" "}
+                              <span style={{ color: "red" }}> *</span>{" "}
                             </Label>
                             <input
                               className="form-control"
@@ -732,19 +797,20 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                                 borderRadius: "0.2rem",
                               }}
                             />
-                            {/* {errors.hbsAgQuantification !== "" ? (
+                            {errors.hbsAgQuantification !== "" ? (
                               <span className={classes.error}>
                                 {errors.hbsAgQuantification}
                               </span>
                             ) : (
                               ""
-                            )} */}
+                            )}
                           </FormGroup>
                         </div>
 
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
-                            <Label for="hbeAG">HbeAG</Label>
+                            <Label for="hbeAG">HbeAG</Label>{" "}
+                            <span style={{ color: "red" }}> *</span>{" "}
                             <select
                               className="form-control"
                               name="hbeAG"
@@ -762,19 +828,20 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                                 Non Reactive
                               </option>
                             </select>
-                            {/* {formik.errors.hbeAG !== "" ? (
+                            {errors.hbeAG !== "" ? (
                               <span className={classes.error}>
-                                {formik.errors.hbeAG}
+                                {errors.hbeAG}
                               </span>
                             ) : (
                               ""
-                            )} */}
+                            )}
                           </FormGroup>
                         </div>
 
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="antiHDV">Anti-HDV</Label>
+                            <span style={{ color: "red" }}> *</span>{" "}
                             <select
                               className="form-control"
                               name="antiHDV"
@@ -793,13 +860,13 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                               </option>
                               <option value={"NOT_DONE"}>Not Done</option>
                             </select>
-                            {/* {formik.errors.antiHDV !== "" ? (
+                            {errors.antiHDV !== "" ? (
                               <span className={classes.error}>
-                                {formik.errors.antiHDV}
+                                {errors.antiHDV}
                               </span>
                             ) : (
                               ""
-                            )} */}
+                            )}
                           </FormGroup>
                         </div>
 
@@ -808,6 +875,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                             <Label for="treatmentEligible">
                               Treatment Eligible
                             </Label>
+                            <span style={{ color: "red" }}> *</span>{" "}
                             <select
                               className="form-control"
                               name="treatmentEligible"
@@ -823,19 +891,20 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                               <option value={"YES"}>Yes</option>
                               <option value={"NO"}>No</option>
                             </select>
-                            {/* {formik.errors.treatmentEligible !== "" ? (
+                            {errors.treatmentEligible !== "" ? (
                               <span className={classes.error}>
-                                {formik.errors.treatmentEligible}
+                                {errors.treatmentEligible}
                               </span>
                             ) : (
                               ""
-                            )} */}
+                            )}
                           </FormGroup>
                         </div>
 
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="pmtctEligible">PMTCT Eligible</Label>
+                            <span style={{ color: "red" }}> *</span>{" "}
                             <select
                               className="form-control"
                               name="pmtctEligible"
@@ -851,19 +920,20 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                               <option value={"YES"}>Yes</option>
                               <option value={"NO"}>No</option>
                             </select>
-                            {/* {formik.errors.pmtctEligible !== "" ? (
+                            {errors.pmtctEligible !== "" ? (
                               <span className={classes.error}>
-                                {formik.errors.pmtctEligible}
+                                {errors.pmtctEligible}
                               </span>
                             ) : (
                               ""
-                            )} */}
+                            )}
                           </FormGroup>
                         </div>
 
                         <div className="form-group mb-3 col-md-4-12">
                           <FormGroup>
                             <Label for="comment">Comment</Label>
+                            <span style={{ color: "red" }}> *</span>{" "}
                             <textarea
                               className="form-control"
                               name="comment"
@@ -878,13 +948,13 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                                 height: "120px",
                               }}
                             />
-                            {/* {formik.errors.comment !== "" ? (
+                            {errors.comment !== "" ? (
                               <span className={classes.error}>
-                                {formik.errors.comment}
+                                {errors.comment}
                               </span>
                             ) : (
                               ""
-                            )} */}
+                            )}
                           </FormGroup>
                         </div>
                       </div>
@@ -941,6 +1011,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="hcvRNA">HCV RNA (IU/ml)</Label>
+                            <span style={{ color: "red" }}> *</span>{" "}
                             <select
                               className="form-control"
                               name="hcvRNA"
@@ -957,13 +1028,13 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                               <option value={"DETECTED"}>Detected</option>
                               <option value={"UNDETECTED"}>Undetected</option>
                             </select>
-                            {/* {formik.errors.hcvRNA !== "" ? (
+                            {errors.hcvRNA !== "" ? (
                               <span className={classes.error}>
-                                {formik.errors.hcvRNA}
+                                {errors.hcvRNA}
                               </span>
                             ) : (
                               ""
-                            )} */}
+                            )}
                           </FormGroup>
                         </div>
                         {basicInfo.hepatitisCTest.hcvRNA === "DETECTED" && (
@@ -973,6 +1044,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                                 Input HCV RNA Value{" "}
                                 <span style={{ color: "red" }}> *</span>{" "}
                               </Label>
+                              <span style={{ color: "red" }}> *</span>{" "}
                               <input
                                 className="form-control"
                                 type="text"
@@ -1002,6 +1074,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                             <Label for="hepatitisCoinfection">
                               Hepatitis Coinfection
                             </Label>
+                            <span style={{ color: "red" }}> *</span>{" "}
                             <select
                               className="form-control"
                               name="hepatitisCoinfection"
@@ -1021,13 +1094,13 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                               <option value={"HBV_HDV"}>HBV/HDV</option>
                               <option value={"HBV_HCD_HIV"}>HBV/HCD/HIV</option>
                             </select>
-                            {/* {formik.errors.hepatitisCoinfection !== "" ? (
+                            {errors.hepatitisCoinfection !== "" ? (
                               <span className={classes.error}>
-                                {formik.errors.hepatitisCoinfection}
+                                {errors.hepatitisCoinfection}
                               </span>
                             ) : (
                               ""
-                            )} */}
+                            )}
                           </FormGroup>
                         </div>
 
@@ -1115,6 +1188,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="ast">AST (IU/ml)</Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <select
                         className="form-control"
                         name="ast"
@@ -1130,18 +1204,17 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                         <option value={"YES"}>Yes</option>
                         <option value={"NO"}>No</option>
                       </select>
-                      {/* {formik.errors.ast !== "" ? (
-                        <span className={classes.error}>
-                          {formik.errors.ast}
-                        </span>
+                      {errors.ast !== "" ? (
+                        <span className={classes.error}>{errors.ast}</span>
                       ) : (
                         ""
-                      )} */}
+                      )}
                     </FormGroup>
                   </div>
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="alt">ALT (IU/ml)</Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <select
                         className="form-control"
                         name="alt"
@@ -1157,16 +1230,17 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                         <option value={"YES"}>Yes</option>
                         <option value={"NO"}>No</option>
                       </select>
-                      {/* {formik.errors.alt !== "" ? (
-                        <span className={classes.error}>
-                          {formik.errors.alt}
-                        </span>
-                      ) : null} */}
+                      {errors.alt !== "" ? (
+                        <span className={classes.error}>{errors.alt}</span>
+                      ) : (
+                        ""
+                      )}
                     </FormGroup>
                   </div>
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="pst">PST (mm3)</Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <select
                         className="form-control"
                         name="pst"
@@ -1182,11 +1256,11 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                         <option value={"YES"}>Yes</option>
                         <option value={"NO"}>No</option>
                       </select>
-                      {/* {formik.errors.pst !== "" ? (
-                        <span className={classes.error}>
-                          {formik.errors.pst}
-                        </span>
-                      ) : null} */}
+                      {errors.pst !== "" ? (
+                        <span className={classes.error}>{errors.pst}</span>
+                      ) : (
+                        ""
+                      )}
                     </FormGroup>
                   </div>
                 </div>
@@ -1211,13 +1285,6 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                             borderRadius: "0.2rem",
                           }}
                         />
-                        {/* {formik.errors.astValue !== "" ? (
-                          <span className={classes.error}>
-                            {formik.errors.astValue}
-                          </span>
-                        ) : (
-                          ""
-                        )} */}
                       </FormGroup>
                     </div>
                   )}
@@ -1241,13 +1308,6 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                             borderRadius: "0.2rem",
                           }}
                         />
-                        {/* {formik.errors.altValue !== "" ? (
-                          <span className={classes.error}>
-                            {formik.errors.altValue}
-                          </span>
-                        ) : (
-                          ""
-                        )} */}
                       </FormGroup>
                     </div>
                   )}
@@ -1271,13 +1331,6 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                             borderRadius: "0.2rem",
                           }}
                         />
-                        {/* {formik.errors.pstValue !== "" ? (
-                          <span className={classes.error}>
-                            {formik.errors.pstValue}
-                          </span>
-                        ) : (
-                          ""
-                        )} */}
                       </FormGroup>
                     </div>
                   )}
@@ -1300,13 +1353,13 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {/* {formik.errors.totalBiliRubin !== "" ? (
+                      {errors.totalBiliRubin !== "" ? (
                         <span className={classes.error}>
-                          {formik.errors.totalBiliRubin}
+                          {errors.totalBiliRubin}
                         </span>
                       ) : (
                         ""
-                      )} */}
+                      )}
                     </FormGroup>
                   </div>
                   <div className="form-group mb-3 col-md-4">
@@ -1314,6 +1367,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                       <Label for="directBiliribin">
                         Direct Bilirubin (μmol/L)
                       </Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <input
                         className="form-control"
                         type="text"
@@ -1327,18 +1381,19 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {/* {formik.errors.directBiliribin !== "" ? (
+                      {errors.directBiliribin !== "" ? (
                         <span className={classes.error}>
-                          {formik.errors.directBiliribin}
+                          {errors.directBiliribin}
                         </span>
                       ) : (
                         ""
-                      )} */}
+                      )}
                     </FormGroup>
                   </div>
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="albumin">Albumin (g/dl)</Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <input
                         className="form-control"
                         type="text"
@@ -1352,19 +1407,18 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {/* {formik.errors.albumin ? (
-                              <span className={classes.error}>
-                                {formik.errors.albumin}
-                              </span>
-                            ) : (
-                              ""
-                            )} */}
+                      {errors.albumin !== "" ? (
+                        <span className={classes.error}>{errors.albumin}</span>
+                      ) : (
+                        ""
+                      )}
                     </FormGroup>
                   </div>
 
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="apriScore">APRI score </Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <input
                         className="form-control"
                         type="text"
@@ -1378,18 +1432,19 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {/* {formik.errors.apriScore !== "" ? (
+                      {errors.apriScore !== "" ? (
                         <span className={classes.error}>
-                          {formik.errors.apriScore}
+                          {errors.apriScore}
                         </span>
                       ) : (
                         ""
-                      )} */}
+                      )}
                     </FormGroup>
                   </div>
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="fib4">FIB-4</Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <input
                         className="form-control"
                         type="text"
@@ -1403,13 +1458,11 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {/* {formik.errors.fib4 !== "" ? (
-                        <span className={classes.error}>
-                          {formik.errors.fib4}
-                        </span>
+                      {errors.fib4 !== "" ? (
+                        <span className={classes.error}>{errors.fib4}</span>
                       ) : (
                         ""
-                      )} */}
+                      )}
                     </FormGroup>
                   </div>
                   <div className="form-group mb-3 col-md-4">
@@ -1417,6 +1470,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                       <Label for="prothrombinTimeNR">
                         Prothrombin time/INR
                       </Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <input
                         className="form-control"
                         type="text"
@@ -1430,18 +1484,19 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {/* {formik.errors.prothrombinTimeNR !== "" ? (
+                      {errors.prothrombinTimeNR !== "" ? (
                         <span className={classes.error}>
-                          {formik.errors.prothrombinTimeNR}
+                          {errors.prothrombinTimeNR}
                         </span>
                       ) : (
                         ""
-                      )} */}
+                      )}
                     </FormGroup>
                   </div>
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="urea">Urea (mg/dl)</Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <input
                         className="form-control"
                         type="text"
@@ -1455,19 +1510,18 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {/* {formik.errors.urea !== "" ? (
-                        <span className={classes.error}>
-                          {formik.errors.urea}
-                        </span>
+                      {errors.urea !== "" ? (
+                        <span className={classes.error}>{errors.urea}</span>
                       ) : (
                         ""
-                      )} */}
+                      )}
                     </FormGroup>
                   </div>
 
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="creatinine">Creatinine (μmol/L)</Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <input
                         className="form-control"
                         type="text"
@@ -1481,13 +1535,13 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {/* {formik.errors.creatinine !== "" ? (
+                      {errors.creatinine !== "" ? (
                         <span className={classes.error}>
-                          {formik.errors.creatinine}
+                          {errors.creatinine}
                         </span>
                       ) : (
                         ""
-                      )} */}
+                      )}
                     </FormGroup>
                   </div>
 
@@ -1496,6 +1550,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                       <Label for="ultrasoundScan">
                         Ultrasound scan (μmol/L)
                       </Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <input
                         className="form-control"
                         type="text"
@@ -1509,19 +1564,20 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {/* {formik.errors.ultrasoundScan !== "" ? (
+                      {errors.ultrasoundScan !== "" ? (
                         <span className={classes.error}>
-                          {formik.errors.ultrasoundScan}
+                          {errors.ultrasoundScan}
                         </span>
                       ) : (
                         ""
-                      )} */}
+                      )}
                     </FormGroup>
                   </div>
 
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="creatinine">AFP (ng/ml)</Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <input
                         className="form-control"
                         type="text"
@@ -1535,17 +1591,18 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {/* {formik.errors.afp !== "" ? (
-                        <span className={classes.error}>
-                          {formik.errors.afp}
-                        </span>
-                      ) : null} */}
+                      {errors.afp !== "" ? (
+                        <span className={classes.error}>{errors.afp}</span>
+                      ) : (
+                        ""
+                      )}
                     </FormGroup>
                   </div>
 
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="fibroscan">Fibroscan (ng/ml)</Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <input
                         className="form-control"
                         type="text"
@@ -1559,16 +1616,19 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {/* {formik.errors.fibroscan !== "" ? (
+                      {errors.fibroscan !== "" ? (
                         <span className={classes.error}>
-                          {formik.errors.fibroscan}
+                          {errors.fibroscan}
                         </span>
-                      ) : null} */}
+                      ) : (
+                        ""
+                      )}
                     </FormGroup>
                   </div>
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="ctScan">CT scan</Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <input
                         className="form-control"
                         type="text"
@@ -1582,19 +1642,18 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {/* {formik.errors.ctScan ? (
-                              <span className={classes.error}>
-                                {formik.errors.ctScan}
-                              </span>
-                            ) : (
-                              ""
-                            )} */}
+                      {errors.ctScan !== "" ? (
+                        <span className={classes.error}>{errors.ctScan}</span>
+                      ) : (
+                        ""
+                      )}
                     </FormGroup>
                   </div>
 
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="ascites">Acites</Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <select
                         className="form-control"
                         name="ascites"
@@ -1610,13 +1669,11 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                         <option value={"YES"}>Yes</option>
                         <option value={"NO"}>No</option>
                       </select>
-                      {/* {formik.errors.ascites !== "" ? (
-                        <span className={classes.error}>
-                          {formik.errors.ascites}
-                        </span>
+                      {errors.ascites !== "" ? (
+                        <span className={classes.error}>{errors.ascites}</span>
                       ) : (
                         ""
-                      )} */}
+                      )}
                     </FormGroup>
                   </div>
 
@@ -1626,6 +1683,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                         <Label for="severityOfAscites">
                           Severity of ascites
                         </Label>
+                        <span style={{ color: "red" }}> *</span>{" "}
                         <select
                           className="form-control"
                           name="severityOfAscites"
@@ -1644,10 +1702,8 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                             Massive/Gross
                           </option>
                         </select>
-                        {/* {formik.errors.severityOfAscites !== "" ? (
-                          <span className={classes.error}>
-                            {formik.errors.severityOfAscites}
-                          </span>
+                        {/* {errors.fib4 !== "" ? (
+                          <span className={classes.error}>{errors.fib4}</span>
                         ) : (
                           ""
                         )} */}
@@ -1658,6 +1714,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="ascitesLevel">Grade of Encephalopathy</Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <select
                         className="form-control"
                         name="gradeOfEncephalopathy"
@@ -1679,19 +1736,20 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                         <option value={4}>4</option>
                         <option value={5}>5</option>
                       </select>
-                      {/* {formik.errors.gradeOfEncephalopathy !== "" ? (
+                      {errors.gradeOfEncephalopathy !== "" ? (
                         <span className={classes.error}>
-                          {formik.errors.gradeOfEncephalopathy}
+                          {errors.gradeOfEncephalopathy}
                         </span>
                       ) : (
                         ""
-                      )} */}
+                      )}
                     </FormGroup>
                   </div>
 
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="childPughScore">Child pugh score</Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <input
                         className="form-control"
                         type="text"
@@ -1705,19 +1763,20 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {/* {formik.errors.childPughScore !== "" ? (
+                      {errors.childPughScore !== "" ? (
                         <span className={classes.error}>
-                          {formik.errors.childPughScore}
+                          {errors.childPughScore}
                         </span>
                       ) : (
                         ""
-                      )} */}
+                      )}
                     </FormGroup>
                   </div>
 
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="liverBiopsyStage">Liver biopsy stage</Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <select
                         className="form-control"
                         name="liverBiopsyStage"
@@ -1736,13 +1795,13 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                         {/* <option value={"CIRRHOSIS"}>Cirrhosis</option> */}
                         <option value={"HIGH_CC"}>High CC </option>
                       </select>
-                      {/* {formik.errors.liverBiopsyStage !== "" ? (
+                      {errors.liverBiopsyStage !== "" ? (
                         <span className={classes.error}>
-                          {formik.errors.liverBiopsyStage}
+                          {errors.liverBiopsyStage}
                         </span>
                       ) : (
                         ""
-                      )} */}
+                      )}
                     </FormGroup>
                   </div>
                   <div className="form-group mb-3 col-md-4">
@@ -1750,10 +1809,12 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                       <Label for="stagingDateOfLiverBiopsy">
                         Staging date of liver biopsy{" "}
                       </Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <input
                         className="form-control"
                         type="date"
                         name="stagingDateOfLiverBiopsy"
+                        max={moment(new Date()).format("YYYY-MM-DD")}
                         id="stagingDateOfLiverBiopsy"
                         value={
                           basicInfo.hepatitisBTest.stagingDateOfLiverBiopsy
@@ -1765,19 +1826,20 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {/* {errors.stagingDateOfLiverBiopsy !== "" ? (
-                              <span className={classes.error}>
-                                {errors.stagingDateOfLiverBiopsy}
-                              </span>
-                            ) : (
-                              ""
-                            )} */}
+                      {errors.stagingDateOfLiverBiopsy !== "" ? (
+                        <span className={classes.error}>
+                          {errors.stagingDateOfLiverBiopsy}
+                        </span>
+                      ) : (
+                        ""
+                      )}
                     </FormGroup>
                   </div>
 
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="diagnosis_result">Diagnosis</Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <select
                         className="form-control"
                         name="diagnosis_result"
@@ -1795,13 +1857,13 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                         <option value={"CIRRHOSIS"}>Cirrhosis</option>
                         <option value={"HIGH_CC"}>HCC</option>
                       </select>
-                      {/* {formik.errors.diagnosis_result !== "" ? (
+                      {errors.diagnosis_result !== "" ? (
                         <span className={classes.error}>
-                          {formik.errors.diagnosis_result}
+                          {errors.diagnosis_result}
                         </span>
                       ) : (
                         ""
-                      )} */}
+                      )}
                     </FormGroup>
                   </div>
                 </div>

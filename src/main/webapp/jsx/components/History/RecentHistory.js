@@ -112,7 +112,7 @@ const RecentHistory = (props) => {
   };
 
   const LoadViewPage = (row, action) => {
-    if (row.path === "Enrolment") {
+    if (row.path === "hepatitis_enrollment") {
       //props.setActiveContent({...props.activeContent, route:'anc-enrollment', id:row.id, actionType:action})
       history.push({
         pathname: "/update-patient",
@@ -127,7 +127,7 @@ const RecentHistory = (props) => {
           },
         },
       });
-    } else if (row.path === "Diagnosis") {
+    } else if (row.path === "hepatitis_diagnosis") {
       history.push({
         pathname: "/update-patient",
         state: {
@@ -141,7 +141,7 @@ const RecentHistory = (props) => {
           },
         },
       });
-    } else if (row.path === "Treatment") {
+    } else if (row.path === "hepatitis_treatment") {
       history.push({
         pathname: "/update-patient",
         state: {
@@ -193,7 +193,7 @@ const RecentHistory = (props) => {
         })
         .then((response) => {
           toast.success("Record Deleted Successfully");
-          RecentActivities();
+          // RecentActivities();
           toggle();
           setSaving(false);
         })
@@ -245,7 +245,7 @@ const RecentHistory = (props) => {
         })
         .then((response) => {
           toast.success("Record Deleted Successfully");
-          RecentActivities();
+          // RecentActivities();
           toggle();
           setSaving(false);
         })
@@ -271,7 +271,7 @@ const RecentHistory = (props) => {
         })
         .then((response) => {
           toast.success("Record Deleted Successfully");
-          RecentActivities();
+          // RecentActivities();
           toggle();
           setSaving(false);
         })
@@ -297,7 +297,7 @@ const RecentHistory = (props) => {
         })
         .then((response) => {
           toast.success("Record Deleted Successfully");
-          RecentActivities();
+          // RecentActivities();
           toggle();
           setSaving(false);
         })

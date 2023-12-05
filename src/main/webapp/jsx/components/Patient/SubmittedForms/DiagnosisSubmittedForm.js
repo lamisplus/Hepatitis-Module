@@ -10,6 +10,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { makeStyles } from "@material-ui/core/styles";
 import { Card, CardContent } from "@material-ui/core";
+import moment from "moment";
+
 import "react-toastify/dist/ReactToastify.css";
 import "react-widgets/dist/css/react-widgets.css";
 import "react-phone-input-2/lib/style.css";
@@ -528,11 +530,10 @@ const DiagnosisSubmitedForm = ({
                             <input
                               className="form-control"
                               type="date"
+                              disabled={action === "view" ? true : false}
                               name="dateHbvDnaTestRequested"
+                              max={moment(new Date()).format("YYYY-MM-DD")}
                               id="dateHbvDnaTestRequested"
-                              //   value={
-                              //     basicInfo.hepatitisBTest.dateHbvDnaTestRequested
-                              //   }
                               value={
                                 basicInfo.hepatitisBTest.dateHbvDnaTestRequested
                               }
@@ -542,9 +543,7 @@ const DiagnosisSubmitedForm = ({
                                 border: "1px solid #014D88",
                                 borderRadius: "0.2rem",
                               }}
-                              disabled={action === "view" ? true : false}
                             />
-
                             {errors.dateHbvDnaTestRequested !== "" ? (
                               <span className={classes.error}>
                                 {errors.dateHbvDnaTestRequested}
@@ -564,12 +563,13 @@ const DiagnosisSubmitedForm = ({
                             <input
                               className="form-control"
                               type="date"
+                              disabled={action === "view" ? true : false}
+                              max={moment(new Date()).format("YYYY-MM-DD")}
                               name="dateHbvTestRequested"
                               id="dateHbvTestRequested"
                               value={
                                 basicInfo.hepatitisBTest.dateHbvTestRequested
                               }
-                              disabled={action === "view" ? true : false}
                               onChange={handleInputChangeBasic}
                               // onBlur={formik.handleBlur}
                               style={{
@@ -596,20 +596,20 @@ const DiagnosisSubmitedForm = ({
                             <input
                               className="form-control"
                               type="date"
+                              disabled={action === "view" ? true : false}
                               name="dateHbvSampleRequested"
+                              max={moment(new Date()).format("YYYY-MM-DD")}
                               id="dateHbvSampleRequested"
                               value={
                                 basicInfo.hepatitisBTest.dateHbvSampleRequested
                               }
                               onChange={handleInputChangeBasic}
-                              disabled={action === "view" ? true : false}
                               // onBlur={formik.handleBlur}
                               style={{
                                 border: "1px solid #014D88",
                                 borderRadius: "0.2rem",
                               }}
                             />
-
                             {errors.dateHbvSampleRequested !== "" ? (
                               <span className={classes.error}>
                                 {errors.dateHbvSampleRequested}
@@ -624,17 +624,19 @@ const DiagnosisSubmitedForm = ({
                           <FormGroup>
                             <Label for="dateHbvDnaResultReported">
                               Date of HBV DNA result reported{" "}
+                              <span style={{ color: "red" }}> *</span>{" "}
                             </Label>
                             <input
                               className="form-control"
                               type="date"
+                              disabled={action === "view" ? true : false}
                               name="dateHbvDnaResultReported"
+                              max={moment(new Date()).format("YYYY-MM-DD")}
                               id="dateHbvDnaResultReported"
                               value={
                                 basicInfo.hepatitisBTest
                                   .dateHbvDnaResultReported
                               }
-                              disabled={action === "view" ? true : false}
                               onChange={handleInputChangeBasic}
                               // onBlur={formik.handleBlur}
                               style={{
@@ -642,15 +644,16 @@ const DiagnosisSubmitedForm = ({
                                 borderRadius: "0.2rem",
                               }}
                             />
-                            {/* {errors.dateHbvDnaResultReported !== "" ? (
+                            {errors.dateHbvDnaResultReported !== "" ? (
                               <span className={classes.error}>
                                 {errors.dateHbvDnaResultReported}
                               </span>
                             ) : (
                               ""
-                            )} */}
+                            )}
                           </FormGroup>
                         </div>
+
                         <div className="form-group mb-2 col-md-4">
                           <FormGroup>
                             <Label>
@@ -661,9 +664,9 @@ const DiagnosisSubmitedForm = ({
                               <label>
                                 <input
                                   type="radio"
+                                  disabled={action === "view" ? true : false}
                                   value="DETECTED"
                                   name="hbvDna"
-                                  disabled={action === "view" ? true : false}
                                   checked={
                                     basicInfo.hepatitisBTest.hbvDna ===
                                     "DETECTED"
@@ -683,8 +686,8 @@ const DiagnosisSubmitedForm = ({
                                 <input
                                   type="radio"
                                   value="UNDETECTED"
-                                  name="hbvDna"
                                   disabled={action === "view" ? true : false}
+                                  name="hbvDna"
                                   checked={
                                     basicInfo.hepatitisBTest.hbvDna ===
                                     "UNDETECTED"
@@ -696,7 +699,8 @@ const DiagnosisSubmitedForm = ({
                                     borderRadius: "0.2rem",
                                   }}
                                 />{" "}
-                                Undetected
+                                Undetected{" "}
+                                <span style={{ color: "red" }}> *</span>{" "}
                               </label>
                               {/* 
                               {errors.stagingDateOfLiverBiopsy !== "" ? (
@@ -730,6 +734,13 @@ const DiagnosisSubmitedForm = ({
                                   borderRadius: "0.2rem",
                                 }}
                               />
+                              {errors.hvbDnaValue !== "" ? (
+                                <span className={classes.error}>
+                                  {errors.hvbDnaValue}
+                                </span>
+                              ) : (
+                                ""
+                              )}
                             </FormGroup>
                           </div>
                         )}
@@ -737,13 +748,14 @@ const DiagnosisSubmitedForm = ({
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="hbsAgQuantification">
-                              HBsAG Quantification (IU/ml)
+                              HBsAG Quantification (IU/ml){" "}
+                              <span style={{ color: "red" }}> *</span>{" "}
                             </Label>
                             <input
                               className="form-control"
                               type="text"
-                              name="hbsAgQuantification"
                               disabled={action === "view" ? true : false}
+                              name="hbsAgQuantification"
                               id="hbsAgQuantification"
                               value={
                                 basicInfo.hepatitisBTest.hbsAgQuantification
@@ -755,23 +767,25 @@ const DiagnosisSubmitedForm = ({
                                 borderRadius: "0.2rem",
                               }}
                             />
-                            {/* {errors.hbsAgQuantification !== "" ? (
+                            {errors.hbsAgQuantification !== "" ? (
                               <span className={classes.error}>
                                 {errors.hbsAgQuantification}
                               </span>
                             ) : (
                               ""
-                            )} */}
+                            )}
                           </FormGroup>
                         </div>
+
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
-                            <Label for="hbeAG">HbeAG</Label>
+                            <Label for="hbeAG">HbeAG</Label>{" "}
+                            <span style={{ color: "red" }}> *</span>{" "}
                             <select
                               className="form-control"
                               name="hbeAG"
-                              disabled={action === "view" ? true : false}
                               id="hbeAG"
+                              disabled={action === "view" ? true : false}
                               onChange={handleInputChangeBasic}
                               value={basicInfo.hepatitisBTest.hbeAG}
                               style={{
@@ -785,23 +799,25 @@ const DiagnosisSubmitedForm = ({
                                 Non Reactive
                               </option>
                             </select>
-                            {/* {formik.errors.hbeAG !== "" ? (
+                            {errors.hbeAG !== "" ? (
                               <span className={classes.error}>
-                                {formik.errors.hbeAG}
+                                {errors.hbeAG}
                               </span>
                             ) : (
                               ""
-                            )} */}
+                            )}
                           </FormGroup>
                         </div>
+
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="antiHDV">Anti-HDV</Label>
+                            <span style={{ color: "red" }}> *</span>{" "}
                             <select
                               className="form-control"
                               name="antiHDV"
-                              id="antiHDV"
                               disabled={action === "view" ? true : false}
+                              id="antiHDV"
                               onChange={handleInputChangeBasic}
                               value={basicInfo.hepatitisBTest.antiHDV}
                               style={{
@@ -816,13 +832,13 @@ const DiagnosisSubmitedForm = ({
                               </option>
                               <option value={"NOT_DONE"}>Not Done</option>
                             </select>
-                            {/* {formik.errors.antiHDV !== "" ? (
+                            {errors.antiHDV !== "" ? (
                               <span className={classes.error}>
-                                {formik.errors.antiHDV}
+                                {errors.antiHDV}
                               </span>
                             ) : (
                               ""
-                            )} */}
+                            )}
                           </FormGroup>
                         </div>
 
@@ -831,6 +847,7 @@ const DiagnosisSubmitedForm = ({
                             <Label for="treatmentEligible">
                               Treatment Eligible
                             </Label>
+                            <span style={{ color: "red" }}> *</span>{" "}
                             <select
                               className="form-control"
                               name="treatmentEligible"
@@ -847,19 +864,20 @@ const DiagnosisSubmitedForm = ({
                               <option value={"YES"}>Yes</option>
                               <option value={"NO"}>No</option>
                             </select>
-                            {/* {formik.errors.treatmentEligible !== "" ? (
+                            {errors.treatmentEligible !== "" ? (
                               <span className={classes.error}>
-                                {formik.errors.treatmentEligible}
+                                {errors.treatmentEligible}
                               </span>
                             ) : (
                               ""
-                            )} */}
+                            )}
                           </FormGroup>
                         </div>
 
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="pmtctEligible">PMTCT Eligible</Label>
+                            <span style={{ color: "red" }}> *</span>{" "}
                             <select
                               className="form-control"
                               name="pmtctEligible"
@@ -876,23 +894,25 @@ const DiagnosisSubmitedForm = ({
                               <option value={"YES"}>Yes</option>
                               <option value={"NO"}>No</option>
                             </select>
-                            {/* {formik.errors.pmtctEligible !== "" ? (
+                            {errors.pmtctEligible !== "" ? (
                               <span className={classes.error}>
-                                {formik.errors.pmtctEligible}
+                                {errors.pmtctEligible}
                               </span>
                             ) : (
                               ""
-                            )} */}
+                            )}
                           </FormGroup>
                         </div>
+
                         <div className="form-group mb-3 col-md-4-12">
                           <FormGroup>
                             <Label for="comment">Comment</Label>
+                            <span style={{ color: "red" }}> *</span>{" "}
                             <textarea
                               className="form-control"
                               name="comment"
-                              disabled={action === "view" ? true : false}
                               id="comment"
+                              disabled={action === "view" ? true : false}
                               onChange={handleInputChangeBasic}
                               value={basicInfo.hepatitisBTest.comment}
                               cols="50"
@@ -903,38 +923,13 @@ const DiagnosisSubmitedForm = ({
                                 height: "120px",
                               }}
                             />
-                            {/* {formik.errors.comment !== "" ? (
+                            {errors.comment !== "" ? (
                               <span className={classes.error}>
-                                {formik.errors.comment}
+                                {errors.comment}
                               </span>
                             ) : (
                               ""
-                            )} */}
-                          </FormGroup>
-                        </div>
-
-                        {/* testttttttting */}
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="stagingDateOfLiverBiopsy">
-                              Staging date of liver biopsy{" "}
-                            </Label>
-                            <input
-                              className="form-control"
-                              type="date"
-                              name="stagingDateOfLiverBiopsy"
-                              id="stagingDateOfLiverBiopsy"
-                              disabled={action === "view" ? true : false}
-                              value={
-                                basicInfo.hepatitisBTest
-                                  .stagingDateOfLiverBiopsy
-                              }
-                              onChange={handleInputChangeBasic}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            />
+                            )}
                           </FormGroup>
                         </div>
                       </div>
@@ -991,6 +986,7 @@ const DiagnosisSubmitedForm = ({
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="hcvRNA">HCV RNA (IU/ml)</Label>
+                            <span style={{ color: "red" }}> *</span>{" "}
                             <select
                               className="form-control"
                               name="hcvRNA"
@@ -1001,6 +997,7 @@ const DiagnosisSubmitedForm = ({
                               value={basicInfo.hepatitisCTest.hcvRNA}
                               style={{
                                 border: "1px solid #014D88",
+
                                 borderRadius: "0.2rem",
                               }}
                             >
@@ -1008,13 +1005,13 @@ const DiagnosisSubmitedForm = ({
                               <option value={"DETECTED"}>Detected</option>
                               <option value={"UNDETECTED"}>Undetected</option>
                             </select>
-                            {/* {formik.errors.hcvRNA !== "" ? (
+                            {errors.hcvRNA !== "" ? (
                               <span className={classes.error}>
-                                {formik.errors.hcvRNA}
+                                {errors.hcvRNA}
                               </span>
                             ) : (
                               ""
-                            )} */}
+                            )}
                           </FormGroup>
                         </div>
                         {basicInfo.hepatitisCTest.hcvRNA === "DETECTED" && (
@@ -1024,12 +1021,13 @@ const DiagnosisSubmitedForm = ({
                                 Input HCV RNA Value{" "}
                                 <span style={{ color: "red" }}> *</span>{" "}
                               </Label>
+                              <span style={{ color: "red" }}> *</span>{" "}
                               <input
                                 className="form-control"
                                 type="text"
+                                disabled={action === "view" ? true : false}
                                 name="hcRnaValue"
                                 id="hcRnaValue"
-                                disabled={action === "view" ? true : false}
                                 value={basicInfo.hepatitisCTest.hcRnaValue}
                                 onChange={handleInputChangeBasicForHC}
                                 // onBlur={formik.handleBlur}
@@ -1054,11 +1052,12 @@ const DiagnosisSubmitedForm = ({
                             <Label for="hepatitisCoinfection">
                               Hepatitis Coinfection
                             </Label>
+                            <span style={{ color: "red" }}> *</span>{" "}
                             <select
                               className="form-control"
+                              disabled={action === "view" ? true : false}
                               name="hepatitisCoinfection"
                               id="hepatitisCoinfection"
-                              disabled={action === "view" ? true : false}
                               onChange={handleInputChangeBasicForHC}
                               value={
                                 basicInfo.hepatitisCTest.hepatitisCoinfection
@@ -1074,13 +1073,13 @@ const DiagnosisSubmitedForm = ({
                               <option value={"HBV_HDV"}>HBV/HDV</option>
                               <option value={"HBV_HCD_HIV"}>HBV/HCD/HIV</option>
                             </select>
-                            {/* {formik.errors.hepatitisCoinfection !== "" ? (
+                            {errors.hepatitisCoinfection !== "" ? (
                               <span className={classes.error}>
-                                {formik.errors.hepatitisCoinfection}
+                                {errors.hepatitisCoinfection}
                               </span>
                             ) : (
                               ""
-                            )} */}
+                            )}
                           </FormGroup>
                         </div>
 
@@ -1123,9 +1122,9 @@ const DiagnosisSubmitedForm = ({
                             <input
                               className="form-control"
                               type="text"
+                              disabled={action === "view" ? true : false}
                               name="multipleInfection"
                               id="multipleInfection"
-                              disabled={action === "view" ? true : false}
                               value={basicInfo.hepatitisCTest.multipleInfection}
                               onChange={handleInputChangeBasicForHC}
                               // onBlur={formik.handleBlur}
@@ -1170,11 +1169,12 @@ const DiagnosisSubmitedForm = ({
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="ast">AST (IU/ml)</Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <select
                         className="form-control"
                         name="ast"
-                        disabled={action === "view" ? true : false}
                         id="ast"
+                        disabled={action === "view" ? true : false}
                         onChange={handleInputChangeBasicForClinic}
                         value={basicInfo.clinicalParameters.ast}
                         style={{
@@ -1186,18 +1186,17 @@ const DiagnosisSubmitedForm = ({
                         <option value={"YES"}>Yes</option>
                         <option value={"NO"}>No</option>
                       </select>
-                      {/* {formik.errors.ast !== "" ? (
-                        <span className={classes.error}>
-                          {formik.errors.ast}
-                        </span>
+                      {errors.ast !== "" ? (
+                        <span className={classes.error}>{errors.ast}</span>
                       ) : (
                         ""
-                      )} */}
+                      )}
                     </FormGroup>
                   </div>
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="alt">ALT (IU/ml)</Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <select
                         className="form-control"
                         name="alt"
@@ -1214,16 +1213,17 @@ const DiagnosisSubmitedForm = ({
                         <option value={"YES"}>Yes</option>
                         <option value={"NO"}>No</option>
                       </select>
-                      {/* {formik.errors.alt !== "" ? (
-                        <span className={classes.error}>
-                          {formik.errors.alt}
-                        </span>
-                      ) : null} */}
+                      {errors.alt !== "" ? (
+                        <span className={classes.error}>{errors.alt}</span>
+                      ) : (
+                        ""
+                      )}
                     </FormGroup>
                   </div>
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
-                      <Label for="pst">PST(mm3)</Label>
+                      <Label for="pst">PST (mm3)</Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <select
                         className="form-control"
                         name="pst"
@@ -1240,11 +1240,11 @@ const DiagnosisSubmitedForm = ({
                         <option value={"YES"}>Yes</option>
                         <option value={"NO"}>No</option>
                       </select>
-                      {/* {formik.errors.pst !== "" ? (
-                        <span className={classes.error}>
-                          {formik.errors.pst}
-                        </span>
-                      ) : null} */}
+                      {errors.pst !== "" ? (
+                        <span className={classes.error}>{errors.pst}</span>
+                      ) : (
+                        ""
+                      )}
                     </FormGroup>
                   </div>
                 </div>
@@ -1260,8 +1260,8 @@ const DiagnosisSubmitedForm = ({
                           className="form-control"
                           type="text"
                           name="astValue"
-                          disabled={action === "view" ? true : false}
                           id="astValue"
+                          disabled={action === "view" ? true : false}
                           value={basicInfo.clinicalParameters.astValue}
                           onChange={handleInputChangeBasicForClinic}
                           // onBlur={formik.handleBlur}
@@ -1270,13 +1270,6 @@ const DiagnosisSubmitedForm = ({
                             borderRadius: "0.2rem",
                           }}
                         />
-                        {/* {formik.errors.astValue !== "" ? (
-                          <span className={classes.error}>
-                            {formik.errors.astValue}
-                          </span>
-                        ) : (
-                          ""
-                        )} */}
                       </FormGroup>
                     </div>
                   )}
@@ -1290,8 +1283,8 @@ const DiagnosisSubmitedForm = ({
                         <input
                           className="form-control"
                           type="text"
-                          name="altValue"
                           disabled={action === "view" ? true : false}
+                          name="altValue"
                           id="altValue"
                           value={basicInfo.clinicalParameters.altValue}
                           onChange={handleInputChangeBasicForClinic}
@@ -1301,13 +1294,6 @@ const DiagnosisSubmitedForm = ({
                             borderRadius: "0.2rem",
                           }}
                         />
-                        {/* {formik.errors.altValue !== "" ? (
-                          <span className={classes.error}>
-                            {formik.errors.altValue}
-                          </span>
-                        ) : (
-                          ""
-                        )} */}
                       </FormGroup>
                     </div>
                   )}
@@ -1321,8 +1307,8 @@ const DiagnosisSubmitedForm = ({
                         <input
                           className="form-control"
                           type="text"
-                          name="pstValue"
                           disabled={action === "view" ? true : false}
+                          name="pstValue"
                           id="pstValue"
                           value={basicInfo.clinicalParameters.pstValue}
                           onChange={handleInputChangeBasicForClinic}
@@ -1332,13 +1318,6 @@ const DiagnosisSubmitedForm = ({
                             borderRadius: "0.2rem",
                           }}
                         />
-                        {/* {formik.errors.pstValue !== "" ? (
-                          <span className={classes.error}>
-                            {formik.errors.pstValue}
-                          </span>
-                        ) : (
-                          ""
-                        )} */}
                       </FormGroup>
                     </div>
                   )}
@@ -1352,8 +1331,8 @@ const DiagnosisSubmitedForm = ({
                         className="form-control"
                         type="text"
                         name="totalBiliRubin"
-                        id="totalBiliRubin"
                         disabled={action === "view" ? true : false}
+                        id="totalBiliRubin"
                         value={basicInfo.clinicalParameters.totalBiliRubin}
                         onChange={handleInputChangeBasicForClinic}
                         // onBlur={formik.handleBlur}
@@ -1362,13 +1341,13 @@ const DiagnosisSubmitedForm = ({
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {/* {formik.errors.totalBiliRubin !== "" ? (
+                      {errors.totalBiliRubin !== "" ? (
                         <span className={classes.error}>
-                          {formik.errors.totalBiliRubin}
+                          {errors.totalBiliRubin}
                         </span>
                       ) : (
                         ""
-                      )} */}
+                      )}
                     </FormGroup>
                   </div>
                   <div className="form-group mb-3 col-md-4">
@@ -1376,6 +1355,7 @@ const DiagnosisSubmitedForm = ({
                       <Label for="directBiliribin">
                         Direct Bilirubin (μmol/L)
                       </Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <input
                         className="form-control"
                         type="text"
@@ -1390,19 +1370,19 @@ const DiagnosisSubmitedForm = ({
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {/* {formik.errors.directBiliribin !== "" ? (
+                      {errors.directBiliribin !== "" ? (
                         <span className={classes.error}>
-                          {formik.errors.directBiliribin}
+                          {errors.directBiliribin}
                         </span>
                       ) : (
                         ""
-                      )} */}
+                      )}
                     </FormGroup>
                   </div>
-
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="albumin">Albumin (g/dl)</Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <input
                         className="form-control"
                         type="text"
@@ -1417,25 +1397,24 @@ const DiagnosisSubmitedForm = ({
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {/* {formik.errors.albumin ? (
-                              <span className={classes.error}>
-                                {formik.errors.albumin}
-                              </span>
-                            ) : (
-                              ""
-                            )} */}
+                      {errors.albumin !== "" ? (
+                        <span className={classes.error}>{errors.albumin}</span>
+                      ) : (
+                        ""
+                      )}
                     </FormGroup>
                   </div>
 
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="apriScore">APRI score </Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <input
                         className="form-control"
                         type="text"
+                        disabled={action === "view" ? true : false}
                         name="apriScore"
                         id="apriScore"
-                        disabled={action === "view" ? true : false}
                         value={basicInfo.clinicalParameters.apriScore}
                         onChange={handleInputChangeBasicForClinic}
                         // onBlur={formik.handleBlur}
@@ -1444,24 +1423,25 @@ const DiagnosisSubmitedForm = ({
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {/* {formik.errors.apriScore !== "" ? (
+                      {errors.apriScore !== "" ? (
                         <span className={classes.error}>
-                          {formik.errors.apriScore}
+                          {errors.apriScore}
                         </span>
                       ) : (
                         ""
-                      )} */}
+                      )}
                     </FormGroup>
                   </div>
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="fib4">FIB-4</Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <input
                         className="form-control"
                         type="text"
                         name="fib4"
-                        disabled={action === "view" ? true : false}
                         id="fib4"
+                        disabled={action === "view" ? true : false}
                         value={basicInfo.clinicalParameters.fib4}
                         onChange={handleInputChangeBasicForClinic}
                         // onBlur={formik.handleBlur}
@@ -1470,13 +1450,11 @@ const DiagnosisSubmitedForm = ({
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {/* {formik.errors.fib4 !== "" ? (
-                        <span className={classes.error}>
-                          {formik.errors.fib4}
-                        </span>
+                      {errors.fib4 !== "" ? (
+                        <span className={classes.error}>{errors.fib4}</span>
                       ) : (
                         ""
-                      )} */}
+                      )}
                     </FormGroup>
                   </div>
                   <div className="form-group mb-3 col-md-4">
@@ -1484,11 +1462,12 @@ const DiagnosisSubmitedForm = ({
                       <Label for="prothrombinTimeNR">
                         Prothrombin time/INR
                       </Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <input
                         className="form-control"
                         type="text"
-                        name="prothrombinTimeNR"
                         disabled={action === "view" ? true : false}
+                        name="prothrombinTimeNR"
                         id="prothrombinTimeNR"
                         value={basicInfo.clinicalParameters.prothrombinTimeNR}
                         onChange={handleInputChangeBasicForClinic}
@@ -1498,24 +1477,25 @@ const DiagnosisSubmitedForm = ({
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {/* {formik.errors.prothrombinTimeNR !== "" ? (
+                      {errors.prothrombinTimeNR !== "" ? (
                         <span className={classes.error}>
-                          {formik.errors.prothrombinTimeNR}
+                          {errors.prothrombinTimeNR}
                         </span>
                       ) : (
                         ""
-                      )} */}
+                      )}
                     </FormGroup>
                   </div>
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="urea">Urea (mg/dl)</Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <input
                         className="form-control"
                         type="text"
                         name="urea"
-                        id="urea"
                         disabled={action === "view" ? true : false}
+                        id="urea"
                         value={basicInfo.clinicalParameters.urea}
                         onChange={handleInputChangeBasicForClinic}
                         // onBlur={formik.handleBlur}
@@ -1524,19 +1504,18 @@ const DiagnosisSubmitedForm = ({
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {/* {formik.errors.urea !== "" ? (
-                        <span className={classes.error}>
-                          {formik.errors.urea}
-                        </span>
+                      {errors.urea !== "" ? (
+                        <span className={classes.error}>{errors.urea}</span>
                       ) : (
                         ""
-                      )} */}
+                      )}
                     </FormGroup>
                   </div>
 
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="creatinine">Creatinine (μmol/L)</Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <input
                         className="form-control"
                         type="text"
@@ -1551,13 +1530,13 @@ const DiagnosisSubmitedForm = ({
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {/* {formik.errors.creatinine !== "" ? (
+                      {errors.creatinine !== "" ? (
                         <span className={classes.error}>
-                          {formik.errors.creatinine}
+                          {errors.creatinine}
                         </span>
                       ) : (
                         ""
-                      )} */}
+                      )}
                     </FormGroup>
                   </div>
 
@@ -1566,12 +1545,13 @@ const DiagnosisSubmitedForm = ({
                       <Label for="ultrasoundScan">
                         Ultrasound scan (μmol/L)
                       </Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <input
                         className="form-control"
                         type="text"
                         name="ultrasoundScan"
-                        id="ultrasoundScan"
                         disabled={action === "view" ? true : false}
+                        id="ultrasoundScan"
                         value={basicInfo.clinicalParameters.ultrasoundScan}
                         onChange={handleInputChangeBasicForClinic}
                         // onBlur={formik.handleBlur}
@@ -1580,51 +1560,53 @@ const DiagnosisSubmitedForm = ({
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {/* {formik.errors.ultrasoundScan !== "" ? (
+                      {errors.ultrasoundScan !== "" ? (
                         <span className={classes.error}>
-                          {formik.errors.ultrasoundScan}
+                          {errors.ultrasoundScan}
                         </span>
                       ) : (
                         ""
-                      )} */}
+                      )}
                     </FormGroup>
                   </div>
 
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="creatinine">AFP (ng/ml)</Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <input
                         className="form-control"
                         type="text"
+                        disabled={action === "view" ? true : false}
                         name="afp"
                         id="afp"
                         value={basicInfo.clinicalParameters.afp}
                         onChange={handleInputChangeBasicForClinic}
                         // onBlur={formik.handleBlur}
-                        disabled={action === "view" ? true : false}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {/* {formik.errors.afp !== "" ? (
-                        <span className={classes.error}>
-                          {formik.errors.afp}
-                        </span>
-                      ) : null} */}
+                      {errors.afp !== "" ? (
+                        <span className={classes.error}>{errors.afp}</span>
+                      ) : (
+                        ""
+                      )}
                     </FormGroup>
                   </div>
 
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="fibroscan">Fibroscan (ng/ml)</Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <input
                         className="form-control"
                         type="text"
                         name="fibroscan"
+                        disabled={action === "view" ? true : false}
                         id="fibroscan"
                         value={basicInfo.clinicalParameters.fibroscan}
-                        disabled={action === "view" ? true : false}
                         onChange={handleInputChangeBasicForClinic}
                         // onBlur={formik.handleBlur}
                         style={{
@@ -1632,23 +1614,26 @@ const DiagnosisSubmitedForm = ({
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {/* {formik.errors.fibroscan !== "" ? (
+                      {errors.fibroscan !== "" ? (
                         <span className={classes.error}>
-                          {formik.errors.fibroscan}
+                          {errors.fibroscan}
                         </span>
-                      ) : null} */}
+                      ) : (
+                        ""
+                      )}
                     </FormGroup>
                   </div>
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="ctScan">CT scan</Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <input
                         className="form-control"
                         type="text"
+                        disabled={action === "view" ? true : false}
                         name="ctScan"
                         id="ctScan"
                         value={basicInfo.hepatitisBTest.ctScan}
-                        disabled={action === "view" ? true : false}
                         onChange={handleInputChangeBasic}
                         // onBlur={formik.handleBlur}
                         style={{
@@ -1656,26 +1641,25 @@ const DiagnosisSubmitedForm = ({
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {/* {formik.errors.ctScan ? (
-                              <span className={classes.error}>
-                                {formik.errors.ctScan}
-                              </span>
-                            ) : (
-                              ""
-                            )} */}
+                      {errors.ctScan !== "" ? (
+                        <span className={classes.error}>{errors.ctScan}</span>
+                      ) : (
+                        ""
+                      )}
                     </FormGroup>
                   </div>
 
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
-                      <Label for="ascites">Ascites</Label>
+                      <Label for="ascites">Acites</Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <select
                         className="form-control"
                         name="ascites"
+                        disabled={action === "view" ? true : false}
                         id="ascites"
                         onChange={handleInputChangeBasicForClinic}
                         value={basicInfo.clinicalParameters.ascites}
-                        disabled={action === "view" ? true : false}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
@@ -1685,13 +1669,11 @@ const DiagnosisSubmitedForm = ({
                         <option value={"YES"}>Yes</option>
                         <option value={"NO"}>No</option>
                       </select>
-                      {/* {formik.errors.ascites !== "" ? (
-                        <span className={classes.error}>
-                          {formik.errors.ascites}
-                        </span>
+                      {errors.ascites !== "" ? (
+                        <span className={classes.error}>{errors.ascites}</span>
                       ) : (
                         ""
-                      )} */}
+                      )}
                     </FormGroup>
                   </div>
 
@@ -1701,11 +1683,12 @@ const DiagnosisSubmitedForm = ({
                         <Label for="severityOfAscites">
                           Severity of ascites
                         </Label>
+                        <span style={{ color: "red" }}> *</span>{" "}
                         <select
                           className="form-control"
                           name="severityOfAscites"
-                          disabled={action === "view" ? true : false}
                           id="severityOfAscites"
+                          disabled={action === "view" ? true : false}
                           onChange={handleInputChangeBasicForClinic}
                           value={basicInfo.clinicalParameters.severityOfAscites}
                           style={{
@@ -1720,10 +1703,8 @@ const DiagnosisSubmitedForm = ({
                             Massive/Gross
                           </option>
                         </select>
-                        {/* {formik.errors.severityOfAscites !== "" ? (
-                          <span className={classes.error}>
-                            {formik.errors.severityOfAscites}
-                          </span>
+                        {/* {errors.fib4 !== "" ? (
+                          <span className={classes.error}>{errors.fib4}</span>
                         ) : (
                           ""
                         )} */}
@@ -1734,15 +1715,16 @@ const DiagnosisSubmitedForm = ({
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="ascitesLevel">Grade of Encephalopathy</Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <select
                         className="form-control"
                         name="gradeOfEncephalopathy"
                         id="gradeOfEncephalopathy"
+                        disabled={action === "view" ? true : false}
                         onChange={handleInputChangeBasicForClinic}
                         value={
                           basicInfo.clinicalParameters.gradeOfEncephalopathy
                         }
-                        disabled={action === "view" ? true : false}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
@@ -1756,52 +1738,54 @@ const DiagnosisSubmitedForm = ({
                         <option value={4}>4</option>
                         <option value={5}>5</option>
                       </select>
-                      {/* {formik.errors.gradeOfEncephalopathy !== "" ? (
+                      {errors.gradeOfEncephalopathy !== "" ? (
                         <span className={classes.error}>
-                          {formik.errors.gradeOfEncephalopathy}
+                          {errors.gradeOfEncephalopathy}
                         </span>
                       ) : (
                         ""
-                      )} */}
+                      )}
                     </FormGroup>
                   </div>
 
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="childPughScore">Child pugh score</Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <input
                         className="form-control"
                         type="text"
                         name="childPughScore"
+                        disabled={action === "view" ? true : false}
                         id="childPughScore"
                         value={basicInfo.clinicalParameters.childPughScore}
                         onChange={handleInputChangeBasicForClinic}
-                        disabled={action === "view" ? true : false}
                         // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {/* {formik.errors.childPughScore !== "" ? (
+                      {errors.childPughScore !== "" ? (
                         <span className={classes.error}>
-                          {formik.errors.childPughScore}
+                          {errors.childPughScore}
                         </span>
                       ) : (
                         ""
-                      )} */}
+                      )}
                     </FormGroup>
                   </div>
 
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="liverBiopsyStage">Liver biopsy stage</Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <select
                         className="form-control"
                         name="liverBiopsyStage"
                         id="liverBiopsyStage"
-                        onChange={handleInputChangeBasicForClinic}
                         disabled={action === "view" ? true : false}
+                        onChange={handleInputChangeBasicForClinic}
                         value={basicInfo.clinicalParameters.liverBiopsyStage}
                         style={{
                           border: "1px solid #014D88",
@@ -1815,25 +1799,58 @@ const DiagnosisSubmitedForm = ({
                         {/* <option value={"CIRRHOSIS"}>Cirrhosis</option> */}
                         <option value={"HIGH_CC"}>High CC </option>
                       </select>
-                      {/* {formik.errors.liverBiopsyStage !== "" ? (
+                      {errors.liverBiopsyStage !== "" ? (
                         <span className={classes.error}>
-                          {formik.errors.liverBiopsyStage}
+                          {errors.liverBiopsyStage}
                         </span>
                       ) : (
                         ""
-                      )} */}
+                      )}
+                    </FormGroup>
+                  </div>
+                  <div className="form-group mb-3 col-md-4">
+                    <FormGroup>
+                      <Label for="stagingDateOfLiverBiopsy">
+                        Staging date of liver biopsy{" "}
+                      </Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
+                      <input
+                        className="form-control"
+                        type="date"
+                        name="stagingDateOfLiverBiopsy"
+                        disabled={action === "view" ? true : false}
+                        max={moment(new Date()).format("YYYY-MM-DD")}
+                        id="stagingDateOfLiverBiopsy"
+                        value={
+                          basicInfo.hepatitisBTest.stagingDateOfLiverBiopsy
+                        }
+                        onChange={handleInputChangeBasic}
+                        // onBlur={formik.handleBlur}
+                        style={{
+                          border: "1px solid #014D88",
+                          borderRadius: "0.2rem",
+                        }}
+                      />
+                      {errors.stagingDateOfLiverBiopsy !== "" ? (
+                        <span className={classes.error}>
+                          {errors.stagingDateOfLiverBiopsy}
+                        </span>
+                      ) : (
+                        ""
+                      )}
                     </FormGroup>
                   </div>
 
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="diagnosis_result">Diagnosis</Label>
+                      <span style={{ color: "red" }}> *</span>{" "}
                       <select
                         className="form-control"
                         name="diagnosis_result"
                         id="diagnosis_result"
-                        onChange={handleInputChangeBasicForClinic}
                         disabled={action === "view" ? true : false}
+                        onChange={handleInputChangeBasicForClinic}
                         value={basicInfo.clinicalParameters.diagnosis_result}
                         style={{
                           border: "1px solid #014D88",
@@ -1846,13 +1863,13 @@ const DiagnosisSubmitedForm = ({
                         <option value={"CIRRHOSIS"}>Cirrhosis</option>
                         <option value={"HIGH_CC"}>HCC</option>
                       </select>
-                      {/* {formik.errors.diagnosis_result !== "" ? (
+                      {errors.diagnosis_result !== "" ? (
                         <span className={classes.error}>
-                          {formik.errors.diagnosis_result}
+                          {errors.diagnosis_result}
                         </span>
                       ) : (
                         ""
-                      )} */}
+                      )}
                     </FormGroup>
                   </div>
                 </div>
