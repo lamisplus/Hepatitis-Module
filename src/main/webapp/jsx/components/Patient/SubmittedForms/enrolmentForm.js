@@ -1930,6 +1930,31 @@ const EnrolmentSubmittedForm = ({
                       )}
                     </FormGroup>
                   </div>
+                  <div className="form-group mb-3 col-md-4">
+                    <FormGroup>
+                      <Label for="bmi">BMI </Label>
+
+                      <input
+                        className="form-control"
+                        type="number"
+                        disabled
+                        name="bmi"
+                        id="bmi"
+                        value={basicInfo.bmi}
+                        style={{
+                          border: "1px solid #014D88",
+                          borderRadius: "0.2rem",
+                        }}
+                      />
+                      {/* {formik.errors.bmi !== "" ? (
+                          <span className={classes.error}>
+                            {formik.errors.bmi}
+                          </span>
+                        ) : (
+                          ""
+                        )} */}
+                    </FormGroup>
+                  </div>
 
                   {/* <div className="form-group mb-3 col-md-4">
                       <FormGroup>

@@ -693,7 +693,7 @@ const TreatmentSubmittedForm = ({
     temp.hcvRetreatmentNewRegimen = basicInfo.hepatitisCTreatment.hcvRetreatment
       .newRegimen
       ? ""
-      : " New regimen  is required";
+      : " New regime  is required";
 
     temp.hcvRetreatmentPrescribedDuration = basicInfo.hepatitisCTreatment
       .hcvRetreatment.prescribedDuration
@@ -1420,7 +1420,7 @@ const TreatmentSubmittedForm = ({
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="hbvRegimeSwitchNewRegimen">
-                              New Regimen
+                              New Regime
                               <span style={{ color: "red" }}> *</span>{" "}
                             </Label>
                             <input
@@ -2333,7 +2333,7 @@ const TreatmentSubmittedForm = ({
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="hcvRetreatmentNewRegimen">
-                              New regimen
+                              New regime
                             </Label>
                             <span style={{ color: "red" }}> *</span>
                             <input

@@ -684,7 +684,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
     temp.hcvRetreatmentNewRegimen = basicInfo.hepatitisCTreatment.hcvRetreatment
       .newRegimen
       ? ""
-      : " New regimen  is required";
+      : "  New regime is required";
 
     temp.hcvRetreatmentPrescribedDuration = basicInfo.hepatitisCTreatment
       .hcvRetreatment.prescribedDuration
@@ -1187,7 +1187,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="hbvRegimeSwitchNewRegimen">
-                              New Regimen
+                              New Regime
                               <span style={{ color: "red" }}> *</span>{" "}
                             </Label>
                             <input
@@ -1227,6 +1227,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                               type="date"
                               name="hbvRegimeSwitchDateStarted"
                               id="hbvRegimeSwitchDateStarted"
+                              max={moment(new Date()).format("YYYY-MM-DD")}
                               value={
                                 basicInfo.hepatitisBTreatment
                                   .hepatitisBRegimenSwitch.dateStarted
@@ -1259,6 +1260,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                               type="date"
                               name="hbvRegimeSwitchDateStopped"
                               id="hbvRegimeSwitchDateStopped"
+                              max={moment(new Date()).format("YYYY-MM-DD")}
                               value={
                                 basicInfo.hepatitisBTreatment
                                   .hepatitisBRegimenSwitch.dateStopped
@@ -1541,6 +1543,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                             className="form-control"
                             type="date"
                             name="hcvTreatmentExperience"
+                            max={moment(new Date()).format("YYYY-MM-DD")}
                             id="hcvTreatmentExperience"
                             value={
                               basicInfo.hepatitisCTreatment.treatmentExperience
@@ -1605,6 +1608,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                             className="form-control"
                             type="date"
                             name="hcvDateStarted"
+                            max={moment(new Date()).format("YYYY-MM-DD")}
                             id="hcvDateStarted"
                             value={basicInfo.hepatitisCTreatment.dateStarted}
                             onChange={handleInputChangeBasicHC}
@@ -1632,6 +1636,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                             className="form-control"
                             type="date"
                             name="hcvDateCompleted"
+                            max={moment(new Date()).format("YYYY-MM-DD")}
                             id="hcvDateCompleted"
                             value={basicInfo.hepatitisCTreatment.dateCompleted}
                             onChange={handleInputChangeBasicHC}
@@ -1658,6 +1663,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                             className="form-control"
                             type="date"
                             name="hcvDateStopped"
+                            max={moment(new Date()).format("YYYY-MM-DD")}
                             id="hcvDateStopped"
                             value={basicInfo.hepatitisCTreatment.dateStopped}
                             onChange={handleInputChangeBasicHC}
@@ -1809,6 +1815,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                               name="svr12TestingDateStarted"
                               id="svr12TestingDateStarted"
                               type="date"
+                              max={moment(new Date()).format("YYYY-MM-DD")}
                               value={
                                 basicInfo.hepatitisCTreatment
                                   .hepatitisSvr12Testing.dateTested
@@ -1927,6 +1934,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                               className="form-control"
                               name="svr12RetreatmentDateTested"
                               id="svr12RetreatmentDateTested"
+                              max={moment(new Date()).format("YYYY-MM-DD")}
                               value={
                                 basicInfo.hepatitisCTreatment
                                   .hepatitisSvr12Testing.retreatmentDateTested
@@ -2080,7 +2088,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="hcvRetreatmentNewRegimen">
-                              New regimen
+                              New regime
                             </Label>
                             <span style={{ color: "red" }}> *</span>
                             <input
@@ -2154,6 +2162,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                               className="form-control"
                               name="hcvRetreatmentDateStarted"
                               id="hcvRetreatmentDateStarted"
+                              max={moment(new Date()).format("YYYY-MM-DD")}
                               type="date"
                               value={
                                 basicInfo.hepatitisCTreatment.hcvRetreatment
@@ -2186,6 +2195,7 @@ const ViralHepatitisForm3 = ({ setStep }) => {
                               className="form-control"
                               name="hcvRetreatmentDateStopped"
                               id="hcvRetreatmentDateStopped"
+                              max={moment(new Date()).format("YYYY-MM-DD")}
                               type="date"
                               value={
                                 basicInfo.hepatitisCTreatment.hcvRetreatment

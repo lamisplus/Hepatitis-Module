@@ -1926,6 +1926,7 @@ const UserRegistration = (props) => {
                           className="form-control"
                           type="date"
                           name="dateEnrolled"
+                          max={moment(new Date()).format("YYYY-MM-DD")}
                           id="dateEnrolled"
                           value={objValues.dateEnrolled}
                           onChange={handleInputChange}
@@ -2010,6 +2011,7 @@ const UserRegistration = (props) => {
                           className="form-control"
                           type="date"
                           name="dateOfLastHivNegativeTest"
+                          max={moment(new Date()).format("YYYY-MM-DD")}
                           id="dateOfLastHivNegativeTest"
                           value={objValues.dateOfLastHivNegativeTest}
                           onChange={handleInputChange}
@@ -2035,6 +2037,7 @@ const UserRegistration = (props) => {
                           className="form-control"
                           type="date"
                           name="dateReferredForPrep"
+                          max={moment(new Date()).format("YYYY-MM-DD")}
                           id="dateReferredForPrep"
                           value={objValues.dateReferredForPrep}
                           onChange={handleInputChange}
