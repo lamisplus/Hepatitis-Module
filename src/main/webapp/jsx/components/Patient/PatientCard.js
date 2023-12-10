@@ -162,6 +162,7 @@ function PatientCard(props) {
                     Patient ID :{" "}
                     <b style={{ color: "#0B72AA" }}>
                       {patientObj?.hospitalNumber}
+                      {console.log(patientObj?.hospitalNumber)}
                     </b>
                   </span>
                 </Col>

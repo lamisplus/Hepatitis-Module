@@ -164,7 +164,7 @@ const EnrolmentSubmittedForm = ({
       sexId: patientInfo?.gender.toLowerCase === "female" ? 377 : 376,
       surname: "",
     },
-    personId: "",
+    personId: allPatientInfo.id,
     weight: "",
   });
 
@@ -941,7 +941,7 @@ const EnrolmentSubmittedForm = ({
 
     // }
   }, []);
-
+  console.log(patientObj);
   //   runs when never there is change in patient form
   useEffect(() => {
     setInfo({
@@ -1006,10 +1006,17 @@ const EnrolmentSubmittedForm = ({
         identifier: [
           {
             assignerId: 0,
-            type: "",
-            value: "",
+            type: "HospitalNumber",
+            value: patientInfo?.hospitalNumber,
           },
         ],
+        contactPoint: [
+          {
+            type: "phone",
+            value: allPatientInfo?.contactPoint?.contactPoint[0]?.value,
+          },
+        ],
+
         isDateOfBirthEstimated: patientInfo?.isDateOfBirthEstimated,
         maritalStatusId: allPatientInfo?.maritalStatus?.id,
         ninNumber: allPatientInfo?.ninNumber,
@@ -1018,12 +1025,12 @@ const EnrolmentSubmittedForm = ({
         sexId: patientInfo?.gender.toLowerCase === "female" ? 377 : 376,
         surname: patientInfo?.surname,
       },
-      personId: patientInfo?.id,
+      personId: allPatientInfo?.id,
       weight: patientInfo?.weight,
     });
 
     getProvincesForFilledForm();
-  }, [patientInfo, allPatientInfo]);
+  }, [patientInfo, allPatientInfo, patientObj]);
 
   // calculate bmi when weight and height changes
   useEffect(() => {

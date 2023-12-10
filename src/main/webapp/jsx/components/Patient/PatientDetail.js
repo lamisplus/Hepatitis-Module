@@ -58,6 +58,7 @@ function PatientCard(props) {
   let history = useHistory();
   const [art, setArt] = useState(false);
   const [recentActivities, setRecentActivities] = useState([]);
+  const [allPatientInfo, setAllPatientInfo] = useState({});
 
   const [activeContent, setActiveContent] = useState({
     route: "recent-history",
@@ -77,6 +78,20 @@ function PatientCard(props) {
       : {};
 
   console.log(patientObj);
+
+  const getFullPatientDetail = (value) => {
+    axios
+      .get(`${baseUrl}patient/${patientObj.id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        console.log(response.data);
+        setAllPatientInfo(response.data);
+      })
+      .catch((error) => {
+        //console.log(error);
+      });
+  };
   const getRecentActivties = () => {
     axios
       .get(`${baseUrl}hepatitis/activities/${patientObj.personUuid}`, {
@@ -114,6 +129,7 @@ function PatientCard(props) {
         <CardContent>
           <PatientCardDetail
             patientObj={patientObj}
+            allPatientInfo={allPatientInfo}
             setArt={setArt}
             setActiveContent={setActiveContent}
           />
