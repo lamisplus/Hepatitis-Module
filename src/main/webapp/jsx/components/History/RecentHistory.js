@@ -54,20 +54,19 @@ const RecentHistory = (props) => {
   }, [props.patientObj.id, props.allRecentActivities]);
   ///GET LIST OF Infants
 
-  const InfantInfo = () => {
-    axios
-      .get(
-        `${baseUrl}pmtct/anc/get-infant-by-ancno/${props.patientObj.ancNo}`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      )
-      .then((response) => {
-        setInfants(response.data);
-      })
+  // const InfantInfo = () => {
+  //   axios
+  //     .get(
+  //       `${baseUrl}pmtct/anc/get-infant-by-ancno/${props.patientObj.ancNo}`,
+  //       { headers: { Authorization: `Bearer ${token}` } }
+  //     )
+  //     .then((response) => {
+  //       setInfants(response.data);
+  //     })
 
-      .catch((error) => {
-        //console.log(error);
-      });
-  };
+  //     .catch((error) => {
+  //     });
+  // };
 
   // const RecentActivities = () => {
   //   axios
@@ -81,18 +80,7 @@ const RecentHistory = (props) => {
 
   //     });
   // };
-  const SummaryChart = () => {
-    axios
-      .get(`${baseUrl}pmtct/anc/get-summary-chart/${props.patientObj.ancNo}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        setSummaryChart(response.data);
-      })
-      .catch((error) => {
-        //console.log(error);
-      });
-  };
+
   const ActivityName = (name) => {
     if (name === "pmtct-enrollment") {
       return "PE";
@@ -160,14 +148,12 @@ const RecentHistory = (props) => {
   const LoadDeletePage = (row) => {
     if (row.path === "anc-enrollment") {
       setSaving(true);
-      //props.setActiveContent({...props.activeContent, route:'mental-health-view', id:row.id})
       axios
         .delete(`${baseUrl}pmtct/anc/delete/anc/${row.recordId}`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
           toast.success("Record Deleted Successfully");
-          // RecentActivities();
           toggle();
           setSaving(false);
         })
@@ -186,14 +172,12 @@ const RecentHistory = (props) => {
         });
     } else if (row.path === "pmtct-enrollment") {
       setSaving(true);
-      //props.setActiveContent({...props.activeContent, route:'art-commencement-view', id:row.id})
       axios
         .delete(`${baseUrl}pmtct/anc/delete/pmtct/${row.recordId}`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
           toast.success("Record Deleted Successfully");
-          // RecentActivities();
           toggle();
           setSaving(false);
         })
@@ -212,14 +196,12 @@ const RecentHistory = (props) => {
         });
     } else if (row.path === "anc-delivery") {
       setSaving(false);
-      //props.setActiveContent({...props.activeContent, route:'art-commencement-view', id:row.id})
       axios
         .delete(`${baseUrl}pmtct/anc/delete/delivery/${row.recordId}`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
           toast.success("Record Deleted Successfully");
-          // RecentActivities();
           toggle();
           setSaving(false);
         })
@@ -640,7 +622,7 @@ const RecentHistory = (props) => {
           </>
         )} */}
 
-        <Modal
+        {/* <Modal
           show={open}
           toggle={toggle}
           className="fade"
@@ -676,7 +658,7 @@ const RecentHistory = (props) => {
               No
             </Button>
           </Modal.Footer>
-        </Modal>
+        </Modal> */}
       </div>
     </Fragment>
   );

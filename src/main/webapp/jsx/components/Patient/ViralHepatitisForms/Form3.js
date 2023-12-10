@@ -8,6 +8,8 @@ import {
   faEdit,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
+import { Link, useHistory, useLocation } from "react-router-dom";
+
 import { makeStyles } from "@material-ui/core/styles";
 import { Card, CardContent } from "@material-ui/core";
 import moment from "moment";
@@ -97,9 +99,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ViralHepatitisForm3 = ({ setStep }) => {
+const ViralHepatitisForm3 = ({ setStep, userStatus }) => {
   const [userId, setUserId] = useState(getCookie("enrollmentIds"));
-
+  const history = useHistory();
   const [basicInfo, setBasicInfo] = useState({
     enrollmentUuid: userId?.enrollmentUuid,
     hepatitisBTreatment: {
@@ -819,7 +821,12 @@ const ViralHepatitisForm3 = ({ setStep }) => {
       deleteCookie("heaptitis2PayloadValue");
       deleteCookie("hepatitis1");
       deleteCookie("heaptitis1PayloadValue");
-      setStep(0);
+
+      if (userStatus === "new") {
+        setStep(0);
+      } else {
+        history.push("/");
+      }
       return response.data;
     } catch (error) {
       // Handle any errors that occurred during the request

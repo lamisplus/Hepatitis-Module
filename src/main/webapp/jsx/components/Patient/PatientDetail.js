@@ -11,13 +11,14 @@ import { token, url as baseUrl } from "../../../api";
 import axios from "axios";
 import SubMenu from "./SubMenu";
 import RecentHistory from "./../History/RecentHistory";
-import PatientHistory from "./../History/PatientHistory";
+// import PatientVaccinationHistory from "./../Vaccination/VaccinationHistory";
 import Biometrics from "./Biometric";
 import AddmissionHome from "./../Admission/AddmissionHome";
 import PatientVaccinationHistory from "./../Vaccination/VaccinationHistory";
 import DashboardForm2 from "./ViralHepatitisForms/DashboardForm2";
 import DasboardTreatmentForm from "./ViralHepatitisForms/DashboardTreatmentForm";
-
+import DashboardEnrollmentForm from "./ViralHepatitisForms/DashboardEnrollmentForm";
+import PatientHistory from "./PatientHistoryy";
 const styles = (theme) => ({
   root: {
     width: "100%",
@@ -131,6 +132,16 @@ function PatientCard(props) {
               allRecentActivities={recentActivities}
             />
           )}
+
+          {/* {activeContent.route === "enrollment" && (
+            <DashboardEnrollmentForm
+              patientObj={patientObj}
+              setActiveContent={setActiveContent}
+              activeContent={activeContent}
+              userStatus={true}
+            />
+          )} */}
+
           {activeContent.route === "diagnosis" && (
             <DashboardForm2
               patientObj={patientObj}
@@ -145,7 +156,14 @@ function PatientCard(props) {
               activeContent={activeContent}
             />
           )}
-
+          {activeContent.route === "patient-history" && (
+            <PatientHistory
+              patientObj={patientObj}
+              setActiveContent={setActiveContent}
+              activeContent={activeContent}
+              recentActivities={recentActivities}
+            />
+          )}
           {/*  {activeContent.route==='biometrics' &&(<Biometrics patientObj={patientObj} setActiveContent={setActiveContent} activeContent={activeContent}/>)}
           {activeContent.route==='addmission' &&( <AddmissionHome patientObj={patientObj} setActiveContent={setActiveContent} activeContent={activeContent} />)}
           {activeContent.route==='vaccination' &&( <PatientVaccinationHistory patientObj={patientObj} setActiveContent={setActiveContent} activeContent={activeContent}/>)}

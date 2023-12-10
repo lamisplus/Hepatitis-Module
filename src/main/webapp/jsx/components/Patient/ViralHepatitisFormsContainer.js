@@ -37,7 +37,13 @@ const ViralHepatitisFormsContainer = (props) => {
       />
     ),
     1: <ViralHepatitisForm2 step={step} setStep={setStep} />,
-    2: <ViralHepatitisForm3 step={step} setStep={setStep} />,
+    2: (
+      <ViralHepatitisForm3
+        step={step}
+        setStep={setStep}
+        userStatus={locationState.existingPatient}
+      />
+    ),
     // 3: <FollowupForm step={step} setStep={setStep}/>,
     // 4: <LaboratoryRegister/>,
   };

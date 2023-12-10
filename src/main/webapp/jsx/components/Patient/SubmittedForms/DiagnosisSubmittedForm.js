@@ -103,9 +103,12 @@ const DiagnosisSubmitedForm = ({
   setStep,
   userStatus,
   patientObj,
-  diagnosisInfo,
+  id,
+
   enrollmentUuid,
 }) => {
+  const [diagnosisInfo, setDiagnosisInfo] = useState({});
+
   const [userId, setUserId] = useState(getCookie("enrollmentIds"));
 
   const [basicInfo, setBasicInfo] = useState({
@@ -234,7 +237,7 @@ const DiagnosisSubmitedForm = ({
   const postDataWithToken = async (data) => {
     try {
       const response = await axios.put(
-        `${apiUrl}hepatitis/update-hepatitis-diagnosis/${enrollmentUuid}`,
+        `${apiUrl}hepatitis/update-hepatitis-diagnosis/${id}`,
         data,
         {
           headers: {
@@ -245,7 +248,7 @@ const DiagnosisSubmitedForm = ({
       );
       // Handle the response if needed
       console.log("Post successful:", response.data);
-      toast.success("Enrolment submitted successfully");
+      toast.success("Diagnosis submitted successfully");
 
       setCookie(
         "enrollmentIds",
@@ -348,6 +351,26 @@ const DiagnosisSubmitedForm = ({
     }
   };
 
+  const viewHepatitisDiagnosis = (eId) => {
+    // /view-hepatitis-diagnosis-by-id/{id}
+    console.log(id);
+    axios
+      .get(`${apiUrl}hepatitis/view-hepatitis-diagnosis-by-id/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        console.log("this is it", response.data);
+        setDiagnosisInfo(response.data);
+        // setEnrollmentUuid(response.data.id);
+      })
+      .catch((error) => {
+        //console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    viewHepatitisDiagnosis();
+  }, []);
   console.log(" userId?.enrollmentUuid", enrollmentUuid);
   useEffect(() => {
     castCookieValueToForm();
@@ -413,15 +436,17 @@ const DiagnosisSubmitedForm = ({
         hbeAG: diagnosisInfo?.hepatitisBTest?.hbeAG,
         // attaching missing props
         dateHbvDnaResultReported: `${
-          diagnosisInfo?.hepatitisBTest?.dateHbvDnaResultReported.year
+          diagnosisInfo?.hepatitisBTest?.dateHbvDnaResultReported?.year
         }-${
-          diagnosisInfo?.hepatitisBTest?.dateHbvDnaResultReported.monthValue
+          diagnosisInfo?.hepatitisBTest?.dateHbvDnaResultReported?.monthValue
         }-${
-          diagnosisInfo?.hepatitisBTest?.dateHbvDnaResultReported.dayOfMonth.toString()
+          diagnosisInfo?.hepatitisBTest?.dateHbvDnaResultReported?.dayOfMonth.toString()
             .length > 1
-            ? diagnosisInfo?.hepatitisBTest?.dateHbvDnaResultReported.dayOfMonth
+            ? diagnosisInfo?.hepatitisBTest?.dateHbvDnaResultReported
+                ?.dayOfMonth
             : "0" +
-              diagnosisInfo?.hepatitisBTest?.dateHbvDnaResultReported.dayOfMonth
+              diagnosisInfo?.hepatitisBTest?.dateHbvDnaResultReported
+                ?.dayOfMonth
         }`,
         hbsAgQuantification: diagnosisInfo?.hepatitisBTest?.hbsAgQuantification,
         hbvDna: diagnosisInfo?.hepatitisBTest?.hbvDna,
