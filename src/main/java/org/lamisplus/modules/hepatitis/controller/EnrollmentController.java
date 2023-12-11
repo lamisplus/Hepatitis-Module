@@ -67,6 +67,16 @@ public class EnrollmentController {
         return ResponseEntity.ok (enrollmentService.viewHepatitisDiagnosisByEnrollmentUuid(enrollmentUuid));
     }
 
+    @GetMapping(value = "view-hepatitis-diagnosis-by-id/{id}")
+    public ResponseEntity<HepatitisDiagnosis> viewHepatitisDiagnosisById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok (enrollmentService.viewHepatitisDiagnosisById(id));
+    }
+
+    @GetMapping(value = "view-hepatitis-treatment-by-id/{id}")
+    public ResponseEntity<HepatitisTreatment> viewHepatitisTreatmentById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok (enrollmentService.viewHepatitisTreatmentById(id));
+    }
+
     @GetMapping(value = "view-hepatitis-treatment/{enrollmentUuid}")
     public ResponseEntity<HepatitisTreatment> viewHepatitisTreatment(@PathVariable("enrollmentUuid") String enrollmentUuid) {
         return ResponseEntity.ok (enrollmentService.viewHepatitisTreatmentByEnrollmentUuid(enrollmentUuid));
