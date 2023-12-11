@@ -66,7 +66,7 @@ const styles = (theme) => ({
 function PatientCard(props) {
   const { classes } = props;
   const patientObj = props.patientObj;
-  //const [patientObj, setpatientObj] = useState(patientObjs)
+  const [patientObj2, setpatientObj2] = useState({});
   // const [biometricStatus, setBiometricStatus] = useState(false);
   // const [devices, setDevices] = useState([]);
   //const [biometricModal, setBiometricModal] = useState(false);
@@ -74,9 +74,23 @@ function PatientCard(props) {
   // const [hivStatus, setHivStatus] = useState();
   console.log(patientObj);
 
+  const getFullPatientDetail = (value) => {
+    axios
+      .get(`${baseUrl}patient/${patientObj.id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        console.log(response.data);
+        setpatientObj2(response.data);
+      })
+      .catch((error) => {
+        //console.log(error);
+      });
+  };
   useEffect(() => {
     //PatientCurrentStatus();
     //CheckBiometric();
+    getFullPatientDetail();
   }, [props.patientObj]);
 
   const get_age = (dob) => {
@@ -147,7 +161,8 @@ function PatientCard(props) {
                     {" "}
                     Patient ID :{" "}
                     <b style={{ color: "#0B72AA" }}>
-                      {patientObj.hospitalNumber}
+                      {patientObj?.hospitalNumber}
+                      {console.log(patientObj?.hospitalNumber)}
                     </b>
                   </span>
                 </Col>
@@ -155,20 +170,22 @@ function PatientCard(props) {
                 <Col md={4} className={classes.root2}>
                   <span>
                     Date Of Birth :{" "}
-                    <b style={{ color: "#0B72AA" }}>{patientObj.dateOfBirth}</b>
+                    <b style={{ color: "#0B72AA" }}>
+                      {patientObj?.dateOfBirth}
+                    </b>
                   </span>
                 </Col>
                 <Col md={4} className={classes.root2}>
                   <span>
                     {" "}
-                    Age : <b style={{ color: "#0B72AA" }}>{patientObj.age}</b>
+                    Age : <b style={{ color: "#0B72AA" }}>{patientObj?.age}</b>
                   </span>
                 </Col>
                 <Col md={4}>
                   <span>
                     {" "}
                     Gender :{" "}
-                    <b style={{ color: "#0B72AA" }}>{patientObj.gender}</b>
+                    <b style={{ color: "#0B72AA" }}>{patientObj?.gender}</b>
                   </span>
                 </Col>
                 <Col md={4} className={classes.root2}>
@@ -176,7 +193,7 @@ function PatientCard(props) {
                     {" "}
                     Phone Number :{" "}
                     <b style={{ color: "#0B72AA" }}>
-                      {patientObj.phone !== null ? patientObj.phone : ""}
+                      {patientObj2?.contactPoint?.contactPoint[0]?.value}
                     </b>
                   </span>
                 </Col>
@@ -185,7 +202,7 @@ function PatientCard(props) {
                     {" "}
                     Address :{" "}
                     <b style={{ color: "#0B72AA" }}>
-                      {patientObj.address !== null ? patientObj.address : ""}{" "}
+                      {patientObj2?.address?.address[0]?.city}
                     </b>
                   </span>
                 </Col>

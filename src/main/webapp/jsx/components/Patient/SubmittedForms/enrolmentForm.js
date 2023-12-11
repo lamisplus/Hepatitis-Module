@@ -164,11 +164,10 @@ const EnrolmentSubmittedForm = ({
       sexId: patientInfo?.gender.toLowerCase === "female" ? 377 : 376,
       surname: "",
     },
-    personId: "",
+    personId: allPatientInfo.id,
     weight: "",
   });
 
-  console.log(patientObj, patientObj?.careEntryPoint);
   const [hospitalNumStatus, setHospitalNumStatus] = useState(false);
   const [genders, setGenders] = useState([]);
 
@@ -430,6 +429,7 @@ const EnrolmentSubmittedForm = ({
   //fetch province
   const getProvinces = (e) => {
     const stateId = e?.target?.value;
+
     // setBasicInfo({ ...basicInfo, stateId: e?.target?.value });
     axios
       .get(`${apiUrl}organisation-units/parent-organisation-units/${stateId}`, {
@@ -440,7 +440,22 @@ const EnrolmentSubmittedForm = ({
       })
       .catch((error) => {});
   };
+  //  allPatientInfo?.address?.address[0]?.stateId
 
+  //fetch province
+  const getProvincesForFilledForm = () => {
+    const stateId = allPatientInfo?.address?.address[0]?.stateId;
+
+    // setBasicInfo({ ...basicInfo, stateId: e?.target?.value });
+    axios
+      .get(`${apiUrl}organisation-units/parent-organisation-units/${stateId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        setProvinces(response.data.sort());
+      })
+      .catch((error) => {});
+  };
   const postDataWithToken = async (data) => {
     try {
       const response = await axios.put(
@@ -454,7 +469,6 @@ const EnrolmentSubmittedForm = ({
         }
       );
       // Handle the response if needed
-      console.log("Post successful:", response.data);
       toast.success("Enrolment submitted successfully");
 
       setCookie(
@@ -470,7 +484,6 @@ const EnrolmentSubmittedForm = ({
     } catch (error) {
       // Handle any errors that occurred during the request
       toast.error("Enrolment failed");
-      console.error("Error posting data:", error.message);
       throw error;
     }
   };
@@ -558,8 +571,6 @@ const EnrolmentSubmittedForm = ({
     let heightSquare = basicInfo.height * basicInfo.height;
 
     setBasicInfo({ ...basicInfo, bmi: mass / heightSquare });
-
-    console.log(mass / heightSquare);
 
     return mass / heightSquare;
   };
@@ -678,8 +689,6 @@ const EnrolmentSubmittedForm = ({
         },
       });
     } else if (e.target.name === "genderId" && e.target.value !== "") {
-      console.log(e.target.name);
-
       setBasicInfo({
         ...basicInfo,
         personDto: {
@@ -903,12 +912,11 @@ const EnrolmentSubmittedForm = ({
       .then((response) => {
         setPatientInfo({ ...patientInfo, ...response.data });
       })
-      .catch((error) => {
-        //console.log(error);
-      });
+      .catch((error) => {});
   };
 
   console.log("this is the person object", patientInfo);
+  console.log("this is the  full person object", allPatientInfo);
 
   useEffect(() => {
     castCookieValueToForm();
@@ -930,30 +938,30 @@ const EnrolmentSubmittedForm = ({
     // getHepatitisPoint();
     // if (action === "view") {
     viewHepatitisEnrollment();
+
     // }
   }, []);
-
+  console.log(patientObj);
   //   runs when never there is change in patient form
   useEffect(() => {
     setInfo({
       countryId: 1,
       stateId: allPatientInfo?.address?.address[0]?.stateId,
       dateOfBirth: patientInfo?.dateOfBirth,
-      educationId: patientInfo?.educationId,
-      employmentStatusId: patientInfo?.employmentStatusId,
+      educationId: allPatientInfo?.education?.id,
+      employmentStatusId: allPatientInfo?.employmentStatus?.id,
       district: allPatientInfo?.address?.address[0]?.district,
       value: patientInfo?.hospitalNumber,
     });
-
     setBasicInfo({
-      bmi: "",
+      bmi: patientInfo?.bmi,
       hepatitisB: patientInfo?.hepatitisB,
       height: patientInfo?.height,
       // streetAddress: "",
       // address: [],
       careEntryPoint: patientInfo?.careEntryPoint,
       age: patientInfo?.age,
-      phoneNumber: patientInfo?.phoneNumber,
+      phoneNumber: allPatientInfo?.contactPoint?.contactPoint[0]?.value,
       altPhonenumber: patientInfo?.altPhonenumber,
       pregnancy: patientInfo?.pregnancy,
       breastfeeding: patientInfo?.breastfeeding,
@@ -962,8 +970,13 @@ const EnrolmentSubmittedForm = ({
         dateOfFirstHepatitisBPositiveScreening: `${
           patientInfo?.screening?.dateOfFirstHepatitisBPositiveScreening.year
         }-${
-          patientInfo?.screening?.dateOfFirstHepatitisBPositiveScreening
-            .monthValue
+          patientInfo?.screening?.dateOfFirstHepatitisBPositiveScreening.monthValue.toString()
+            .length > 1
+            ? patientInfo?.screening?.dateOfFirstHepatitisBPositiveScreening
+                .monthValue
+            : "0" +
+              patientInfo?.screening?.dateOfFirstHepatitisBPositiveScreening
+                .monthValue
         }-${
           patientInfo?.screening?.dateOfFirstHepatitisBPositiveScreening.dayOfMonth.toString()
             .length > 1
@@ -989,26 +1002,35 @@ const EnrolmentSubmittedForm = ({
         educationId: patientInfo?.educationId,
         employmentStatusId: patientInfo?.employmentStatusId,
         firstName: patientInfo?.firstName,
-        genderId: patientInfo?.gender.toLowerCase() === "female" ? 377 : 376,
+        genderId: allPatientInfo?.gender?.id,
         identifier: [
           {
             assignerId: 0,
-            type: "",
-            value: "",
+            type: "HospitalNumber",
+            value: patientInfo?.hospitalNumber,
           },
         ],
+        contactPoint: [
+          {
+            type: "phone",
+            value: allPatientInfo?.contactPoint?.contactPoint[0]?.value,
+          },
+        ],
+
         isDateOfBirthEstimated: patientInfo?.isDateOfBirthEstimated,
-        maritalStatusId: patientInfo?.maritalStatusId,
-        ninNumber: patientInfo?.ninNumber,
+        maritalStatusId: allPatientInfo?.maritalStatus?.id,
+        ninNumber: allPatientInfo?.ninNumber,
         organizationId: patientInfo?.organizationId,
         otherName: patientInfo?.otherName,
         sexId: patientInfo?.gender.toLowerCase === "female" ? 377 : 376,
         surname: patientInfo?.surname,
       },
-      personId: patientInfo?.id,
+      personId: allPatientInfo?.id,
       weight: patientInfo?.weight,
     });
-  }, [patientInfo, allPatientInfo]);
+
+    getProvincesForFilledForm();
+  }, [patientInfo, allPatientInfo, patientObj]);
 
   // calculate bmi when weight and height changes
   useEffect(() => {
@@ -1339,7 +1361,6 @@ const EnrolmentSubmittedForm = ({
                     </div>
 
                     <div className="form-group mb-3 col-md-4">
-                      {console.log(info.district)}
                       <FormGroup>
                         <Label>
                           Province/District/LGA{" "}
@@ -1360,7 +1381,7 @@ const EnrolmentSubmittedForm = ({
                         >
                           <option value="">Select</option>
                           {provinces.map((value, index) => (
-                            <option key={index} value={value.id}>
+                            <option key={index} value={Number(value.id)}>
                               {value.name}
                             </option>
                           ))}
@@ -1571,10 +1592,7 @@ const EnrolmentSubmittedForm = ({
                         >
                           <option value="">Select</option>
                           {occupationOptions.map((item, index) => (
-                            <option
-                              value={Number(item.id)}
-                              key={Number(item.id)}
-                            >
+                            <option value={Number(item.id)} key={index}>
                               {item.display}
                             </option>
                           ))}
@@ -1599,7 +1617,7 @@ const EnrolmentSubmittedForm = ({
                           name="maritalStatusId"
                           id="maritalStatusId"
                           disabled={action === "view" ? true : false}
-                          value={basicInfo.maritalStatusId}
+                          value={basicInfo?.personDto?.maritalStatusId}
                           onChange={handleInputChangeBasic}
                           // onBlur={formik.handleBlur}
                           style={{
@@ -1609,7 +1627,7 @@ const EnrolmentSubmittedForm = ({
                         >
                           <option value="">Select</option>
                           {maritalStatusOptions.map((item, index) => (
-                            <option value={Number(item.id)}>
+                            <option value={Number(item.id)} key={index}>
                               {item.display}
                             </option>
                           ))}
@@ -1644,7 +1662,7 @@ const EnrolmentSubmittedForm = ({
                         >
                           <option>Select</option>
                           {educationOptions.map((item, index) => (
-                            <option value={Number(item.id)}>
+                            <option value={Number(item.id)} key={index}>
                               {item.display}
                             </option>
                           ))}
@@ -1659,7 +1677,7 @@ const EnrolmentSubmittedForm = ({
                       </FormGroup>
                     </div>
 
-                    <div className="form-group mb-3 col-md-4">
+                    {/* <div className="form-group mb-3 col-md-4">
                       <FormGroup>
                         <Label for="relationship">
                           Relationship <span style={{ color: "red" }}> *</span>{" "}
@@ -1671,7 +1689,6 @@ const EnrolmentSubmittedForm = ({
                           id="relationship"
                           value={basicInfo.relationship}
                           onChange={handleInputChangeBasic}
-                          // onBlur={formik.handleBlur}
                           style={{
                             border: "1px solid #014D88",
                             borderRadius: "0.2rem",
@@ -1692,7 +1709,7 @@ const EnrolmentSubmittedForm = ({
                           ""
                         )}
                       </FormGroup>
-                    </div>
+                    </div> */}
 
                     <div className="form-group mb-3 col-md-4">
                       <FormGroup>
@@ -1714,7 +1731,7 @@ const EnrolmentSubmittedForm = ({
                         >
                           <option>Select</option>
                           {genders.map((item, index) => (
-                            <option value={Number(item.id)}>
+                            <option value={Number(item.id)} key={index}>
                               {item.display}
                             </option>
                           ))}
@@ -1797,7 +1814,6 @@ const EnrolmentSubmittedForm = ({
                           borderRadius: "0.2rem",
                         }}
                       >
-                        {console.log(basicInfo.careEntryPoint)}
                         <option value="">Select </option>
                         {carePoints.map((value) => (
                           <option key={value.id} value={value.id}>

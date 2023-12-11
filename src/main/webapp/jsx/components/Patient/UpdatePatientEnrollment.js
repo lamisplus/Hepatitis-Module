@@ -88,19 +88,20 @@ const UserRegistration = (props) => {
   const [enrollmentUuidT, setEnrollmentUuidT] = useState("");
   const [allPatientInfo, setAllPatientInfo] = useState({});
 
-  const viewHepatitisDiagnosis = (eId) => {
-    axios
-      .get(`${baseUrl}hepatitis/view-hepatitis-diagnosis/${eId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        setDiagnosisInfo(response.data);
-        setEnrollmentUuid(response.data.id);
-      })
-      .catch((error) => {
-        //console.log(error);
-      });
-  };
+  // console.log(locationState);
+  // const viewHepatitisDiagnosis = (eId) => {
+  //   axios
+  //     .get(`${baseUrl}view-hepatitis-diagnosis-by-id/${eId}`, {
+  //       headers: { Authorization: `Bearer ${token}` },
+  //     })
+  //     .then((response) => {
+  //       setDiagnosisInfo(response.data);
+  //       setEnrollmentUuid(response.data.id);
+  //     })
+  //     .catch((error) => {
+  //       //console.log(error);
+  //     });
+  // };
 
   const viewHepatitisTreatment = (eId) => {
     axios
@@ -115,7 +116,6 @@ const UserRegistration = (props) => {
         //console.log(error);
       });
   };
-
   const viewHepatitisEnrollment = (value) => {
     axios
       .get(
@@ -125,12 +125,11 @@ const UserRegistration = (props) => {
         }
       )
       .then((response) => {
-        viewHepatitisDiagnosis(response.data.uuid);
-        viewHepatitisTreatment(response.data.uuid);
+        setEnrollmentUuid(response.data.uuid);
+        // viewHepatitisDiagnosis(response.data.uuid);
+        // viewHepatitisTreatment(response.data.uuid);
       })
-      .catch((error) => {
-        //console.log(error);
-      });
+      .catch((error) => {});
   };
 
   const getFullPatientDetail = (value) => {
@@ -187,8 +186,9 @@ const UserRegistration = (props) => {
             <DiagnosisSubmitedForm
               action={locationState.actionType}
               patientObj={locationState.patientObj}
-              diagnosisInfo={diagnosisInfo}
+              // diagnosisInfo={diagnosisInfo}
               enrollmentUuid={enrollmentUuid}
+              id={locationState?.id}
             />
           )}
           {locationState.showForm.treatment && (
@@ -196,7 +196,8 @@ const UserRegistration = (props) => {
               action={locationState.actionType}
               patientObj={locationState.patientObj}
               treatmentInfo={treatmentInfo}
-              enrollmentUuid={enrollmentUuidT}
+              enrollmentUuid={enrollmentUuid}
+              id={locationState?.id}
             />
           )}
         </CardContent>

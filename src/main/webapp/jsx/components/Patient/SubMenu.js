@@ -57,8 +57,8 @@ function SubMenu(props) {
   const loadTreatment = (row) => {
     props.setActiveContent({ ...props.activeContent, route: "treatment" });
   };
-  const loadAddmission = (row) => {
-    props.setActiveContent({ ...props.activeContent, route: "addmission" });
+  const loadEnrollment = (row) => {
+    props.setActiveContent({ ...props.activeContent, route: "enrollment" });
   };
   const onClickDischarge = (row) => {
     props.setActiveContent({ ...props.activeContent, route: "discharge" });
@@ -68,7 +68,7 @@ function SubMenu(props) {
   };
   const loadPatientHistory = () => {
     //setActiveItem('history')
-    props.setActivZContent({
+    props.setActiveContent({
       ...props.activeContent,
       route: "patient-history",
     });
@@ -78,18 +78,12 @@ function SubMenu(props) {
     <div>
       <Menu size="large" color={"black"} inverted>
         <Menu.Item onClick={() => onClickHome()}> Home</Menu.Item>
-        {diagnosisActivities && (
-          <Menu.Item onClick={() => loadVaccination()}>Diagnosis</Menu.Item>
-        )}
+        {/* <Menu.Item onClick={() => loadEnrollment()}>Enrollment</Menu.Item> */}
 
-        {treatmentActivities && (
-          <Menu.Item onClick={() => loadTreatment()}>Treatment</Menu.Item>
-        )}
+        {<Menu.Item onClick={() => loadVaccination()}>Diagnosis</Menu.Item>}
 
-        {/* <Menu.Item onClick={() => loadAddmission()} >Addmission</Menu.Item>
-                <Menu.Item onClick={() => loadIcu()} >Patient ICU</Menu.Item>
-                <Menu.Item onClick={() => onClickDischarge()} > Discharg/Death</Menu.Item>
-                <Menu.Item onClick={() => loadPatientHistory(patientObj)} >History</Menu.Item>                     */}
+        <Menu.Item onClick={() => loadTreatment()}>Treatment</Menu.Item>
+        <Menu.Item onClick={() => loadPatientHistory()}>History</Menu.Item>
       </Menu>
     </div>
   );

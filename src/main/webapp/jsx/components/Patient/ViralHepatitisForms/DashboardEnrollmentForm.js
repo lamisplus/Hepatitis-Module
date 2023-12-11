@@ -99,7 +99,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
+const DashboardEnrollmentForm = ({
+  userStatus,
+  patientObj,
+  setActiveContent,
+}) => {
   const [info, setInfo] = useState({
     countryId: 1,
     stateId: "",
@@ -108,12 +112,12 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
     employmentStatusId: "",
     district: "",
     value: "",
-    city: "",
   });
   const [basicInfo, setBasicInfo] = useState({
     bmi: "",
     hepatitisB: "",
     height: "",
+    streetAddress: "",
     // address: [],
     careEntryPoint: "",
     age: "",
@@ -130,16 +134,9 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
       active: true,
       address: [
         {
-          city: info.city,
           countryId: info.countryId,
           stateId: info.stateId,
           district: "",
-        },
-      ],
-      contactPoint: [
-        {
-          type: "phone",
-          value: "",
         },
       ],
       dateOfBirth: "",
@@ -167,6 +164,7 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
   });
   const [hospitalNumStatus, setHospitalNumStatus] = useState(false);
 
+  console.log();
   const [genders, setGenders] = useState([]);
   const [maritalStatusOptions, setMaritalStatusOptions] = useState([]);
   const [educationOptions, setEducationOptions] = useState([]);
@@ -457,7 +455,6 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
         },
         1
       );
-      setStep(1);
       return response.data;
     } catch (error) {
       // Handle any errors that occurred during the request
@@ -519,7 +516,6 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
     setCookie("hepatitis1", values, 1);
     setCookie("heaptitis1PayloadValue", restructuredEnrolmentPayload, 1);
     postDataWithToken(restructuredEnrolmentPayload, "hepatitis/enrollment");
-    // setStep(1);
   };
   const classes = useStyles();
   const { formik } = useValidateForm1ValuesHook(onSubmitHandler);
@@ -584,54 +580,35 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
   // to capture the error
   let temp = { ...errors };
   const validate = () => {
-    if (userStatus === "new") {
-      //date of registration
-      temp.dateOfRegistration = info.dateOfRegistration
-        ? ""
-        : "Date of Registration is required.";
+    // if (userStatus === "new") {
 
-      //hospital number
-      temp.hospitalNumber = info.value ? "" : "Hospital Id is required";
+    //   temp.dateOfRegistration = info.dateOfRegistration
+    //     ? ""
+    //     : "Date of Registration is required.";
 
-      temp.city = info.city ? "" : "Address is required";
+    //   temp.hospitalNumber = info.value ? "" : "Hospital Id is required";
+    //   temp.streetAddress = basicInfo.streetAddress ? "" : "Address is required";
 
-      //Names
+    //   temp.surname = basicInfo.personDto.surname ? "" : "Surname is required";
+    //   temp.firstName = basicInfo.personDto.firstName
+    //     ? ""
+    //     : "First name is required";
 
-      temp.surname = basicInfo.personDto.surname ? "" : "Surname is required";
-      temp.firstName = basicInfo.personDto.firstName
-        ? ""
-        : "First name is required";
+    //   temp.phone = basicInfo.phone ? "" : "Phone Number  is required.";
 
-      //phone number
-      temp.phone = basicInfo.personDto.contactPoint[0].value
-        ? ""
-        : "Phone Number  is required.";
+    //   temp.stateId = info.stateId ? "" : "State is required.";
+    //   temp.district = info.district ? "" : "Province/LGA is required.";
 
-      //state and district
+    //   temp.dateOfBirth = info.dateOfBirth ? "" : "Date of Birth is required.";
 
-      temp.stateId = info.stateId ? "" : "State is required.";
-      temp.district = info.district ? "" : "Province/LGA is required.";
+    //   temp.maritalStatusId = basicInfo.personDto.maritalStatusId
+    //     ? ""
+    //     : "Marital Status is required";
 
-      //date of birth
-      temp.dateOfBirth = info.dateOfBirth ? "" : "Date of Birth is required.";
+    //   temp.educationId = info.educationId ? "" : "Education is required";
 
-      // Marital Status
-
-      temp.maritalStatusId = basicInfo.personDto.maritalStatusId
-        ? ""
-        : "Marital Status is required";
-
-      // Education
-      temp.educationId = info.educationId ? "" : "Education is required";
-
-      //Relationship
-      // temp.relationship = basicInfo.relationship
-      //   ? ""
-      //   : "Relationship is required";
-
-      //sex
-      temp.genderId = basicInfo.personDto.genderId ? "" : "sex is required";
-    }
+    //   temp.genderId = basicInfo.personDto.genderId ? "" : "sex is required";
+    // }
 
     temp.careEntryPoint = basicInfo.careEntryPoint
       ? ""
@@ -654,19 +631,7 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
 
   const checkPhoneNumberBasic = (e, inputName) => {
     const limit = 10;
-    setBasicInfo({
-      ...basicInfo,
-      personDto: {
-        ...basicInfo.personDto,
-        contactPoint: [
-          {
-            type: "phone",
-            value: e,
-          },
-        ],
-      },
-    });
-    // setBasicInfo({ ...basicInfo, [inputName]: e });
+    setBasicInfo({ ...basicInfo, [inputName]: e });
   };
 
   // handle input changes
@@ -763,7 +728,7 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
     } else {
       setInfo({ ...info, [e.target.name]: e.target.value });
     }
-    //manipulate input fields base on gender/sex
+    //manupulate inpute fields base on gender/sex
     if (e.target.name === "hospitalNumber") {
       if (e.target.value !== "") {
         async function getHosiptalNumber() {
@@ -783,7 +748,7 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
             errors.hospitalNumber = "";
           } else {
             errors.hospitalNumber = "";
-            toast.error("Error! Hospital Number already exist");
+            toast.error("Error! Hosiptal Number already exist");
             setHospitalNumStatus(true);
           }
         }
@@ -815,7 +780,6 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
               countryId: info.countryId,
               stateId: e.target.value,
               district: info.district,
-              city: info.city,
             },
           ],
         },
@@ -833,30 +797,12 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
               countryId: info.countryId,
               stateId: info.stateId,
               district: e.target.value,
-              city: info.city,
             },
           ],
         },
       });
 
       // getProvinces(e);
-    }
-
-    if (e.target.name === "city") {
-      setBasicInfo({
-        ...basicInfo,
-        personDto: {
-          ...basicInfo.personDto,
-          address: [
-            {
-              countryId: info.countryId,
-              stateId: info.stateId,
-              district: info.district,
-              city: e.target.value,
-            },
-          ],
-        },
-      });
     }
     if (e.target.name === "dateOfBirth" && e.target.value !== "") {
       handleDobChange(e);
@@ -939,25 +885,21 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
     window.scrollTo(0, 0);
 
     if (validate()) {
-      if (userStatus === "new") {
-        if (hospitalNumStatus) {
-          toast.error("Error! Hospital Number already exist");
-        } else {
-          postDataWithToken(basicInfo, "hepatitis/enrollment");
-        }
-      } else {
-        let userInfo = basicInfo;
-        delete userInfo.personDto;
-        delete userInfo.address;
+      //   if (userStatus) {
+      //     postDataWithToken(basicInfo, "hepatitis/enrollment");
+      //   } else {
+      let userInfo = basicInfo;
+      delete userInfo.personDto;
+      delete userInfo.address;
 
-        let newUserInfo = {
-          ...userInfo,
-          personId: patientObj.id,
-        };
-        postDataWithToken(newUserInfo, "hepatitis/enrollment");
+      let newUserInfo = {
+        ...userInfo,
+        personId: patientObj.id,
+      };
+      postDataWithToken(newUserInfo, "hepatitis/enrollment");
 
-        console.log(newUserInfo);
-      }
+      console.log(newUserInfo);
+      //   }
     }
   };
 
@@ -1179,7 +1121,7 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
                               ng: "...-...-....",
                               at: "(....) ...-....",
                             }}
-                            value={basicInfo.personDto.contactPoint[0].value}
+                            value={basicInfo.phoneNumber}
                             onChange={(e) => {
                               setErrors({ ...errors, phone: "" });
                               checkPhoneNumberBasic(e, "phone");
@@ -1338,17 +1280,19 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
                           <input
                             className="form-control"
                             type="text"
-                            name="city"
+                            name="streetAddress"
                             id="address"
-                            value={info.city}
-                            onChange={handleInputChangesForInfo}
+                            value={basicInfo.streetAddress}
+                            onChange={handleInputChangeBasic}
                             style={{
                               border: "1px solid #014D88",
                               borderRadius: "0.2rem",
                             }}
                           />
-                          {errors.city !== "" ? (
-                            <span className={classes.error}>{errors.city}</span>
+                          {errors.streetAddress !== "" ? (
+                            <span className={classes.error}>
+                              {errors.streetAddress}
+                            </span>
                           ) : (
                             ""
                           )}
@@ -2142,4 +2086,4 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
   );
 };
 
-export default ViralHepatitisForm1;
+export default DashboardEnrollmentForm;
