@@ -71,10 +71,10 @@ const Home = () => {
                     <HepatitisPatients />
                   </Tab>
 
-                  <Tab eventKey="vaccinated" title="Summary">
-                    {/* <PatientVaccinatedLIst /> */}
-                    <ViralHepatitisSummaryFormContainer />
-                  </Tab>
+                  {/* <Tab eventKey="vaccinated" title="Summary"> */}
+                  {/* <PatientVaccinatedLIst /> */}
+                  {/* <ViralHepatitisSummaryFormContainer /> */}
+                  {/* </Tab> */}
                 </Tabs>
               </div>
             </Card.Body>

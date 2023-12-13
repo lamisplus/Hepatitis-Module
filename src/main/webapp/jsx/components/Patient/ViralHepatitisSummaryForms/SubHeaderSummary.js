@@ -19,8 +19,8 @@ import { Collapse, IconButton } from "@material-ui/core";
 import { ExpandMore as ExpandMoreIcon } from "@material-ui/icons";
 import { useValidateSummaryValuesHook } from "../../../formSchemas/summaryFormsValidationSchema";
 import DynamicSummaryForm from "./DynamicSummaryForm";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
-import SubHeaderSummaryForm from "./SubHeaderSummary";
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
 const useStyles = makeStyles((theme) => ({
@@ -93,7 +93,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Reactive = () => {
+const SubHeaderSummaryForm = ({ headerText }) => {
   const classes = useStyles();
   const { formik } = useValidateSummaryValuesHook();
   const [isDropdownsOpen, setIsDropdownsOpen] = useState({
@@ -103,22 +103,42 @@ const Reactive = () => {
   });
   return (
     <>
-      {/* <Card className={classes.root}> */}
-      {/* <CardContent> */}
-      <SubHeaderSummaryForm headerText="DIAGNOSIS - Reactive" />
-      <SubHeaderSummaryForm headerText="DIAGNOSIS - Non-Reactive" />
-      <SubHeaderSummaryForm headerText="COMPLICATIONS - Fibrosis" />
-      <SubHeaderSummaryForm headerText="COMPLICATIONS - Cirrhosis" />
-      <SubHeaderSummaryForm headerText="COMPLICATIONS - Hepatocellular carcinoma" />
-      <SubHeaderSummaryForm headerText="TREATMENT - HBV DNA <2000 IU/ml" />
-      <SubHeaderSummaryForm headerText="TREATMENT - HBV DNA ≥2000 IU/ml" />
-      <SubHeaderSummaryForm headerText="TREATMENT - HBV DNA ≥200,000 IU/ml" />
-      <SubHeaderSummaryForm headerText="TREATMENT - HBeAg +ve" />
+      <div
+        className=""
+        style={{ padding: "0px", margin: "10px 5px 0 5px", border: "none" }}
+      >
+        <div className="">
+          <div
+            className="card-header"
+            style={{
+              backgroundColor: "rgb(216, 246, 255)",
+              color: "#fff",
+              fontWeight: "bolder",
 
+              // borderRadius: "0.2rem",
+            }}
+          >
+            <h5
+              className="card-title"
+              style={{
+                color: "black",
+                fontSize: "15px",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <h5>{headerText}</h5>
+              <VisibilityIcon />
+            </h5>
+          </div>
+          <DynamicSummaryForm />
+        </div>
+      </div>
       {/* </CardContent> */}
       {/* </Card> */}
     </>
   );
 };
 
-export default Reactive;
+export default SubHeaderSummaryForm;
