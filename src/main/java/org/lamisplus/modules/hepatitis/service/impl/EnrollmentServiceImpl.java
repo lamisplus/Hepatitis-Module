@@ -104,10 +104,10 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         HepatitisEnrollment enrollment = getHepatitisEnrollment(enrollmentId);
         HepatitisDiagnosis hepatitisDiagnosis = mapper.mapToDiagnosis(diagnosisDto);
         log.info("I am here 1");
-        if(diagnosisRepository.existsHepatitisDiagnosisByHepatitisEnrollmentUuid(enrollment.getUuid())) {
-            throw new RecordExistException(HepatitisEnrollment.class, "uuid",
-                    enrollment.getUuid()+" Duplicate Enrollment: You have already enrolled for treatment");
-        }
+//        if(diagnosisRepository.existsHepatitisDiagnosisByHepatitisEnrollmentUuid(enrollment.getUuid())) {
+//            throw new RecordExistException(HepatitisEnrollment.class, "uuid",
+//                    enrollment.getUuid()+" Duplicate Enrollment: You have already enrolled for treatment");
+//        }
         hepatitisDiagnosis.setHepatitisEnrollment(enrollment);
         hepatitisDiagnosis.setFacilityId(enrollment.getFacilityId());
         hepatitisDiagnosis.setArchived(0);
@@ -127,10 +127,10 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         log.info("EnrollmentId: " + enrollmentId);
         HepatitisEnrollment enrollment = getHepatitisEnrollment(enrollmentId);
         HepatitisTreatment hepatitisTreatment =  mapper.mapToTreatment(treatmentDto);
-        if(treatmentRepository.existsByHepatitisEnrollment_Uuid(enrollment.getUuid())) {
-            throw new RecordExistException(HepatitisTreatment.class, "uuid",
-                    enrollment.getUuid()+" Duplicate Enrollment: You have already enrolled for treatment");
-        }
+//        if(treatmentRepository.existsByHepatitisEnrollment_Uuid(enrollment.getUuid())) {
+//            throw new RecordExistException(HepatitisTreatment.class, "uuid",
+//                    enrollment.getUuid()+" Duplicate Enrollment: You have already enrolled for treatment");
+//        }
         hepatitisTreatment.setHepatitisEnrollment(enrollment);
         hepatitisTreatment.setFacilityId(enrollment.getFacilityId());
         treatmentRepository.save(hepatitisTreatment);
@@ -264,12 +264,16 @@ public class EnrollmentServiceImpl implements EnrollmentService {
                     "pass ID of existing patient.");
         }
         if(personDto != null) {
-             personService.updatePerson(personId, personDto);
+            PersonResponseDto personResponseDto1;
+            personResponseDto1 = personService.updatePerson(personId, personDto);
+            log.info("update person details: {}", personResponseDto1);
+
         }
         Person person = personRepository.findById(personId)
                 .orElseThrow(() -> new EntityNotFoundException(HepatitisEnrollment.class,
                         "Person with"+ personId + "does not exist"));
         personResponseDto = personService.getDtoFromPerson(person);
+        log.info("PersonResponseDto details: {}", personResponseDto);
 
         HepatitisEnrollment existingEnrollment = enrollmentRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(HepatitisEnrollment.class, "Hepatitis Enrollment not found with id: " + id));
@@ -314,39 +318,89 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 
         HepatitisDiagnosis hepatitisDiagnosis;
         HepatitisTreatment hepatitisTreatment;
+        List<HepatitisDiagnosis> hepatitisDiagnosises;
+        List<HepatitisTreatment> hepatitisTreatments;
         if(hepatitisEnrollment != null) {
-            hepatitisDiagnosis = this.diagnosisRepository.findHepatitisDiagnosisByHepatitisEnrollmentUuidAndArchived(hepatitisEnrollment.getUuid(), 0);
-            if(hepatitisDiagnosis != null) {
-                ActivityTracker activityTracker = new ActivityTracker();
+            hepatitisDiagnosises = this.diagnosisRepository.findHepatitisDiagnosesByHepatitisEnrollmentUuidAndArchived(hepatitisEnrollment.getUuid(), 0);
 
-                activityTracker.setActivityName("Hepatitis Diagnosis");
-                activityTracker.setPath("hepatitis_diagnosis");
-                activityTracker.setEditable(true);
-                activityTracker.setDeletable(true);
-                activityTracker.setViewable(true);
-                activityTracker.setRecordId(hepatitisDiagnosis.getId());
-                activityTracker.setActivityDate(hepatitisDiagnosis.getCreatedDate().toLocalDate());
-                activityTrackers.add(activityTracker);
+            if(!(hepatitisDiagnosises.isEmpty())) {
+                hepatitisDiagnosises.forEach(hepatitisDiagnosis1 -> {
+                    ActivityTracker activityTracker = new ActivityTracker();
+                    activityTracker.setActivityName("Hepatitis Diagnosis");
+                    activityTracker.setPath("hepatitis_diagnosis");
+                    activityTracker.setEditable(true);
+                    activityTracker.setDeletable(true);
+                    activityTracker.setViewable(true);
+                    activityTracker.setRecordId(hepatitisDiagnosis1.getId());
+                    activityTracker.setActivityDate(hepatitisDiagnosis1.getCreatedDate().toLocalDate());
+                    activityTrackers.add(activityTracker);
+                });
             }
 
-            hepatitisTreatment = this.treatmentRepository.findHepatitisTreatmentByHepatitisEnrollmentAndArchived(hepatitisEnrollment, 0);
+//            hepatitisDiagnosis = this.diagnosisRepository.findHepatitisDiagnosisByHepatitisEnrollmentUuidAndArchived(hepatitisEnrollment.getUuid(), 0);
+//            if(hepatitisDiagnosis != null) {
+//                ActivityTracker activityTracker = new ActivityTracker();
+//
+//                activityTracker.setActivityName("Hepatitis Diagnosis");
+//                activityTracker.setPath("hepatitis_diagnosis");
+//                activityTracker.setEditable(true);
+//                activityTracker.setDeletable(true);
+//                activityTracker.setViewable(true);
+//                activityTracker.setRecordId(hepatitisDiagnosis.getId());
+//                activityTracker.setActivityDate(hepatitisDiagnosis.getCreatedDate().toLocalDate());
+//                activityTrackers.add(activityTracker);
+//            }
 
-            if(hepatitisTreatment != null) {
-                ActivityTracker activityTracker = new ActivityTracker();
+            hepatitisTreatments = this.treatmentRepository.findHepatitisTreatmentsByHepatitisEnrollmentAndArchived(hepatitisEnrollment, 0);
 
-                activityTracker.setActivityName("Hepatitis Treatment");
-                activityTracker.setPath("hepatitis_treatment");
-                activityTracker.setEditable(true);
-                activityTracker.setDeletable(true);
-                activityTracker.setViewable(true);
-                activityTracker.setRecordId(hepatitisTreatment.getId());
-                activityTracker.setActivityDate(hepatitisTreatment.getCreatedDate().toLocalDate());
-                activityTrackers.add(activityTracker);
+            if(!(hepatitisTreatments.isEmpty())) {
+                hepatitisTreatments.forEach(hepatitisTreatment1 -> {
+                    ActivityTracker activityTracker = new ActivityTracker();
+                    activityTracker.setActivityName("Hepatitis Treatment");
+                    activityTracker.setPath("hepatitis_treatment");
+                    activityTracker.setEditable(true);
+                    activityTracker.setDeletable(true);
+                    activityTracker.setViewable(true);
+                    activityTracker.setRecordId(hepatitisTreatment1.getId());
+                    activityTracker.setActivityDate(hepatitisTreatment1.getCreatedDate().toLocalDate());
+                    activityTrackers.add(activityTracker);
+                });
             }
+
+//            hepatitisTreatment = this.treatmentRepository.findHepatitisTreatmentByHepatitisEnrollmentAndArchived(hepatitisEnrollment, 0);
+//
+//            if(hepatitisTreatment != null) {
+//                ActivityTracker activityTracker = new ActivityTracker();
+//
+//                activityTracker.setActivityName("Hepatitis Treatment");
+//                activityTracker.setPath("hepatitis_treatment");
+//                activityTracker.setEditable(true);
+//                activityTracker.setDeletable(true);
+//                activityTracker.setViewable(true);
+//                activityTracker.setRecordId(hepatitisTreatment.getId());
+//                activityTracker.setActivityDate(hepatitisTreatment.getCreatedDate().toLocalDate());
+//                activityTrackers.add(activityTracker);
+//            }
         }
         return activityTrackers;
     }
 
+    public HepatitisDiagnosis viewHepatitisDiagnosisById(Long id) {
+        HepatitisDiagnosis hepatitisDiagnosis = diagnosisRepository.findHepatitisDiagnosisByIdAndArchived(id, 0);
+        if(hepatitisDiagnosis == null) {
+            throw new EntityNotFoundException(HepatitisDiagnosis.class, "Hepatitis diagnosis could not be found. ",
+                    "pass ID of hepatitis diagnosis");
+        }
+        return hepatitisDiagnosis;
+    }
 
+    public HepatitisTreatment viewHepatitisTreatmentById(Long id) {
+        HepatitisTreatment hepatitisTreatment = this.treatmentRepository.findHepatitisTreatmentsByIdAndArchived(id, 0);
+        if(hepatitisTreatment == null) {
+            throw new EntityNotFoundException(HepatitisTreatment.class, "Hepatitis treatment could not be found. ",
+                    "pass ID of hepatitis Treatment");
+        }
+        return hepatitisTreatment;
+    }
 
 }

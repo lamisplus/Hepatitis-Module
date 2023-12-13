@@ -42,5 +42,9 @@ public interface EnrollmentService {
 
     List<ActivityTracker> getActivityTracker(String personUuid);
 
+    HepatitisDiagnosis viewHepatitisDiagnosisById(Long id);
+
+    HepatitisTreatment viewHepatitisTreatmentById(Long id);
+
 //    HepatitisEnrollment update-hepatitis-enrollment
 }
