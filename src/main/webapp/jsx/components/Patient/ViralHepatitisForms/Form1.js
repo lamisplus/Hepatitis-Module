@@ -630,13 +630,15 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
       //   : "Relationship is required";
 
       //sex
-      temp.genderId = basicInfo.personDto.genderId ? "" : "sex is required";
+      temp.genderId = basicInfo.personDto.genderId  ? "" : "sex is required";
     }
 
     temp.careEntryPoint = basicInfo.careEntryPoint
       ? ""
       : "careEntryPoint is required";
-    temp.pregnancy = basicInfo.pregnancy ? "" : "pregnancy status is required";
+    temp.pregnancy = basicInfo.pregnancy? "" : "pregnancy status is required";
+         temp.pregnancy = Number(basicInfo.personDto.genderId) === 376 ? "": temp.pregnancy
+
     temp.weight = basicInfo.weight ? "" : "Weight is required";
     temp.height = basicInfo.height ? "" : "Height is required";
     temp.hepatitisB = basicInfo.hepatitisB ? "" : "HepatitisB is required";
@@ -1795,8 +1797,7 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
                         )}
                       </FormGroup>
                     </div> */}
-
-                  <div className="form-group mb-3 col-md-4">
+{ Number(basicInfo.personDto.genderId) === 377  &&    <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="pregnancy">
                         Pregnancy <span style={{ color: "red" }}> *</span>{" "}
@@ -1831,6 +1832,7 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
                       )}
                     </FormGroup>
                   </div>
+}
 
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>

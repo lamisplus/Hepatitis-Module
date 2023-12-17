@@ -164,7 +164,6 @@ const DashboardEnrollmentForm = ({
   });
   const [hospitalNumStatus, setHospitalNumStatus] = useState(false);
 
-  console.log();
   const [genders, setGenders] = useState([]);
   const [maritalStatusOptions, setMaritalStatusOptions] = useState([]);
   const [educationOptions, setEducationOptions] = useState([]);
@@ -613,7 +612,9 @@ const DashboardEnrollmentForm = ({
     temp.careEntryPoint = basicInfo.careEntryPoint
       ? ""
       : "careEntryPoint is required";
-    temp.pregnancy = basicInfo.pregnancy ? "" : "pregnancy status is required";
+    temp.pregnancy = basicInfo.pregnancy  ? "" : "pregnancy status is required";
+
+     temp.pregnancy = Number(basicInfo.personDto.genderId) === 376 ? "": temp.pregnancy
     temp.weight = basicInfo.weight ? "" : "Weight is required";
     temp.height = basicInfo.height ? "" : "Height is required";
     temp.hepatitisB = basicInfo.hepatitisB ? "" : "HepatitisB is required";
@@ -628,6 +629,7 @@ const DashboardEnrollmentForm = ({
     setErrors({ ...temp });
     return Object.values(temp).every((x) => x == "");
   };
+    console.log(basicInfo.personDto.genderId,Number(basicInfo.personDto.genderId) === 376)
 
   const checkPhoneNumberBasic = (e, inputName) => {
     const limit = 10;
@@ -1740,7 +1742,7 @@ const DashboardEnrollmentForm = ({
                       </FormGroup>
                     </div> */}
 
-                  <div className="form-group mb-3 col-md-4">
+        {      Number(basicInfo.personDto.genderId) === 377  &&      <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="pregnancy">
                         Pregnancy <span style={{ color: "red" }}> *</span>{" "}
@@ -1774,7 +1776,7 @@ const DashboardEnrollmentForm = ({
                         ""
                       )}
                     </FormGroup>
-                  </div>
+                  </div>}
 
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
