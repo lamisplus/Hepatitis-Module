@@ -645,6 +645,8 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
     temp.breastfeeding = basicInfo.breastfeeding
       ? ""
       : "Breastfeeding status is required";
+                temp.breastfeeding= Number(basicInfo.personDto.genderId) === 376 ? "": temp.breastfeeding
+
     temp.dateOfFirstHepatitisBPositiveScreening = basicInfo.screening
       .dateOfFirstHepatitisBPositiveScreening
       ? ""
@@ -1958,7 +1960,7 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
                       )}
                     </FormGroup>
                   </div>
-                  <div className="form-group mb-3 col-md-4">
+                {Number(basicInfo.personDto.genderId) === 377  &&    <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="breastfeeding">
                         Breastfeeding <span style={{ color: "red" }}> *</span>{" "}
@@ -1987,7 +1989,7 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
                         ""
                       )}
                     </FormGroup>
-                  </div>
+                  </div>}
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="historyOfUsingAbusedSubstance">

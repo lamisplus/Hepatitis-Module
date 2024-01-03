@@ -576,7 +576,7 @@ const TreatmentSubmittedForm = ({
     temp.hbvRegimeSwitchNewRegimen = basicInfo.hepatitisBTreatment
       .hepatitisBRegimenSwitch.newRegime
       ? ""
-      : "New Regime is required";
+      : "New Regimen is required";
 
     temp.hbvRegimeSwitchDateStarted = basicInfo.hepatitisBTreatment
       .hepatitisBRegimenSwitch.dateStarted
@@ -615,7 +615,7 @@ const TreatmentSubmittedForm = ({
 
     temp.newRegimen = basicInfo.hepatitisBTreatment.newRegimen
       ? ""
-      : "New Regime is required";
+      : "New Regimen is required";
 
     temp.hbvPastTreatmentRegimen = basicInfo.hepatitisBTreatment
       .hbvPastTreatmentRegimen
@@ -624,7 +624,7 @@ const TreatmentSubmittedForm = ({
 
     // temp.newRegimenB = basicInfo.hepatitisBTreatment.newRegimen
     //   ? ""
-    //   : "New Regime is required";
+    //   : "New Regimen is required";
 
     temp.dateStarted = basicInfo.hepatitisBTreatment.dateStarted
       ? ""
@@ -694,7 +694,7 @@ const TreatmentSubmittedForm = ({
     temp.hcvRetreatmentNewRegimen = basicInfo.hepatitisCTreatment.hcvRetreatment
       .newRegimen
       ? ""
-      : " New regime  is required";
+      : " New regimen  is required";
 
     temp.hcvRetreatmentPrescribedDuration = basicInfo.hepatitisCTreatment
       .hcvRetreatment.prescribedDuration

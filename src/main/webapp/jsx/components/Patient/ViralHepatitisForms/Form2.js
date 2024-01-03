@@ -293,9 +293,9 @@ const ViralHepatitisForm2 = ({ setStep }) => {
       ? ""
       : " PMTCT Eligible is required";
 
-    temp.comment = basicInfo.hepatitisBTest.pmtctEligible
-      ? ""
-      : " PMTCT Eligible is required";
+    // temp.comment = basicInfo.hepatitisBTest.pmtctEligible
+    //   ? ""
+    //   : " PMTCT Eligible is required";
 
     temp.ast = basicInfo.hepatitisBTest.pmtctEligible ? "" : " AST is required";
     temp.alt = basicInfo.clinicalParameters.alt ? "" : " ALT is required";
@@ -933,7 +933,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                         <div className="form-group mb-3 col-md-4-12">
                           <FormGroup>
                             <Label for="comment">Comment</Label>
-                            <span style={{ color: "red" }}> *</span>{" "}
+                            {/* <span style={{ color: "red" }}> *</span>{" "} */}
                             <textarea
                               className="form-control"
                               name="comment"
@@ -948,13 +948,13 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                                 height: "120px",
                               }}
                             />
-                            {errors.comment !== "" ? (
+                            {/* {errors.comment !== "" ? (
                               <span className={classes.error}>
                                 {errors.comment}
                               </span>
                             ) : (
                               ""
-                            )}
+                            )} */}
                           </FormGroup>
                         </div>
                       </div>
