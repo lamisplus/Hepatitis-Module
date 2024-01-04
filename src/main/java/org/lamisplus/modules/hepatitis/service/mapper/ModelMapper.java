@@ -32,8 +32,15 @@ public class ModelMapper {
         String careEntryPoint = enrollmentDto.getCareEntryPoint();
         String pregnancy = enrollmentDto.getPregnancy().toUpperCase();
         Status pregnancyEnum;
-        if(pregnancy.equals("YES") || pregnancy.equals("NO")) {
-            pregnancyEnum = Status.valueOf(pregnancy);
+//        if(pregnancy.equals("YES") || pregnancy.equals("NO")) {
+//            pregnancyEnum = Status.valueOf(pregnancy);
+//        } else {
+//            pregnancyEnum = Status.NO;
+//        }
+        if (pregnancy.equals("YES")) {
+            pregnancyEnum = Status.YES;
+        } else if (pregnancy.equals("NO")) {
+            pregnancyEnum = Status.NO;
         } else {
             pregnancyEnum = Status.NO;
         }
@@ -45,8 +52,16 @@ public class ModelMapper {
 
         String breastfeeding = enrollmentDto.getBreastfeeding().toUpperCase();
         Status breastfeedingEnum;
-        if(breastfeeding.equals("YES") || breastfeeding.equals("NO")) {
-            breastfeedingEnum = Status.valueOf(breastfeeding);
+//        if(breastfeeding.equals("YES") || breastfeeding.equals("NO")) {
+//            breastfeedingEnum = Status.valueOf(breastfeeding);
+//        } else {
+//            breastfeedingEnum = Status.NO;
+//        }
+
+        if (breastfeeding.equals("YES")) {
+            breastfeedingEnum = Status.YES;
+        } else if (breastfeeding.equals("NO")) {
+            breastfeedingEnum = Status.NO;
         } else {
             breastfeedingEnum = Status.NO;
         }
@@ -54,9 +69,12 @@ public class ModelMapper {
         String historyOfUsingAbusedSubstance = enrollmentDto.getHistoryOfUsingAbusedSubstance();
         Status historyOfUsingAbusedSubstanceEnum;
 
-        if(historyOfUsingAbusedSubstance.equals("NO") || historyOfUsingAbusedSubstance.equals("YES")) {
-            historyOfUsingAbusedSubstanceEnum = Status.valueOf(pregnancy);
-        } else {
+        if(historyOfUsingAbusedSubstance.equals("NO")) {
+            historyOfUsingAbusedSubstanceEnum = Status.NO;
+        } else if(historyOfUsingAbusedSubstance.equals("YES")) {
+            historyOfUsingAbusedSubstanceEnum =  Status.YES;
+        }
+        else {
             historyOfUsingAbusedSubstanceEnum = Status.NO;
         }
 
@@ -219,7 +237,6 @@ public class ModelMapper {
         existingTreatment.setHepatitisBTreatmentDto(hepatitisBNode);
         existingTreatment.setHepatitisCTreatmentDto(hepatitisCNode);
 
-        // Optionally, update other fields if needed
 
         return existingTreatment;
     }

@@ -34,8 +34,8 @@ public class HepatitisEnrollmentDto implements Serializable {
 //    @JsonFormat(shape = JsonFormat.Shape.STRING)
 //    private String sex;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @NotNull(message = "Pregnancy status must either be YES or NO")
+//    @JsonFormat(shape = JsonFormat.Shape.STRING)
+//    @NotNull(message = "Pregnancy status must either be YES or NO")
     private String pregnancy;
 
     @NotNull(message = "Weight value cannot be null or empty")
@@ -51,7 +51,8 @@ public class HepatitisEnrollmentDto implements Serializable {
     @NotEmpty(message = "HepatitisB cannot be empty")
     private String hepatitisB;
 
-    @NotEmpty(message = "Breastfeeding status must either be in the format YES or NO")
+//    @NotEmpty(message = "Breastfeeding status must either be in the format YES or NO")
+//    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private String Breastfeeding;
 
     @NotNull(message = "historyOfUsingAbusedSubstance must not be null")
