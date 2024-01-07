@@ -2352,7 +2352,7 @@ const TreatmentSubmittedForm = ({
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="hcvRetreatmentNewRegimen">
-                              New regime
+                              New regimen
                             </Label>
                             <span style={{ color: "red" }}> *</span>
                             <input
