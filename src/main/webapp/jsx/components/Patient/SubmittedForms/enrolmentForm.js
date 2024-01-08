@@ -2000,53 +2000,6 @@ const EnrolmentSubmittedForm = ({
 
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
-                      <Label for="hepatitisB">
-                        Hepatitis B (HBsAg){" "}
-                        <span style={{ color: "red" }}> *</span>{" "}
-                      </Label>
-                      <select
-                        className="form-control"
-                        name="hepatitisB"
-                        disabled={action === "view" ? true : false}
-                        id="hepatitisB"
-                        value={basicInfo.hepatitisB}
-                        onChange={handleInputChangeBasic}
-                        // onBlur={formik.handleBlur}
-                        style={{
-                          border: "1px solid #014D88",
-                          borderRadius: "0.2rem",
-                        }}
-                      >
-                        <option value="">Select </option>
-                        {hepatitisStatus.map((value) => (
-                          <option key={value.id} value={value.id}>
-                            {value.display}
-                          </option>
-                        ))}
-                      </select>
-                      {/* <input
-                        className="form-control"
-                        type="text"
-                        name="hepatitisB"
-                        id="hepatitisB"
-                        onChange={handleInputChangeBasic}
-                        onBlur={formik.handleBlur}
-                        style={{
-                          border: "1px solid #014D88",
-                          borderRadius: "0.2rem",
-                        }}
-                      /> */}
-                      {errors.hepatitisB !== "" ? (
-                        <span className={classes.error}>
-                          {errors.hepatitisB}
-                        </span>
-                      ) : (
-                        ""
-                      )}
-                    </FormGroup>
-                  </div>
-                  <div className="form-group mb-3 col-md-4">
-                    <FormGroup>
                       <Label for="breastfeeding">
                         Breastfeeding <span style={{ color: "red" }}> *</span>{" "}
                       </Label>
@@ -2128,6 +2081,54 @@ const EnrolmentSubmittedForm = ({
 
               <div className="card-body">
                 <div className="row">
+                  <div className="form-group mb-3 col-md-4">
+                    <FormGroup>
+                      <Label for="hepatitisB">
+                        Hepatitis B (HBsAg){" "}
+                        <span style={{ color: "red" }}> *</span>{" "}
+                      </Label>
+                      <select
+                        className="form-control"
+                        name="hepatitisB"
+                        disabled={action === "view" ? true : false}
+                        id="hepatitisB"
+                        value={basicInfo.hepatitisB}
+                        onChange={handleInputChangeBasic}
+                        // onBlur={formik.handleBlur}
+                        style={{
+                          border: "1px solid #014D88",
+                          borderRadius: "0.2rem",
+                        }}
+                      >
+                        <option value="">Select </option>
+                        {hepatitisStatus.map((value) => (
+                          <option key={value.id} value={value.id}>
+                            {value.display}
+                          </option>
+                        ))}
+                      </select>
+                      {/* <input
+                        className="form-control"
+                        type="text"
+                        name="hepatitisB"
+                        id="hepatitisB"
+                        onChange={handleInputChangeBasic}
+                        onBlur={formik.handleBlur}
+                        style={{
+                          border: "1px solid #014D88",
+                          borderRadius: "0.2rem",
+                        }}
+                      /> */}
+                      {errors.hepatitisB !== "" ? (
+                        <span className={classes.error}>
+                          {errors.hepatitisB}
+                        </span>
+                      ) : (
+                        ""
+                      )}
+                    </FormGroup>
+                  </div>
+
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="dateOfFirstHepatitisBPositiveScreening">

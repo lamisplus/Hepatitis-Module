@@ -323,7 +323,7 @@ const Patients = (props) => {
           debounceInterval: 400,
           sorting: true,
         }}
-        onChangePage={handleChangePage}
+        // onChangePage={handleChangePage}
         //localization={localization}
       />
       {/* <MaterialTable

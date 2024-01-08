@@ -107,7 +107,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const HepatitisPatients = (props) => {
-  //   const [permissions, setPermissions] = useState(props.permissions);
   const calculate_age = (dob) => {
     const today = new Date();
     const dateParts = dob.split("-");
@@ -213,13 +212,6 @@ const HepatitisPatients = (props) => {
                         </Button>
                       </ButtonGroup>
                     </Link>
-
-                    {/* {permissions.includes("view_patient") ||
-                    permissions.includes("all_permission") ? (
-                      <SplitActionButton actions={actionItems(row)} />
-                    ) : (
-                      ""
-                    )} */}
                   </div>
                 ),
               })),
@@ -253,25 +245,6 @@ const HepatitisPatients = (props) => {
           <b style={{ color: "#014d88", fontWeight: "bold" }}>SHOW PII</b>
         </label>
       </div>
-
-      {/* {permissions.includes("view_patient") ||
-        permissions.includes("all_permission") ? (
-          <FormGroup className=" float-right mr-1">
-            <FormControlLabel
-              control={
-                <Checkbox
-                  onChange={enablePPIColumns}
-                  checked={!enablePPI}
-                  style={{ color: "#014d88", fontWeight: "bold" }}
-                />
-              }
-              label="Show PII"
-              style={{ color: "#014d88", fontWeight: "bolder" }}
-            />
-          </FormGroup>
-        ) : (
-          <h5 style={{ color: "#3d4465", fontWeight: "bold" }}>Patients</h5>
-        )} */}
     </div>
   );
 
@@ -281,10 +254,6 @@ const HepatitisPatients = (props) => {
   return (
     <div>
       <MaterialTable
-        tableRef={tableRef}
-        /*onSearchChange={(e) => {
-                    handleSearchChange(e);
-                }}*/
         icons={tableIcons}
         title={<PPISelect />}
         columns={[
@@ -298,8 +267,6 @@ const HepatitisPatients = (props) => {
           { title: "Sex", field: "sex", filtering: false },
           { title: "Date Of Birth", field: "dateOfBirth", filtering: false },
           { title: "Age", field: "age", filtering: false },
-          /*{ title: "Address", field: "address", filtering: false },*/
-          /*{ title: "Status", field: "status", filtering: false },*/
           { title: "Actions", field: "actions", filtering: false },
         ]}
         isLoading={loading}
@@ -323,118 +290,8 @@ const HepatitisPatients = (props) => {
           debounceInterval: 400,
           sorting: true,
         }}
-        onChangePage={handleChangePage}
-        //localization={localization}
+        // onChangePage={handleChangePage}
       />
-      {/* <MaterialTable
-        icons={tableIcons}
-        title="Find Patient "
-        columns={[
-          // { title: " ID", field: "Id" },
-          {
-            title: "Patient Number",
-            field: "hospital_number",
-            filtering: false,
-          },
-          {
-            title: "Name",
-            field: "name",
-          },
-          { title: "Sex", field: "gender", filtering: false },
-          { title: "Age", field: "age", filtering: false },
-
-          { title: "Actions", field: "actions", filtering: true },
-        ]}
-        data={(query) =>
-          new Promise((resolve, reject) =>
-            axios
-              .get(
-                `${baseUrl}covid/all-patients?pageSize=${query.pageSize}&pageNo=${query.page}&searchValue=${query.search}`,
-                { headers: { Authorization: `Bearer ${token}` } }
-              )
-              .then((response) => response)
-              .then((result) => {
-                resolve({
-                  data: result?.data?.records?.map?.((row) => ({
-                    name: row.firstName + " " + row.lastName,
-                    hospital_number: row.participantId,
-                    gender: row.gender !== null ? row.gender.display : "",
-                    age: calculate_age(row.dob),
-
-                    count: (
-                      <Label color="blue" size="mini">
-                        {row.vaccinationStatus}
-                      </Label>
-                    ),
-
-                    actions: (
-                      <div>
-                        <Link
-                          to={{
-                            pathname: "/patient-history",
-                            state: { patientObj: row },
-                          }}
-                        >
-                          <ButtonGroup
-                            variant="contained"
-                            aria-label="split button"
-                            style={{
-                              backgroundColor: "rgb(153, 46, 98)",
-                              height: "30px",
-                              width: "215px",
-                            }}
-                            size="large"
-                          >
-                            <Button
-                              color="primary"
-                              size="small"
-                              aria-label="select merge strategy"
-                              aria-haspopup="menu"
-                              style={{ backgroundColor: "rgb(153, 46, 98)" }}
-                            >
-                              <MdDashboard />
-                            </Button>
-                            <Button
-                              style={{ backgroundColor: "rgb(153, 46, 98)" }}
-                            >
-                              <span
-                                style={{
-                                  fontSize: "12px",
-                                  color: "#fff",
-                                  fontWeight: "bolder",
-                                }}
-                              >
-                                Patient Dashboard
-                              </span>
-                            </Button>
-                          </ButtonGroup>
-                        </Link>
-                      </div>
-                    ),
-                  })),
-                  page: query.page,
-                  totalCount: result.data.totalRecords,
-                });
-              })
-          )
-        }
-        options={{
-          headerStyle: {
-            backgroundColor: "#014d88",
-            color: "#fff",
-          },
-          searchFieldStyle: {
-            width: "200%",
-            margingLeft: "250px",
-          },
-          filtering: false,
-          exportButton: false,
-          searchFieldAlignment: "left",
-          pageSizeOptions: [10, 20, 100],
-          pageSize: 10,
-          debounceInterval: 400,
-        }}
-      /> */}
     </div>
   );
 };
