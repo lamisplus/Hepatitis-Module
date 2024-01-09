@@ -914,22 +914,22 @@ const TreatmentSubmittedForm = ({
       enrollmentUuid: enrollmentUuid,
       hepatitisBTreatment: {
         dateStarted: `${
-          treatmentInfo?.hepatitisBTreatmentDto?.dateStarted.year
-        }-${treatmentInfo?.hepatitisBTreatmentDto?.dateStarted.monthValue}-${
-          treatmentInfo?.hepatitisBTreatmentDto?.dateStarted.dayOfMonth.toString()
+          treatmentInfo?.hepatitisBTreatmentDto?.dateStarted?.year
+        }-${treatmentInfo?.hepatitisBTreatmentDto?.dateStarted?.monthValue}-${
+          treatmentInfo?.hepatitisBTreatmentDto?.dateStarted?.dayOfMonth.toString()
             .length > 1
-            ? treatmentInfo?.hepatitisBTreatmentDto?.dateStarted.dayOfMonth
+            ? treatmentInfo?.hepatitisBTreatmentDto?.dateStarted?.dayOfMonth
             : "0" +
-              treatmentInfo?.hepatitisBTreatmentDto?.dateStarted.dayOfMonth
+              treatmentInfo?.hepatitisBTreatmentDto?.dateStarted?.dayOfMonth
         }`,
         dateStopped: `${
-          treatmentInfo?.hepatitisBTreatmentDto?.dateStopped.year
-        }-${treatmentInfo?.hepatitisBTreatmentDto?.dateStopped.monthValue}-${
-          treatmentInfo?.hepatitisBTreatmentDto?.dateStopped.dayOfMonth.toString()
+          treatmentInfo?.hepatitisBTreatmentDto?.dateStopped?.year
+        }-${treatmentInfo?.hepatitisBTreatmentDto?.dateStopped?.monthValue}-${
+          treatmentInfo?.hepatitisBTreatmentDto?.dateStopped?.dayOfMonth.toString()
             .length > 1
-            ? treatmentInfo?.hepatitisBTreatmentDto?.dateStopped.dayOfMonth
+            ? treatmentInfo?.hepatitisBTreatmentDto?.dateStopped?.dayOfMonth
             : "0" +
-              treatmentInfo?.hepatitisBTreatmentDto?.dateStopped.dayOfMonth
+              treatmentInfo?.hepatitisBTreatmentDto?.dateStopped?.dayOfMonth
         }`,
         hbvPastTreatmentRegimen:
           treatmentInfo?.hepatitisBTreatmentDto?.hbvPastTreatmentRegimen,
@@ -944,35 +944,35 @@ const TreatmentSubmittedForm = ({
             treatmentInfo?.hepatitisBTreatmentDto?.hepatitisBRegimenSwitch
               .dateStarted.monthValue
           }-${
-            treatmentInfo?.hepatitisBTreatmentDto?.hepatitisBRegimenSwitch.dateStarted.dayOfMonth.toString()
+            treatmentInfo?.hepatitisBTreatmentDto?.hepatitisBRegimenSwitch?.dateStarted?.dayOfMonth.toString()
               .length > 1
               ? treatmentInfo?.hepatitisBTreatmentDto?.hepatitisBRegimenSwitch
                   .dateStarted.dayOfMonth
               : "0" +
                 treatmentInfo?.hepatitisBTreatmentDto?.hepatitisBRegimenSwitch
-                  .dateStarted.dayOfMonth
+                  .dateStarted?.dayOfMonth
           }`,
           dateStopped: `${
             treatmentInfo?.hepatitisBTreatmentDto?.hepatitisBRegimenSwitch
-              .dateStopped.year
+              .dateStopped?.year
           }-${
             treatmentInfo?.hepatitisBTreatmentDto?.hepatitisBRegimenSwitch
-              .dateStopped.monthValue
+              .dateStopped?.monthValue
           }-${
-            treatmentInfo?.hepatitisBTreatmentDto?.hepatitisBRegimenSwitch.dateStopped.dayOfMonth.toString()
+            treatmentInfo?.hepatitisBTreatmentDto?.hepatitisBRegimenSwitch?.dateStopped?.dayOfMonth.toString()
               .length > 1
               ? treatmentInfo?.hepatitisBTreatmentDto?.hepatitisBRegimenSwitch
-                  .dateStopped.dayOfMonth
+                  .dateStopped?.dayOfMonth
               : "0" +
                 treatmentInfo?.hepatitisBTreatmentDto?.hepatitisBRegimenSwitch
-                  .dateStopped.dayOfMonth
+                  ?.dateStopped?.dayOfMonth
           }`,
           newRegime:
             treatmentInfo?.hepatitisBTreatmentDto?.hepatitisBRegimenSwitch
-              .newRegime,
+              ?.newRegime,
           reasonForSwitch:
             treatmentInfo?.hepatitisBTreatmentDto?.hepatitisBRegimenSwitch
-              .reasonForSwitch,
+              ?.reasonForSwitch,
         },
         historyOfAdverseEffect:
           treatmentInfo?.hepatitisBTreatmentDto?.historyOfAdverseEffect,
@@ -980,10 +980,10 @@ const TreatmentSubmittedForm = ({
         reasonForHepatitisBTreatment: {
           comment:
             treatmentInfo?.hepatitisBTreatmentDto?.reasonForHepatitisBTreatment
-              .comment,
+              ?.comment,
           reasonsForTreatment:
             treatmentInfo?.hepatitisBTreatmentDto?.reasonForHepatitisBTreatment
-              .comment,
+              ?.comment,
         },
         treatmentExperience:
           treatmentInfo?.hepatitisBTreatmentDto?.treatmentExperience,
@@ -992,26 +992,26 @@ const TreatmentSubmittedForm = ({
         adverseEffectReported:
           treatmentInfo?.hepatitisCTreatmentDto?.adverseEffectReported,
         dateCompleted: `${
-          treatmentInfo?.hepatitisCTreatmentDto?.dateCompleted.year
-        }-${treatmentInfo?.hepatitisCTreatmentDto?.dateCompleted.monthValue}-${
-          treatmentInfo?.hepatitisCTreatmentDto?.dateCompleted.dayOfMonth.toString()
+          treatmentInfo?.hepatitisCTreatmentDto?.dateCompleted?.year
+        }-${treatmentInfo?.hepatitisCTreatmentDto?.dateCompleted?.monthValue}-${
+          treatmentInfo?.hepatitisCTreatmentDto?.dateCompleted?.dayOfMonth.toString()
             .length > 1
-            ? treatmentInfo?.hepatitisCTreatmentDto?.dateCompleted.dayOfMonth
+            ? treatmentInfo?.hepatitisCTreatmentDto?.dateCompleted?.dayOfMonth
             : "0" +
-              treatmentInfo?.hepatitisCTreatmentDto?.dateCompleted.dayOfMonth
+              treatmentInfo?.hepatitisCTreatmentDto?.dateCompleted?.dayOfMonth
         }`,
         dateStarted: `${
-          treatmentInfo?.hepatitisCTreatmentDto?.dateStarted.year
-        }-${treatmentInfo?.hepatitisCTreatmentDto?.dateStarted.monthValue}-${
-          treatmentInfo?.hepatitisCTreatmentDto?.dateStarted.dayOfMonth.toString()
+          treatmentInfo?.hepatitisCTreatmentDto?.dateStarted?.year
+        }-${treatmentInfo?.hepatitisCTreatmentDto?.dateStarted?.monthValue}-${
+          treatmentInfo?.hepatitisCTreatmentDto?.dateStarted?.dayOfMonth.toString()
             .length > 1
-            ? treatmentInfo?.hepatitisCTreatmentDto?.dateStarted.dayOfMonth
+            ? treatmentInfo?.hepatitisCTreatmentDto?.dateStarted?.dayOfMonth
             : "0" +
-              treatmentInfo?.hepatitisCTreatmentDto?.dateStarted.dayOfMonth
+              treatmentInfo?.hepatitisCTreatmentDto?.dateStarted?.dayOfMonth
         }`,
 
         dateStopped: `${
-          treatmentInfo?.hepatitisCTreatmentDto?.dateStopped.year
+          treatmentInfo?.hepatitisCTreatmentDto?.dateStopped?.year
         }-${treatmentInfo?.hepatitisCTreatmentDto?.dateStopped.monthValue}-${
           treatmentInfo?.hepatitisCTreatmentDto?.dateStopped.dayOfMonth.toString()
             .length > 1
@@ -1024,24 +1024,24 @@ const TreatmentSubmittedForm = ({
         hcvRetreatment: {
           dateStarted: `${
             treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment.dateStarted
-              .year
+              ?.year
           }-${
-            treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment.dateStarted
-              .monthValue
+            treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment?.dateStarted
+              ?.monthValue
           }-${
-            treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment.dateStarted.dayOfMonth.toString()
+            treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment?.dateStarted?.dayOfMonth.toString()
               .length > 1
               ? treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment
-                  .dateStarted.dayOfMonth
+                  ?.dateStarted?.dayOfMonth
               : "0" +
                 treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment
-                  .dateStarted.dayOfMonth
+                  ?.dateStarted?.dayOfMonth
           }`,
           dateStopped: `${
-            treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment.dateStopped
+            treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment?.dateStopped
               .year
           }-${
-            treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment.dateStopped
+            treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment?.dateStopped
               .monthValue
           }-${
             treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment.dateStopped.dayOfMonth.toString()

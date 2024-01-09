@@ -8,6 +8,8 @@ import {
   faEdit,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
+import { Link, useHistory, useLocation } from "react-router-dom";
+
 import PhoneInput from "react-phone-input-2";
 import * as moment from "moment";
 import { makeStyles } from "@material-ui/core/styles";
@@ -165,6 +167,10 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
     },
     weight: "",
   });
+
+  const location = useLocation();
+  const locationState = location.state;
+
   const [hospitalNumStatus, setHospitalNumStatus] = useState(false);
 
   const [genders, setGenders] = useState([]);
@@ -630,24 +636,25 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
       //   : "Relationship is required";
 
       //sex
-      temp.genderId = basicInfo.personDto.genderId ? "" : "sex is required";
+      temp.genderId = basicInfo?.personDto?.genderId ? "" : "sex is required";
+      temp.pregnancy = basicInfo.pregnancy
+        ? ""
+        : "pregnancy status is required";
+      temp.pregnancy =
+        Number(basicInfo.personDto.genderId) === 376 ? "" : temp.pregnancy;
+      temp.breastfeeding = basicInfo.breastfeeding
+        ? ""
+        : "Breastfeeding status is required";
+      temp.breastfeeding =
+        Number(basicInfo.personDto.genderId) === 376 ? "" : temp.breastfeeding;
     }
 
     temp.careEntryPoint = basicInfo.careEntryPoint
       ? ""
       : "careEntryPoint is required";
-    temp.pregnancy = basicInfo.pregnancy ? "" : "pregnancy status is required";
-    temp.pregnancy =
-      Number(basicInfo.personDto.genderId) === 376 ? "" : temp.pregnancy;
-
     temp.weight = basicInfo.weight ? "" : "Weight is required";
     temp.height = basicInfo.height ? "" : "Height is required";
     temp.hepatitisB = basicInfo.hepatitisB ? "" : "HepatitisB is required";
-    temp.breastfeeding = basicInfo.breastfeeding
-      ? ""
-      : "Breastfeeding status is required";
-    temp.breastfeeding =
-      Number(basicInfo.personDto.genderId) === 376 ? "" : temp.breastfeeding;
 
     temp.dateOfFirstHepatitisBPositiveScreening = basicInfo.screening
       .dateOfFirstHepatitisBPositiveScreening
@@ -984,6 +991,16 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
     loadOccupation();
     getStates();
     GetCountry();
+
+    if (userStatus === "existing") {
+      setBasicInfo({
+        ...basicInfo,
+        personDto: {
+          ...basicInfo.personDto,
+          genderId: locationState?.patientObj?.gender?.id,
+        },
+      });
+    }
     // getHepatitisPoint();
   }, []);
   // calculate bmi when weight and height changes
@@ -1801,7 +1818,7 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
                         )}
                       </FormGroup>
                     </div> */}
-                  {Number(basicInfo.personDto.genderId) === 377 && (
+                  {Number(basicInfo?.personDto?.genderId) === 377 && (
                     <div className="form-group mb-3 col-md-4">
                       <FormGroup>
                         <Label for="pregnancy">
@@ -1917,7 +1934,7 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
                     </FormGroup>
                   </div>
 
-                  {Number(basicInfo.personDto.genderId) === 377 && (
+                  {Number(basicInfo?.personDto?.genderId) === 377 && (
                     <div className="form-group mb-3 col-md-4">
                       <FormGroup>
                         <Label for="breastfeeding">
