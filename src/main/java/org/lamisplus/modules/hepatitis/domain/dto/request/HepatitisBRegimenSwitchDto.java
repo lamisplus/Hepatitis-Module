@@ -25,7 +25,7 @@ public class HepatitisBRegimenSwitchDto implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dateStarted;
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private Status adverseEffectReported;
+    private String adverseEffectReported;
     @NotEmpty(message = "reasonForSwitch can not be empty")
     private String reasonForSwitch;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
