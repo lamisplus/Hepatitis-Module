@@ -541,14 +541,13 @@ const DashboardEnrollmentForm = ({
   };
 
   const calculateBMI = () => {
-    let mass = basicInfo.weight;
-    let heightSquare = basicInfo.height * basicInfo.height;
+    let convertMeterToCM = Number(basicInfo.height) / 100;
+    let squareH = convertMeterToCM * convertMeterToCM;
 
-    setBasicInfo({ ...basicInfo, bmi: mass / heightSquare });
+    let value = (Number(basicInfo.weight) / squareH).toFixed(2);
+    setBasicInfo({ ...basicInfo, bmi: value });
 
-    console.log(mass / heightSquare);
-
-    return mass / heightSquare;
+    return value;
   };
   const alphabetOnly = (value) => {
     const result = value.replace(/[^a-z]/gi, "");
@@ -1813,7 +1812,7 @@ const DashboardEnrollmentForm = ({
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="height">
-                        Height (In M) <span style={{ color: "red" }}> *</span>{" "}
+                        Height (In CM) <span style={{ color: "red" }}> *</span>{" "}
                       </Label>
                       <input
                         className="form-control"
