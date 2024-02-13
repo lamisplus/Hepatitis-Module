@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <property name="autoIncrement" value="true"/>
+
+
+    <changeSet failOnError="true" author="peter-data-fi" id="20230209-002">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="hepatitis_enrollments" columnName="archived" />
+            </not>
+        </preConditions>
+        <sql>
+            ALTER TABLE hepatitis_enrollments
+                ADD COLUMN archived integer;
+
+        </sql>
+    </changeSet>
+
+    <changeSet failOnError="true" author="peter-data-fi" id="20230209-003">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="hepatitis_enrollments" columnName="care_entry_point" />
+            </not>
+        </preConditions>
+        <sql>
+            ALTER TABLE hepatitis_enrollments
+                ADD COLUMN care_entry_point character varying(255);
+
+        </sql>
+    </changeSet>
+
+    <changeSet failOnError="true" author="peter-data-fi" id="20230209-004">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="hepatitis_enrollments" columnName="facility_id" />
+            </not>
+        </preConditions>
+        <sql>
+            ALTER TABLE hepatitis_enrollments
+                ADD COLUMN facility_id bigint;
+
+        </sql>
+    </changeSet>
+
+    <changeSet failOnError="true" author="peter-data-fi" id="20230209-005">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="hepatitis_enrollments" columnName="history_of_using_abused_substance" />
+            </not>
+        </preConditions>
+        <sql>
+            ALTER TABLE hepatitis_enrollments
+                ADD COLUMN history_of_using_abused_substance character varying(255);
+
+        </sql>
+    </changeSet>
+
+    <changeSet failOnError="true" author="peter-data-fi" id="20230209-006">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="hepatitis_enrollments" columnName="pregnancy" />
+            </not>
+        </preConditions>
+        <sql>
+            ALTER TABLE hepatitis_enrollments
+                ADD COLUMN pregnancy character varying(255);
+
+        </sql>
+    </changeSet>
+
+    <changeSet failOnError="true" author="peter-data-fi" id="20230209-007">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="hepatitis_diagnosis" columnName="hepatitis_enrollment_uuid" />
+            </not>
+        </preConditions>
+        <sql>
+            ALTER TABLE hepatitis_diagnosis
+                ADD COLUMN hepatitis_enrollment_uuid character varying COLLATE pg_catalog."default";
+
+            ALTER TABLE hepatitis_diagnosis
+                ADD CONSTRAINT hepatitis_diagnosis_hepatitis_enrollment_uuid_fk
+                    FOREIGN KEY (hepatitis_enrollment_uuid) REFERENCES hepatitis_enrollments (uuid);
+        </sql>
+    </changeSet>
+
+    <changeSet failOnError="true" author="peter-data-fi" id="20230209-008">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="hepatitis_diagnosis" columnName="archived" />
+            </not>
+        </preConditions>
+        <sql>
+            ALTER TABLE hepatitis_diagnosis
+                ADD COLUMN archived integer;
+
+        </sql>
+    </changeSet>
+
+    <changeSet failOnError="true" author="peter-data-fi" id="20230209-009">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="hepatitis_diagnosis" columnName="facility_id" />
+            </not>
+        </preConditions>
+        <sql>
+            ALTER TABLE hepatitis_diagnosis
+                ADD COLUMN facility_id bigint;
+
+        </sql>
+    </changeSet>
+
+    <changeSet failOnError="true" author="peter-data-fi" id="20230209-010">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="hepatitis_diagnosis" columnName="enrollment_uuid" />
+            </not>
+        </preConditions>
+        <addColumn tableName="hepatitis_diagnosis">
+            <column name="enrollment_uuid" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <addForeignKeyConstraint
+                baseTableName="hepatitis_diagnosis"
+                baseColumnNames="enrollment_uuid"
+                constraintName="fk_hepatitis_diagnosis_enrollment"
+                referencedTableName="hepatitis_enrollments"
+                referencedColumnNames="uuid"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"/>
+    </changeSet>
+
+    <changeSet failOnError="true" author="peter-data-fi" id="20230209-011">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(*)
+                FROM information_schema.table_constraints
+                WHERE constraint_name = 'hepatitis_diagnosis_hepatitis_enrollments_fk_uuid'
+                  AND table_name = 'hepatitis_diagnosis';
+            </sqlCheck>
+        </preConditions>
+        <sql>
+            ALTER TABLE hepatitis_diagnosis
+            DROP CONSTRAINT hepatitis_diagnosis_hepatitis_enrollments_fk_uuid;
+        </sql>
+    </changeSet>
+<!--    hepatitis_treatments-->
+    <changeSet failOnError="true" author="peter-data-fi" id="20230209-012">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="hepatitis_treatments" columnName="archived" />
+            </not>
+        </preConditions>
+        <sql>
+            ALTER TABLE hepatitis_treatments
+                ADD COLUMN archived integer;
+
+        </sql>
+    </changeSet>
+
+    <changeSet failOnError="true" author="peter-data-fi" id="20230209-013">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="hepatitis_treatments" columnName="facility_id" />
+            </not>
+        </preConditions>
+        <sql>
+            ALTER TABLE hepatitis_treatments
+                ADD COLUMN facility_id bigint;
+
+        </sql>
+    </changeSet>
+
+    <changeSet failOnError="true" author="peter-data-fi" id="20230209-014">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="hepatitis_treatments" columnName="enrollment_uuid" />
+            </not>
+        </preConditions>
+        <addColumn tableName="hepatitis_treatments">
+            <column name="enrollment_uuid" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <addForeignKeyConstraint
+                baseTableName="hepatitis_treatments"
+                baseColumnNames="enrollment_uuid"
+                constraintName="fk_hepatitis_treatments_enrollment"
+                referencedTableName="hepatitis_enrollments"
+                referencedColumnNames="uuid"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"/>
+    </changeSet>
+
+    <changeSet failOnError="true" author="peter-data-fi" id="20230209-015">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(*)
+                FROM information_schema.table_constraints
+                WHERE constraint_name = 'hepatitis_treatments_hepatitis_enrollments_fk_uuid'
+                  AND table_name = 'hepatitis_treatments';
+            </sqlCheck>
+        </preConditions>
+        <sql>
+            ALTER TABLE hepatitis_treatments
+            DROP CONSTRAINT hepatitis_treatments_hepatitis_enrollments_fk_uuid;
+        </sql>
+    </changeSet>
+</databaseChangeLog>
