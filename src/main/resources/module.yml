@@ -9,6 +9,7 @@ menus:
     state: Hepatitis
     url: /across/resources/static/Hepatitis/index.html
 umdLocation: /across/resources/static/hepatitis/index.html
+gitHubLink: https://api.github.com/repos/lamisplus/Hepatitis-Module/releases/latest
 webModules:
   - breadcrumb: Hepatitis
     name: HepatitisModule
