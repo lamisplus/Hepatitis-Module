@@ -566,7 +566,6 @@ const EnrolmentSubmittedForm = ({
       });
   };
 
-
   const calculateBMI = () => {
     let convertMeterToCM = Number(basicInfo.height) / 100;
     let squareH = convertMeterToCM * convertMeterToCM;
@@ -576,7 +575,7 @@ const EnrolmentSubmittedForm = ({
 
     return value;
   };
-  
+
   const alphabetOnly = (value) => {
     const result = value.replace(/[^a-z]/gi, "");
     return result;

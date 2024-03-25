@@ -44,7 +44,7 @@ const ViralHepatitisFormsContainer = (props) => {
         userStatus={locationState.existingPatient}
       />
     ),
-    // 3: <FollowupForm step={step} setStep={setStep}/>,
+    // 3: <FollowupForm step={step} setStep={setStep} />,
     // 4: <LaboratoryRegister/>,
   };
   return (

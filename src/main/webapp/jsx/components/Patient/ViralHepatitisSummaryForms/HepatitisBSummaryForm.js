@@ -548,7 +548,9 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
 
   const calculateBMI = () => {
     let mass = basicInfo.weight;
-    let heightSquare = basicInfo.height * basicInfo.height;
+    let convertMeterToCM = Number(basicInfo.height) / 100;
+
+    let heightSquare = convertMeterToCM * convertMeterToCM;
 
     setBasicInfo({ ...basicInfo, bmi: mass / heightSquare });
 

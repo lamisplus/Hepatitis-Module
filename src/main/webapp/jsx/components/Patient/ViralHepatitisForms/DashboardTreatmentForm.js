@@ -1104,7 +1104,7 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent }) => {
                       <div className="form-group mb-3 col-md-4">
                         <FormGroup>
                           <Label for="hbvNewRegimen">New regimen</Label>
-                          {/* <span style={{ color: "red" }}> *</span>{" "} */}
+                          <span style={{ color: "red" }}> *</span>{" "}
                           <input
                             className="form-control"
                             type="text"
@@ -1194,7 +1194,7 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent }) => {
                       <div className="form-group mb-3 col-md-4">
                         <FormGroup>
                           <Label for="hbvHistoryOfAdverseEffect">
-                            History of adverse effect
+                            History of adverse events
                           </Label>
                           <span style={{ color: "red" }}> *</span>{" "}
                           <select
@@ -1598,7 +1598,7 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent }) => {
                       <div className="form-group mb-3 col-md-4">
                         <FormGroup>
                           <Label for="hcvAdverseEventReported">
-                            Adverse Effect reported
+                            Adverse events reported
                           </Label>
                           <span style={{ color: "red" }}> *</span>{" "}
                           <select

@@ -1352,7 +1352,7 @@ const TreatmentSubmittedForm = ({
                       <div className="form-group mb-3 col-md-4">
                         <FormGroup>
                           <Label for="hbvHistoryOfAdverseEffect">
-                            History of adverse effect
+                            History of adverse events
                           </Label>
                           <span style={{ color: "red" }}> *</span>{" "}
                           <select
@@ -1757,7 +1757,7 @@ const TreatmentSubmittedForm = ({
                       <div className="form-group mb-3 col-md-4">
                         <FormGroup>
                           <Label for="hcvAdverseEventReported">
-                            Adverse Effect reported
+                            Adverse events reported
                           </Label>
                           <span style={{ color: "red" }}> *</span>{" "}
                           <select
@@ -1982,7 +1982,7 @@ const TreatmentSubmittedForm = ({
                           <Label for="hbvPastTreatmentRegimenForHcv">
                             HBV past treatment regimen
                           </Label>
-                          <span style={{ color: "red" }}> *</span>{" "}
+                          {/* <span style={{ color: "red" }}> *</span>{" "} */}
                           <select
                             type="text"
                             className="form-control"
@@ -2521,7 +2521,7 @@ const TreatmentSubmittedForm = ({
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="hcvRetreatmentHistoryOfAdverseEffect">
-                              History of adverse effect
+                              History of adverse events
                               <span style={{ color: "red" }}> *</span>{" "}
                             </Label>
                             <select

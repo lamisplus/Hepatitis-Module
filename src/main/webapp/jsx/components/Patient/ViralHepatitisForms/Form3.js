@@ -1171,7 +1171,7 @@ const ViralHepatitisForm3 = ({ setStep, userStatus }) => {
                       <div className="form-group mb-3 col-md-4">
                         <FormGroup>
                           <Label for="hbvHistoryOfAdverseEffect">
-                            History of adverse effect
+                            History of adverse events
                           </Label>
                           <span style={{ color: "red" }}> *</span>{" "}
                           <select
@@ -1575,7 +1575,7 @@ const ViralHepatitisForm3 = ({ setStep, userStatus }) => {
                       <div className="form-group mb-3 col-md-4">
                         <FormGroup>
                           <Label for="hcvAdverseEventReported">
-                            Adverse Effect reported
+                            Adverse events reported
                           </Label>
                           <span style={{ color: "red" }}> *</span>{" "}
                           <select
