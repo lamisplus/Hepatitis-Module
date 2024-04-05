@@ -2373,33 +2373,36 @@ const UserRegistration = (props) => {
                       </FormGroup>
                     </div>
 
-                    <div className="form-group mb-3 col-md-6">
-                      <FormGroup>
-                        <Label>
-                          PMTCT Eligible<span style={{ color: "red" }}> *</span>
-                        </Label>
-                        <InputGroup>
-                          <Input
-                            type="select"
-                            name="pmtctEligible"
-                            id="pmtctEligible"
-                            onChange={handleInputChange}
-                            value={objValues.pmtctEligible}
-                          >
-                            <option value="">select</option>
-                            <option value={"yes"}>Yes</option>
-                            <option value={"no"}>No</option>
-                          </Input>
-                        </InputGroup>
-                        {errors.pmtctEligible !== "" ? (
-                          <span className={classes.error}>
-                            {errors.pmtctEligible}
-                          </span>
-                        ) : (
-                          ""
-                        )}
-                      </FormGroup>
-                    </div>
+                    {Number(objValues?.sexId) === 377 && (
+                      <div className="form-group mb-3 col-md-6">
+                        <FormGroup>
+                          <Label>
+                            PMTCT Eligible
+                            <span style={{ color: "red" }}> *</span>
+                          </Label>
+                          <InputGroup>
+                            <Input
+                              type="select"
+                              name="pmtctEligible"
+                              id="pmtctEligible"
+                              onChange={handleInputChange}
+                              value={objValues.pmtctEligible}
+                            >
+                              <option value="">select</option>
+                              <option value={"yes"}>Yes</option>
+                              <option value={"no"}>No</option>
+                            </Input>
+                          </InputGroup>
+                          {errors.pmtctEligible !== "" ? (
+                            <span className={classes.error}>
+                              {errors.pmtctEligible}
+                            </span>
+                          ) : (
+                            ""
+                          )}
+                        </FormGroup>
+                      </div>
+                    )}
 
                     <div className="form-group mb-3 col-md-12">
                       <FormGroup>

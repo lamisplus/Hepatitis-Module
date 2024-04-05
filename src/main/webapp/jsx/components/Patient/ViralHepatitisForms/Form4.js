@@ -19,7 +19,7 @@ import "react-widgets/dist/css/react-widgets.css";
 import { useValidateForm2ValuesHook } from "../../../formSchemas/form1ValidationSchema";
 import { Collapse, IconButton } from "@material-ui/core";
 import { ArrowForward, ExpandMore as ExpandMoreIcon } from "@material-ui/icons";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
@@ -446,6 +446,7 @@ const ViralHepatitisForm4 = () => {
                             </FormGroup>
                           </div>
 
+                          {/* {Number(basicInfo?.personDto?.genderId) === 377 &&  */}
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
                               <Label for="pmtctEligible">PMTCT Eligible</Label>
@@ -475,6 +476,7 @@ const ViralHepatitisForm4 = () => {
                               )}
                             </FormGroup>
                           </div>
+                          {/* } */}
 
                           <div className="form-group mb-3 col-md-4-12">
                             <FormGroup>
@@ -1264,13 +1266,11 @@ const ViralHepatitisForm4 = () => {
                           }}
                         >
                           <option value={""}>Select</option>
-                          <option value={"F-0"}> No Fibrosis</option>
-                          <option value={"F-1"}>Mild Fibrosis</option>
-                          <option value={"F-2"}>Moderate Fibrosis</option>
-                          <option value={"F-3"}> Severe Fibrosis</option>
-                          <option value={"F-4"}>Cirrhosis</option>
-                          <option value={"not done"}>Not done</option>
-                    
+                          <option value={"FIBROSIS"}> Fibrosis</option>
+                          <option value={"CIRRHOSIS"}>Cirrhosis</option>
+                          <option value={"NO_FIBROSIS"}> No Fibrosis</option>
+                          {/* <option value={"CIRRHOSIS"}>Cirrhosis</option> */}
+                          <option value={"HIGH_CC"}>High CC </option>
                         </select>
                         {formik.errors.liverBiopsyStage !== "" ? (
                           <span className={classes.error}>
@@ -1301,7 +1301,6 @@ const ViralHepatitisForm4 = () => {
                           <option value={"fibrosis"}>Fibrosis</option>
                           <option value={"cirrhosis"}>Cirrhosis</option>
                           <option value={"hcc"}>HCC</option>
-                    
                         </select>
                         {formik.errors.diagnosis !== "" ? (
                           <span className={classes.error}>

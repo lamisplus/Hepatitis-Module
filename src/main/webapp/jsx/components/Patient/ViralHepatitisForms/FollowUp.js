@@ -977,12 +977,11 @@ const FollowupForm = () => {
                           }}
                         >
                           <option value={""}>Select</option>
-                          <option value={"F-0"}> No Fibrosis</option>
-                          <option value={"F-1"}>Mild Fibrosis</option>
-                          <option value={"F-2"}>Moderate Fibrosis</option>
-                          <option value={"F-3"}> Severe Fibrosis</option>
-                          <option value={"F-4"}>Cirrhosis</option>
-                          <option value={"not done"}>Not done</option>
+                          <option value={"FIBROSIS"}> Fibrosis</option>
+                          <option value={"CIRRHOSIS"}>Cirrhosis</option>
+                          <option value={"NO_FIBROSIS"}> No Fibrosis</option>
+                          {/* <option value={"CIRRHOSIS"}>Cirrhosis</option> */}
+                          <option value={"HIGH_CC"}>High CC </option>
                         </select>
                         {formik.errors.liverBiopsyStage !== "" ? (
                           <span className={classes.error}>

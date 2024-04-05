@@ -24,6 +24,7 @@ import { getCookie, setCookie } from "../../../helpers/cookieStoragehelpers";
 import axios from "axios";
 import { url as apiUrl, token } from "../../../../api";
 import { toast } from "react-toastify";
+import { useHistory } from "react-router-dom";
 
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
@@ -106,7 +107,7 @@ const TreatmentSubmittedForm = ({
   id,
 }) => {
   const [treatmentInfo, setTreatmentInfo] = useState({});
-
+  let history = useHistory();
   const [userId, setUserId] = useState(getCookie("enrollmentIds"));
 
   const [basicInfo, setBasicInfo] = useState({
@@ -826,7 +827,10 @@ const TreatmentSubmittedForm = ({
       // Handle the response if needed
       console.log("Post successful:", response.data);
       toast.success("Treatment submitted successfully");
-
+      history.push({
+        pathname: "/patient-history",
+        state: { patientObj: patientObj },
+      });
       setCookie(
         "enrollmentIds",
         {
@@ -915,7 +919,13 @@ const TreatmentSubmittedForm = ({
       hepatitisBTreatment: {
         dateStarted: `${
           treatmentInfo?.hepatitisBTreatmentDto?.dateStarted?.year
-        }-${treatmentInfo?.hepatitisBTreatmentDto?.dateStarted?.monthValue}-${
+        }-${
+          treatmentInfo?.hepatitisBTreatmentDto?.dateStarted?.monthValue.toString()
+            .length > 1
+            ? treatmentInfo?.hepatitisBTreatmentDto?.dateStarted?.monthValue
+            : "0" +
+              treatmentInfo?.hepatitisBTreatmentDto?.dateStarted?.monthValue
+        }-${
           treatmentInfo?.hepatitisBTreatmentDto?.dateStarted?.dayOfMonth.toString()
             .length > 1
             ? treatmentInfo?.hepatitisBTreatmentDto?.dateStarted?.dayOfMonth
@@ -924,7 +934,13 @@ const TreatmentSubmittedForm = ({
         }`,
         dateStopped: `${
           treatmentInfo?.hepatitisBTreatmentDto?.dateStopped?.year
-        }-${treatmentInfo?.hepatitisBTreatmentDto?.dateStopped?.monthValue}-${
+        }-${
+          treatmentInfo?.hepatitisBTreatmentDto?.dateStopped?.monthValue.toString()
+            .length > 1
+            ? treatmentInfo?.hepatitisBTreatmentDto?.dateStopped?.monthValue
+            : "0" +
+              treatmentInfo?.hepatitisBTreatmentDto?.dateStopped?.monthValue
+        }-${
           treatmentInfo?.hepatitisBTreatmentDto?.dateStopped?.dayOfMonth.toString()
             .length > 1
             ? treatmentInfo?.hepatitisBTreatmentDto?.dateStopped?.dayOfMonth
@@ -941,8 +957,13 @@ const TreatmentSubmittedForm = ({
             treatmentInfo?.hepatitisBTreatmentDto?.hepatitisBRegimenSwitch
               .dateStarted.year
           }-${
-            treatmentInfo?.hepatitisBTreatmentDto?.hepatitisBRegimenSwitch
-              .dateStarted.monthValue
+            treatmentInfo?.hepatitisBTreatmentDto?.hepatitisBRegimenSwitch.dateStarted.monthValue.toString()
+              .length > 1
+              ? treatmentInfo?.hepatitisBTreatmentDto?.hepatitisBRegimenSwitch
+                  .dateStarted.monthValue
+              : "0" +
+                treatmentInfo?.hepatitisBTreatmentDto?.hepatitisBRegimenSwitch
+                  .dateStarted.monthValue
           }-${
             treatmentInfo?.hepatitisBTreatmentDto?.hepatitisBRegimenSwitch?.dateStarted?.dayOfMonth.toString()
               .length > 1
@@ -956,8 +977,13 @@ const TreatmentSubmittedForm = ({
             treatmentInfo?.hepatitisBTreatmentDto?.hepatitisBRegimenSwitch
               .dateStopped?.year
           }-${
-            treatmentInfo?.hepatitisBTreatmentDto?.hepatitisBRegimenSwitch
-              .dateStopped?.monthValue
+            treatmentInfo?.hepatitisBTreatmentDto?.hepatitisBRegimenSwitch.dateStopped?.monthValue.toString()
+              .length > 1
+              ? treatmentInfo?.hepatitisBTreatmentDto?.hepatitisBRegimenSwitch
+                  .dateStopped?.monthValue
+              : "0" +
+                treatmentInfo?.hepatitisBTreatmentDto?.hepatitisBRegimenSwitch
+                  .dateStopped?.monthValue
           }-${
             treatmentInfo?.hepatitisBTreatmentDto?.hepatitisBRegimenSwitch?.dateStopped?.dayOfMonth.toString()
               .length > 1
@@ -993,7 +1019,13 @@ const TreatmentSubmittedForm = ({
           treatmentInfo?.hepatitisCTreatmentDto?.adverseEffectReported,
         dateCompleted: `${
           treatmentInfo?.hepatitisCTreatmentDto?.dateCompleted?.year
-        }-${treatmentInfo?.hepatitisCTreatmentDto?.dateCompleted?.monthValue}-${
+        }-${
+          treatmentInfo?.hepatitisCTreatmentDto?.dateCompleted?.monthValue.toString()
+            .length > 1
+            ? treatmentInfo?.hepatitisCTreatmentDto?.dateCompleted?.monthValue
+            : "0" +
+              treatmentInfo?.hepatitisCTreatmentDto?.dateCompleted?.monthValue
+        }-${
           treatmentInfo?.hepatitisCTreatmentDto?.dateCompleted?.dayOfMonth.toString()
             .length > 1
             ? treatmentInfo?.hepatitisCTreatmentDto?.dateCompleted?.dayOfMonth
@@ -1002,7 +1034,13 @@ const TreatmentSubmittedForm = ({
         }`,
         dateStarted: `${
           treatmentInfo?.hepatitisCTreatmentDto?.dateStarted?.year
-        }-${treatmentInfo?.hepatitisCTreatmentDto?.dateStarted?.monthValue}-${
+        }-${
+          treatmentInfo?.hepatitisCTreatmentDto?.dateStarted?.monthValue.toString()
+            .length > 1
+            ? treatmentInfo?.hepatitisCTreatmentDto?.dateStarted?.monthValue
+            : "0" +
+              treatmentInfo?.hepatitisCTreatmentDto?.dateStarted?.monthValue
+        }-${
           treatmentInfo?.hepatitisCTreatmentDto?.dateStarted?.dayOfMonth.toString()
             .length > 1
             ? treatmentInfo?.hepatitisCTreatmentDto?.dateStarted?.dayOfMonth
@@ -1012,7 +1050,13 @@ const TreatmentSubmittedForm = ({
 
         dateStopped: `${
           treatmentInfo?.hepatitisCTreatmentDto?.dateStopped?.year
-        }-${treatmentInfo?.hepatitisCTreatmentDto?.dateStopped.monthValue}-${
+        }-${
+          treatmentInfo?.hepatitisCTreatmentDto?.dateStopped.monthValue.toString()
+            .length > 1
+            ? treatmentInfo?.hepatitisCTreatmentDto?.dateStopped.monthValue
+            : "0" +
+              treatmentInfo?.hepatitisCTreatmentDto?.dateStopped.monthValue
+        }-${
           treatmentInfo?.hepatitisCTreatmentDto?.dateStopped.dayOfMonth.toString()
             .length > 1
             ? treatmentInfo?.hepatitisCTreatmentDto?.dateStopped.dayOfMonth
@@ -1026,8 +1070,13 @@ const TreatmentSubmittedForm = ({
             treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment.dateStarted
               ?.year
           }-${
-            treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment?.dateStarted
-              ?.monthValue
+            treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment?.dateStarted?.monthValue.toString()
+              .length > 1
+              ? treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment
+                  ?.dateStarted?.monthValue
+              : "0" +
+                treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment
+                  ?.dateStarted?.monthValue
           }-${
             treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment?.dateStarted?.dayOfMonth.toString()
               .length > 1
@@ -1041,8 +1090,13 @@ const TreatmentSubmittedForm = ({
             treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment?.dateStopped
               .year
           }-${
-            treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment?.dateStopped
-              .monthValue
+            treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment?.dateStopped.monthValue.toString()
+              .length > 1
+              ? treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment
+                  ?.dateStopped.monthValue
+              : "0" +
+                treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment
+                  ?.dateStopped.monthValue
           }-${
             treatmentInfo?.hepatitisCTreatmentDto?.hcvRetreatment.dateStopped.dayOfMonth.toString()
               .length > 1
@@ -1074,8 +1128,13 @@ const TreatmentSubmittedForm = ({
             treatmentInfo?.hepatitisCTreatmentDto?.hepatitisSvr12Testing
               .dateTested.year
           }-${
-            treatmentInfo?.hepatitisCTreatmentDto?.hepatitisSvr12Testing
-              .dateTested.monthValue
+            treatmentInfo?.hepatitisCTreatmentDto?.hepatitisSvr12Testing.dateTested.monthValue.toString()
+              .length > 1
+              ? treatmentInfo?.hepatitisCTreatmentDto?.hepatitisSvr12Testing
+                  .dateTested.monthValue
+              : "0" +
+                treatmentInfo?.hepatitisCTreatmentDto?.hepatitisSvr12Testing
+                  .dateTested.monthValue
           }-${
             treatmentInfo?.hepatitisCTreatmentDto?.hepatitisSvr12Testing.dateTested.dayOfMonth.toString()
               .length > 1
@@ -1094,8 +1153,13 @@ const TreatmentSubmittedForm = ({
             treatmentInfo?.hepatitisCTreatmentDto?.hepatitisSvr12Testing
               .retreatmentDateTested.year
           }-${
-            treatmentInfo?.hepatitisCTreatmentDto?.hepatitisSvr12Testing
-              .retreatmentDateTested.monthValue
+            treatmentInfo?.hepatitisCTreatmentDto?.hepatitisSvr12Testing.retreatmentDateTested.monthValue.toString()
+              .length > 1
+              ? treatmentInfo?.hepatitisCTreatmentDto?.hepatitisSvr12Testing
+                  .retreatmentDateTested.monthValue
+              : "0" +
+                treatmentInfo?.hepatitisCTreatmentDto?.hepatitisSvr12Testing
+                  .retreatmentDateTested.monthValue
           }-${
             treatmentInfo?.hepatitisCTreatmentDto?.hepatitisSvr12Testing.retreatmentDateTested.dayOfMonth.toString()
               .length > 1

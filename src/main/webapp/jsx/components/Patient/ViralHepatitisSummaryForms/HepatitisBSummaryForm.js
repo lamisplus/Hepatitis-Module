@@ -455,6 +455,7 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
         {
           enrollmentId: response.data?.enrollmentId,
           enrollmentUuid: response.data?.enrollmentUuid,
+          person: response.data?.person,
         },
         1
       );

@@ -11,7 +11,7 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import { Card, CardContent } from "@material-ui/core";
 import moment from "moment";
-
+import { useHistory } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import "react-widgets/dist/css/react-widgets.css";
 import "react-phone-input-2/lib/style.css";
@@ -108,7 +108,7 @@ const DiagnosisSubmitedForm = ({
   enrollmentUuid,
 }) => {
   const [diagnosisInfo, setDiagnosisInfo] = useState({});
-
+  let history = useHistory();
   const [userId, setUserId] = useState(getCookie("enrollmentIds"));
 
   const [basicInfo, setBasicInfo] = useState({
@@ -249,7 +249,10 @@ const DiagnosisSubmitedForm = ({
       // Handle the response if needed
       console.log("Post successful:", response.data);
       toast.success("Diagnosis submitted successfully");
-
+      history.push({
+        pathname: "/patient-history",
+        state: { patientObj: patientObj },
+      });
       setCookie(
         "enrollmentIds",
         {
@@ -374,6 +377,7 @@ const DiagnosisSubmitedForm = ({
   console.log(" userId?.enrollmentUuid", enrollmentUuid);
   useEffect(() => {
     castCookieValueToForm();
+
     setBasicInfo({
       clinicalParameters: {
         afp: diagnosisInfo?.clinicalParameters?.afp,
@@ -404,10 +408,16 @@ const DiagnosisSubmitedForm = ({
         antiHDV: diagnosisInfo?.hepatitisBTest?.antiHDV,
         comment: diagnosisInfo?.hepatitisBTest?.comment,
         ctScan: diagnosisInfo?.hepatitisBTest?.ctScan,
+
         dateHbvDnaTestRequested: `${
           diagnosisInfo?.hepatitisBTest?.dateHbvDnaTestRequested.year
         }-${
-          diagnosisInfo?.hepatitisBTest?.dateHbvDnaTestRequested.monthValue
+          diagnosisInfo?.hepatitisBTest?.dateHbvDnaTestRequested.monthValue.toString()
+            .length > 1
+            ? diagnosisInfo?.hepatitisBTest?.dateHbvDnaTestRequested.monthValue
+            : "0" +
+              diagnosisInfo?.hepatitisBTest?.dateHbvDnaTestRequested.monthValue.toString()
+                .length
         }-${
           diagnosisInfo?.hepatitisBTest?.dateHbvDnaTestRequested.dayOfMonth.toString()
             .length > 1
@@ -417,7 +427,13 @@ const DiagnosisSubmitedForm = ({
         }`,
         dateHbvSampleRequested: `${
           diagnosisInfo?.hepatitisBTest?.dateHbvSampleRequested.year
-        }-${diagnosisInfo?.hepatitisBTest?.dateHbvSampleRequested.monthValue}-${
+        }-${
+          diagnosisInfo?.hepatitisBTest?.dateHbvSampleRequested.monthValue.toString()
+            .length > 1
+            ? diagnosisInfo?.hepatitisBTest?.dateHbvSampleRequested.monthValue
+            : "0" +
+              diagnosisInfo?.hepatitisBTest?.dateHbvSampleRequested.monthValue
+        }-${
           diagnosisInfo?.hepatitisBTest?.dateHbvSampleRequested.dayOfMonth.toString()
             .length > 1
             ? diagnosisInfo?.hepatitisBTest?.dateHbvSampleRequested.dayOfMonth
@@ -426,7 +442,13 @@ const DiagnosisSubmitedForm = ({
         }`,
         dateHbvTestRequested: `${
           diagnosisInfo?.hepatitisBTest?.dateHbvTestRequested.year
-        }-${diagnosisInfo?.hepatitisBTest?.dateHbvTestRequested.monthValue}-${
+        }-${
+          diagnosisInfo?.hepatitisBTest?.dateHbvTestRequested.monthValue.toString()
+            .length > 1
+            ? diagnosisInfo?.hepatitisBTest?.dateHbvTestRequested.monthValue
+            : "0" +
+              diagnosisInfo?.hepatitisBTest?.dateHbvTestRequested.monthValue
+        }-${
           diagnosisInfo?.hepatitisBTest?.dateHbvTestRequested.dayOfMonth.toString()
             .length > 1
             ? diagnosisInfo?.hepatitisBTest?.dateHbvTestRequested.dayOfMonth
@@ -438,7 +460,13 @@ const DiagnosisSubmitedForm = ({
         dateHbvDnaResultReported: `${
           diagnosisInfo?.hepatitisBTest?.dateHbvDnaResultReported?.year
         }-${
-          diagnosisInfo?.hepatitisBTest?.dateHbvDnaResultReported?.monthValue
+          diagnosisInfo?.hepatitisBTest?.dateHbvDnaResultReported?.monthValue.toString()
+            .length > 1
+            ? diagnosisInfo?.hepatitisBTest?.dateHbvDnaResultReported
+                ?.monthValue
+            : "0" +
+              diagnosisInfo?.hepatitisBTest?.dateHbvDnaResultReported
+                ?.monthValue
         }-${
           diagnosisInfo?.hepatitisBTest?.dateHbvDnaResultReported?.dayOfMonth.toString()
             .length > 1
@@ -455,7 +483,11 @@ const DiagnosisSubmitedForm = ({
         stagingDateOfLiverBiopsy: `${
           diagnosisInfo?.hepatitisBTest?.stagingDateOfLiverBiopsy.year
         }-${
-          diagnosisInfo?.hepatitisBTest?.stagingDateOfLiverBiopsy.monthValue
+          diagnosisInfo?.hepatitisBTest?.stagingDateOfLiverBiopsy.monthValue.toString()
+            .length > 1
+            ? diagnosisInfo?.hepatitisBTest?.stagingDateOfLiverBiopsy.monthValue
+            : "0" +
+              diagnosisInfo?.hepatitisBTest?.stagingDateOfLiverBiopsy.monthValue
         }-${
           diagnosisInfo?.hepatitisBTest?.stagingDateOfLiverBiopsy.dayOfMonth.toString()
             .length > 1
@@ -578,7 +610,6 @@ const DiagnosisSubmitedForm = ({
                             )}
                           </FormGroup>
                         </div>
-
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="dateHbvTestRequested">
@@ -611,7 +642,6 @@ const DiagnosisSubmitedForm = ({
                             )}
                           </FormGroup>
                         </div>
-
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="dateHbvSampleRequested">
@@ -644,7 +674,6 @@ const DiagnosisSubmitedForm = ({
                             )}
                           </FormGroup>
                         </div>
-
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="dateHbvDnaResultReported">
@@ -678,7 +707,6 @@ const DiagnosisSubmitedForm = ({
                             )}
                           </FormGroup>
                         </div>
-
                         <div className="form-group mb-2 col-md-4">
                           <FormGroup>
                             <Label>
@@ -769,7 +797,6 @@ const DiagnosisSubmitedForm = ({
                             </FormGroup>
                           </div>
                         )}
-
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="hbsAgQuantification">
@@ -801,7 +828,6 @@ const DiagnosisSubmitedForm = ({
                             )}
                           </FormGroup>
                         </div>
-
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="hbeAG">HbeAG</Label>{" "}
@@ -833,7 +859,6 @@ const DiagnosisSubmitedForm = ({
                             )}
                           </FormGroup>
                         </div>
-
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="antiHDV">Anti-HDV</Label>
@@ -866,7 +891,6 @@ const DiagnosisSubmitedForm = ({
                             )}
                           </FormGroup>
                         </div>
-
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="treatmentEligible">
@@ -899,36 +923,38 @@ const DiagnosisSubmitedForm = ({
                           </FormGroup>
                         </div>
 
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="pmtctEligible">PMTCT Eligible</Label>
-                            <span style={{ color: "red" }}> *</span>{" "}
-                            <select
-                              className="form-control"
-                              name="pmtctEligible"
-                              disabled={action === "view" ? true : false}
-                              id="pmtctEligible"
-                              onChange={handleInputChangeBasic}
-                              value={basicInfo.hepatitisBTest.pmtctEligible}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            >
-                              <option value={""}>Select</option>
-                              <option value={"YES"}>Yes</option>
-                              <option value={"NO"}>No</option>
-                            </select>
-                            {errors.pmtctEligible !== "" ? (
-                              <span className={classes.error}>
-                                {errors.pmtctEligible}
-                              </span>
-                            ) : (
-                              ""
-                            )}
-                          </FormGroup>
-                        </div>
-
+                        {diagnosisInfo?.hepatitisEnrollment?.sex?.toUpperCase() ===
+                          "FEMALE" && (
+                          <div className="form-group mb-3 col-md-4">
+                            <FormGroup>
+                              <Label for="pmtctEligible">PMTCT Eligible</Label>
+                              <span style={{ color: "red" }}> *</span>{" "}
+                              <select
+                                className="form-control"
+                                name="pmtctEligible"
+                                disabled={action === "view" ? true : false}
+                                id="pmtctEligible"
+                                onChange={handleInputChangeBasic}
+                                value={basicInfo.hepatitisBTest.pmtctEligible}
+                                style={{
+                                  border: "1px solid #014D88",
+                                  borderRadius: "0.2rem",
+                                }}
+                              >
+                                <option value={""}>Select</option>
+                                <option value={"YES"}>Yes</option>
+                                <option value={"NO"}>No</option>
+                              </select>
+                              {errors.pmtctEligible !== "" ? (
+                                <span className={classes.error}>
+                                  {errors.pmtctEligible}
+                                </span>
+                              ) : (
+                                ""
+                              )}
+                            </FormGroup>
+                          </div>
+                        )}
                         <div className="form-group mb-3 col-md-4-12">
                           <FormGroup>
                             <Label for="comment">Comment</Label>

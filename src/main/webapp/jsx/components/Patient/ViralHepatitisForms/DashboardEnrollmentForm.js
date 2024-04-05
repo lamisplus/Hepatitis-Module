@@ -451,6 +451,7 @@ const DashboardEnrollmentForm = ({
         {
           enrollmentId: response.data?.enrollmentId,
           enrollmentUuid: response.data?.enrollmentUuid,
+          person: response.data?.person,
         },
         1
       );

@@ -99,6 +99,7 @@ const useStyles = makeStyles((theme) => ({
 
 const DashboardForm2 = ({ patientObj, setActiveContent }) => {
   const [userId, setUserId] = useState(getCookie("enrollmentIds"));
+
   const [enrollmentUuid, setEnrollmentUuid] = useState("");
 
   const [basicInfo, setBasicInfo] = useState({
@@ -241,15 +242,15 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
       ? ""
       : " Treatment Eligible is required";
 
-    temp.pmtctEligible = basicInfo.hepatitisBTest.pmtctEligible
-      ? ""
-      : " PMTCT Eligible is required";
+    // temp.pmtctEligible = basicInfo.hepatitisBTest.pmtctEligible
+    //   ? ""
+    //   : " PMTCT Eligible is required";
 
-    temp.comment = basicInfo.hepatitisBTest.pmtctEligible
+    temp.comment = basicInfo.hepatitisBTest.comment
       ? ""
-      : " PMTCT Eligible is required";
+      : "Comment is required";
 
-    temp.ast = basicInfo.hepatitisBTest.pmtctEligible ? "" : " AST is required";
+    temp.ast = basicInfo.clinicalParameters.ast ? "" : " AST is required";
     temp.alt = basicInfo.clinicalParameters.alt ? "" : " ALT is required";
     temp.hcvRNA = basicInfo.hepatitisCTest.hcvRNA ? "" : "HCV RNA is required";
     temp.hepatitisCoinfection = basicInfo.hepatitisCTest.hepatitisCoinfection
@@ -865,35 +866,36 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                           </FormGroup>
                         </div>
 
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="pmtctEligible">PMTCT Eligible</Label>
-                            <span style={{ color: "red" }}> *</span>{" "}
-                            <select
-                              className="form-control"
-                              name="pmtctEligible"
-                              id="pmtctEligible"
-                              onChange={handleInputChangeBasic}
-                              value={basicInfo.hepatitisBTest.pmtctEligible}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            >
-                              <option value={""}>Select</option>
-                              <option value={"YES"}>Yes</option>
-                              <option value={"NO"}>No</option>
-                            </select>
-                            {errors.pmtctEligible !== "" ? (
-                              <span className={classes.error}>
-                                {errors.pmtctEligible}
-                              </span>
-                            ) : (
-                              ""
-                            )}
-                          </FormGroup>
-                        </div>
-
+                        {patientObj?.gender.toLowerCase() === "female" && (
+                          <div className="form-group mb-3 col-md-4">
+                            <FormGroup>
+                              <Label for="pmtctEligible">PMTCT Eligible</Label>
+                              <span style={{ color: "red" }}> *</span>{" "}
+                              <select
+                                className="form-control"
+                                name="pmtctEligible"
+                                id="pmtctEligible"
+                                onChange={handleInputChangeBasic}
+                                value={basicInfo.hepatitisBTest.pmtctEligible}
+                                style={{
+                                  border: "1px solid #014D88",
+                                  borderRadius: "0.2rem",
+                                }}
+                              >
+                                <option value={""}>Select</option>
+                                <option value={"YES"}>Yes</option>
+                                <option value={"NO"}>No</option>
+                              </select>
+                              {errors.pmtctEligible !== "" ? (
+                                <span className={classes.error}>
+                                  {errors.pmtctEligible}
+                                </span>
+                              ) : (
+                                ""
+                              )}
+                            </FormGroup>
+                          </div>
+                        )}
                         <div className="form-group mb-3 col-md-4-12">
                           <FormGroup>
                             <Label for="comment">Comment</Label>

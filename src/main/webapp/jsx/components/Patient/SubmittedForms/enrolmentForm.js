@@ -24,6 +24,7 @@ import { toast } from "react-toastify";
 import { url as apiUrl, token } from "../../../../api";
 import { useCallback } from "react";
 import { useState } from "react";
+import { useHistory } from "react-router-dom";
 
 // import { FormGroup, Label, Spinner, Input, Form, InputGroup } from "reactstrap";
 
@@ -167,7 +168,7 @@ const EnrolmentSubmittedForm = ({
     personId: allPatientInfo.id,
     weight: "",
   });
-
+  let history = useHistory();
   const [hospitalNumStatus, setHospitalNumStatus] = useState(false);
   const [genders, setGenders] = useState([]);
 
@@ -470,12 +471,16 @@ const EnrolmentSubmittedForm = ({
       );
       // Handle the response if needed
       toast.success("Enrolment submitted successfully");
-
+      history.push({
+        pathname: "/patient-history",
+        state: { patientObj: patientObj },
+      });
       setCookie(
         "enrollmentIds",
         {
           enrollmentId: response.data?.enrollmentId,
           enrollmentUuid: response.data?.enrollmentUuid,
+          person: response.data?.person,
         },
         1
       );
@@ -916,9 +921,6 @@ const EnrolmentSubmittedForm = ({
       })
       .catch((error) => {});
   };
-
-  console.log("this is the person object", patientInfo);
-  console.log("this is the  full person object", allPatientInfo);
 
   useEffect(() => {
     castCookieValueToForm();
@@ -1863,38 +1865,39 @@ const EnrolmentSubmittedForm = ({
                       </FormGroup>
                     </div> */}
 
-                  <div className="form-group mb-3 col-md-4">
-                    <FormGroup>
-                      <Label for="pregnancy">
-                        Pregnancy <span style={{ color: "red" }}> *</span>{" "}
-                      </Label>
-                      <select
-                        className="form-control"
-                        name="pregnancy"
-                        id="pregnancy"
-                        value={basicInfo.pregnancy}
-                        onChange={handleInputChangeBasic}
-                        disabled={action === "view" ? true : false}
-                        // onBlur={formik.handleBlur}
-                        style={{
-                          border: "1px solid #014D88",
-                          borderRadius: "0.2rem",
-                        }}
-                      >
-                        <option value="">Select </option>
-                        <option value="NO">No </option>
-                        <option value="YES">Yes </option>
-                      </select>
-                      {errors.pregnancy !== "" ? (
-                        <span className={classes.error}>
-                          {errors.pregnancy}
-                        </span>
-                      ) : (
-                        ""
-                      )}
-                    </FormGroup>
-                  </div>
-
+                  {Number(basicInfo?.personDto?.genderId) === 377 && (
+                    <div className="form-group mb-3 col-md-4">
+                      <FormGroup>
+                        <Label for="pregnancy">
+                          Pregnancy <span style={{ color: "red" }}> *</span>{" "}
+                        </Label>
+                        <select
+                          className="form-control"
+                          name="pregnancy"
+                          id="pregnancy"
+                          value={basicInfo.pregnancy}
+                          onChange={handleInputChangeBasic}
+                          disabled={action === "view" ? true : false}
+                          // onBlur={formik.handleBlur}
+                          style={{
+                            border: "1px solid #014D88",
+                            borderRadius: "0.2rem",
+                          }}
+                        >
+                          <option value="">Select </option>
+                          <option value="NO">No </option>
+                          <option value="YES">Yes </option>
+                        </select>
+                        {errors.pregnancy !== "" ? (
+                          <span className={classes.error}>
+                            {errors.pregnancy}
+                          </span>
+                        ) : (
+                          ""
+                        )}
+                      </FormGroup>
+                    </div>
+                  )}
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="weight">
@@ -2000,37 +2003,39 @@ const EnrolmentSubmittedForm = ({
                       </FormGroup>
                     </div> */}
 
-                  <div className="form-group mb-3 col-md-4">
-                    <FormGroup>
-                      <Label for="breastfeeding">
-                        Breastfeeding <span style={{ color: "red" }}> *</span>{" "}
-                      </Label>
-                      <select
-                        className="form-control"
-                        name="breastfeeding"
-                        id="breastfeeding"
-                        disabled={action === "view" ? true : false}
-                        value={basicInfo.breastfeeding}
-                        onChange={handleInputChangeBasic}
-                        // onBlur={formik.handleBlur}
-                        style={{
-                          border: "1px solid #014D88",
-                          borderRadius: "0.2rem",
-                        }}
-                      >
-                        <option>Select</option>
-                        <option value={"YES"}>Yes</option>
-                        <option value={"NO"}>No</option>
-                      </select>
-                      {errors.breastfeeding !== "" ? (
-                        <span className={classes.error}>
-                          {errors.breastfeeding}
-                        </span>
-                      ) : (
-                        ""
-                      )}
-                    </FormGroup>
-                  </div>
+                  {Number(basicInfo?.personDto?.genderId) === 377 && (
+                    <div className="form-group mb-3 col-md-4">
+                      <FormGroup>
+                        <Label for="breastfeeding">
+                          Breastfeeding <span style={{ color: "red" }}> *</span>{" "}
+                        </Label>
+                        <select
+                          className="form-control"
+                          name="breastfeeding"
+                          id="breastfeeding"
+                          disabled={action === "view" ? true : false}
+                          value={basicInfo.breastfeeding}
+                          onChange={handleInputChangeBasic}
+                          // onBlur={formik.handleBlur}
+                          style={{
+                            border: "1px solid #014D88",
+                            borderRadius: "0.2rem",
+                          }}
+                        >
+                          <option>Select</option>
+                          <option value={"YES"}>Yes</option>
+                          <option value={"NO"}>No</option>
+                        </select>
+                        {errors.breastfeeding !== "" ? (
+                          <span className={classes.error}>
+                            {errors.breastfeeding}
+                          </span>
+                        ) : (
+                          ""
+                        )}
+                      </FormGroup>
+                    </div>
+                  )}
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="historyOfUsingAbusedSubstance">

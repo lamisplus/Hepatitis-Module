@@ -99,6 +99,9 @@ const useStyles = makeStyles((theme) => ({
 
 const ViralHepatitisForm2 = ({ setStep }) => {
   const [userId, setUserId] = useState(getCookie("enrollmentIds"));
+  const [enrollmentPersonInfo, setEnrollmentPersonInfo] = useState(
+    getCookie("enrollmentIds")
+  );
   console.log(getCookie("enrollmentIds"));
   const [basicInfo, setBasicInfo] = useState({
     clinicalParameters: {
@@ -289,15 +292,15 @@ const ViralHepatitisForm2 = ({ setStep }) => {
       ? ""
       : " Treatment Eligible is required";
 
-    temp.pmtctEligible = basicInfo.hepatitisBTest.pmtctEligible
-      ? ""
-      : " PMTCT Eligible is required";
+    // temp.pmtctEligible = basicInfo.hepatitisBTest.pmtctEligible
+    //   ? ""
+    //   : " PMTCT Eligible is required";
 
     // temp.comment = basicInfo.hepatitisBTest.pmtctEligible
     //   ? ""
     //   : " PMTCT Eligible is required";
 
-    temp.ast = basicInfo.hepatitisBTest.pmtctEligible ? "" : " AST is required";
+    temp.ast = basicInfo.clinicalParameters.ast ? "" : " AST is required";
     temp.alt = basicInfo.clinicalParameters.alt ? "" : " ALT is required";
     temp.hcvRNA = basicInfo.hepatitisCTest.hcvRNA ? "" : "HCV RNA is required";
     temp.hepatitisCoinfection = basicInfo.hepatitisCTest.hepatitisCoinfection
@@ -406,12 +409,11 @@ const ViralHepatitisForm2 = ({ setStep }) => {
     e.preventDefault();
     // validating the input
     window.scrollTo(0, 0);
+    console.log("good to go", errors, temp);
 
     console.log(basicInfo);
     // console.log(errors);
-
     if (validate()) {
-      console.log("good to go", basicInfo);
       postDataWithToken(basicInfo, "hepatitis/diagnosis");
     }
   };
@@ -901,34 +903,37 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                           </FormGroup>
                         </div>
 
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="pmtctEligible">PMTCT Eligible</Label>
-                            <span style={{ color: "red" }}> *</span>{" "}
-                            <select
-                              className="form-control"
-                              name="pmtctEligible"
-                              id="pmtctEligible"
-                              onChange={handleInputChangeBasic}
-                              value={basicInfo.hepatitisBTest.pmtctEligible}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            >
-                              <option value={""}>Select</option>
-                              <option value={"YES"}>Yes</option>
-                              <option value={"NO"}>No</option>
-                            </select>
-                            {errors.pmtctEligible !== "" ? (
-                              <span className={classes.error}>
-                                {errors.pmtctEligible}
-                              </span>
-                            ) : (
-                              ""
-                            )}
-                          </FormGroup>
-                        </div>
+                        {Number(enrollmentPersonInfo?.person?.gender.id) ===
+                          377 && (
+                          <div className="form-group mb-3 col-md-4">
+                            <FormGroup>
+                              <Label for="pmtctEligible">PMTCT Eligible</Label>
+                              <span style={{ color: "red" }}> *</span>{" "}
+                              <select
+                                className="form-control"
+                                name="pmtctEligible"
+                                id="pmtctEligible"
+                                onChange={handleInputChangeBasic}
+                                value={basicInfo.hepatitisBTest.pmtctEligible}
+                                style={{
+                                  border: "1px solid #014D88",
+                                  borderRadius: "0.2rem",
+                                }}
+                              >
+                                <option value={""}>Select</option>
+                                <option value={"YES"}>Yes</option>
+                                <option value={"NO"}>No</option>
+                              </select>
+                              {/* {errors.pmtctEligible !== "" ? (
+                                <span className={classes.error}>
+                                  {errors.pmtctEligible}
+                                </span>
+                              ) : (
+                                ""
+                              )} */}
+                            </FormGroup>
+                          </div>
+                        )}
 
                         <div className="form-group mb-3 col-md-4-12">
                           <FormGroup>
@@ -1789,15 +1794,10 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                         }}
                       >
                         <option value={""}>Select</option>
-                        <option value={"F-0"}> No Fibrosis</option>
-                        {/* <option value={"F-1"}>Mild Fibrosis</option> */}
-                        {/* <option value={"F-2"}>Moderate Fibrosis</option> */}
-                        {/* <option value={"F-3"}> Severe Fibrosis</option> */}
-                        <option value={"F-4"}>Cirrhosis</option>
-                        <option value={"not done"}>Not done</option>
                         <option value={"FIBROSIS"}> Fibrosis</option>
-
                         <option value={"CIRRHOSIS"}>Cirrhosis</option>
+                        <option value={"NO_FIBROSIS"}> No Fibrosis</option>
+                        {/* <option value={"CIRRHOSIS"}>Cirrhosis</option> */}
                         <option value={"HIGH_CC"}>High CC </option>
                       </select>
                       {errors.liverBiopsyStage !== "" ? (
