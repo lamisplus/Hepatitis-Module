@@ -142,8 +142,8 @@ const HepatitisPatients = (props) => {
         )
         .then((response) => response)
         .then((result) => {
-          console.log(result.data);
-          if (result.data === "") {
+          console.log(result?.data);
+          if (result?.data === "") {
             resolve({
               data: [],
               page: 0,
@@ -151,7 +151,7 @@ const HepatitisPatients = (props) => {
             });
           } else {
             resolve({
-              data: result.data.map((row) => ({
+              data: result?.data?.map?.((row) => ({
                 name: [row?.firstName, row?.otherName, row?.surname]
                   .filter(Boolean)
                   .join(", "),
@@ -161,14 +161,14 @@ const HepatitisPatients = (props) => {
                     row.sex.slice(1).toLowerCase()
                   : row.gender.toLowerCase().charAt(0).toUpperCase() +
                     row.gender.slice(1).toLowerCase(),
-                dateOfBirth: row.dateOfBirth,
+                dateOfBirth: row?.dateOfBirth,
                 age:
                   row.dateOfBirth === 0 ||
                   row.dateOfBirth === undefined ||
                   row.dateOfBirth === null ||
                   row.dateOfBirth === ""
                     ? 0
-                    : calculate_age(row.dateOfBirth),
+                    : calculate_age(row?.dateOfBirth),
                 actions: (
                   <div>
                     <Link

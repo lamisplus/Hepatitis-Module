@@ -46,5 +46,7 @@ public interface EnrollmentService {
 
     HepatitisTreatment viewHepatitisTreatmentById(Long id);
 
-//    HepatitisEnrollment update-hepatitis-enrollment
+    String archiveDiagnosis(Long id);
+
+    String archiveTreatment(Long id);
 }

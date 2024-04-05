@@ -101,4 +101,15 @@ public class EnrollmentController {
     public ResponseEntity<List<ActivityTracker>> getActivitiesByPersonUuid(@PathVariable("personUuid") String personUuid) {
         return ResponseEntity.ok (enrollmentService.getActivityTracker(personUuid));
     }
+
+
+    @PutMapping(value = "/{id}/archive/diagnosis")
+    public ResponseEntity<String> archiveDiagnosis(@PathVariable("id") Long id) {
+        return ResponseEntity.ok (enrollmentService.archiveDiagnosis(id));
+    }
+
+    @PutMapping(value = "/{id}/archive/treatment")
+    public ResponseEntity<String> archiveTreatment(@PathVariable("id") Long id) {
+        return ResponseEntity.ok (enrollmentService.archiveTreatment(id));
+    }
 }

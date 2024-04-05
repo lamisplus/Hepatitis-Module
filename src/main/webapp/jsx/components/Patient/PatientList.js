@@ -151,7 +151,7 @@ const Patients = (props) => {
             });
           } else {
             resolve({
-              data: result?.data?.records.map((row) => ({
+              data: result?.data?.records.map?.((row) => ({
                 name: [row.firstName, row.otherName, row.surname]
                   .filter(Boolean)
                   .join(", "),

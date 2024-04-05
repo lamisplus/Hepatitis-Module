@@ -298,6 +298,10 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         return treatmentDto;
     }
 
+
+
+
+
     public List<ActivityTracker> getActivityTracker(String personUuid) {
         ArrayList<ActivityTracker> activityTrackers = new ArrayList<>();
 
@@ -309,7 +313,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
             activityTracker.setActivityName("Hepatitis Enrollment");
             activityTracker.setPath("hepatitis_enrollment");
             activityTracker.setEditable(true);
-            activityTracker.setDeletable(true);
+            activityTracker.setDeletable(false);
             activityTracker.setViewable(true);
             activityTracker.setRecordId(hepatitisEnrollment.getId());
             activityTracker.setActivityDate(hepatitisEnrollment.getCreatedDate().toLocalDate());
@@ -401,6 +405,30 @@ public class EnrollmentServiceImpl implements EnrollmentService {
                     "pass ID of hepatitis Treatment");
         }
         return hepatitisTreatment;
+    }
+
+
+    public String archiveDiagnosis(Long id){
+        HepatitisDiagnosis existingHepatitisDiagnosis = diagnosisRepository.findHepatitisDiagnosisByIdAndArchived(id, 0);
+
+        if(existingHepatitisDiagnosis == null) {
+            throw new EntityNotFoundException(HepatitisDiagnosis.class, "Hepatitis Diagnosis not found with id: " + id);
+        }
+        existingHepatitisDiagnosis.setArchived(1);
+        diagnosisRepository.save(existingHepatitisDiagnosis);
+        return "Diagnosis deleted successfully.";
+    }
+
+    public String archiveTreatment(Long id){
+        HepatitisTreatment existingHepatitisTreatment = treatmentRepository.findHepatitisTreatmentsByIdAndArchived(id, 0);
+
+        if (existingHepatitisTreatment == null) {
+            throw new EntityNotFoundException(HepatitisDiagnosis.class, "Hepatitis Treatment not found with id: " + id);
+        }
+
+        existingHepatitisTreatment.setArchived(1);
+        treatmentRepository.save(existingHepatitisTreatment);
+        return "Treatment deleted successfully.";
     }
 
 }
