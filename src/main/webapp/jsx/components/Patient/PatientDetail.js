@@ -146,6 +146,7 @@ function PatientCard(props) {
               setActiveContent={setActiveContent}
               activeContent={activeContent}
               allRecentActivities={recentActivities}
+              getRecentActivties={getRecentActivties}
             />
           )}
 
@@ -178,6 +179,7 @@ function PatientCard(props) {
               setActiveContent={setActiveContent}
               activeContent={activeContent}
               recentActivities={recentActivities}
+              getRecentActivties={getRecentActivties}
             />
           )}
           {/*  {activeContent.route==='biometrics' &&(<Biometrics patientObj={patientObj} setActiveContent={setActiveContent} activeContent={activeContent}/>)}

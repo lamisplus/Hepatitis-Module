@@ -1076,7 +1076,7 @@ const EnrolmentSubmittedForm = ({
                         <input
                           className="form-control"
                           type="date"
-                          disabled={action === "view" ? true : false}
+                          disabled={true}
                           name="dateOfRegistration"
                           id="dateOfRegistration"
                           value={basicInfo?.personDto.dateOfRegistration}
@@ -1106,7 +1106,7 @@ const EnrolmentSubmittedForm = ({
                         <input
                           className="form-control"
                           type="text"
-                          disabled={action === "view" ? true : false}
+                          disabled={true}
                           name="hospitalNumber"
                           id="hospitalNumber"
                           // value={info.value}
@@ -1150,7 +1150,7 @@ const EnrolmentSubmittedForm = ({
                           className="form-control"
                           type="text"
                           name="surname"
-                          disabled={action === "view" ? true : false}
+                          disabled={true}
                           id="surname"
                           // value={basicInfo.personDto.surname}
                           value={basicInfo.personDto.surname}
@@ -1178,7 +1178,7 @@ const EnrolmentSubmittedForm = ({
                           className="form-control"
                           type="text"
                           name="firstName"
-                          disabled={action === "view" ? true : false}
+                          disabled={true}
                           id="firstName"
                           // value={basicInfo.personDto.firstName}
                           value={basicInfo.personDto.firstName}
@@ -1205,7 +1205,7 @@ const EnrolmentSubmittedForm = ({
                           type="text"
                           name="otherName"
                           id="otherName"
-                          disabled={action === "view" ? true : false}
+                          disabled={true}
                           // value={basicInfo.personDto.otherName}
                           value={basicInfo.personDto.otherName}
                           onChange={handleInputChangeBasic}
@@ -1234,7 +1234,7 @@ const EnrolmentSubmittedForm = ({
                             border: "1px solid #014D88",
                             // backgroundColor: "#e9ecef !important",
                           }}
-                          disabled={action === "view" ? true : false}
+                          disabled={true}
                           inputStyle={{ width: "100%", borderRadius: "0px" }}
                           country={"ng"}
                           placeholder="(234)7099999999"
@@ -1337,7 +1337,7 @@ const EnrolmentSubmittedForm = ({
                           className="form-control"
                           name="stateId"
                           id="stateId"
-                          disabled={action === "view" ? true : false}
+                          disabled={true}
                           // value={info.stateId}
                           value={info.stateId}
                           onChange={handleInputChangesForInfo}
@@ -1375,7 +1375,7 @@ const EnrolmentSubmittedForm = ({
                           type="text"
                           name="district"
                           id="district"
-                          disabled={action === "view" ? true : false}
+                          disabled={true}
                           value={info.district}
                           style={{
                             border: "1px solid #014D88",
@@ -1407,7 +1407,7 @@ const EnrolmentSubmittedForm = ({
                           className="form-control"
                           type="text"
                           name="landmark"
-                          disabled={action === "view" ? true : false}
+                          disabled={true}
                           id="landmark"
                           // value={basicInfo.landmark}
                           value={basicInfo.landmark}
@@ -1438,7 +1438,7 @@ const EnrolmentSubmittedForm = ({
                               type="radio"
                               value="Actual"
                               name="dateOfBirth"
-                              disabled={action === "view" ? true : false}
+                              disabled={true}
                               defaultChecked={
                                 action === "view" &&
                                 !patientInfo?.isDobEstimated
@@ -1462,7 +1462,7 @@ const EnrolmentSubmittedForm = ({
                               type="radio"
                               value="Estimated"
                               name="dateOfBirth"
-                              disabled={action === "view" ? true : false}
+                              disabled={true}
                               onChange={(e) => handleDateOfBirthChange(e)}
                               style={{
                                 border: "1px solid #014D88",
@@ -1494,7 +1494,7 @@ const EnrolmentSubmittedForm = ({
                           className="form-control"
                           type="date"
                           name="dateOfBirth"
-                          disabled={action === "view" ? true : false}
+                          disabled={true}
                           id="dateOfBirth"
                           max={moment(new Date()).format("YYYY-MM-DD")}
                           // value={info.dateOfBirth}
@@ -1527,7 +1527,7 @@ const EnrolmentSubmittedForm = ({
                           min="10"
                           // value={basicInfo.age}
                           value={basicInfo.age}
-                          disabled={ageDisabled}
+                          disabled={true}
                           onChange={handleAgeChange}
                           style={{
                             border: "1px solid #014D88",
@@ -1587,7 +1587,7 @@ const EnrolmentSubmittedForm = ({
                           // value={info.employmentStatusId}
                           value={info.employmentStatusId}
                           onChange={handleInputChangesForInfo}
-                          disabled={action === "view" ? true : false}
+                          disabled={true}
                           // onBlur={formik.handleBlur}
                           style={{
                             border: "1px solid #014D88",
@@ -1620,7 +1620,7 @@ const EnrolmentSubmittedForm = ({
                           className="form-control"
                           name="maritalStatusId"
                           id="maritalStatusId"
-                          disabled={action === "view" ? true : false}
+                          disabled={true}
                           value={basicInfo?.personDto?.maritalStatusId}
                           onChange={handleInputChangeBasic}
                           // onBlur={formik.handleBlur}
@@ -1653,7 +1653,7 @@ const EnrolmentSubmittedForm = ({
                         <select
                           className="form-control"
                           // type="text"
-                          disabled={action === "view" ? true : false}
+                          disabled={true}
                           name="educationId"
                           id="educationId"
                           value={info.educationId}
@@ -1723,7 +1723,7 @@ const EnrolmentSubmittedForm = ({
                         <select
                           className="form-control"
                           name="genderId"
-                          disabled={action === "view" ? true : false}
+                          disabled={true}
                           id="genderId"
                           value={basicInfo.personDto.genderId}
                           onChange={handleInputChangeBasic}
@@ -1758,7 +1758,7 @@ const EnrolmentSubmittedForm = ({
                           type="text"
                           name="ninNumber"
                           id="ninNumber"
-                          disabled={action === "view" ? true : false}
+                          disabled={true}
                           value={basicInfo.ninNumber}
                           onChange={handleInputChangeBasic}
                           onBlur={formik.handleBlur}
