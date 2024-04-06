@@ -63,8 +63,8 @@ public class HepatitisBTestDto implements Serializable {
     @NotEmpty(message ="treatmentEligible can not be empty")
     private Status treatmentEligible;
 
-    @NotEmpty(message ="pmtctEligible can not be empty")
-    private Status pmtctEligible;
+
+    private String pmtctEligible;
 
     @Size(min = 5, max = 1000)
     @NotEmpty(message ="comment can not be empty")

@@ -7,7 +7,7 @@ import org.springframework.core.annotation.Order;
 @Order(1)
 @Installer(name = "schema-installer-hepatitis",
         description = "Installs the required database for hepatitis tables",
-        version = 1)
+        version = 2)
 public class SchemaInstaller extends AcrossLiquibaseInstaller {
     public SchemaInstaller() {
         super("classpath:installers/hepatitis/schema/schema.xml");
