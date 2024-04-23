@@ -1,8 +1,6 @@
 package org.lamisplus.modules.hepatitis.domain.dto.request;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.lamisplus.modules.hepatitis.domain.enums.Detect;
-import org.lamisplus.modules.hepatitis.domain.enums.ReactiveState;
 import org.lamisplus.modules.hepatitis.domain.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-
+import org.lamisplus.modules.hepatitis.domain.enums.ValidatorInterface;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -55,10 +53,12 @@ public class HepatitisBTestDto implements Serializable {
     private String albumin;
 
     @NotEmpty(message ="hbeAG can not be empty")
-    private ReactiveState hbeAG;
+    @ValidatorInterface
+    private String hbeAG;
 
     @NotEmpty(message ="antiHDV can not be empty")
-    private ReactiveState antiHDV;
+    @ValidatorInterface
+    private String antiHDV;
 
     @NotEmpty(message ="treatmentEligible can not be empty")
     private Status treatmentEligible;
