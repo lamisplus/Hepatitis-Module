@@ -102,7 +102,7 @@ export const ImportantString = ({ str }) => (
 export const GetOptions = ({ options }) => (
   <React.Fragment>
     {options.map(({ fldName, fldValue }) => (
-      <option value={fldValue}>{fldName}</option>
+      <option key={fldName} value={fldValue}>{fldName}</option>
     ))}
   </React.Fragment>
 );
