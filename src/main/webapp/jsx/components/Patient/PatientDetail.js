@@ -146,18 +146,10 @@ function PatientCard(props) {
               setActiveContent={setActiveContent}
               activeContent={activeContent}
               allRecentActivities={recentActivities}
-              getRecentActivties={getRecentActivties}
             />
           )}
 
-          {/* {activeContent.route === "enrollment" && (
-            <DashboardEnrollmentForm
-              patientObj={patientObj}
-              setActiveContent={setActiveContent}
-              activeContent={activeContent}
-              userStatus={true}
-            />
-          )} */}
+          
 
           {activeContent.route === "diagnosis" && (
             <DashboardForm2
@@ -179,15 +171,9 @@ function PatientCard(props) {
               setActiveContent={setActiveContent}
               activeContent={activeContent}
               recentActivities={recentActivities}
-              getRecentActivties={getRecentActivties}
             />
           )}
-          {/*  {activeContent.route==='biometrics' &&(<Biometrics patientObj={patientObj} setActiveContent={setActiveContent} activeContent={activeContent}/>)}
-          {activeContent.route==='addmission' &&( <AddmissionHome patientObj={patientObj} setActiveContent={setActiveContent} activeContent={activeContent} />)}
-          {activeContent.route==='vaccination' &&( <PatientVaccinationHistory patientObj={patientObj} setActiveContent={setActiveContent} activeContent={activeContent}/>)}
-          {activeContent.route==='discharge' &&( <AddmissionHome patientObj={patientObj} setActiveContent={setActiveContent} activeContent={activeContent} />)}
-          {activeContent.route==='icu' &&( <AddmissionHome patientObj={patientObj} setActiveContent={setActiveContent} activeContent={activeContent} />)}
-          {activeContent.route==='patient-history' &&( <PatientHistory patientObj={patientObj} setActiveContent={setActiveContent} activeContent={activeContent}/>)}          */}
+          
         </CardContent>
       </Card>
     </div>
