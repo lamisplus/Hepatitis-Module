@@ -7,27 +7,25 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.lamisplus.modules.base.controller.apierror.EntityNotFoundException;
 import org.lamisplus.modules.base.controller.apierror.IllegalTypeException;
-import org.lamisplus.modules.base.controller.apierror.RecordExistException;
 import org.lamisplus.modules.base.domain.entities.User;
 import org.lamisplus.modules.base.service.UserService;
 import org.lamisplus.modules.hepatitis.domain.dto.PatientPerson;
-import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisDiagnosisDto;
-import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisEnrollmentDto;
-import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisTreatmentDto;
+import org.lamisplus.modules.hepatitis.domain.dto.request.*;
 import org.lamisplus.modules.hepatitis.domain.dto.response.ActivityTracker;
 import org.lamisplus.modules.hepatitis.domain.dto.response.HepatitisEnrollmentPatientDTO;
 import org.lamisplus.modules.hepatitis.domain.dto.response.HepatitisEnrollmentResponse;
 import org.lamisplus.modules.hepatitis.domain.entity.HepatitisDiagnosis;
 import org.lamisplus.modules.hepatitis.domain.entity.HepatitisEnrollment;
+import org.lamisplus.modules.hepatitis.domain.entity.HepatitisFollowup;
 import org.lamisplus.modules.hepatitis.domain.entity.HepatitisTreatment;
 import org.lamisplus.modules.hepatitis.repository.DiagnosisRepository;
 import org.lamisplus.modules.hepatitis.repository.EnrollmentRepository;
+import org.lamisplus.modules.hepatitis.repository.FollowupRepository;
 import org.lamisplus.modules.hepatitis.repository.TreatmentRepository;
 import org.lamisplus.modules.hepatitis.service.EnrollmentService;
 import org.lamisplus.modules.hepatitis.service.mapper.ModelMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.lamisplus.modules.patient.controller.exception.AlreadyExistException;
 import org.lamisplus.modules.patient.domain.dto.PersonDto;
 import org.lamisplus.modules.patient.domain.dto.PersonMetaDataDto;
 import org.lamisplus.modules.patient.domain.dto.PersonResponseDto;
@@ -54,6 +52,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     private final EnrollmentRepository enrollmentRepository;
     private final DiagnosisRepository diagnosisRepository;
     private final TreatmentRepository treatmentRepository;
+    private final FollowupRepository followupRepository;
     private final PersonRepository personRepository;
     private final PersonService personService;
     private final CurrentUserOrganizationService currentUserOrganizationService;
@@ -127,14 +126,29 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         log.info("EnrollmentId: " + enrollmentId);
         HepatitisEnrollment enrollment = getHepatitisEnrollment(enrollmentId);
         HepatitisTreatment hepatitisTreatment =  mapper.mapToTreatment(treatmentDto);
-//        if(treatmentRepository.existsByHepatitisEnrollment_Uuid(enrollment.getUuid())) {
-//            throw new RecordExistException(HepatitisTreatment.class, "uuid",
-//                    enrollment.getUuid()+" Duplicate Enrollment: You have already enrolled for treatment");
-//        }
         hepatitisTreatment.setHepatitisEnrollment(enrollment);
         hepatitisTreatment.setFacilityId(enrollment.getFacilityId());
         treatmentRepository.save(hepatitisTreatment);
         return ResponseEntity.status(200).body("Treatment saved");
+    }
+
+    @Override
+    public ResponseEntity<String> hepatitisFollowup(FollowupDto followupDto) {
+        if(followupDto == null) throw new IllegalTypeException(EnrollmentServiceImpl.class,"Empty values", "Please fill in the required fields");
+        String enrollmentId = followupDto.getEnrollmentUuid();
+        log.info("EnrollmentId: " + enrollmentId);
+
+        HepatitisEnrollment enrollment = getHepatitisEnrollment(enrollmentId);
+
+        HepatitisFollowup hepatitisFollowup =  mapper.mapToFollowup(followupDto);
+
+        hepatitisFollowup.setHepatitisEnrollment(enrollment);
+
+        hepatitisFollowup.setFacilityId(enrollment.getFacilityId());
+
+        followupRepository.save(hepatitisFollowup);
+
+        return ResponseEntity.status(200).body("Follow up saved");
     }
 
     @Override
@@ -236,15 +250,26 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 
     public HepatitisTreatment viewHepatitisTreatmentByEnrollmentUuid(String enrollmentUuid) {
         HepatitisEnrollment enrollment = enrollmentRepository.findHepatitisEnrollmentByUuidAndArchived(enrollmentUuid, 0);
-//                .orElseThrow(() -> new EntityNotFoundException(HepatitisEnrollment.class,
-//                        "Hepatitis with" + enrollmentUuid + "does not exist"));
-//        HepatitisEnrollment enrollment;
         if(enrollment == null) {
             throw new EntityNotFoundException(HepatitisEnrollment.class, "Hepatitis with" + enrollmentUuid + "does not exist");
         }
         HepatitisTreatment hepatitisTreatment = treatmentRepository.findHepatitisTreatmentByHepatitisEnrollmentAndArchived(enrollment, 0);
         return hepatitisTreatment;
     }
+
+
+    public HepatitisFollowup viewHepatitisFollowupByEnrollmentUuid(String enrollmentUuid) {
+        HepatitisEnrollment enrollment = enrollmentRepository.findHepatitisEnrollmentByUuidAndArchived(enrollmentUuid, 0);
+
+        if(enrollment == null) {
+            throw new EntityNotFoundException(HepatitisEnrollment.class, "Hepatitis with" + enrollmentUuid + "does not exist");
+        }
+
+        HepatitisFollowup hepatitisFollowup = followupRepository.findHepatitisFollowupByHepatitisEnrollmentAndArchived(enrollment, 0);
+
+        return hepatitisFollowup;
+    }
+
 
 
 
@@ -299,6 +324,13 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     }
 
 
+    public FollowupDto updateHepatitisFollowup(Long id, FollowupDto followupDto) {
+        HepatitisFollowup existingHepatitisFollowup = followupRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(HepatitisTreatment.class, "Hepatitis follow up not found with id: " + id));
+        HepatitisFollowup hepatitisFollowup = mapper.updateHepatitisFollowupMapper(existingHepatitisFollowup, followupDto);
+        followupRepository.save(hepatitisFollowup);
+        return followupDto;
+    }
 
 
 
@@ -324,6 +356,8 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         HepatitisTreatment hepatitisTreatment;
         List<HepatitisDiagnosis> hepatitisDiagnosises;
         List<HepatitisTreatment> hepatitisTreatments;
+        List<HepatitisFollowup> hepatitisFollowups;
+
         if(hepatitisEnrollment != null) {
             hepatitisDiagnosises = this.diagnosisRepository.findHepatitisDiagnosesByHepatitisEnrollmentUuidAndArchived(hepatitisEnrollment.getUuid(), 0);
 
@@ -341,19 +375,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
                 });
             }
 
-//            hepatitisDiagnosis = this.diagnosisRepository.findHepatitisDiagnosisByHepatitisEnrollmentUuidAndArchived(hepatitisEnrollment.getUuid(), 0);
-//            if(hepatitisDiagnosis != null) {
-//                ActivityTracker activityTracker = new ActivityTracker();
-//
-//                activityTracker.setActivityName("Hepatitis Diagnosis");
-//                activityTracker.setPath("hepatitis_diagnosis");
-//                activityTracker.setEditable(true);
-//                activityTracker.setDeletable(true);
-//                activityTracker.setViewable(true);
-//                activityTracker.setRecordId(hepatitisDiagnosis.getId());
-//                activityTracker.setActivityDate(hepatitisDiagnosis.getCreatedDate().toLocalDate());
-//                activityTrackers.add(activityTracker);
-//            }
+
 
             hepatitisTreatments = this.treatmentRepository.findHepatitisTreatmentsByHepatitisEnrollmentAndArchived(hepatitisEnrollment, 0);
 
@@ -371,20 +393,24 @@ public class EnrollmentServiceImpl implements EnrollmentService {
                 });
             }
 
-//            hepatitisTreatment = this.treatmentRepository.findHepatitisTreatmentByHepatitisEnrollmentAndArchived(hepatitisEnrollment, 0);
+
+            hepatitisFollowups = this.followupRepository.findHepatitisFollowupsByHepatitisEnrollmentAndArchived(hepatitisEnrollment, 0);
+
+            if(!(hepatitisFollowups.isEmpty())) {
+                hepatitisFollowups.forEach(hepatitisFollowup1 -> {
+                    ActivityTracker activityTracker = new ActivityTracker();
+                    activityTracker.setActivityName("Hepatitis Followups");
+                    activityTracker.setPath("hepatitis_followup");
+                    activityTracker.setEditable(true);
+                    activityTracker.setDeletable(true);
+                    activityTracker.setViewable(true);
+                    activityTracker.setRecordId(hepatitisFollowup1.getId());
+                    activityTracker.setActivityDate(hepatitisFollowup1.getCreatedDate().toLocalDate());
+                    activityTrackers.add(activityTracker);
+                });
+            }
+
 //
-//            if(hepatitisTreatment != null) {
-//                ActivityTracker activityTracker = new ActivityTracker();
-//
-//                activityTracker.setActivityName("Hepatitis Treatment");
-//                activityTracker.setPath("hepatitis_treatment");
-//                activityTracker.setEditable(true);
-//                activityTracker.setDeletable(true);
-//                activityTracker.setViewable(true);
-//                activityTracker.setRecordId(hepatitisTreatment.getId());
-//                activityTracker.setActivityDate(hepatitisTreatment.getCreatedDate().toLocalDate());
-//                activityTrackers.add(activityTracker);
-//            }
         }
         return activityTrackers;
     }
@@ -405,6 +431,16 @@ public class EnrollmentServiceImpl implements EnrollmentService {
                     "pass ID of hepatitis Treatment");
         }
         return hepatitisTreatment;
+    }
+
+
+    public HepatitisFollowup viewHepatitisFollowupById(Long id) {
+        HepatitisFollowup hepatitisFollowup = this.followupRepository.findHepatitisFollowupsByIdAndArchived(id, 0);
+        if(hepatitisFollowup == null) {
+            throw new EntityNotFoundException(HepatitisTreatment.class, "Hepatitis follow up could not be found. ",
+                    "pass ID of hepatitis Treatment");
+        }
+        return hepatitisFollowup;
     }
 
 
@@ -431,4 +467,17 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         return "Treatment deleted successfully.";
     }
 
+
+    public String archiveFollowup(Long id){
+
+        HepatitisFollowup existingHepatitisFollowup = followupRepository.findHepatitisFollowupsByIdAndArchived(id, 0);
+
+        if (existingHepatitisFollowup == null) {
+            throw new EntityNotFoundException(HepatitisDiagnosis.class, "Hepatitis follow up not found with id: " + id);
+        }
+
+        existingHepatitisFollowup.setArchived(1);
+        followupRepository.save(existingHepatitisFollowup);
+        return "Follow up deleted successfully.";
+    }
 }

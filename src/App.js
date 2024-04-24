@@ -12,35 +12,40 @@ import PatientDetail from "./main/webapp/jsx/components/Patient/PatientDetail";
 import EnrollPatientPage from "./main/webapp/jsx/components/Patient/EnrollPatient";
 import UpdatePatientEnrollment from "./main/webapp/jsx/components/Patient/UpdatePatientEnrollment";
 import ViralHepatitisFormsContainer from "./main/webapp/jsx/components/Patient/ViralHepatitisFormsContainer";
-import FollowupForm from "./main/webapp/jsx/components/Patient/ViralHepatitisForms/FollowUp";
+import { QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
+import { queryClient } from "./main/webapp/jsx/utils/queryClient";
 
 export default function App() {
   return (
-    <Router>
-      <div>
-        <ToastContainer />
-        {/* A <Switch> looks through its children <Route>s and
+    <QueryClientProvider client={queryClient}>
+      <Router>
+        <div>
+          <ToastContainer />
+          {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
-        <Switch>
-          <Route path="/patient-history">
-            <PatientDetail />
-            {/* <FollowupForm /> */}
-          </Route>
-          <Route path="/register-patient">
-            <ViralHepatitisFormsContainer />
-          </Route>
-          <Route path="/enroll-patient">
-            <EnrollPatientPage />
-          </Route>
-          <Route path="/update-patient">
-            <UpdatePatientEnrollment />
-          </Route>
+          <Switch>
+            <Route path="/patient-history">
+              <PatientDetail />
+              {/* <FollowupForm /> */}
+            </Route>
+            <Route path="/register-patient">
+              <ViralHepatitisFormsContainer />
+            </Route>
+            <Route path="/enroll-patient">
+              <EnrollPatientPage />
+            </Route>
+            <Route path="/update-patient">
+              <UpdatePatientEnrollment />
+            </Route>
 
-          <Route path="/">
-            <Home />
-          </Route>
-        </Switch>
-      </div>
-    </Router>
+            <Route path="/">
+              <Home />
+            </Route>
+          </Switch>
+        </div>
+      </Router>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   );
 }

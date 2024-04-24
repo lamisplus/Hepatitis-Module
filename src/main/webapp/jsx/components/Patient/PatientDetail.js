@@ -11,7 +11,6 @@ import { token, url as baseUrl } from "../../../api";
 import axios from "axios";
 import SubMenu from "./SubMenu";
 import RecentHistory from "./../History/RecentHistory";
-// import PatientVaccinationHistory from "./../Vaccination/VaccinationHistory";
 import Biometrics from "./Biometric";
 import AddmissionHome from "./../Admission/AddmissionHome";
 import PatientVaccinationHistory from "./../Vaccination/VaccinationHistory";
@@ -19,6 +18,7 @@ import DashboardForm2 from "./ViralHepatitisForms/DashboardForm2";
 import DasboardTreatmentForm from "./ViralHepatitisForms/DashboardTreatmentForm";
 import DashboardEnrollmentForm from "./ViralHepatitisForms/DashboardEnrollmentForm";
 import PatientHistory from "./PatientHistoryy";
+import PatientCardFollowUp from "./ViralHepatitisForms/PatientCardFollowUp";
 const styles = (theme) => ({
   root: {
     width: "100%",
@@ -148,9 +148,6 @@ function PatientCard(props) {
               allRecentActivities={recentActivities}
             />
           )}
-
-          
-
           {activeContent.route === "diagnosis" && (
             <DashboardForm2
               patientObj={patientObj}
@@ -173,7 +170,15 @@ function PatientCard(props) {
               recentActivities={recentActivities}
             />
           )}
-          
+          {activeContent.route === "patient-followup" && (
+            <PatientCardFollowUp
+              patientObj={patientObj}
+              setActiveContent={setActiveContent}
+              activeContent={activeContent}
+              recentActivities={recentActivities}
+              getRecentActivties={getRecentActivties}
+            />
+          )}          
         </CardContent>
       </Card>
     </div>

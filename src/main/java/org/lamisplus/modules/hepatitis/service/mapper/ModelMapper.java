@@ -3,17 +3,10 @@ package org.lamisplus.modules.hepatitis.service.mapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.lamisplus.modules.hepatitis.domain.dto.request.ClinicalParametersDto;
-import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisBTestDto;
-import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisBTreatmentDto;
-import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisCTestDto;
-import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisCTreatmentDto;
-import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisDiagnosisDto;
-import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisEnrollmentDto;
-import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisScreeningDto;
-import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisTreatmentDto;
+import org.lamisplus.modules.hepatitis.domain.dto.request.*;
 import org.lamisplus.modules.hepatitis.domain.entity.HepatitisDiagnosis;
 import org.lamisplus.modules.hepatitis.domain.entity.HepatitisEnrollment;
+import org.lamisplus.modules.hepatitis.domain.entity.HepatitisFollowup;
 import org.lamisplus.modules.hepatitis.domain.entity.HepatitisTreatment;
 import org.lamisplus.modules.hepatitis.domain.enums.Sex;
 import org.lamisplus.modules.hepatitis.domain.enums.Status;
@@ -163,6 +156,41 @@ public class ModelMapper {
         return hepatitisTreatment;
     }
 
+
+    public HepatitisFollowup mapToFollowup(FollowupDto followupDto) {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+
+
+        FollowupAppointmentDto followupAppointments = followupDto.getFollowupAppointment();
+        JsonNode appointmentsNode = null;
+        if(followupAppointments != null) {
+            appointmentsNode = objectMapper.convertValue(followupAppointments, JsonNode.class);
+        }
+
+        FollowupClinicalParametersDto followupClinicalParameters = followupDto.getFollowupClinicalParameters();
+        JsonNode clinicalParametersNode = null;
+        if(followupClinicalParameters != null) {
+            clinicalParametersNode = objectMapper.convertValue(followupClinicalParameters, JsonNode.class);
+        }
+
+        FollowupPreliminaryDto followupPreliminary = followupDto.getFollowupPreliminary();
+        JsonNode preliminaryNode = null;
+        if(followupPreliminary != null) {
+            preliminaryNode = objectMapper.convertValue(followupPreliminary, JsonNode.class);
+        }
+
+        HepatitisFollowup followup = HepatitisFollowup.builder()
+                .followupAppointmentDto(appointmentsNode)
+                .followupClinicalParametersDto(clinicalParametersNode)
+                .followupPreliminaryDto(preliminaryNode)
+                .build();
+        followup.setUuid(UUID.randomUUID().toString());
+        followup.setArchived(0);
+        return followup;
+    }
+
+
     public HepatitisEnrollment updateHepatitisEnrollmentMapper(HepatitisEnrollment existingEnrollment, HepatitisEnrollmentDto enrollmentDto) {
         String careEntryPoint = enrollmentDto.getCareEntryPoint();
         String pregnancy = enrollmentDto.getPregnancy().toUpperCase();
@@ -242,6 +270,28 @@ public class ModelMapper {
     }
 
 
+    public HepatitisFollowup updateHepatitisFollowupMapper(HepatitisFollowup exisitingFollowup, FollowupDto followupDto) {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        FollowupAppointmentDto  appointmentDto = followupDto.getFollowupAppointment();
+        JsonNode appointmentNode = (appointmentDto != null) ? objectMapper.convertValue(appointmentDto, JsonNode.class) : null;
+
+        FollowupPreliminaryDto preliminaryDto = followupDto.getFollowupPreliminary();
+        JsonNode preliminaryNode = (preliminaryDto != null) ? objectMapper.convertValue(preliminaryDto, JsonNode.class) : null;
+
+        FollowupClinicalParametersDto  clinicalParametersDto = followupDto.getFollowupClinicalParameters();
+        JsonNode clinicalParametersNode = (clinicalParametersDto != null) ? objectMapper.convertValue(clinicalParametersDto, JsonNode.class) : null;
+
+        // Update the fields of the existing entity
+        exisitingFollowup.setFollowupPreliminaryDto(preliminaryNode);
+        exisitingFollowup.setFollowupAppointmentDto(appointmentNode);
+        exisitingFollowup.setFollowupClinicalParametersDto(clinicalParametersNode);
+
+
+        return exisitingFollowup;
+    }
+
+
 
     private Status mapToStatusEnum(String status) {
         if ("YES".equalsIgnoreCase(status) || "NO".equalsIgnoreCase(status)) {
@@ -250,5 +300,6 @@ public class ModelMapper {
             return Status.NO;
         }
     }
+
 
 }
