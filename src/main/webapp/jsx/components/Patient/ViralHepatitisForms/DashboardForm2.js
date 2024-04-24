@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import MatButton from "@material-ui/core/Button";
-import { FormGroup, Label, Spinner, Input, Form, InputGroup } from "reactstrap";
+import { FormGroup, Label, Spinner } from "reactstrap";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faCheckSquare,
@@ -9,16 +9,14 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { makeStyles } from "@material-ui/core/styles";
-import { Card, CardContent } from "@material-ui/core";
+import { Card, CardContent, IconButton, Collapse } from "@material-ui/core";
 import "react-toastify/dist/ReactToastify.css";
 import "react-widgets/dist/css/react-widgets.css";
 import "react-phone-input-2/lib/style.css";
 import "../patient.css";
 import "react-widgets/dist/css/react-widgets.css";
 import { useValidateForm2ValuesHook } from "../../../formSchemas/form1ValidationSchema";
-import { Collapse, IconButton } from "@material-ui/core";
 import { ArrowForward, ExpandMore as ExpandMoreIcon } from "@material-ui/icons";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { getCookie, setCookie } from "../../../helpers/cookieStoragehelpers";
 import axios from "axios";
 import { url as apiUrl, token } from "../../../../api";
@@ -97,9 +95,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DashboardForm2 = ({ patientObj, setActiveContent }) => {
-  const [userId, setUserId] = useState(getCookie("enrollmentIds"));
+export const ImportantString = ({ str }) => (
+  <span style={{ color: "red" }}>{str}</span>
+);
 
+export const GetOptions = ({ options }) => (
+  <React.Fragment>
+    {options.map(({ fldName, fldValue }) => (
+      <option value={fldValue}>{fldName}</option>
+    ))}
+  </React.Fragment>
+);
+export const YesOrNoSelectInput = () => (
+  <GetOptions
+    options={[
+      { fldName: "Select", fldValue: "" },
+      { fldName: "No", fldValue: "NO" },
+      { fldName: "Yes", fldValue: "YES" },
+    ]}
+  />
+);
+const DashboardForm2 = ({ patientObj, setActiveContent }) => {
   const [enrollmentUuid, setEnrollmentUuid] = useState("");
 
   const [basicInfo, setBasicInfo] = useState({
@@ -155,13 +171,13 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
 
   const [errors, setErrors] = useState({});
 
-  const viewHepatitisEnrollment = (value) => {
+  const viewHepatitisEnrollment = () => {
     axios
       .get(
         `${apiUrl}hepatitis/view-hepatitis-enrollment/${patientObj?.personUuid}`,
         {
           headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       )
       .then((response) => {
         console.log(response.data.uuid);
@@ -171,7 +187,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
         //console.log(error);
       });
   };
-  // handle input changes
+
   const handleInputChangeBasic = (e) => {
     setErrors({ ...temp, [e.target.name]: "" });
 
@@ -207,130 +223,163 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
     });
   };
 
-  // to capture the error
   let temp = { ...errors };
+  let {
+    dateHbvDnaResultRepor,
+    dateHbvDnaResultReported,
+    dateHbvDnaTestRequested,
+    dateHbvSampleRequeste,
+    dateHbvTestRequested,
+    diagnosis_result,
+    directBiliribin,
+    hepatitisBTest,
+    antiHDV,
+    hbeAG,
+    hbsAgQuantification,
+    hbvDna,
+    treatmentEligible,
+    totalBiliRubin,
+    pmtctEligible,
+    prothrombinTimeNR,
+    plt,
+    comment,
+    coInfectionDropdown,
+    commobidities,
+    albumin,
+    altValue,
+    urea,
+    creatinine,
+    fib4,
+    fibroscan,
+    ultrasoundScan,
+    multipleInfection,
+    dateHbvSampleRequested,
+    gradeOfEncephalopathy,
+    ast,
+    ascites,
+    alt,
+    astValue,
+    apriScore,
+    ctScan,
+    childPughScore,
+    liverBiopsyStage,
+    stagingDateOfLiverBiopsy,
+    hcvRNA,
+    hepatitisCoinfection,
+    pst,
+    afp,
+  } = temp;
+
   const validate = () => {
-    temp.dateHbvDnaTestRequested = basicInfo.hepatitisBTest
-      .dateHbvDnaTestRequested
+    dateHbvDnaTestRequested = basicInfo.hepatitisBTest.dateHbvDnaTestRequested
       ? ""
       : "Date HBV DNA test requested is required ";
-    temp.dateHbvTestRequested = basicInfo.hepatitisBTest.dateHbvTestRequested
+    dateHbvTestRequested = basicInfo.hepatitisBTest.dateHbvTestRequested
       ? ""
       : "Date HBV test requested is required";
 
-    temp.dateHbvSampleRequested = basicInfo.hepatitisBTest
-      .dateHbvSampleRequested
+    dateHbvSampleRequested = basicInfo.hepatitisBTest.dateHbvSampleRequested
       ? ""
       : "Date HBV Sample requested is required";
 
-    temp.dateHbvDnaResultReported = basicInfo.hepatitisBTest
-      .dateHbvDnaResultReported
+    dateHbvDnaResultReported = basicInfo.hepatitisBTest.dateHbvDnaResultReported
       ? ""
       : "Date of HBV DNA result reported is required";
 
-    temp.hbsAgQuantification = basicInfo.hepatitisBTest.hbsAgQuantification
+    hbsAgQuantification = basicInfo.hepatitisBTest.hbsAgQuantification
       ? ""
       : "HBsAG Quantification is required";
 
-    temp.hbeAG = basicInfo.hepatitisBTest.hbeAG ? "" : "HbeAG is required";
+    hbeAG = basicInfo.hepatitisBTest.hbeAG ? "" : "HbeAG is required";
 
-    temp.antiHDV = basicInfo.hepatitisBTest.antiHDV
-      ? ""
-      : "Anti-HDV is required";
+    antiHDV = basicInfo.hepatitisBTest.antiHDV ? "" : "Anti-HDV is required";
 
-    temp.treatmentEligible = basicInfo.hepatitisBTest.treatmentEligible
+    treatmentEligible = basicInfo.hepatitisBTest.treatmentEligible
       ? ""
       : " Treatment Eligible is required";
 
-    // temp.pmtctEligible = basicInfo.hepatitisBTest.pmtctEligible
-    //   ? ""
-    //   : " PMTCT Eligible is required";
-
-    temp.comment = basicInfo.hepatitisBTest.comment
+    pmtctEligible = basicInfo.hepatitisBTest.pmtctEligible
       ? ""
-      : "Comment is required";
+      : " PMTCT Eligible is required";
 
-    temp.ast = basicInfo.clinicalParameters.ast ? "" : " AST is required";
-    temp.alt = basicInfo.clinicalParameters.alt ? "" : " ALT is required";
-    temp.hcvRNA = basicInfo.hepatitisCTest.hcvRNA ? "" : "HCV RNA is required";
-    temp.hepatitisCoinfection = basicInfo.hepatitisCTest.hepatitisCoinfection
+    comment = basicInfo.hepatitisBTest.pmtctEligible
+      ? ""
+      : " PMTCT Eligible is required";
+
+    ast = basicInfo.hepatitisBTest.pmtctEligible ? "" : " AST is required";
+    alt = basicInfo.clinicalParameters.alt ? "" : " ALT is required";
+    hcvRNA = basicInfo.hepatitisCTest.hcvRNA ? "" : "HCV RNA is required";
+    hepatitisCoinfection = basicInfo.hepatitisCTest.hepatitisCoinfection
       ? ""
       : "Hepatitis Coinfection is required";
 
-    temp.pst = basicInfo.clinicalParameters.pst ? "" : " PST is required";
-    temp.totalBiliRubin = basicInfo.clinicalParameters.totalBiliRubin
+    pst = basicInfo.clinicalParameters.pst ? "" : " PST is required";
+    totalBiliRubin = basicInfo.clinicalParameters.totalBiliRubin
       ? ""
       : " ALT is required";
-    temp.directBiliribin = basicInfo.clinicalParameters.directBiliribin
+    directBiliribin = basicInfo.clinicalParameters.directBiliribin
       ? ""
       : "Direct Bilirubin is required";
 
-    temp.albumin = basicInfo.hepatitisBTest.albumin
-      ? ""
-      : "Albumin is required";
+    albumin = basicInfo.hepatitisBTest.albumin ? "" : "Albumin is required";
 
-    temp.apriScore = basicInfo.clinicalParameters.apriScore
+    apriScore = basicInfo.clinicalParameters.apriScore
       ? ""
       : "APRI score is required";
 
-    temp.fib4 = basicInfo.clinicalParameters.fib4 ? "" : "FIB-4 is required";
+    fib4 = basicInfo.clinicalParameters.fib4 ? "" : "FIB-4 is required";
 
-    temp.prothrombinTimeNR = basicInfo.clinicalParameters.prothrombinTimeNR
+    prothrombinTimeNR = basicInfo.clinicalParameters.prothrombinTimeNR
       ? ""
       : "Prothrombin time/INR is required";
 
-    temp.urea = basicInfo.clinicalParameters.urea ? "" : "Urea is required";
+    urea = basicInfo.clinicalParameters.urea ? "" : "Urea is required";
 
-    temp.creatinine = basicInfo.clinicalParameters.creatinine
+    creatinine = basicInfo.clinicalParameters.creatinine
       ? ""
       : "Creatinine is required";
 
-    temp.ultrasoundScan = basicInfo.clinicalParameters.ultrasoundScan
+    ultrasoundScan = basicInfo.clinicalParameters.ultrasoundScan
       ? ""
       : "Ultrasound scan is required";
 
-    temp.afp = basicInfo.clinicalParameters.afp ? "" : "AFP  is required";
-    temp.fibroscan = basicInfo.clinicalParameters.fibroscan
+    afp = basicInfo.clinicalParameters.afp ? "" : "AFP  is required";
+    fibroscan = basicInfo.clinicalParameters.fibroscan
       ? ""
       : "Fibroscan  is required";
 
-    temp.ctScan = basicInfo.hepatitisBTest.ctScan ? "" : "CT scan  is required";
-    temp.ascites = basicInfo.clinicalParameters.ascites
-      ? ""
-      : "Acites  is required";
-    temp.gradeOfEncephalopathy = basicInfo.clinicalParameters
-      .gradeOfEncephalopathy
+    ctScan = basicInfo.hepatitisBTest.ctScan ? "" : "CT scan  is required";
+    ascites = basicInfo.clinicalParameters.ascites ? "" : "Acites  is required";
+    gradeOfEncephalopathy = basicInfo.clinicalParameters.gradeOfEncephalopathy
       ? ""
       : "Grade of Encephalopathy  is required";
 
-    temp.childPughScore = basicInfo.clinicalParameters.childPughScore
+    childPughScore = basicInfo.clinicalParameters.childPughScore
       ? ""
       : "Child pugh score  is required";
 
-    temp.liverBiopsyStage = basicInfo.clinicalParameters.liverBiopsyStage
+    liverBiopsyStage = basicInfo.clinicalParameters.liverBiopsyStage
       ? ""
       : "Liver biopsy stage  is required";
 
-    temp.stagingDateOfLiverBiopsy = basicInfo.hepatitisBTest
-      .stagingDateOfLiverBiopsy
+    stagingDateOfLiverBiopsy = basicInfo.hepatitisBTest.stagingDateOfLiverBiopsy
       ? ""
       : "Staging date of liver biopsy is required";
 
-    temp.diagnosis_result = basicInfo.clinicalParameters.diagnosis_result
+    diagnosis_result = basicInfo.clinicalParameters.diagnosis_result
       ? ""
       : "Diagnosis is required";
     //
 
     //
 
-    temp.commobidities = basicInfo.hepatitisCTest.commobidities
+    commobidities = basicInfo.hepatitisCTest.commobidities
       ? ""
       : "Commobiditie is required";
-    temp.multipleInfection = basicInfo.clinicalParameters.ast
+    multipleInfection = basicInfo.clinicalParameters.ast
       ? ""
       : "Multiple Infection required";
 
-    // set the temp errors to error
     console.log(temp);
     setErrors({ ...temp });
     return Object.values(temp).every((x) => x == "");
@@ -363,7 +412,6 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // validating the input
     window.scrollTo(0, 0);
 
     console.log(basicInfo);
@@ -430,9 +478,6 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
     postDataWithToken(restructuredDiagnosisPayload, "hepatitis/diagnosis");
   };
 
-  const moveBack = () => {
-    window.scrollTo(0, 0);
-  };
   const classes = useStyles();
   const { formik } = useValidateForm2ValuesHook(onSubmitHandler);
 
@@ -464,7 +509,6 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
       <Card className={classes.root}>
         <CardContent>
           <div className="col-xl-12 col-lg-12">
-            {/* <Form onSubmit={formik.handleSubmit}> */}
             <div className="card">
               <div
                 className="card-header"
@@ -528,7 +572,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                           <FormGroup>
                             <Label for="dateHbvDnaTestRequested">
                               Date HBV DNA test requested{" "}
-                              <span style={{ color: "red" }}> *</span>{" "}
+                              <ImportantString str="*" />{" "}
                             </Label>
                             <input
                               className="form-control"
@@ -540,18 +584,15 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                                 basicInfo.hepatitisBTest.dateHbvDnaTestRequested
                               }
                               onChange={handleInputChangeBasic}
-                              // onBlur={formik.handleBlur}
                               style={{
                                 border: "1px solid #014D88",
                                 borderRadius: "0.2rem",
                               }}
                             />
-                            {errors.dateHbvDnaTestRequested !== "" ? (
+                            {errors.dateHbvDnaTestRequested && (
                               <span className={classes.error}>
                                 {errors.dateHbvDnaTestRequested}
                               </span>
-                            ) : (
-                              ""
                             )}
                           </FormGroup>
                         </div>
@@ -560,7 +601,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                           <FormGroup>
                             <Label for="dateHbvTestRequested">
                               Date HBV test requested{" "}
-                              <span style={{ color: "red" }}> *</span>{" "}
+                              <ImportantString str="*" />{" "}
                             </Label>
                             <input
                               className="form-control"
@@ -572,18 +613,15 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                                 basicInfo.hepatitisBTest.dateHbvTestRequested
                               }
                               onChange={handleInputChangeBasic}
-                              // onBlur={formik.handleBlur}
                               style={{
                                 border: "1px solid #014D88",
                                 borderRadius: "0.2rem",
                               }}
                             />
-                            {errors.dateHbvTestRequested !== "" ? (
+                            {errors.dateHbvTestRequested && (
                               <span className={classes.error}>
                                 {errors.dateHbvTestRequested}
                               </span>
-                            ) : (
-                              ""
                             )}
                           </FormGroup>
                         </div>
@@ -592,7 +630,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                           <FormGroup>
                             <Label for="dateHbvSampleRequested">
                               Date HBV sample Requested{" "}
-                              <span style={{ color: "red" }}> *</span>{" "}
+                              <ImportantString str="*" />{" "}
                             </Label>
                             <input
                               className="form-control"
@@ -604,18 +642,15 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                                 basicInfo.hepatitisBTest.dateHbvSampleRequested
                               }
                               onChange={handleInputChangeBasic}
-                              // onBlur={formik.handleBlur}
                               style={{
                                 border: "1px solid #014D88",
                                 borderRadius: "0.2rem",
                               }}
                             />
-                            {errors.dateHbvSampleRequested !== "" ? (
+                            {errors.dateHbvSampleRequeste && (
                               <span className={classes.error}>
                                 {errors.dateHbvSampleRequested}
                               </span>
-                            ) : (
-                              ""
                             )}
                           </FormGroup>
                         </div>
@@ -624,7 +659,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                           <FormGroup>
                             <Label for="dateHbvDnaResultReported">
                               Date of HBV DNA result reported{" "}
-                              <span style={{ color: "red" }}> *</span>{" "}
+                              <ImportantString str="*" />{" "}
                             </Label>
                             <input
                               className="form-control"
@@ -637,18 +672,15 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                                   .dateHbvDnaResultReported
                               }
                               onChange={handleInputChangeBasic}
-                              // onBlur={formik.handleBlur}
                               style={{
                                 border: "1px solid #014D88",
                                 borderRadius: "0.2rem",
                               }}
                             />
-                            {errors.dateHbvDnaResultReported !== "" ? (
+                            {errors.dateHbvDnaResultRepor && (
                               <span className={classes.error}>
                                 {errors.dateHbvDnaResultReported}
                               </span>
-                            ) : (
-                              ""
                             )}
                           </FormGroup>
                         </div>
@@ -656,8 +688,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                         <div className="form-group mb-2 col-md-4">
                           <FormGroup>
                             <Label>
-                              HBV DNA(UI/ml){" "}
-                              <span style={{ color: "red" }}> *</span>
+                              HBV DNA(UI/ml) <ImportantString str="*" />
                             </Label>
                             <div className="radio">
                               <label>
@@ -669,7 +700,6 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                                     basicInfo.hepatitisBTest.hbvDna ===
                                     "DETECTED"
                                   }
-                                  // onBlur={formik.handleBlur}
                                   onChange={handleInputChangeBasic}
                                   style={{
                                     border: "1px solid #014D88",
@@ -689,24 +719,14 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                                     basicInfo.hepatitisBTest.hbvDna ===
                                     "UNDETECTED"
                                   }
-                                  // onBlur={formik.handleBlur}
                                   onChange={handleInputChangeBasic}
                                   style={{
                                     border: "1px solid #014D88",
                                     borderRadius: "0.2rem",
                                   }}
                                 />{" "}
-                                Undetected{" "}
-                                <span style={{ color: "red" }}> *</span>{" "}
+                                Undetected <ImportantString str="*" />{" "}
                               </label>
-                              {/* 
-                              {errors.stagingDateOfLiverBiopsy !== "" ? (
-                                <span className={classes.error}>
-                                  {errors.stagingDateOfLiverBiopsy}
-                                </span>
-                              ) : (
-                                ""
-                              )} */}
                             </div>
                           </FormGroup>
                         </div>
@@ -714,8 +734,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
                               <Label for="hvbDnaValue">
-                                Input HBV DNA value{" "}
-                                <span style={{ color: "red" }}> *</span>{" "}
+                                Input HBV DNA value <ImportantString str="*" />{" "}
                               </Label>
                               <input
                                 className="form-control"
@@ -724,18 +743,15 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                                 id="hvbDnaValue"
                                 value={basicInfo.hepatitisBTest.hvbDnaValue}
                                 onChange={handleInputChangeBasic}
-                                // onBlur={formik.handleBlur}
                                 style={{
                                   border: "1px solid #014D88",
                                   borderRadius: "0.2rem",
                                 }}
                               />
-                              {errors.hvbDnaValue !== "" ? (
+                              {errors.hvbDnaValue && (
                                 <span className={classes.error}>
                                   {errors.hvbDnaValue}
                                 </span>
-                              ) : (
-                                ""
                               )}
                             </FormGroup>
                           </div>
@@ -745,7 +761,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                           <FormGroup>
                             <Label for="hbsAgQuantification">
                               HBsAG Quantification (IU/ml){" "}
-                              <span style={{ color: "red" }}> *</span>{" "}
+                              <ImportantString str="*" />{" "}
                             </Label>
                             <input
                               className="form-control"
@@ -756,18 +772,15 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                                 basicInfo.hepatitisBTest.hbsAgQuantification
                               }
                               onChange={handleInputChangeBasic}
-                              // onBlur={formik.handleBlur}
                               style={{
                                 border: "1px solid #014D88",
                                 borderRadius: "0.2rem",
                               }}
                             />
-                            {errors.hbsAgQuantification !== "" ? (
+                            {errors.hbsAgQuantification && (
                               <span className={classes.error}>
                                 {errors.hbsAgQuantification}
                               </span>
-                            ) : (
-                              ""
                             )}
                           </FormGroup>
                         </div>
@@ -775,7 +788,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="hbeAG">HbeAG</Label>{" "}
-                            <span style={{ color: "red" }}> *</span>{" "}
+                            <ImportantString str="*" />{" "}
                             <select
                               className="form-control"
                               name="hbeAG"
@@ -787,18 +800,22 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                                 borderRadius: "0.2rem",
                               }}
                             >
-                              <option value={""}>Select</option>
-                              <option value={"REACTIVE"}>Reactive</option>
-                              <option value={"NON_REACTIVE"}>
-                                Non Reactive
-                              </option>
+                              <GetOptions
+                                options={[
+                                  { fldName: "Select", fldValue: "" },
+                                  { fldName: "Reactive", fldValue: "REACTIVE" },
+                                  {
+                                    fldName: "Non Reactive",
+                                    fldValue: "NON REACTIVE",
+                                  },
+                                  { fldName: "Not Done", fldValue: "NOT DONE" },
+                                ]}
+                              />
                             </select>
-                            {errors.hbeAG !== "" ? (
+                            {errors.hbeAG && (
                               <span className={classes.error}>
                                 {errors.hbeAG}
                               </span>
-                            ) : (
-                              ""
                             )}
                           </FormGroup>
                         </div>
@@ -806,7 +823,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="antiHDV">Anti-HDV</Label>
-                            <span style={{ color: "red" }}> *</span>{" "}
+                            <ImportantString str="*" />{" "}
                             <select
                               className="form-control"
                               name="antiHDV"
@@ -820,27 +837,24 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                             >
                               <option value={""}>Select</option>
                               <option value={"REACTIVE"}>Reactive</option>
-                              <option value={"NON_REACTIVE"}>
+                              <option value={"NON REACTIVE"}>
                                 Non Reactive
                               </option>
-                              <option value={"NOT_DONE"}>Not Done</option>
+                              <option value={"NOT DONE"}>Not Done</option>
                             </select>
-                            {errors.antiHDV !== "" ? (
+                            {errors.antiHDV && (
                               <span className={classes.error}>
                                 {errors.antiHDV}
                               </span>
-                            ) : (
-                              ""
                             )}
                           </FormGroup>
                         </div>
-
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="treatmentEligible">
                               Treatment Eligible
                             </Label>
-                            <span style={{ color: "red" }}> *</span>{" "}
+                            <ImportantString str="*" />{" "}
                             <select
                               className="form-control"
                               name="treatmentEligible"
@@ -852,54 +866,45 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                                 borderRadius: "0.2rem",
                               }}
                             >
-                              <option value={""}>Select</option>
-                              <option value={"YES"}>Yes</option>
-                              <option value={"NO"}>No</option>
+                              <YesOrNoSelectInput />
                             </select>
-                            {errors.treatmentEligible !== "" ? (
+                            {errors.treatmentEligible && (
                               <span className={classes.error}>
                                 {errors.treatmentEligible}
                               </span>
-                            ) : (
-                              ""
                             )}
                           </FormGroup>
                         </div>
 
-                        {patientObj?.gender.toLowerCase() === "female" && (
-                          <div className="form-group mb-3 col-md-4">
-                            <FormGroup>
-                              <Label for="pmtctEligible">PMTCT Eligible</Label>
-                              <span style={{ color: "red" }}> *</span>{" "}
-                              <select
-                                className="form-control"
-                                name="pmtctEligible"
-                                id="pmtctEligible"
-                                onChange={handleInputChangeBasic}
-                                value={basicInfo.hepatitisBTest.pmtctEligible}
-                                style={{
-                                  border: "1px solid #014D88",
-                                  borderRadius: "0.2rem",
-                                }}
-                              >
-                                <option value={""}>Select</option>
-                                <option value={"YES"}>Yes</option>
-                                <option value={"NO"}>No</option>
-                              </select>
-                              {errors.pmtctEligible !== "" ? (
-                                <span className={classes.error}>
-                                  {errors.pmtctEligible}
-                                </span>
-                              ) : (
-                                ""
-                              )}
-                            </FormGroup>
-                          </div>
-                        )}
+                        <div className="form-group mb-3 col-md-4">
+                          <FormGroup>
+                            <Label for="pmtctEligible">PMTCT Eligible</Label>
+                            <ImportantString str="*" />{" "}
+                            <select
+                              className="form-control"
+                              name="pmtctEligible"
+                              id="pmtctEligible"
+                              onChange={handleInputChangeBasic}
+                              value={basicInfo.hepatitisBTest.pmtctEligible}
+                              style={{
+                                border: "1px solid #014D88",
+                                borderRadius: "0.2rem",
+                              }}
+                            >
+                              <YesOrNoSelectInput />
+                            </select>
+                            {errors.pmtctEligible && (
+                              <span className={classes.error}>
+                                {errors.pmtctEligible}
+                              </span>
+                            )}
+                          </FormGroup>
+                        </div>
+
                         <div className="form-group mb-3 col-md-4-12">
                           <FormGroup>
                             <Label for="comment">Comment</Label>
-                            <span style={{ color: "red" }}> *</span>{" "}
+                            <ImportantString str="*" />{" "}
                             <textarea
                               className="form-control"
                               name="comment"
@@ -914,12 +919,10 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                                 height: "120px",
                               }}
                             />
-                            {errors.comment !== "" ? (
+                            {errors.comment && (
                               <span className={classes.error}>
                                 {errors.comment}
                               </span>
-                            ) : (
-                              ""
                             )}
                           </FormGroup>
                         </div>
@@ -977,29 +980,33 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="hcvRNA">HCV RNA (IU/ml)</Label>
-                            <span style={{ color: "red" }}> *</span>{" "}
+                            <ImportantString str="*" />{" "}
                             <select
                               className="form-control"
                               name="hcvRNA"
                               id="hcvRNA"
                               onChange={handleInputChangeBasicForHC}
-                              // onBlur={formik.handleBlur}
                               value={basicInfo.hepatitisCTest.hcvRNA}
                               style={{
                                 border: "1px solid #014D88",
                                 borderRadius: "0.2rem",
                               }}
                             >
-                              <option value={""}>select</option>
-                              <option value={"DETECTED"}>Detected</option>
-                              <option value={"UNDETECTED"}>Undetected</option>
+                              <GetOptions
+                                options={[
+                                  { fldName: "Select", fldValue: "" },
+                                  { fldName: "Detected", fldValue: "DETECTED" },
+                                  {
+                                    fldName: "Undetected",
+                                    fldValue: "UNDETECTED",
+                                  },
+                                ]}
+                              />
                             </select>
-                            {errors.hcvRNA !== "" ? (
+                            {errors.hcvRNA && (
                               <span className={classes.error}>
                                 {errors.hcvRNA}
                               </span>
-                            ) : (
-                              ""
                             )}
                           </FormGroup>
                         </div>
@@ -1007,10 +1014,9 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
                               <Label for="hcRnaValue">
-                                Input HCV RNA Value{" "}
-                                <span style={{ color: "red" }}> *</span>{" "}
+                                Input HCV RNA Value <ImportantString str="*" />{" "}
                               </Label>
-                              <span style={{ color: "red" }}> *</span>{" "}
+                              <ImportantString str="*" />{" "}
                               <input
                                 className="form-control"
                                 type="text"
@@ -1018,19 +1024,11 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                                 id="hcRnaValue"
                                 value={basicInfo.hepatitisCTest.hcRnaValue}
                                 onChange={handleInputChangeBasicForHC}
-                                // onBlur={formik.handleBlur}
                                 style={{
                                   border: "1px solid #014D88",
                                   borderRadius: "0.2rem",
                                 }}
                               />
-                              {/* {errors.hcRnaValue !== "" ? (
-                                <span className={classes.error}>
-                                  {errors.hcRnaValue}
-                                </span>
-                              ) : (
-                                ""
-                              )} */}
                             </FormGroup>
                           </div>
                         )}
@@ -1040,7 +1038,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                             <Label for="hepatitisCoinfection">
                               Hepatitis Coinfection
                             </Label>
-                            <span style={{ color: "red" }}> *</span>{" "}
+                            <ImportantString str="*" />{" "}
                             <select
                               className="form-control"
                               name="hepatitisCoinfection"
@@ -1054,18 +1052,23 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                                 borderRadius: "0.2rem",
                               }}
                             >
-                              <option value={""}>Select</option>
-                              <option value={"HBV_HCV"}>HBV/HCV</option>
-                              <option value={"HCV_HIV"}>HCV/HIV</option>
-                              <option value={"HBV_HDV"}>HBV/HDV</option>
-                              <option value={"HBV_HCD_HIV"}>HBV/HCD/HIV</option>
+                              <GetOptions
+                                options={[
+                                  { fldName: "Select", fldValue: "" },
+                                  { fldName: "HBV/HCV", fldValue: "HBV_HCV" },
+                                  { fldName: "HCV/HIV", fldValue: "HCV_HIV" },
+                                  { fldName: "HBV/HDV", fldValue: "HBV_HDV" },
+                                  {
+                                    fldName: "HBV/HCD/HIV",
+                                    fldValue: "HBV_HCD_HIV",
+                                  },
+                                ]}
+                              />
                             </select>
-                            {errors.hepatitisCoinfection !== "" ? (
+                            {errors.hepatitisCoinfection && (
                               <span className={classes.error}>
                                 {errors.hepatitisCoinfection}
                               </span>
-                            ) : (
-                              ""
                             )}
                           </FormGroup>
                         </div>
@@ -1073,8 +1076,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="commobidities">
-                              Commobidities{" "}
-                              <span style={{ color: "red" }}> *</span>{" "}
+                              Commobidities <ImportantString str="*" />{" "}
                             </Label>
                             <input
                               className="form-control"
@@ -1083,18 +1085,15 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                               id="commobidities"
                               value={basicInfo.hepatitisCTest.commobidities}
                               onChange={handleInputChangeBasicForHC}
-                              // onBlur={formik.handleBlur}
                               style={{
                                 border: "1px solid #014D88",
                                 borderRadius: "0.2rem",
                               }}
                             />
-                            {errors.commobidities !== "" ? (
+                            {errors.commobidities && (
                               <span className={classes.error}>
                                 {errors.commobidities}
                               </span>
-                            ) : (
-                              ""
                             )}
                           </FormGroup>
                         </div>
@@ -1103,7 +1102,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                           <FormGroup>
                             <Label for="multipleInfection">
                               Specify multiple infection{" "}
-                              <span style={{ color: "red" }}> *</span>{" "}
+                              <ImportantString str="*" />{" "}
                             </Label>
                             <input
                               className="form-control"
@@ -1112,18 +1111,15 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                               id="multipleInfection"
                               value={basicInfo.hepatitisCTest.multipleInfection}
                               onChange={handleInputChangeBasicForHC}
-                              // onBlur={formik.handleBlur}
                               style={{
                                 border: "1px solid #014D88",
                                 borderRadius: "0.2rem",
                               }}
                             />
-                            {errors.multipleInfection !== "" ? (
+                            {errors.multipleInfection && (
                               <span className={classes.error}>
                                 {errors.multipleInfection}
                               </span>
-                            ) : (
-                              ""
                             )}
                           </FormGroup>
                         </div>
@@ -1153,7 +1149,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="ast">AST (IU/ml)</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                      <ImportantString str="*" />{" "}
                       <select
                         className="form-control"
                         name="ast"
@@ -1165,21 +1161,17 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                           borderRadius: "0.2rem",
                         }}
                       >
-                        <option value={""}>Select</option>
-                        <option value={"YES"}>Yes</option>
-                        <option value={"NO"}>No</option>
+                        <YesOrNoSelectInput />
                       </select>
-                      {errors.ast !== "" ? (
+                      {errors.ast && (
                         <span className={classes.error}>{errors.ast}</span>
-                      ) : (
-                        ""
                       )}
                     </FormGroup>
                   </div>
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="alt">ALT (IU/ml)</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                      <ImportantString str="*" />{" "}
                       <select
                         className="form-control"
                         name="alt"
@@ -1191,21 +1183,17 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                           borderRadius: "0.2rem",
                         }}
                       >
-                        <option value={""}>Select</option>
-                        <option value={"YES"}>Yes</option>
-                        <option value={"NO"}>No</option>
+                        <YesOrNoSelectInput />
                       </select>
-                      {errors.alt !== "" ? (
+                      {errors.alt && (
                         <span className={classes.error}>{errors.alt}</span>
-                      ) : (
-                        ""
                       )}
                     </FormGroup>
                   </div>
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="pst">PST (mm3)</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                      <ImportantString str="*" />{" "}
                       <select
                         className="form-control"
                         name="pst"
@@ -1217,14 +1205,10 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                           borderRadius: "0.2rem",
                         }}
                       >
-                        <option value={""}>Select</option>
-                        <option value={"YES"}>Yes</option>
-                        <option value={"NO"}>No</option>
+                        <YesOrNoSelectInput />
                       </select>
-                      {errors.pst !== "" ? (
+                      {errors.pst && (
                         <span className={classes.error}>{errors.pst}</span>
-                      ) : (
-                        ""
                       )}
                     </FormGroup>
                   </div>
@@ -1234,8 +1218,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                     <div className="form-group mb-3 col-md-4">
                       <FormGroup>
                         <Label for="astValue">
-                          Input AST value{" "}
-                          <span style={{ color: "red" }}> *</span>{" "}
+                          Input AST value <ImportantString str="*" />{" "}
                         </Label>
                         <input
                           className="form-control"
@@ -1244,7 +1227,6 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                           id="astValue"
                           value={basicInfo.clinicalParameters.astValue}
                           onChange={handleInputChangeBasicForClinic}
-                          // onBlur={formik.handleBlur}
                           style={{
                             border: "1px solid #014D88",
                             borderRadius: "0.2rem",
@@ -1257,8 +1239,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                     <div className="form-group mb-3 col-md-4">
                       <FormGroup>
                         <Label for="altValue">
-                          Input ALT value{" "}
-                          <span style={{ color: "red" }}> *</span>{" "}
+                          Input ALT value <ImportantString str="*" />{" "}
                         </Label>
                         <input
                           className="form-control"
@@ -1267,7 +1248,6 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                           id="altValue"
                           value={basicInfo.clinicalParameters.altValue}
                           onChange={handleInputChangeBasicForClinic}
-                          // onBlur={formik.handleBlur}
                           style={{
                             border: "1px solid #014D88",
                             borderRadius: "0.2rem",
@@ -1280,8 +1260,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                     <div className="form-group mb-3 col-md-4">
                       <FormGroup>
                         <Label for="pstValue">
-                          Input PST value{" "}
-                          <span style={{ color: "red" }}> *</span>{" "}
+                          Input PST value <ImportantString str="*" />{" "}
                         </Label>
                         <input
                           className="form-control"
@@ -1290,7 +1269,6 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                           id="pstValue"
                           value={basicInfo.clinicalParameters.pstValue}
                           onChange={handleInputChangeBasicForClinic}
-                          // onBlur={formik.handleBlur}
                           style={{
                             border: "1px solid #014D88",
                             borderRadius: "0.2rem",
@@ -1302,8 +1280,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="totalBiliRubin">
-                        Total Bilirubin (μmol/L){" "}
-                        <span style={{ color: "red" }}> *</span>{" "}
+                        Total Bilirubin (μmol/L) <ImportantString str="*" />{" "}
                       </Label>
                       <input
                         className="form-control"
@@ -1312,18 +1289,15 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                         id="totalBiliRubin"
                         value={basicInfo.clinicalParameters.totalBiliRubin}
                         onChange={handleInputChangeBasicForClinic}
-                        // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {errors.totalBiliRubin !== "" ? (
+                      {errors.totalBiliRubin && (
                         <span className={classes.error}>
                           {errors.totalBiliRubin}
                         </span>
-                      ) : (
-                        ""
                       )}
                     </FormGroup>
                   </div>
@@ -1332,7 +1306,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                       <Label for="directBiliribin">
                         Direct Bilirubin (μmol/L)
                       </Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                      <ImportantString str="*" />{" "}
                       <input
                         className="form-control"
                         type="text"
@@ -1340,25 +1314,22 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                         id="directBiliribin"
                         value={basicInfo.clinicalParameters.directBiliribin}
                         onChange={handleInputChangeBasicForClinic}
-                        // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {errors.directBiliribin !== "" ? (
+                      {errors.directBiliribin && (
                         <span className={classes.error}>
                           {errors.directBiliribin}
                         </span>
-                      ) : (
-                        ""
                       )}
                     </FormGroup>
                   </div>
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="albumin">Albumin (g/dl)</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                      <ImportantString str="*" />{" "}
                       <input
                         className="form-control"
                         type="text"
@@ -1366,16 +1337,13 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                         id="albumin"
                         value={basicInfo.hepatitisBTest.albumin}
                         onChange={handleInputChangeBasic}
-                        // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {errors.albumin !== "" ? (
+                      {errors.albumin && (
                         <span className={classes.error}>{errors.albumin}</span>
-                      ) : (
-                        ""
                       )}
                     </FormGroup>
                   </div>
@@ -1383,7 +1351,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="apriScore">APRI score </Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                      <ImportantString str="*" />{" "}
                       <input
                         className="form-control"
                         type="text"
@@ -1391,25 +1359,22 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                         id="apriScore"
                         value={basicInfo.clinicalParameters.apriScore}
                         onChange={handleInputChangeBasicForClinic}
-                        // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {errors.apriScore !== "" ? (
+                      {errors.apriScore && (
                         <span className={classes.error}>
                           {errors.apriScore}
                         </span>
-                      ) : (
-                        ""
                       )}
                     </FormGroup>
                   </div>
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="fib4">FIB-4</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                      <ImportantString str="*" />{" "}
                       <input
                         className="form-control"
                         type="text"
@@ -1417,16 +1382,13 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                         id="fib4"
                         value={basicInfo.clinicalParameters.fib4}
                         onChange={handleInputChangeBasicForClinic}
-                        // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {errors.fib4 !== "" ? (
+                      {errors.fib4 && (
                         <span className={classes.error}>{errors.fib4}</span>
-                      ) : (
-                        ""
                       )}
                     </FormGroup>
                   </div>
@@ -1435,7 +1397,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                       <Label for="prothrombinTimeNR">
                         Prothrombin time/INR
                       </Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                      <ImportantString str="*" />{" "}
                       <input
                         className="form-control"
                         type="text"
@@ -1443,25 +1405,22 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                         id="prothrombinTimeNR"
                         value={basicInfo.clinicalParameters.prothrombinTimeNR}
                         onChange={handleInputChangeBasicForClinic}
-                        // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {errors.prothrombinTimeNR !== "" ? (
+                      {errors.prothrombinTimeNR && (
                         <span className={classes.error}>
                           {errors.prothrombinTimeNR}
                         </span>
-                      ) : (
-                        ""
                       )}
                     </FormGroup>
                   </div>
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="urea">Urea (mg/dl)</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                      <ImportantString str="*" />{" "}
                       <input
                         className="form-control"
                         type="text"
@@ -1469,16 +1428,13 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                         id="urea"
                         value={basicInfo.clinicalParameters.urea}
                         onChange={handleInputChangeBasicForClinic}
-                        // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {errors.urea !== "" ? (
+                      {errors.urea && (
                         <span className={classes.error}>{errors.urea}</span>
-                      ) : (
-                        ""
                       )}
                     </FormGroup>
                   </div>
@@ -1486,7 +1442,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="creatinine">Creatinine (μmol/L)</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                      <ImportantString str="*" />{" "}
                       <input
                         className="form-control"
                         type="text"
@@ -1494,18 +1450,15 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                         id="creatinine"
                         value={basicInfo.clinicalParameters.creatinine}
                         onChange={handleInputChangeBasicForClinic}
-                        // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {errors.creatinine !== "" ? (
+                      {errors.creatinine && (
                         <span className={classes.error}>
                           {errors.creatinine}
                         </span>
-                      ) : (
-                        ""
                       )}
                     </FormGroup>
                   </div>
@@ -1515,7 +1468,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                       <Label for="ultrasoundScan">
                         Ultrasound scan (μmol/L)
                       </Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                      <ImportantString str="*" />{" "}
                       <input
                         className="form-control"
                         type="text"
@@ -1523,18 +1476,15 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                         id="ultrasoundScan"
                         value={basicInfo.clinicalParameters.ultrasoundScan}
                         onChange={handleInputChangeBasicForClinic}
-                        // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {errors.ultrasoundScan !== "" ? (
+                      {errors.ultrasoundScan && (
                         <span className={classes.error}>
                           {errors.ultrasoundScan}
                         </span>
-                      ) : (
-                        ""
                       )}
                     </FormGroup>
                   </div>
@@ -1542,7 +1492,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="creatinine">AFP (ng/ml)</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                      <ImportantString str="*" />{" "}
                       <input
                         className="form-control"
                         type="text"
@@ -1550,16 +1500,13 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                         id="afp"
                         value={basicInfo.clinicalParameters.afp}
                         onChange={handleInputChangeBasicForClinic}
-                        // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {errors.afp !== "" ? (
+                      {errors.afp && (
                         <span className={classes.error}>{errors.afp}</span>
-                      ) : (
-                        ""
                       )}
                     </FormGroup>
                   </div>
@@ -1567,7 +1514,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="fibroscan">Fibroscan (ng/ml)</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                      <ImportantString str="*" />{" "}
                       <input
                         className="form-control"
                         type="text"
@@ -1575,25 +1522,22 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                         id="fibroscan"
                         value={basicInfo.clinicalParameters.fibroscan}
                         onChange={handleInputChangeBasicForClinic}
-                        // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {errors.fibroscan !== "" ? (
+                      {errors.fibroscan && (
                         <span className={classes.error}>
                           {errors.fibroscan}
                         </span>
-                      ) : (
-                        ""
                       )}
                     </FormGroup>
                   </div>
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="ctScan">CT scan</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                      <ImportantString str="*" />{" "}
                       <input
                         className="form-control"
                         type="text"
@@ -1601,16 +1545,13 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                         id="ctScan"
                         value={basicInfo.hepatitisBTest.ctScan}
                         onChange={handleInputChangeBasic}
-                        // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {errors.ctScan !== "" ? (
+                      {errors.ctScan && (
                         <span className={classes.error}>{errors.ctScan}</span>
-                      ) : (
-                        ""
                       )}
                     </FormGroup>
                   </div>
@@ -1618,7 +1559,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="ascites">Acites</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                      <ImportantString str="*" />{" "}
                       <select
                         className="form-control"
                         name="ascites"
@@ -1630,14 +1571,10 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                           borderRadius: "0.2rem",
                         }}
                       >
-                        <option value={""}>Select</option>
-                        <option value={"YES"}>Yes</option>
-                        <option value={"NO"}>No</option>
+                        <YesOrNoSelectInput />
                       </select>
-                      {errors.ascites !== "" ? (
+                      {errors.ascites && (
                         <span className={classes.error}>{errors.ascites}</span>
-                      ) : (
-                        ""
                       )}
                     </FormGroup>
                   </div>
@@ -1648,7 +1585,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                         <Label for="severityOfAscites">
                           Severity of ascites
                         </Label>
-                        <span style={{ color: "red" }}> *</span>{" "}
+                        <ImportantString str="*" />{" "}
                         <select
                           className="form-control"
                           name="severityOfAscites"
@@ -1660,18 +1597,18 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                             borderRadius: "0.2rem",
                           }}
                         >
-                          <option value={""}>Select</option>
-                          <option value={"MILD"}>Mild</option>
-                          <option value={"MODERATE"}>Moderate</option>
-                          <option value={"MASSIVE_OR_GROSS"}>
-                            Massive/Gross
-                          </option>
+                          <GetOptions
+                            options={[
+                              { fldName: "Select", fldValue: "" },
+                              { fldName: "Mild", fldValue: "MILD" },
+                              { fldName: "Moderate", fldValue: "MODERATE" },
+                              {
+                                fldName: "Massive/Gross",
+                                fldValue: "MASSIVE_OR_GROSS",
+                              },
+                            ]}
+                          />
                         </select>
-                        {/* {errors.fib4 !== "" ? (
-                          <span className={classes.error}>{errors.fib4}</span>
-                        ) : (
-                          ""
-                        )} */}
                       </FormGroup>
                     </div>
                   )}
@@ -1679,7 +1616,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="ascitesLevel">Grade of Encephalopathy</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                      <ImportantString str="*" />{" "}
                       <select
                         className="form-control"
                         name="gradeOfEncephalopathy"
@@ -1693,20 +1630,20 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                           borderRadius: "0.2rem",
                         }}
                       >
-                        <option value={""}>Select</option>
-                        <option value={0}>0</option>
-                        <option value={1}>1</option>
-                        <option value={2}>2</option>
-                        <option value={3}>3</option>
-                        <option value={4}>4</option>
-                        <option value={5}>5</option>
+                        <GetOptions
+                          options={[
+                            { fldName: 0, fldValue: 0 },
+                            { fldName: 2, fldValue: 2 },
+                            { fldName: 3, fldValue: 3 },
+                            { fldName: 4, fldValue: 4 },
+                            { fldName: 5, fldValue: 5 },
+                          ]}
+                        />
                       </select>
-                      {errors.gradeOfEncephalopathy !== "" ? (
+                      {errors.gradeOfEncephalopathy && (
                         <span className={classes.error}>
                           {errors.gradeOfEncephalopathy}
                         </span>
-                      ) : (
-                        ""
                       )}
                     </FormGroup>
                   </div>
@@ -1714,7 +1651,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="childPughScore">Child pugh score</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                      <ImportantString str="*" />{" "}
                       <input
                         className="form-control"
                         type="text"
@@ -1722,18 +1659,15 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                         id="childPughScore"
                         value={basicInfo.clinicalParameters.childPughScore}
                         onChange={handleInputChangeBasicForClinic}
-                        // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {errors.childPughScore !== "" ? (
+                      {errors.childPughScore && (
                         <span className={classes.error}>
                           {errors.childPughScore}
                         </span>
-                      ) : (
-                        ""
                       )}
                     </FormGroup>
                   </div>
@@ -1741,7 +1675,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="liverBiopsyStage">Liver biopsy stage</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                      <ImportantString str="*" />{" "}
                       <select
                         className="form-control"
                         name="liverBiopsyStage"
@@ -1753,19 +1687,20 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                           borderRadius: "0.2rem",
                         }}
                       >
-                        <option value={""}>Select</option>
-                        <option value={"FIBROSIS"}> Fibrosis</option>
-                        <option value={"CIRRHOSIS"}>Cirrhosis</option>
-                        <option value={"NO_FIBROSIS"}> No Fibrosis</option>
-                        {/* <option value={"CIRRHOSIS"}>Cirrhosis</option> */}
-                        <option value={"HIGH_CC"}>High CC </option>
+                        <GetOptions
+                          options={[
+                            { fldName: "Select", fldValue: "" },
+                            { fldName: "Fibrosis", fldValue: "FIBROSIS" },
+                            { fldName: "Cirrhosis", fldValue: "CIRRHOSIS" },
+                            { fldName: "No Fibrosis", fldValue: "NO_FIBROSIS" },
+                            { fldName: "HCC", fldValue: "HIGH_CC" },
+                          ]}
+                        />
                       </select>
-                      {errors.liverBiopsyStage !== "" ? (
+                      {errors.liverBiopsyStage && (
                         <span className={classes.error}>
                           {errors.liverBiopsyStage}
                         </span>
-                      ) : (
-                        ""
                       )}
                     </FormGroup>
                   </div>
@@ -1774,7 +1709,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                       <Label for="stagingDateOfLiverBiopsy">
                         Staging date of liver biopsy{" "}
                       </Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                      <ImportantString str="*" />{" "}
                       <input
                         className="form-control"
                         type="date"
@@ -1785,18 +1720,15 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                           basicInfo.hepatitisBTest.stagingDateOfLiverBiopsy
                         }
                         onChange={handleInputChangeBasic}
-                        // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {errors.stagingDateOfLiverBiopsy !== "" ? (
+                      {errors.stagingDateOfLiverBiopsy && (
                         <span className={classes.error}>
                           {errors.stagingDateOfLiverBiopsy}
                         </span>
-                      ) : (
-                        ""
                       )}
                     </FormGroup>
                   </div>
@@ -1804,7 +1736,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="diagnosis_result">Diagnosis</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                      <ImportantString str="*" />{" "}
                       <select
                         className="form-control"
                         name="diagnosis_result"
@@ -1816,18 +1748,20 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                           borderRadius: "0.2rem",
                         }}
                       >
-                        <option value={""}>Select</option>
-                        <option value={"NO_FIBROSIS"}> No Fibrosis</option>
-                        <option value={"FIBROSIS"}>Fibrosis</option>
-                        <option value={"CIRRHOSIS"}>Cirrhosis</option>
-                        <option value={"HIGH_CC"}>HCC</option>
+                        <GetOptions
+                          options={[
+                            { fldName: "Select", fldValue: "" },
+                            { fldName: "Fibrosis", fldValue: "FIBROSIS" },
+                            { fldName: "Cirrhosis", fldValue: "CIRRHOSIS" },
+                            { fldName: "No Fibrosis", fldValue: "NO_FIBROSIS" },
+                            { fldName: "HCC", fldValue: "HIGH_CC" },
+                          ]}
+                        />
                       </select>
-                      {errors.diagnosis_result !== "" ? (
+                      {errors.diagnosis_result && (
                         <span className={classes.error}>
                           {errors.diagnosis_result}
                         </span>
-                      ) : (
-                        ""
                       )}
                     </FormGroup>
                   </div>
@@ -1837,17 +1771,6 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
             {false ? <Spinner /> : ""}
             <br />
             <div className="d-flex justify-content-end">
-              {/* <MatButton
-                type="button"
-                variant="contained"
-                color="primary"
-                onClick={moveBack}
-                className={classes.button}
-                startIcon={<ArrowBackIcon />}
-                style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}
-              >
-                <span style={{ textTransform: "capitalize" }}>Previous</span>
-              </MatButton> */}
               <MatButton
                 type="submit"
                 variant="contained"
@@ -1857,10 +1780,9 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                 onClick={handleSubmit}
                 style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}
               >
-                <span style={{ textTransform: "capitalize" }}>Update</span>
+                <span style={{ textTransform: "capitalize" }}>Save</span>
               </MatButton>
             </div>
-            {/* </Form> */}
           </div>
         </CardContent>
       </Card>

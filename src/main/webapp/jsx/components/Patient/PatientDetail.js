@@ -134,12 +134,8 @@ function PatientCard(props) {
               setActiveContent={setActiveContent}
               activeContent={activeContent}
               allRecentActivities={recentActivities}
-              getRecentActivties={getRecentActivties}
             />
           )}
-
-        
-
           {activeContent.route === "diagnosis" && (
             <DashboardForm2
               patientObj={patientObj}
@@ -160,10 +156,8 @@ function PatientCard(props) {
               setActiveContent={setActiveContent}
               activeContent={activeContent}
               recentActivities={recentActivities}
-              getRecentActivties={getRecentActivties}
             />
           )}
-
           {activeContent.route === "patient-followup" && (
             <FollowUpHome
               patientObj={patientObj}
@@ -172,8 +166,7 @@ function PatientCard(props) {
               recentActivities={recentActivities}
               getRecentActivties={getRecentActivties}
             />
-          )}
-          
+          )}          
         </CardContent>
       </Card>
     </div>
