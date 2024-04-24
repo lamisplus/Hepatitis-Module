@@ -11,7 +11,6 @@ import { token, url as baseUrl } from "../../../api";
 import axios from "axios";
 import SubMenu from "./SubMenu";
 import RecentHistory from "./../History/RecentHistory";
-// import PatientVaccinationHistory from "./../Vaccination/VaccinationHistory";
 import Biometrics from "./Biometric";
 import AddmissionHome from "./../Admission/AddmissionHome";
 import PatientVaccinationHistory from "./../Vaccination/VaccinationHistory";
@@ -147,12 +146,8 @@ function PatientCard(props) {
               setActiveContent={setActiveContent}
               activeContent={activeContent}
               allRecentActivities={recentActivities}
-              getRecentActivties={getRecentActivties}
             />
           )}
-
-        
-
           {activeContent.route === "diagnosis" && (
             <DashboardForm2
               patientObj={patientObj}
@@ -173,10 +168,8 @@ function PatientCard(props) {
               setActiveContent={setActiveContent}
               activeContent={activeContent}
               recentActivities={recentActivities}
-              getRecentActivties={getRecentActivties}
             />
           )}
-
           {activeContent.route === "patient-followup" && (
             <PatientCardFollowUp
               patientObj={patientObj}
@@ -185,8 +178,7 @@ function PatientCard(props) {
               recentActivities={recentActivities}
               getRecentActivties={getRecentActivties}
             />
-          )}
-          
+          )}          
         </CardContent>
       </Card>
     </div>
