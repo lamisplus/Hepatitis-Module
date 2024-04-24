@@ -23,8 +23,8 @@ import {
   FETCH_FOLLOWUP_KEY,
 } from "../../../utils/queryKeys";
 import { fetchEnrolment } from "../../../services/fetchEnrolment";
-import { useSaveFollowup } from "../../../hooks/useSaveFollowup";
 import { fetchFollowup } from "../../../services/fetchFollowup";
+import { useUpdateFollowup } from "../../../hooks/useUpdateFollowup";
 
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
@@ -185,7 +185,7 @@ const FollowupUpdate = (props) => {
         fuDiagnosis,
       },
     };
-    mutate(formattedData);
+    mutate({data:formattedData, id:followupData?.id});
   };
   const { formik } = useValidateFollowupFormValuesHook(onSubmit);
   const clientDateOfBirth =
@@ -201,7 +201,7 @@ const FollowupUpdate = (props) => {
     }
   );
 
-  const { mutate, isLoading } = useSaveFollowup(formik, props);
+  const { mutate, isLoading } = useUpdateFollowup(formik, props);
   const actionType = props?.activeContent?.actionType || "create";
   const followupRecord = props?.activeContent?.followupRecord;
 
