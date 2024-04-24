@@ -67,12 +67,7 @@ function PatientCard(props) {
   const { classes } = props;
   const patientObj = props.patientObj;
   const [patientObj2, setpatientObj2] = useState({});
-  // const [biometricStatus, setBiometricStatus] = useState(false);
-  // const [devices, setDevices] = useState([]);
-  //const [biometricModal, setBiometricModal] = useState(false);
-  // const BiometricModalToggle = () => setBiometricModal(!biometricModal);
-  // const [hivStatus, setHivStatus] = useState();
-  console.log(patientObj);
+  
 
   const getFullPatientDetail = (value) => {
     axios
@@ -80,11 +75,11 @@ function PatientCard(props) {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        console.log(response.data);
+      
         setpatientObj2(response.data);
       })
       .catch((error) => {
-        //console.log(error);
+      
       });
   };
   useEffect(() => {
@@ -162,7 +157,7 @@ function PatientCard(props) {
                     Patient ID :{" "}
                     <b style={{ color: "#0B72AA" }}>
                       {patientObj?.hospitalNumber}
-                      {console.log(patientObj?.hospitalNumber)}
+                  
                     </b>
                   </span>
                 </Col>

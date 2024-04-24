@@ -18,9 +18,13 @@ import "react-widgets/dist/css/react-widgets.css";
 import { useValidateFollowupFormValuesHook } from "../../../formSchemas/followupFormValidation";
 import moment from "moment";
 import { useQuery } from "react-query";
-import { FETCH_ENROLMENT_KEY } from "../../../utils/queryKeys";
+import {
+  FETCH_ENROLMENT_KEY,
+  FETCH_FOLLOWUP_KEY,
+} from "../../../utils/queryKeys";
 import { fetchEnrolment } from "../../../services/fetchEnrolment";
 import { useSaveFollowup } from "../../../hooks/useSaveFollowup";
+import { fetchFollowup } from "../../../services/fetchFollowup";
 
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
@@ -95,10 +99,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DashboardFollowupForm = (props) => {
+const FollowupUpdate = (props) => {
+  const disableInputs = props?.disableInputs;
   const classes = useStyles();
-  const [enrolmentData, setEnrolmentData] = useState(null)
-
+  const [enrolmentData, setEnrolmentData] = useState(null);
+  const [followupData, setFollowupData] = useState(null);
+  const [formInitialValue, setFormInitialValue] = useState(null);
   const onSubmit = (values) => {
     const {
       fuTreatmentRegimen,
@@ -190,13 +196,52 @@ const DashboardFollowupForm = (props) => {
     () => fetchEnrolment(props?.patientObj?.personUuid),
     {
       onSuccess: (data) => {
-        
-        setEnrolmentData(data)
+        setEnrolmentData(data);
       },
     }
   );
 
-  const { mutate, isLoading, isError } = useSaveFollowup(formik, props);
+  const { mutate, isLoading } = useSaveFollowup(formik, props);
+  const actionType = props?.activeContent?.actionType || "create";
+  const followupRecord = props?.activeContent?.followupRecord;
+
+  const formatDate = ({ year, monthValue, dayOfMonth }) => {
+    const formattedDate = `${year}-${monthValue
+      ?.toString?.()
+      .padStart?.(2, "0")}-${dayOfMonth?.toString?.().padStart?.(2, "0")}`;
+    return formattedDate;
+  };
+
+  useQuery(
+    [FETCH_FOLLOWUP_KEY, followupRecord?.recordId],
+    () => fetchFollowup(followupRecord?.recordId),
+    {
+      onSuccess: (data) => {
+        setFollowupData(data);
+        const initialValues = {
+          ...data?.followupAppointmentDto,
+          ...data?.followupPreliminaryDto,
+          ...data?.followupClinicalParametersDto,
+          fuDateOfVisit: formatDate(
+            data?.followupPreliminaryDto?.fuDateOfVisit
+          ),
+          fuNextAppointment: formatDate(
+            data?.followupAppointmentDto?.fuNextAppointment
+          ),
+          fuStagingDateLiverBiopsy: formatDate(
+            data?.followupClinicalParametersDto?.fuStagingDateLiverBiopsy
+          ),
+        };
+        console.log(initialValues);
+        if (formInitialValue === null) {
+          setFormInitialValue(initialValues);
+          formik.setValues(initialValues);
+        }
+      },
+      refetchOnMount: "always",
+    }
+  );
+
   return (
     <>
       <Card className={classes.root}>
@@ -214,7 +259,7 @@ const DashboardFollowupForm = (props) => {
                   }}
                 >
                   <h5 className="card-title" style={{ color: "#fff" }}>
-                    Preliminary
+                    Preliminary {`(${actionType})`}
                   </h5>
                 </div>
                 <div>
@@ -230,6 +275,7 @@ const DashboardFollowupForm = (props) => {
                             <span style={{ color: "red" }}> *</span>{" "}
                             <Input
                               className="form-control"
+                              disabled={disableInputs}
                               type="date"
                               name="fuDateOfVisit"
                               id="fuDateOfVisit"
@@ -264,6 +310,7 @@ const DashboardFollowupForm = (props) => {
                             {/* <span style={{ color: "red" }}> *</span>{" "} */}
                             <Input
                               className="form-control"
+                              disabled={disableInputs}
                               type="number"
                               name="fuWeight"
                               id="fuWeight"
@@ -291,6 +338,7 @@ const DashboardFollowupForm = (props) => {
 
                             <Input
                               className="form-control"
+                              disabled={disableInputs}
                               type="number"
                               name="fuHeight"
                               id="fuHeight"
@@ -318,11 +366,10 @@ const DashboardFollowupForm = (props) => {
                             {/* <span style={{ color: "red" }}> *</span>{" "} */}
                             <Input
                               className="form-control"
+                              disabled
                               type="number"
                               name="fuBmi"
                               id="fuBmi"
-                              // onBlur={formik.handleBlur}
-                              // onChange={formik.handleChange}
                               value={
                                 Number(formik?.values?.fuWeight) /
                                 Number(formik?.values?.fuHeight)
@@ -331,7 +378,6 @@ const DashboardFollowupForm = (props) => {
                                 border: "1px solid #014D88",
                                 borderRadius: "0.2rem",
                               }}
-                              disabled
                             />
 
                             {formik.touched?.fuBmi &&
@@ -351,6 +397,7 @@ const DashboardFollowupForm = (props) => {
 
                             <Input
                               className="form-control"
+                              disabled={disableInputs}
                               type="number"
                               name="fuBloodPressure"
                               id="fuBloodPressure"
@@ -380,6 +427,7 @@ const DashboardFollowupForm = (props) => {
                             {/* <span style={{ color: "red" }}> *</span>{" "} */}
                             <Input
                               className="form-control"
+                              disabled={disableInputs}
                               type="number"
                               name="fuHbsagQuantification"
                               id="fuHbsagQuantification"
@@ -406,6 +454,7 @@ const DashboardFollowupForm = (props) => {
                             {/* <span style={{ color: "red" }}> *</span>{" "} */}
                             <Input
                               className="form-control"
+                              disabled={disableInputs}
                               type="number"
                               name="fuHbeag"
                               id="fuHbeag"
@@ -433,6 +482,7 @@ const DashboardFollowupForm = (props) => {
                             {/* <span style={{ color: "red" }}> *</span>{" "} */}
                             <Input
                               className="form-control"
+                              disabled={disableInputs}
                               type="number"
                               name="fuHbvDna"
                               id="fuHbvDna"
@@ -486,6 +536,7 @@ const DashboardFollowupForm = (props) => {
                             {/* <span style={{ color: "red" }}> *</span>{" "} */}
                             <Input
                               className="form-control"
+                              disabled={disableInputs}
                               type="number"
                               name="fuAlt"
                               id="fuAlt"
@@ -512,6 +563,7 @@ const DashboardFollowupForm = (props) => {
                             {/* <span style={{ color: "red" }}> *</span>{" "} */}
                             <Input
                               className="form-control"
+                              disabled={disableInputs}
                               type="number"
                               name="fuAst"
                               id="fuAst"
@@ -537,6 +589,7 @@ const DashboardFollowupForm = (props) => {
                             <Label for="fuPlt">PLT (mm3)</Label>
                             <Input
                               className="form-control"
+                              disabled={disableInputs}
                               type="number"
                               name="fuPlt"
                               id="fuPlt"
@@ -566,6 +619,7 @@ const DashboardFollowupForm = (props) => {
                             {/* <span style={{ color: "red" }}> *</span>{" "} */}
                             <Input
                               className="form-control"
+                              disabled={disableInputs}
                               type="number"
                               name="fuTotalBilirubin"
                               id="fuTotalBilirubin"
@@ -595,6 +649,7 @@ const DashboardFollowupForm = (props) => {
                             {/* <span style={{ color: "red" }}> *</span>{" "} */}
                             <Input
                               className="form-control"
+                              disabled={disableInputs}
                               type="number"
                               name="fuDirectBilirubin"
                               id="fuDirectBilirubin"
@@ -622,6 +677,7 @@ const DashboardFollowupForm = (props) => {
                             {/* <span style={{ color: "red" }}> *</span>{" "} */}
                             <Input
                               className="form-control"
+                              disabled={disableInputs}
                               type="number"
                               name="fuAlbumin"
                               id="fuAlbumin"
@@ -648,6 +704,7 @@ const DashboardFollowupForm = (props) => {
                             {/* <span style={{ color: "red" }}> *</span>{" "} */}
                             <Input
                               className="form-control"
+                              disabled={disableInputs}
                               type="number"
                               name="fuApriScore"
                               id="fuApriScore"
@@ -675,6 +732,7 @@ const DashboardFollowupForm = (props) => {
                             {/* <span style={{ color: "red" }}> *</span>{" "} */}
                             <Input
                               className="form-control"
+                              disabled={disableInputs}
                               type="number"
                               name="fuFib4"
                               id="fuFib4"
@@ -703,6 +761,7 @@ const DashboardFollowupForm = (props) => {
                             {/* <span style={{ color: "red" }}> *</span>{" "} */}
                             <Input
                               className="form-control"
+                              disabled={disableInputs}
                               type="number"
                               name="fuProthrombinTime"
                               id="fuProthrombinTime"
@@ -729,6 +788,7 @@ const DashboardFollowupForm = (props) => {
                             {/* <span style={{ color: "red" }}> *</span>{" "} */}
                             <Input
                               className="form-control"
+                              disabled={disableInputs}
                               type="number"
                               name="fuUrea"
                               id="fuUrea"
@@ -757,6 +817,7 @@ const DashboardFollowupForm = (props) => {
 
                             <Input
                               className="form-control"
+                              disabled={disableInputs}
                               type="number"
                               name="fuCreatinine"
                               id="fuCreatinine"
@@ -785,6 +846,7 @@ const DashboardFollowupForm = (props) => {
                             {/* <span style={{ color: "red" }}> *</span>{" "} */}
                             <Input
                               className="form-control"
+                              disabled={disableInputs}
                               type="text"
                               name="fuUltrasoundScan"
                               id="fuUltrasoundScan"
@@ -811,6 +873,7 @@ const DashboardFollowupForm = (props) => {
                             {/* <span style={{ color: "red" }}> *</span>{" "} */}
                             <Input
                               className="form-control"
+                              disabled={disableInputs}
                               type="number"
                               name="fuAfp"
                               id="fuAfp"
@@ -837,6 +900,7 @@ const DashboardFollowupForm = (props) => {
                             {/* <span style={{ color: "red" }}> *</span>{" "} */}
                             <Input
                               className="form-control"
+                              disabled={disableInputs}
                               type="number"
                               name="fuFibroscan"
                               id="fuFibroscan"
@@ -863,6 +927,7 @@ const DashboardFollowupForm = (props) => {
                             {/* <span style={{ color: "red" }}> *</span>{" "} */}
                             <Input
                               className="form-control"
+                              disabled={disableInputs}
                               type="text"
                               name="fuCtScan"
                               id="fuCtScan"
@@ -889,6 +954,7 @@ const DashboardFollowupForm = (props) => {
                             {/* <span style={{ color: "red" }}> *</span>{" "} */}
                             <select
                               className="form-control"
+                              disabled={disableInputs}
                               name="fuAscites"
                               id="fuAscites"
                               onBlur={formik.handleBlur}
@@ -920,6 +986,7 @@ const DashboardFollowupForm = (props) => {
                             {/* <span style={{ color: "red" }}> *</span>{" "} */}
                             <select
                               className="form-control"
+                              disabled={disableInputs}
                               name="fuSeverityOfAscites"
                               id="fuSeverityOfAscites"
                               onBlur={formik.handleBlur}
@@ -951,6 +1018,7 @@ const DashboardFollowupForm = (props) => {
                             {/* <span style={{ color: "red" }}> *</span>{" "} */}
                             <select
                               className="form-control"
+                              disabled={disableInputs}
                               name="fuGradeOfEncephalopathy"
                               id="fuGradeOfEncephalopathy"
                               onBlur={formik.handleBlur}
@@ -983,6 +1051,7 @@ const DashboardFollowupForm = (props) => {
                             {/* <span style={{ color: "red" }}> *</span>{" "} */}
                             <Input
                               className="form-control"
+                              disabled={disableInputs}
                               type="number"
                               name="fuChildPughScore"
                               id="fuChildPughScore"
@@ -1011,6 +1080,7 @@ const DashboardFollowupForm = (props) => {
                             {/* <span style={{ color: "red" }}> *</span>{" "} */}
                             <select
                               className="form-control"
+                              disabled={disableInputs}
                               type="number"
                               name="fuLiverBiopsyStage"
                               id="fuLiverBiopsyStage"
@@ -1043,6 +1113,7 @@ const DashboardFollowupForm = (props) => {
                             {/* <span style={{ color: "red" }}> *</span>{" "} */}
                             <Input
                               className="form-control"
+                              disabled={disableInputs}
                               type="date"
                               name="fuStagingDateLiverBiopsy"
                               id="fuStagingDateLiverBiopsy"
@@ -1070,6 +1141,7 @@ const DashboardFollowupForm = (props) => {
                             {/* <span style={{ color: "red" }}> *</span>{" "} */}
                             <select
                               className="form-control"
+                              disabled={disableInputs}
                               type="date"
                               name="fuDiagnosis"
                               id="fuDiagnosis"
@@ -1129,6 +1201,7 @@ const DashboardFollowupForm = (props) => {
                             <span style={{ color: "red" }}> *</span>{" "}
                             <Input
                               className="form-control"
+                              disabled={disableInputs}
                               type="text"
                               name="fuTreatmentRegimen"
                               id="fuTreatmentRegimen"
@@ -1157,6 +1230,7 @@ const DashboardFollowupForm = (props) => {
                             {/* <span style={{ color: "red" }}> *</span>{" "} */}
                             <Input
                               className="form-control"
+                              disabled={disableInputs}
                               type="date"
                               name="fuNextAppointment"
                               id="fuNextAppointment"
@@ -1184,6 +1258,7 @@ const DashboardFollowupForm = (props) => {
 
                             <Input
                               className="form-control"
+                              disabled={disableInputs}
                               type="text"
                               name="fuClinicalName"
                               id="fuClinicalName"
@@ -1211,6 +1286,7 @@ const DashboardFollowupForm = (props) => {
                             {/* <span style={{ color: "red" }}> *</span>{" "} */}
                             <textarea
                               className="form-control"
+                              disabled={disableInputs}
                               type="text"
                               name="fuRemark"
                               id="fuRemark"
@@ -1240,18 +1316,19 @@ const DashboardFollowupForm = (props) => {
               {isLoading ? <Spinner /> : ""}
               <br />
               <div className="d-flex justify-content-end">
-                <MatButton
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  className={classes.button}
-                  // onClick={handleSubmit}
-                  style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}
-                >
-                  <span style={{ textTransform: "capitalize" }}>
-                    {isLoading ? "Please wait" : "Submit"}
-                  </span>
-                </MatButton>
+                {!disableInputs && (
+                  <MatButton
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}
+                  >
+                    <span style={{ textTransform: "capitalize" }}>
+                      {isLoading ? "Please wait" : "Update"}
+                    </span>
+                  </MatButton>
+                )}
               </div>
             </form>
           </div>
@@ -1261,4 +1338,4 @@ const DashboardFollowupForm = (props) => {
   );
 };
 
-export default DashboardFollowupForm;
+export default FollowupUpdate;

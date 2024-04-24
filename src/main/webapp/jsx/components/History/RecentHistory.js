@@ -14,23 +14,34 @@ import "react-widgets/dist/css/react-widgets.css";
 import { toast } from "react-toastify";
 import { Modal } from "react-bootstrap";
 import { Button } from "semantic-ui-react";
+import { useArchiveFollowup } from "../../hooks/useArchiveFollowup";
+import { useQuery } from "react-query";
+import { FETCH_ENROLMENT_KEY, FETCH_FOLLOWUP_KEY } from "../../utils/queryKeys";
+import { fetchEnrolment } from "../../services/fetchEnrolment";
+import { fetchFollowup } from "../../services/fetchFollowup";
+import { queryClient } from "../../utils/queryClient";
 
 const RecentHistory = (props) => {
   let history = useHistory();
   const [recentActivities, setRecentActivities] = useState([
     {
-      activityName: "Enrolment",
-      path: "Enrolment",
+      activityName: "Hepatitis Enrollment",
+      path: "hepatitis_enrollment",
       activityDate: props.patientObj.dateOfRegistration,
     },
     {
-      activityName: "Diagnosis",
-      path: "Diagnosis",
+      activityName: "Hepatitis Diagnosis",
+      path: "hepatitis_diagnosis",
       activityDate: props.patientObj.dateOfRegistration,
     },
     {
-      activityName: "Treatment",
-      path: "Treatment",
+      activityName: "Hepatitis Treatment",
+      path: "hepatitis_treatment",
+      activityDate: props.patientObj.dateOfRegistration,
+    },
+    {
+      activityName: "Hepatitis Followups",
+      path: "hepatitis_followup",
       activityDate: props.patientObj.dateOfRegistration,
     },
   ]);
@@ -40,66 +51,61 @@ const RecentHistory = (props) => {
   const [record, setRecord] = useState(null);
   const toggle = () => setOpen(!open);
   let notToBeUpdated = ["pmtct_infant_information"];
-  const [summartChart, setSummaryChart] = useState({
-    motherVisit: 0,
-    childVisit: 1,
-    childAlive: 0,
-    childDead: 0,
-  });
   const [activeAccordionHeaderShadow, setActiveAccordionHeaderShadow] =
     useState(0);
+  const [enrolmentData, setEnrolmentData] = useState(null);
 
   useEffect(() => {
     setRecentActivities(props.allRecentActivities);
   }, [props.patientObj.id, props.allRecentActivities]);
-  ///GET LIST OF Infants
 
-  // const InfantInfo = () => {
-  //   axios
-  //     .get(
-  //       `${baseUrl}pmtct/anc/get-infant-by-ancno/${props.patientObj.ancNo}`,
-  //       { headers: { Authorization: `Bearer ${token}` } }
-  //     )
-  //     .then((response) => {
-  //       setInfants(response.data);
-  //     })
+  const prefetchAllFollowUp = () => {
+    const array = recentActivities;
+    for (let index = 0; index < array.length; index++) {
+      const activityRecord = array[index];
+      if (activityRecord?.path === "hepatitis_followup") {
+        queryClient.prefetchQuery([
+          FETCH_FOLLOWUP_KEY,
+          activityRecord?.recordId,
+        ],
+        ()=>fetchFollowup(activityRecord?.recordId)
+        
+        );
+      }
+    }
+  };
 
-  //     .catch((error) => {
-  //     });
-  // };
+  useQuery(
+    [FETCH_ENROLMENT_KEY, props?.patientObj?.personUuid],
+    () => fetchEnrolment(props?.patientObj?.personUuid),
+    {
+      onSuccess: (data) => {
+        setEnrolmentData(data);
+        prefetchAllFollowUp()
+      },
+    }
+  );
 
-  // const RecentActivities = () => {
-  //   axios
-  //     .get(`${baseUrl}pmtct/anc/activities/${props.patientObj.ancNo}`, {
-  //       headers: { Authorization: `Bearer ${token}` },
-  //     })
-  //     .then((response) => {
-  //       setRecentActivities(response.data);
-  //     })
-  //     .catch((error) => {
+  
 
-  //     });
-  // };
+  
 
   const ActivityName = (name) => {
-    if (name === "pmtct-enrollment") {
-      return "PE";
-    } else if (name === "anc-enrollment") {
-      return "AE";
-    } else if (name === "anc-delivery") {
-      return "AD";
-    } else if (name === "anc-mother-visit") {
-      return "MV";
-    } else if (name === "pmtct_infant_visit") {
-      return "IV";
-    } else if (name === "pmtct_infant_information") {
-      return "II";
+    if (name === "Hepatitis Enrollment") {
+      return "HE";
+    } else if (name === "Hepatitis Followups") {
+      return "HF";
+    } else if (name === "Hepatitis Diagnosis") {
+      return "HD";
+    } else if (name === "Hepatitis Treatment") {
+      return "HT";
     } else {
-      return "RA";
+      return "HP";
     }
   };
 
   const LoadViewPage = (row, action) => {
+    prefetchAllFollowUp()
     if (row.path === "hepatitis_enrollment") {
       //props.setActiveContent({...props.activeContent, route:'anc-enrollment', id:row.id, actionType:action})
       history.push({
@@ -143,6 +149,22 @@ const RecentHistory = (props) => {
           },
         },
       });
+    } else if (row.path === "hepatitis_followup") {
+      if (action === "update") {
+        props.setActiveContent({
+          ...props.activeContent,
+          route: "patient-followup",
+          actionType: "update",
+          followupRecord: row
+        });
+      } else {
+        props.setActiveContent({
+          ...props.activeContent,
+          route: "patient-followup",
+          actionType: "view",
+          followupRecord: row
+        });
+      }
     }
   };
   const LoadDeletePage = (row) => {
@@ -200,22 +222,27 @@ const RecentHistory = (props) => {
                 ? error.response.data.apierror.message
                 : "Something went wrong, please try again";
             toast.error(errorMessage);
+          } else if (row.path === "hepatitis_followup") {
           } else {
             toast.error("Something went wrong. Please try again...");
           }
         });
+    } else if (row.path === "hepatitis_followup") {
+      setSaving(true);
+
+      mutate(row?.recordId);
     }
   };
+
   const LoadModal = (row) => {
     toggle();
     setRecord(row);
   };
-  const index = 0;
+
+  const { mutate } = useArchiveFollowup(props, setSaving, toggle);
 
   return (
     <Fragment>
-      {/* <Ext /> */}
-
       <div className="row">
         <div className="col-xl-4 col-xxl-4 col-lg-4">
           <div className="card">
@@ -253,7 +280,7 @@ const RecentHistory = (props) => {
                             <span className="accordion-header-icon"></span>
                             <span className="accordion-header-text">
                               Visit Date :{" "}
-                              <span className="">{data.activityName}</span>{" "}
+                              <span className="">{data?.activityName}</span>{" "}
                             </span>
                             <span className="accordion-header-indicator"></span>
                           </Accordion.Toggle>
@@ -272,7 +299,7 @@ const RecentHistory = (props) => {
                                           : "media me-2 media-success"
                                       }
                                     >
-                                      {ActivityName(data.path)}
+                                      {ActivityName(data.activityName)}
                                     </div>
                                     <div className="media-body">
                                       <h5 className="mb-1">
@@ -372,164 +399,6 @@ const RecentHistory = (props) => {
             </div>
           </div>
         </div>
-        {/* {props.patientObj.dynamicHivStatus === "Positive" ||
-        props.patientObj.hivStatus === "Positive" ? (
-          <>
-            <div className="col-xl-8 col-xxl-8 col-lg-8">
-              <div className="card">
-                <div className="card-header border-0 pb-0">
-                  <h4 className="card-title">Patient Chart</h4>
-                </div>
-                <br />
-                <div className="row">
-                  <div className="col-sm-6 col-md-6 col-lg-6">
-                    <div className="col-xl-12 col-xxl-12 col-sm-12">
-                      <div className="card overflow-hidden">
-                        <div className="social-graph-wrapper widget-facebook">
-                          <span className="s-icon">
-                            <span style={{ fontSize: "16px" }}>
-                              Total Clinic Visit
-                            </span>
-                          </span>
-                        </div>
-                        <div className="row">
-                          <div className="col-6 border-right">
-                            <div className="pt-3 pb-3 ps-0 pe-0 text-center">
-                              <h4 className="m-1">
-                                <span className="counter">
-                                  <b>{summartChart.motherVisit}</b>
-                                </span>
-                              </h4>
-                              <p className="m-0">
-                                <b>Mother Visit</b>
-                              </p>
-                            </div>
-                          </div>
-                          {infants.length > 0 && (
-                            <div className="col-6">
-                              <div className="pt-3 pb-3 ps-0 pe-0 text-center">
-                                <h4 className="m-1">
-                                  <span className="counter">
-                                    <b>{summartChart.childVisit}</b>
-                                  </span>
-                                </h4>
-                                <p className="m-0">
-                                  <b>Infant's Visit</b>
-                                </p>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-xl-12 col-xxl-12 col-sm-12">
-                      <div className="card overflow-hidden">
-                        <div className="social-graph-wrapper widget-linkedin">
-                          <span className="s-icon">
-                            <span style={{ fontSize: "16px" }}>
-                              No. of Infants{" "}
-                              {infants.length > 0 ? " : " + infants.length : ""}
-                            </span>
-                          </span>
-                        </div>
-                        <div className="row">
-                          {infants.length > 0 ? (
-                            <>
-                              <div className="col-6 border-right">
-                                <div className="pt-3 pb-3 ps-0 pe-0 text-center">
-                                  <h4 className="m-1">
-                                    <span className="counter">
-                                      {summartChart.childAlive}
-                                    </span>
-                                  </h4>
-                                  <p className="m-0">
-                                    <b>Alive </b>
-                                  </p>
-                                </div>
-                              </div>
-                              <div className="col-6">
-                                <div className="pt-3 pb-3 ps-0 pe-0 text-center">
-                                  <h4 className="m-1">
-                                    <span className="counter">
-                                      {summartChart.childDead}
-                                    </span>
-                                  </h4>
-                                  <p className="m-0">
-                                    <b>Dead </b>
-                                  </p>
-                                </div>
-                              </div>
-                            </>
-                          ) : (
-                            <p>No Record</p>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-sm-6 col-md-6 col-lg-6">
-                    <div className="card-body">
-                      <h3>Current Infant's Details</h3>
-                      {infants.length > 0 ? (
-                        <PerfectScrollbar
-                          style={{ height: "370px" }}
-                          id="DZ_W_TimeLine1"
-                          className="widget-timeline dz-scroll style-1 height370 ps ps--active-y"
-                        >
-                          <ul className="timeline">
-                            {infants.map((obj) => (
-                              <li key={index}>
-                                <div
-                                  className={
-                                    index % 2 == 0
-                                      ? "timeline-badge info"
-                                      : "timeline-badge success"
-                                  }
-                                ></div>
-                                <span
-                                  className="timeline-panel text-muted"
-                                  //onClick={()=>redirectLink()}
-                                  //to=""
-                                >
-                                  <h6 className="mb-0">
-                                    Infant Given Name
-                                    <br />
-                                    {obj.firstName}
-                                  </h6>
-                                  <strong className="text-teal">
-                                    Infant DOB
-                                    <br />
-                                    {obj.dateOfDelivery}
-                                  </strong>
-                                  <br />
-                                  <strong className="text-warning">
-                                    Gender
-                                    <br />
-                                    {obj.sex}
-                                  </strong>
-                                </span>
-                              </li>
-                            ))}
-                          </ul>
-                        </PerfectScrollbar>
-                      ) : (
-                        <p>No Record</p>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="col-sm-6 col-md-6 col-lg-6">
-              <div className="card-body">
-                <b>Patient has no HTS record. Please refer for testing...</b>
-              </div>
-            </div>
-          </>
-        )} */}
 
         <Modal
           show={open}

@@ -11,15 +11,12 @@ import { token, url as baseUrl } from "../../../api";
 import axios from "axios";
 import SubMenu from "./SubMenu";
 import RecentHistory from "./../History/RecentHistory";
-// import PatientVaccinationHistory from "./../Vaccination/VaccinationHistory";
-import Biometrics from "./Biometric";
-import AddmissionHome from "./../Admission/AddmissionHome";
-import PatientVaccinationHistory from "./../Vaccination/VaccinationHistory";
 import DashboardForm2 from "./ViralHepatitisForms/DashboardForm2";
 import DasboardTreatmentForm from "./ViralHepatitisForms/DashboardTreatmentForm";
-import DashboardEnrollmentForm from "./ViralHepatitisForms/DashboardEnrollmentForm";
 import PatientHistory from "./PatientHistoryy";
-import PatientCardFollowUp from "./ViralHepatitisForms/PatientCardFollowUp";
+import FollowUpHome from "./ViralHepatitisForms/PatientCardFollowUpHome";
+
+
 const styles = (theme) => ({
   root: {
     width: "100%",
@@ -78,21 +75,10 @@ function PatientCard(props) {
       ? history.location.state.prepId
       : {};
 
-  console.log(patientObj);
+  
 
-  const getFullPatientDetail = (value) => {
-    axios
-      .get(`${baseUrl}patient/${patientObj.id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        console.log(response.data);
-        setAllPatientInfo(response.data);
-      })
-      .catch((error) => {
-        //console.log(error);
-      });
-  };
+ 
+
   const getRecentActivties = () => {
     axios
       .get(`${baseUrl}hepatitis/activities/${patientObj.personUuid}`, {
@@ -100,13 +86,14 @@ function PatientCard(props) {
       })
       .then((response) => {
         setRecentActivities(response.data);
-        console.log(response.data);
+        
       })
 
       .catch((error) => {
-        //console.log(error);
+      
       });
   };
+
   useEffect(() => {
     getRecentActivties();
   }, [activeContent]);
@@ -178,7 +165,7 @@ function PatientCard(props) {
           )}
 
           {activeContent.route === "patient-followup" && (
-            <PatientCardFollowUp
+            <FollowUpHome
               patientObj={patientObj}
               setActiveContent={setActiveContent}
               activeContent={activeContent}
