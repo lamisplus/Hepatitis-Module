@@ -1,5 +1,6 @@
 package org.lamisplus.modules.hepatitis.controller;
 
+import org.lamisplus.modules.hepatitis.domain.dto.request.FollowupDto;
 import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisDiagnosisDto;
 import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisEnrollmentDto;
 import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisTreatmentDto;
@@ -8,6 +9,7 @@ import org.lamisplus.modules.hepatitis.domain.dto.response.HepatitisEnrollmentPa
 import org.lamisplus.modules.hepatitis.domain.dto.response.HepatitisEnrollmentResponse;
 import org.lamisplus.modules.hepatitis.domain.entity.HepatitisDiagnosis;
 import org.lamisplus.modules.hepatitis.domain.entity.HepatitisEnrollment;
+import org.lamisplus.modules.hepatitis.domain.entity.HepatitisFollowup;
 import org.lamisplus.modules.hepatitis.domain.entity.HepatitisTreatment;
 import org.lamisplus.modules.hepatitis.service.EnrollmentService;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +43,11 @@ public class EnrollmentController {
     @PostMapping("/treatment")
     public ResponseEntity<String> hepatitisTreatment(@Valid @RequestBody HepatitisTreatmentDto treatmentDto) {
         return enrollmentService.hepatitisTreatment(treatmentDto);
+    }
+
+    @PostMapping("/followup")
+    public ResponseEntity<String> hepatitisFollowup(@Valid @RequestBody FollowupDto followupDto) {
+        return enrollmentService.hepatitisFollowup(followupDto);
     }
 
     @GetMapping
@@ -77,10 +84,21 @@ public class EnrollmentController {
         return ResponseEntity.ok (enrollmentService.viewHepatitisTreatmentById(id));
     }
 
+    @GetMapping(value = "view-hepatitis-followup-by-id/{id}")
+    public ResponseEntity<HepatitisFollowup> viewHepatitisFollowupById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok (enrollmentService.viewHepatitisFollowupById(id));
+    }
+
     @GetMapping(value = "view-hepatitis-treatment/{enrollmentUuid}")
     public ResponseEntity<HepatitisTreatment> viewHepatitisTreatment(@PathVariable("enrollmentUuid") String enrollmentUuid) {
         return ResponseEntity.ok (enrollmentService.viewHepatitisTreatmentByEnrollmentUuid(enrollmentUuid));
     }
+
+    @GetMapping(value = "view-hepatitis-followup/{enrollmentUuid}")
+    public ResponseEntity<HepatitisFollowup> viewHepatitisFollowup(@PathVariable("enrollmentUuid") String enrollmentUuid) {
+        return ResponseEntity.ok (enrollmentService.viewHepatitisFollowupByEnrollmentUuid(enrollmentUuid));
+    }
+
 
     @PutMapping(value = "update-hepatitis-enrollment/{id}")
     public ResponseEntity<HepatitisEnrollmentDto> updateHepatitisEnrollment(@PathVariable("id") Long id, @Valid @RequestBody HepatitisEnrollmentDto enrollmentDto) {
@@ -97,6 +115,11 @@ public class EnrollmentController {
         return ResponseEntity.ok (enrollmentService.updateHepatitisTreatment(id, treatmentDto));
     }
 
+    @PutMapping(value = "update-hepatitis-followup/{id}")
+    public ResponseEntity<FollowupDto> updateHepatitisFollowup(@PathVariable("id") Long id, @Valid @RequestBody FollowupDto followupDto) {
+        return ResponseEntity.ok (enrollmentService.updateHepatitisFollowup(id, followupDto));
+    }
+
     @GetMapping(value = "activities/{personUuid}")
     public ResponseEntity<List<ActivityTracker>> getActivitiesByPersonUuid(@PathVariable("personUuid") String personUuid) {
         return ResponseEntity.ok (enrollmentService.getActivityTracker(personUuid));
@@ -111,5 +134,10 @@ public class EnrollmentController {
     @PutMapping(value = "/{id}/archive/treatment")
     public ResponseEntity<String> archiveTreatment(@PathVariable("id") Long id) {
         return ResponseEntity.ok (enrollmentService.archiveTreatment(id));
+    }
+
+    @PutMapping(value = "/{id}/archive/followup")
+    public ResponseEntity<String> archiveFollowup(@PathVariable("id") Long id) {
+        return ResponseEntity.ok (enrollmentService.archiveFollowup(id));
     }
 }

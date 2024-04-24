@@ -19,6 +19,7 @@ import DashboardForm2 from "./ViralHepatitisForms/DashboardForm2";
 import DasboardTreatmentForm from "./ViralHepatitisForms/DashboardTreatmentForm";
 import DashboardEnrollmentForm from "./ViralHepatitisForms/DashboardEnrollmentForm";
 import PatientHistory from "./PatientHistoryy";
+import PatientCardFollowUp from "./ViralHepatitisForms/PatientCardFollowUp";
 const styles = (theme) => ({
   root: {
     width: "100%",
@@ -150,14 +151,7 @@ function PatientCard(props) {
             />
           )}
 
-          {/* {activeContent.route === "enrollment" && (
-            <DashboardEnrollmentForm
-              patientObj={patientObj}
-              setActiveContent={setActiveContent}
-              activeContent={activeContent}
-              userStatus={true}
-            />
-          )} */}
+        
 
           {activeContent.route === "diagnosis" && (
             <DashboardForm2
@@ -182,12 +176,17 @@ function PatientCard(props) {
               getRecentActivties={getRecentActivties}
             />
           )}
-          {/*  {activeContent.route==='biometrics' &&(<Biometrics patientObj={patientObj} setActiveContent={setActiveContent} activeContent={activeContent}/>)}
-          {activeContent.route==='addmission' &&( <AddmissionHome patientObj={patientObj} setActiveContent={setActiveContent} activeContent={activeContent} />)}
-          {activeContent.route==='vaccination' &&( <PatientVaccinationHistory patientObj={patientObj} setActiveContent={setActiveContent} activeContent={activeContent}/>)}
-          {activeContent.route==='discharge' &&( <AddmissionHome patientObj={patientObj} setActiveContent={setActiveContent} activeContent={activeContent} />)}
-          {activeContent.route==='icu' &&( <AddmissionHome patientObj={patientObj} setActiveContent={setActiveContent} activeContent={activeContent} />)}
-          {activeContent.route==='patient-history' &&( <PatientHistory patientObj={patientObj} setActiveContent={setActiveContent} activeContent={activeContent}/>)}          */}
+
+          {activeContent.route === "patient-followup" && (
+            <PatientCardFollowUp
+              patientObj={patientObj}
+              setActiveContent={setActiveContent}
+              activeContent={activeContent}
+              recentActivities={recentActivities}
+              getRecentActivties={getRecentActivties}
+            />
+          )}
+          
         </CardContent>
       </Card>
     </div>

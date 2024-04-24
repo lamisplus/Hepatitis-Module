@@ -414,7 +414,7 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
     setStateByCountryId(1);
     setInfo({ ...info, countryId: getCountryId });
   };
-  //Get list of State
+  //Get list of Statef
   function setStateByCountryId(id) {
     axios
       .get(`${apiUrl}organisation-units/parent-organisation-units/${id}`, {

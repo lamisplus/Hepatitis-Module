@@ -72,6 +72,8 @@
         </sql>
     </changeSet>
 
+<!--    hepatitis_diagnosis-->
+
     <changeSet failOnError="true" author="peter-data-fi" id="20230209-007">
         <preConditions onFail="MARK_RAN">
             <not>
@@ -149,6 +151,8 @@
             DROP CONSTRAINT hepatitis_diagnosis_hepatitis_enrollments_fk_uuid;
         </sql>
     </changeSet>
+
+
 <!--    hepatitis_treatments-->
     <changeSet failOnError="true" author="peter-data-fi" id="20230209-012">
         <preConditions onFail="MARK_RAN">
@@ -211,4 +215,71 @@
             DROP CONSTRAINT hepatitis_treatments_hepatitis_enrollments_fk_uuid;
         </sql>
     </changeSet>
+
+
+
+    <!--    hepatitis_followups -->
+    <changeSet failOnError="true" author="emmanuel-data-fi" id="20240423-016">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="hepatitis_followups" columnName="archived" />
+            </not>
+        </preConditions>
+        <sql>
+            ALTER TABLE hepatitis_followups
+                ADD COLUMN archived integer;
+
+        </sql>
+    </changeSet>
+
+    <changeSet failOnError="true" author="emmanuel-data-fi" id="20240423-017">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="hepatitis_followups" columnName="facility_id" />
+            </not>
+        </preConditions>
+        <sql>
+            ALTER TABLE hepatitis_followups
+                ADD COLUMN facility_id bigint;
+
+        </sql>
+    </changeSet>
+
+    <changeSet failOnError="true" author="emmanuel-data-fi" id="20240423-018">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="hepatitis_followups" columnName="enrollment_uuid" />
+            </not>
+        </preConditions>
+        <addColumn tableName="hepatitis_followups">
+            <column name="enrollment_uuid" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <addForeignKeyConstraint
+                baseTableName="hepatitis_followups"
+                baseColumnNames="enrollment_uuid"
+                constraintName="fk_hepatitis_followups_enrollment"
+                referencedTableName="hepatitis_enrollments"
+                referencedColumnNames="uuid"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"/>
+    </changeSet>
+
+    <changeSet failOnError="true" author="emmanuel-data-fi" id="20240423-019">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT COUNT(*)
+                FROM information_schema.table_constraints
+                WHERE constraint_name = 'hepatitis_followups_hepatitis_enrollments_fk_uuid'
+                  AND table_name = 'hepatitis_followups';
+            </sqlCheck>
+        </preConditions>
+        <sql>
+            ALTER TABLE hepatitis_followups
+            DROP CONSTRAINT hepatitis_followups_hepatitis_enrollments_fk_uuid;
+        </sql>
+    </changeSet>
 </databaseChangeLog>
+
+

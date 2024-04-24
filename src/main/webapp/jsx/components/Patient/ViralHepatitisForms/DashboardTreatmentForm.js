@@ -150,10 +150,9 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent }) => {
       treatmentExperience: "",
     },
   });
-  console.log(basicInfo.hepatitisBTreatment.hbvPastTreatmentRegimen);
+ 
 
   const [errors, setErrors] = useState({});
-  // handle input changes
   const handleInputChangeBasicHB = (e) => {
     setErrors({ ...temp, [e.target.name]: "" });
 
@@ -252,6 +251,7 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent }) => {
     //   });
     // }
   };
+
   const handleInputChangeBasicHBRegSwitch = (e) => {
     setErrors({ ...temp, [e.target.name]: "" });
     if (e.target.name === "hbvRegimeSwitchNewRegimen") {
@@ -581,10 +581,7 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent }) => {
         ? ""
         : "Date Started is required";
 
-    //   temp.hbvRegimeSwitchDateStopped = basicInfo.hepatitisBTreatment
-    // .hepatitisBRegimenSwitch.dateStopped
-    // ? ""
-    // : "Date stopped is required";
+    
 
     temp.hbvRegimeSwitchReason = basicInfo.hepatitisBTreatment
       .hepatitisBRegimenSwitch.reasonForSwitch
@@ -644,38 +641,14 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent }) => {
         ? ""
         : "Hbv Past treatment regimen is required";
 
-    // temp.newRegimenB = basicInfo.hepatitisBTreatment.newRegimen
-    //   ? ""
-    //   : "New Regimen is required";
-
-    // temp.dateStarted = basicInfo.hepatitisBTreatment.dateStarted
-    //   ? ""
-    //   : "Date started is required";
-
-    // temp.dateStarted =
-    //   basicInfo.hepatitisBTreatment.newRegimen !== ""
-    //     ? ""
-    //     : basicInfo.hepatitisBTreatment.dateStarted
-    //     ? ""
-    //     : "Date started is required";
-    // temp.dateStopped = basicInfo.hepatitisBTreatment.dateStopped
-    //   ? ""
-    //   : "Date Stopped is required";
+   
 
     temp.hbvReasonForTreatmentEligibility = basicInfo.hepatitisBTreatment
       .reasonForHepatitisBTreatment.reasonsForTreatment
       ? ""
       : "Reason for Treatment is required";
 
-    // temp.hbvReasonsForTreatmentComment = basicInfo.hepatitisBTreatment
-    //   .reasonForHepatitisBTreatment.comment
-    //   ? ""
-    //   : "Comment is required";
-
-    // temp.hcvAdverseEventReported = basicInfo.hepatitisCTreatment
-    //   .adverseEffectReported
-    //   ? ""
-    //   : "Adverse Effect Reported is required";
+    
 
     temp.hcvDateStarted = basicInfo.hepatitisCTreatment.dateStarted
       ? ""
@@ -791,18 +764,14 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent }) => {
         setEnrollmentUuid(response.data.uuid);
       })
       .catch((error) => {
-        //console.log(error);
+       
       });
   };
 
-  // submit form
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // validating the input
     window.scrollTo(0, 0);
-
-    console.log(basicInfo);
-    // console.log(errors);
 
     if (validate()) {
       console.log("good to go", basicInfo);

@@ -1,0 +1,1 @@
+export const FETCH_ENROLMENT_KEY = "FETCH_ENROLMENT"

@@ -67,10 +67,17 @@ function SubMenu(props) {
     props.setActiveContent({ ...props.activeContent, route: "recent-history" });
   };
   const loadPatientHistory = () => {
-    //setActiveItem('history')
     props.setActiveContent({
       ...props.activeContent,
       route: "patient-history",
+    });
+  };
+
+  const loadFollowup = () => {
+    
+    props.setActiveContent({
+      ...props.activeContent,
+      route: "patient-followup",
     });
   };
 
@@ -78,7 +85,7 @@ function SubMenu(props) {
     <div>
       <Menu size="large" color={"black"} inverted>
         <Menu.Item onClick={() => onClickHome()}> Home</Menu.Item>
-        {/* <Menu.Item onClick={() => loadEnrollment()}>Enrollment</Menu.Item> */}
+        <Menu.Item onClick={() => loadFollowup()}>Follow Up</Menu.Item>
 
         {<Menu.Item onClick={() => loadVaccination()}>Diagnosis</Menu.Item>}
 

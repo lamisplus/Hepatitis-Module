@@ -104,7 +104,6 @@ const DiagnosisSubmitedForm = ({
   userStatus,
   patientObj,
   id,
-
   enrollmentUuid,
 }) => {
   const [diagnosisInfo, setDiagnosisInfo] = useState({});
@@ -273,11 +272,6 @@ const DiagnosisSubmitedForm = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // validating the input
-    // window.scrollTo(0, 0);
-
-    console.log(basicInfo);
-    // console.log(errors);
 
     if (validate()) {
       console.log("good to go", basicInfo);
@@ -355,8 +349,7 @@ const DiagnosisSubmitedForm = ({
   };
 
   const viewHepatitisDiagnosis = (eId) => {
-    // /view-hepatitis-diagnosis-by-id/{id}
-    console.log(id);
+    
     axios
       .get(`${apiUrl}hepatitis/view-hepatitis-diagnosis-by-id/${id}`, {
         headers: { Authorization: `Bearer ${token}` },

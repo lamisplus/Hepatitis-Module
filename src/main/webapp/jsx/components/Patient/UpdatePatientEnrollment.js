@@ -88,20 +88,7 @@ const UserRegistration = (props) => {
   const [enrollmentUuidT, setEnrollmentUuidT] = useState("");
   const [allPatientInfo, setAllPatientInfo] = useState({});
 
-  // console.log(locationState);
-  // const viewHepatitisDiagnosis = (eId) => {
-  //   axios
-  //     .get(`${baseUrl}view-hepatitis-diagnosis-by-id/${eId}`, {
-  //       headers: { Authorization: `Bearer ${token}` },
-  //     })
-  //     .then((response) => {
-  //       setDiagnosisInfo(response.data);
-  //       setEnrollmentUuid(response.data.id);
-  //     })
-  //     .catch((error) => {
-  //       //console.log(error);
-  //     });
-  // };
+  
 
   const viewHepatitisTreatment = (eId) => {
     axios
@@ -126,8 +113,6 @@ const UserRegistration = (props) => {
       )
       .then((response) => {
         setEnrollmentUuid(response.data.uuid);
-        // viewHepatitisDiagnosis(response.data.uuid);
-        // viewHepatitisTreatment(response.data.uuid);
       })
       .catch((error) => {});
   };
