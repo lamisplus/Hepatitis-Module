@@ -43,5 +43,6 @@ public class FollowupClinicalParametersDto implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate fuStagingDateLiverBiopsy ;
     private String fuDiagnosis ;
+    private String fuOutcome;
 
 }

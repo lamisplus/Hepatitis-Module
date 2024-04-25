@@ -22,7 +22,6 @@ import { FETCH_ENROLMENT_KEY } from "../../../utils/queryKeys";
 import { fetchEnrolment } from "../../../services/fetchEnrolment";
 import { useSaveFollowup } from "../../../hooks/useSaveFollowup";
 
-
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
 const useStyles = makeStyles((theme) => ({
@@ -98,7 +97,7 @@ const useStyles = makeStyles((theme) => ({
 
 const FollowupCreate = (props) => {
   const classes = useStyles();
-  const [enrolmentData, setEnrolmentData] = useState(null)
+  const [enrolmentData, setEnrolmentData] = useState(null);
 
   const onSubmit = (values) => {
     const {
@@ -136,6 +135,9 @@ const FollowupCreate = (props) => {
       fuHbsagQuantification,
       fuHbeag,
       fuHbvDna,
+      fuOutcome,
+      fuHbvDnaStatus,
+      fuHbsag,
     } = values;
     const formattedData = {
       enrollmentUuid: enrolmentData?.uuid,
@@ -144,6 +146,7 @@ const FollowupCreate = (props) => {
         fuNextAppointment,
         fuClinicalName,
         fuRemark,
+        fuOutcome,
       },
       followupPreliminary: {
         fuDateOfVisit,
@@ -154,6 +157,9 @@ const FollowupCreate = (props) => {
         fuHbsagQuantification,
         fuHbeag,
         fuHbvDna,
+        fuHbvDnaStatus,
+        fuHbsag,
+        fuOutcome
       },
       followupClinicalParameters: {
         fuAlt,
@@ -178,11 +184,12 @@ const FollowupCreate = (props) => {
         fuLiverBiopsyStage,
         fuStagingDateLiverBiopsy,
         fuDiagnosis,
+        fuOutcome
       },
     };
     mutate(formattedData);
   };
-  const { formik } = useValidateFollowupFormValuesHook(onSubmit);
+  const { formik } = useValidateFollowupFormValuesHook(onSubmit, "create");
   const clientDateOfBirth =
     props?.patientObj?.dateOfBirth || props?.patientObj?.dob;
 
@@ -191,14 +198,14 @@ const FollowupCreate = (props) => {
     () => fetchEnrolment(props?.patientObj?.personUuid),
     {
       onSuccess: (data) => {
-        setEnrolmentData(data)
+        setEnrolmentData(data);
       },
     }
   );
 
-  const { mutate, isLoading, } = useSaveFollowup(formik, props);
+  const { mutate, isLoading } = useSaveFollowup(formik, props);
   const actionType = props?.activeContent?.actionType || "create";
-  
+
   return (
     <>
       <Card className={classes.root}>
@@ -376,6 +383,32 @@ const FollowupCreate = (props) => {
 
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
+                            <Label for="fuHbsag">HBsAg</Label>
+                            {/* <span style={{ color: "red" }}> *</span>{" "} */}
+                            <Input
+                              className="form-control"
+                              type="number"
+                              name="fuHbsag"
+                              id="fuHbsag"
+                              onBlur={formik.handleBlur}
+                              onChange={formik.handleChange}
+                              value={formik?.values?.fuHbsag}
+                              style={{
+                                border: "1px solid #014D88",
+                                borderRadius: "0.2rem",
+                              }}
+                            />
+                            {formik.touched?.fuHbsag &&
+                              formik?.errors?.fuHbsag !== "" && (
+                                <span className={classes.error}>
+                                  {formik?.errors?.fuHbsag}
+                                </span>
+                              )}
+                          </FormGroup>
+                        </div>
+
+                        <div className="form-group mb-3 col-md-4">
+                          <FormGroup>
                             <Label for="fuHbsagQuantification">
                               HBsAg quantification
                             </Label>
@@ -431,7 +464,7 @@ const FollowupCreate = (props) => {
 
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
-                            <Label for="fuHbvDna">HBV DNA</Label>
+                            <Label for="fuHbvDna">HBV DNA (IU/ml)</Label>
                             {/* <span style={{ color: "red" }}> *</span>{" "} */}
                             <Input
                               className="form-control"
@@ -451,6 +484,40 @@ const FollowupCreate = (props) => {
                               formik?.errors?.fuHbvDna !== "" && (
                                 <span className={classes.error}>
                                   {formik?.errors?.fuHbvDna}
+                                </span>
+                              )}
+                          </FormGroup>
+                        </div>
+
+                        <div className="form-group mb-3 col-md-4">
+                          <FormGroup>
+                            <Label for="fuHbvDnaStatus">HBV DNA Status</Label>
+                            {/* <span style={{ color: "red" }}> *</span>{" "} */}
+                            <select
+                              className="form-control"
+                              name="fuHbvDnaStatus"
+                              id="fuHbvDnaStatus"
+                              onBlur={formik.handleBlur}
+                              onChange={formik.handleChange}
+                              value={formik?.values?.fuHbvDnaStatus}
+                              style={{
+                                border: "1px solid #014D88",
+                                borderRadius: "0.2rem",
+                              }}
+                            >
+                              <option value="">Select</option>
+                              <option value={"UNDETECTED"}>UNDETECTED</option>
+                              <option value={"SUPPRESSED"}>SUPPRESSED</option>
+                              <option value={"NOT SUPPRESSED"}>
+                                NOT SUPPRESSED
+                              </option>
+                              <option value={"NOT DONE"}>NOT DONE</option>
+                            </select>
+
+                            {formik.touched?.fuHbvDnaStatus &&
+                              formik?.errors?.fuHbvDnaStatus !== "" && (
+                                <span className={classes.error}>
+                                  {formik?.errors?.fuHbvDnaStatus}
                                 </span>
                               )}
                           </FormGroup>
@@ -536,7 +603,9 @@ const FollowupCreate = (props) => {
 
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
-                            <Label for="fuPlt">PLT (mm3)</Label>
+                            <Label for="fuPlt">
+                              Platelet (mm<sup>3</sup>)
+                            </Label>
                             <Input
                               className="form-control"
                               type="number"
@@ -592,7 +661,7 @@ const FollowupCreate = (props) => {
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="fuDirectBilirubin">
-                              Direct Bilirubin (µmol/L)
+                              Direct Bilirubin (mm<sup>3</sup>)
                             </Label>
                             {/* <span style={{ color: "red" }}> *</span>{" "} */}
                             <Input
@@ -889,8 +958,9 @@ const FollowupCreate = (props) => {
                           <FormGroup>
                             <Label for="fuAscites">Ascites</Label>
                             {/* <span style={{ color: "red" }}> *</span>{" "} */}
-                            <select
+                            <Input
                               className="form-control"
+                              type="text"
                               name="fuAscites"
                               id="fuAscites"
                               onBlur={formik.handleBlur}
@@ -900,11 +970,7 @@ const FollowupCreate = (props) => {
                                 border: "1px solid #014D88",
                                 borderRadius: "0.2rem",
                               }}
-                            >
-                              <option value="">Select</option>
-                              <option value={"YES"}>Yes</option>
-                              <option value={"NO"}>No</option>
-                            </select>
+                            />
 
                             {formik.touched?.fuAscites &&
                               formik?.errors?.fuAscites !== "" && (
@@ -964,8 +1030,11 @@ const FollowupCreate = (props) => {
                               }}
                             >
                               <option value="">Select</option>
-                              <option value={"YES"}>Yes</option>
-                              <option value={"NO"}>No</option>
+                              <option value={"0"}>0</option>
+                              <option value={"1"}>1</option>
+                              <option value={"2"}>2</option>
+                              <option value={"3"}>3</option>
+                              <option value={"4"}>4</option>
                             </select>
 
                             {formik.touched?.fuGradeOfEncephalopathy &&
@@ -1084,8 +1153,9 @@ const FollowupCreate = (props) => {
                               }}
                             >
                               <option value="">Select</option>
-                              <option value={"YES"}>Yes</option>
-                              <option value={"NO"}>No</option>
+                              <option value={"FIBROSIS"}>FIBROSIS</option>
+                              <option value={"CIRRHOSIS"}>CIRRHOSIS</option>
+                              <option value={"HCC"}>HCC</option>
                             </select>
 
                             {formik.touched?.fuDiagnosis &&
@@ -1183,7 +1253,6 @@ const FollowupCreate = (props) => {
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="fuClinicalName">Clinical name</Label>
-
                             <Input
                               className="form-control"
                               type="text"
@@ -1202,6 +1271,39 @@ const FollowupCreate = (props) => {
                               formik?.errors?.fuClinicalName !== "" && (
                                 <span className={classes.error}>
                                   {formik?.errors?.fuClinicalName}
+                                </span>
+                              )}
+                          </FormGroup>
+                        </div>
+
+                        <div className="form-group mb-3 col-md-4">
+                          <FormGroup>
+                            <Label for="fuOutcome">Outcome</Label>
+                            <select
+                              className="form-control"
+                              name="fuOutcome"
+                              id="fuOutcome"
+                              onBlur={formik.handleBlur}
+                              onChange={formik.handleChange}
+                              value={formik?.values?.fuOutcome}
+                              style={{
+                                border: "1px solid #014D88",
+                                borderRadius: "0.2rem",
+                              }}
+                            >
+                              <option value="">Select</option>
+                              <option value={"LT"}>Lost to follow up</option>
+                              <option value={"D"}>Death</option>
+                              <option value={"C"}>Cured</option>
+                              <option value={"R"}>Referred</option>
+                              <option value={"U"}>Undetected Viral Load</option>
+                              <option value={"NS"}>NOT SUPPRESSED</option>
+                            </select>
+
+                            {formik.touched?.fuOutcome &&
+                              formik?.errors?.fuOutcome !== "" && (
+                                <span className={classes.error}>
+                                  {formik?.errors?.fuOutcome}
                                 </span>
                               )}
                           </FormGroup>

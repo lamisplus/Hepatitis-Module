@@ -23,4 +23,5 @@ public class FollowupAppointmentDto implements Serializable {
     private LocalDate fuNextAppointment ;
     private String fuClinicalName ;
     private String fuRemark ;
+    private String fuOutcome;
 }

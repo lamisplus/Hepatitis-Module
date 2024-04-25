@@ -15,8 +15,7 @@ import "react-phone-input-2/lib/style.css";
 import "../patient.css";
 import "react-widgets/dist/css/react-widgets.css";
 import { useValidateFollowupFormValuesHook } from "../../../formSchemas/form1ValidationSchema";
-import { ArrowBack, ArrowForward } from "@material-ui/icons";
-// import PatientCardFollowUp from "./PatientCardFollowUp";
+import { ArrowForward } from "@material-ui/icons";
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
 const useStyles = makeStyles((theme) => ({
