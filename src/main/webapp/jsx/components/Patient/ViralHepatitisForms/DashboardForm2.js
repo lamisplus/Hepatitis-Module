@@ -117,6 +117,8 @@ export const YesOrNoSelectInput = () => (
 );
 const DashboardForm2 = ({ patientObj, setActiveContent }) => {
   const [enrollmentUuid, setEnrollmentUuid] = useState("");
+  const [errors, setErrors] = useState({});
+  const [childPughData, setChildPughData] = useState([]);
 
   const [basicInfo, setBasicInfo] = useState({
     clinicalParameters: {
@@ -169,7 +171,16 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
     },
   });
 
-  const [errors, setErrors] = useState({});
+  const fetchChildPughScore = async () => {
+    const response = await axios.get(
+      `${apiUrl}application-codesets/v2/CHILD_PUGH`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    const data = response.data;
+    setChildPughData(data);
+  };
 
   const viewHepatitisEnrollment = () => {
     axios
@@ -180,18 +191,14 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
         }
       )
       .then((response) => {
-     
         setEnrollmentUuid(response.data.uuid);
       })
-      .catch((error) => {
-       
-      });
+      .catch((error) => {});
   };
 
   const [selectedOptions, setSelectedOptions] = useState([]);
 
   const handleCheckboxChange = (event) => {
-   
     const option = event.target.value;
     if (event.target.checked) {
       setSelectedOptions((prevOptions) => {
@@ -418,7 +425,6 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
       ? ""
       : "Multiple Infection required";
 
- 
     setErrors({ ...temp });
     return Object.values(temp).every((x) => x == "");
   };
@@ -431,7 +437,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
           "Content-Type": "application/json",
         },
       });
-     
+
       toast.success("Diagnosis submitted successfully");
       setActiveContent({
         route: "recent-history",
@@ -451,8 +457,6 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     window.scrollTo(0, 0);
-
-  
 
     if (validate()) {
       postDataWithToken(basicInfo, "hepatitis/diagnosis");
@@ -527,6 +531,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
   useEffect(() => {
     castCookieValueToForm();
     viewHepatitisEnrollment();
+    fetchChildPughScore();
   }, []);
 
   useEffect(() => {
@@ -1112,10 +1117,10 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                         </div> */}
 
                         <div className="form-group mb-3 col-md-4">
-                        <Label for="hepatitisCoinfection">
-                              Hepatitis Coinfection
-                            </Label>
-                            <br/>
+                          <Label for="hepatitisCoinfection">
+                            Hepatitis Coinfection
+                          </Label>
+                          <br />
                           <Label>
                             <input
                               // className="form-control"
@@ -1737,6 +1742,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                         <GetOptions
                           options={[
                             { fldName: 0, fldValue: 0 },
+                            { fldName: 1, fldValue: 1 },
                             { fldName: 2, fldValue: 2 },
                             { fldName: 3, fldValue: 3 },
                             { fldName: 4, fldValue: 4 },
@@ -1756,7 +1762,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                     <FormGroup>
                       <Label for="childPughScore">Child pugh score</Label>
                       <ImportantString str="*" />{" "}
-                      <input
+                      <select
                         className="form-control"
                         type="text"
                         name="childPughScore"
@@ -1767,7 +1773,15 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
                         }}
-                      />
+                      >
+                        <option>Select</option>
+
+                        {childPughData?.map((item) => (
+                          <option key={item?.code} value={item?.code}>
+                            {item?.display}
+                          </option>
+                        ))}
+                      </select>
                       {errors.childPughScore && (
                         <span className={classes.error}>
                           {errors.childPughScore}
