@@ -100,7 +100,7 @@ const UserRegistration = (props) => {
         setEnrollmentUuidT(response.data.id);
       })
       .catch((error) => {
-        //console.log(error);
+        
       });
   };
   const viewHepatitisEnrollment = (value) => {
@@ -123,11 +123,11 @@ const UserRegistration = (props) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        console.log(response.data);
+        
         setAllPatientInfo(response.data);
       })
       .catch((error) => {
-        //console.log(error);
+        
       });
   };
   useEffect(() => {

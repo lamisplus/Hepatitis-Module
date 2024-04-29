@@ -240,11 +240,11 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        //console.log(response.data);
+        
         setCarePoints(response.data);
       })
       .catch((error) => {
-        //console.log(error);
+        
       });
   };
 
@@ -254,11 +254,11 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        //console.log(response.data);
+        
         setHepatitisStatus(response.data);
       })
       .catch((error) => {
-        //console.log(error);
+        
       });
   };
   //Get list of Source of Referral
@@ -268,11 +268,11 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        //console.log(response.data);
+        
         setSourceReferral(response.data);
       })
       .catch((error) => {
-        //console.log(error);
+        
       });
   };
 
@@ -282,11 +282,11 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        //console.log(response.data);
+        
         setEnrollSetting(response.data);
       })
       .catch((error) => {
-        //console.log(error);
+        
       });
   };
 
@@ -324,7 +324,7 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
     return age_now;
   };
   const phoneNumberFormatCheck = (phone) => {
-    //console.log("err", phone);
+    
     if (
       phone != undefined &&
       typeof phone?.value !== null &&
@@ -345,7 +345,7 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
         setCountries(response.data);
       })
       .catch((error) => {
-        //console.log(error);
+        
       });
   };
 
@@ -416,12 +416,12 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        //console.log(response.data);
+        
         setStates(response.data.sort());
-        console.log(response.data);
+        
       })
       .catch((error) => {
-        //console.log(error);
+        
       });
   }
   //fetch province
@@ -447,7 +447,7 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
         },
       });
       // Handle the response if needed
-      console.log("Post successful:", response.data);
+    
       toast.success("Enrolment submitted successfully");
 
       setCookie(
@@ -539,11 +539,11 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        //console.log(response.data);
+        
         setPregnancyStatus(response.data);
       })
       .catch((error) => {
-        //console.log(error);
+        
       });
   };
 
@@ -555,7 +555,7 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
 
     setBasicInfo({ ...basicInfo, bmi: mass / heightSquare });
 
-    console.log(mass / heightSquare);
+   
 
     return mass / heightSquare;
   };
@@ -690,7 +690,7 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
         },
       });
     } else if (e.target.name === "genderId") {
-      console.log(e.target.name);
+     
 
       setBasicInfo({
         ...basicInfo,
@@ -960,7 +960,7 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
         };
         postDataWithToken(newUserInfo, "hepatitis/enrollment");
 
-        console.log(newUserInfo);
+     
       }
     }
   };

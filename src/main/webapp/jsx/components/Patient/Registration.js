@@ -570,11 +570,11 @@ const UserRegistration = (props) => {
                     { headers: {"Authorization" : `Bearer ${token}`} }
                 )
                 .then((response) => {
-                    //console.log(response.data);
+                    
                     setCarePoints(response.data);
                 })
                 .catch((error) => {
-                //console.log(error);
+                
                 });
             
     }
@@ -585,11 +585,11 @@ const UserRegistration = (props) => {
                 { headers: {"Authorization" : `Bearer ${token}`} }
             )
             .then((response) => {
-                //console.log(response.data);
+            
                 setSourceReferral(response.data);
             })
             .catch((error) => {
-            //console.log(error);
+          
             });
         
     }
@@ -600,11 +600,11 @@ const UserRegistration = (props) => {
             { headers: {"Authorization" : `Bearer ${token}`} }
         )
         .then((response) => {
-            //console.log(response.data);
+            
             setHivStatus(response.data);
         })
         .catch((error) => {
-        //console.log(error);
+        
         });
     
     }
@@ -615,11 +615,11 @@ const UserRegistration = (props) => {
             { headers: {"Authorization" : `Bearer ${token}`} }
         )
         .then((response) => {
-            //console.log(response.data);
+            
             setEnrollSetting(response.data);
         })
         .catch((error) => {
-        //console.log(error);
+        
         });
     
     }
@@ -630,11 +630,11 @@ const UserRegistration = (props) => {
             { headers: {"Authorization" : `Bearer ${token}`} }
         )
         .then((response) => {
-            //console.log(response.data);
+            
             setTbStatus(response.data);
         })
         .catch((error) => {
-        //console.log(error);
+        
         });
     
     }
@@ -645,11 +645,11 @@ const UserRegistration = (props) => {
             { headers: {"Authorization" : `Bearer ${token}`} }
         )
         .then((response) => {
-            //console.log(response.data);
+            
             setKP(response.data);
         })
         .catch((error) => {
-        //console.log(error);
+        
         });
     
     }
@@ -660,11 +660,11 @@ const UserRegistration = (props) => {
             { headers: {"Authorization" : `Bearer ${token}`} }
         )
         .then((response) => {
-            //console.log(response.data);
+            
             setPregnancyStatus(response.data);
         })
         .catch((error) => {
-        //console.log(error);
+        
         });
     
     }

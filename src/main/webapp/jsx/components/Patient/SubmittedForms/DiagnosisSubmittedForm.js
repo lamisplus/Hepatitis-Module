@@ -160,7 +160,7 @@ const DiagnosisSubmitedForm = ({
       multipleInfection: "",
     },
   });
-  //   console.log(diagnosisInfo?.hepatitisBTest?.dateHbvDnaTestRequested);
+  
 
   const [errors, setErrors] = useState({});
 
@@ -246,7 +246,7 @@ const DiagnosisSubmitedForm = ({
         }
       );
       // Handle the response if needed
-      console.log("Post successful:", response.data);
+    
       toast.success("Diagnosis submitted successfully");
       history.push({
         pathname: "/patient-history",
@@ -274,7 +274,7 @@ const DiagnosisSubmitedForm = ({
     e.preventDefault();
 
     if (validate()) {
-      console.log("good to go", basicInfo);
+     
       postDataWithToken(basicInfo, "hepatitis/diagnosis");
     }
   };
@@ -355,19 +355,19 @@ const DiagnosisSubmitedForm = ({
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        console.log("this is it", response.data);
+       
         setDiagnosisInfo(response.data);
-        // setEnrollmentUuid(response.data.id);
+        
       })
       .catch((error) => {
-        //console.log(error);
+     
       });
   };
 
   useEffect(() => {
     viewHepatitisDiagnosis();
   }, []);
-  console.log(" userId?.enrollmentUuid", enrollmentUuid);
+ 
   useEffect(() => {
     castCookieValueToForm();
 
@@ -1100,6 +1100,7 @@ const DiagnosisSubmitedForm = ({
                             <select
                               className="form-control"
                               disabled={action === "view" ? true : false}
+                              multiple
                               name="hepatitisCoinfection"
                               id="hepatitisCoinfection"
                               onChange={handleInputChangeBasicForHC}
@@ -1113,6 +1114,7 @@ const DiagnosisSubmitedForm = ({
                             >
                               <option value={""}>Select</option>
                               <option value={"HBV_HCV"}>HBV/HCV</option>
+                              <option value={"HBV_HIV"}>HBV/HIV</option>
                               <option value={"HCV_HIV"}>HCV/HIV</option>
                               <option value={"HBV_HDV"}>HBV/HDV</option>
                               <option value={"HBV_HCD_HIV"}>HBV/HCD/HIV</option>
@@ -1840,8 +1842,10 @@ const DiagnosisSubmitedForm = ({
                         <option value={"FIBROSIS"}> Fibrosis</option>
                         <option value={"CIRRHOSIS"}>Cirrhosis</option>
                         <option value={"NO_FIBROSIS"}> No Fibrosis</option>
-                        {/* <option value={"CIRRHOSIS"}>Cirrhosis</option> */}
-                        <option value={"HIGH_CC"}>High CC </option>
+                        <option value={"MILD_FIBROSIS"}>Mild Fibrosis</option>
+                        <option value={"MODERATE_FIBROSIS"}>Moderate Fibrosis</option>
+                        <option value={"SEVERE_FIBROSIS"}>Severe Fibrosis </option>
+                        <option value={"NOT_DONE"}>Not Done</option>
                       </select>
                       {errors.liverBiopsyStage !== "" ? (
                         <span className={classes.error}>

@@ -164,7 +164,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
       commobidities: "",
       hcRnaValue: "",
       hcvRNA: "",
-      hepatitisCoinfection: "",
+      hepatitisCoinfection: [],
       multipleInfection: "",
     },
   });
@@ -177,15 +177,53 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
         `${apiUrl}hepatitis/view-hepatitis-enrollment/${patientObj?.personUuid}`,
         {
           headers: { Authorization: `Bearer ${token}` },
-        },
+        }
       )
       .then((response) => {
-        console.log(response.data.uuid);
+     
         setEnrollmentUuid(response.data.uuid);
       })
       .catch((error) => {
-        //console.log(error);
+       
       });
+  };
+
+  const [selectedOptions, setSelectedOptions] = useState([]);
+
+  const handleCheckboxChange = (event) => {
+   
+    const option = event.target.value;
+    if (event.target.checked) {
+      setSelectedOptions((prevOptions) => {
+        const updatedOptions = [...prevOptions, option];
+
+        setErrors({ ...temp, [event.target.name]: "" });
+        setBasicInfo({
+          ...basicInfo,
+          hepatitisCTest: {
+            ...basicInfo.hepatitisCTest,
+            [event.target.name]: updatedOptions,
+          },
+        });
+
+        return updatedOptions;
+      });
+    } else {
+      setSelectedOptions((prevOptions) => {
+        const updatedOptions = prevOptions.filter((item) => item !== option);
+
+        setErrors({ ...temp, [event.target.name]: "" });
+        setBasicInfo({
+          ...basicInfo,
+          hepatitisCTest: {
+            ...basicInfo.hepatitisCTest,
+            [event.target.name]: updatedOptions,
+          },
+        });
+
+        return updatedOptions;
+      });
+    }
   };
 
   const handleInputChangeBasic = (e) => {
@@ -274,9 +312,9 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
     dateHbvDnaTestRequested = basicInfo.hepatitisBTest.dateHbvDnaTestRequested
       ? ""
       : "Date HBV DNA test requested is required ";
-    dateHbvTestRequested = basicInfo.hepatitisBTest.dateHbvTestRequested
-      ? ""
-      : "Date HBV test requested is required";
+    // dateHbvTestRequested = basicInfo.hepatitisBTest.dateHbvTestRequested
+    //   ? ""
+    //   : "Date HBV test requested is required";
 
     dateHbvSampleRequested = basicInfo.hepatitisBTest.dateHbvSampleRequested
       ? ""
@@ -309,9 +347,9 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
     ast = basicInfo.hepatitisBTest.pmtctEligible ? "" : " AST is required";
     alt = basicInfo.clinicalParameters.alt ? "" : " ALT is required";
     hcvRNA = basicInfo.hepatitisCTest.hcvRNA ? "" : "HCV RNA is required";
-    hepatitisCoinfection = basicInfo.hepatitisCTest.hepatitisCoinfection
-      ? ""
-      : "Hepatitis Coinfection is required";
+    // hepatitisCoinfection = basicInfo.hepatitisCTest.hepatitisCoinfection
+    //   ? ""
+    //   : "Hepatitis Coinfection is required";
 
     pst = basicInfo.clinicalParameters.pst ? "" : " PST is required";
     totalBiliRubin = basicInfo.clinicalParameters.totalBiliRubin
@@ -380,7 +418,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
       ? ""
       : "Multiple Infection required";
 
-    console.log(temp);
+ 
     setErrors({ ...temp });
     return Object.values(temp).every((x) => x == "");
   };
@@ -393,7 +431,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
           "Content-Type": "application/json",
         },
       });
-      console.log("Post successful:", response.data);
+     
       toast.success("Diagnosis submitted successfully");
       setActiveContent({
         route: "recent-history",
@@ -414,11 +452,9 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
     e.preventDefault();
     window.scrollTo(0, 0);
 
-    console.log(basicInfo);
-    // console.log(errors);
+  
 
     if (validate()) {
-      console.log("good to go", basicInfo);
       postDataWithToken(basicInfo, "hepatitis/diagnosis");
     }
   };
@@ -597,7 +633,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                           </FormGroup>
                         </div>
 
-                        <div className="form-group mb-3 col-md-4">
+                        {/* <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="dateHbvTestRequested">
                               Date HBV test requested{" "}
@@ -624,12 +660,12 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                               </span>
                             )}
                           </FormGroup>
-                        </div>
+                        </div> */}
 
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="dateHbvSampleRequested">
-                              Date HBV sample Requested{" "}
+                              Date HBV DNA sample collected{" "}
                               <ImportantString str="*" />{" "}
                             </Label>
                             <input
@@ -1033,7 +1069,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                           </div>
                         )}
 
-                        <div className="form-group mb-3 col-md-4">
+                        {/* <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="hepatitisCoinfection">
                               Hepatitis Coinfection
@@ -1043,6 +1079,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                               className="form-control"
                               name="hepatitisCoinfection"
                               id="hepatitisCoinfection"
+                              multiple
                               onChange={handleInputChangeBasicForHC}
                               value={
                                 basicInfo.hepatitisCTest.hepatitisCoinfection
@@ -1056,6 +1093,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                                 options={[
                                   { fldName: "Select", fldValue: "" },
                                   { fldName: "HBV/HCV", fldValue: "HBV_HCV" },
+                                  { fldName: "HBV/HIV", fldValue: "HBV_HIV" },
                                   { fldName: "HCV/HIV", fldValue: "HCV_HIV" },
                                   { fldName: "HBV/HDV", fldValue: "HBV_HDV" },
                                   {
@@ -1071,6 +1109,72 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                               </span>
                             )}
                           </FormGroup>
+                        </div> */}
+
+                        <div className="form-group mb-3 col-md-4">
+                        <Label for="hepatitisCoinfection">
+                              Hepatitis Coinfection
+                            </Label>
+                            <br/>
+                          <Label>
+                            <input
+                              // className="form-control"
+                              type="checkbox"
+                              name="hepatitisCoinfection"
+                              value="HBV_HCV"
+                              onChange={handleCheckboxChange}
+                              checked={selectedOptions.includes("HBV_HCV")}
+                            />
+                            HBV/HCV
+                          </Label>
+                          <br />
+                          <Label>
+                            <input
+                              // className="form-control"
+                              name="hepatitisCoinfection"
+                              type="checkbox"
+                              value="HBV_HIV"
+                              onChange={handleCheckboxChange}
+                              checked={selectedOptions.includes("HBV_HIV")}
+                            />
+                            HBV/HIV
+                          </Label>
+                          <br />
+                          <Label>
+                            <input
+                              // className="form-control"
+                              type="checkbox"
+                              name="hepatitisCoinfection"
+                              value="HCV_HIV"
+                              onChange={handleCheckboxChange}
+                              checked={selectedOptions.includes("HCV_HIV")}
+                            />
+                            HCV/HIV
+                          </Label>
+                          <br />
+                          <Label>
+                            <input
+                              // className="form-control"
+                              type="checkbox"
+                              value="HBV_HDV"
+                              name="hepatitisCoinfection"
+                              onChange={handleCheckboxChange}
+                              checked={selectedOptions.includes("HBV_HDV")}
+                            />
+                            HBV/HDV
+                          </Label>
+                          <br />
+                          <Label>
+                            <input
+                              // className="form-control"
+                              type="checkbox"
+                              value="HBV_HCD_HIV"
+                              name="hepatitisCoinfection"
+                              onChange={handleCheckboxChange}
+                              checked={selectedOptions.includes("HBV_HCD_HIV")}
+                            />
+                            HBV/HCD/HIV
+                          </Label>
                         </div>
 
                         <div className="form-group mb-3 col-md-4">
@@ -1690,10 +1794,22 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                         <GetOptions
                           options={[
                             { fldName: "Select", fldValue: "" },
-                            { fldName: "Fibrosis", fldValue: "FIBROSIS" },
-                            { fldName: "Cirrhosis", fldValue: "CIRRHOSIS" },
                             { fldName: "No Fibrosis", fldValue: "NO_FIBROSIS" },
-                            { fldName: "HCC", fldValue: "HIGH_CC" },
+                            {
+                              fldName: "Mild Fibrosis",
+                              fldValue: "MILD_FIBROSIS",
+                            },
+                            {
+                              fldName: "Moderate Fibrosis",
+                              fldValue: "MODERATE_FIBROSIS",
+                            },
+                            { fldName: "Fibrosis", fldValue: "FIBROSIS" },
+                            {
+                              fldName: "Severe Fibrosis",
+                              fldValue: "SEVERE_FIBROSIS",
+                            },
+                            { fldName: "Cirrhosis", fldValue: "CIRRHOSIS" },
+                            { fldName: "Not Done", fldValue: "NOT_DONE" },
                           ]}
                         />
                       </select>

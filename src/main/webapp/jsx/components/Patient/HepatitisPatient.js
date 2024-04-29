@@ -142,7 +142,7 @@ const HepatitisPatients = (props) => {
         )
         .then((response) => response)
         .then((result) => {
-          console.log(result?.data);
+         
           if (result?.data === "") {
             resolve({
               data: [],

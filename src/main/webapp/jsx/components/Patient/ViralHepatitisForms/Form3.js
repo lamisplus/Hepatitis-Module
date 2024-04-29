@@ -140,9 +140,9 @@ const ViralHepatitisForm3 = ({ setStep, userStatus }) => {
       },
       hepatitisSvr12Testing: {
         dateTested: "",
+        retreatmentDateTested: "",
         hcvRNA: "",
         hcvRNAValue: "",
-        retreatmentDateTested: "",
         retreatmentHcvRNA: "",
         retreatmentHcvRNAValue: "",
       },
@@ -151,7 +151,6 @@ const ViralHepatitisForm3 = ({ setStep, userStatus }) => {
       treatmentExperience: "",
     },
   });
-  console.log(basicInfo.hepatitisBTreatment.hbvPastTreatmentRegimen);
 
   const [errors, setErrors] = useState({});
   // handle input changes
@@ -203,56 +202,9 @@ const ViralHepatitisForm3 = ({ setStep, userStatus }) => {
         },
       });
     }
-    // if (e.target.name === "hbvRegimeSwitchDateStarted") {
-    //   setBasicInfo({
-    //     ...basicInfo,
-    //     hepatitisBTreatment: {
-    //       ...basicInfo.hepatitisBTreatment,
-    //       hepatitisBRegimenSwitch: {
-    //         ...basicInfo.hepatitisBTreatment.hepatitisBRegimenSwitch,
-    //         dateStarted: e.target.value,
-    //       },
-    //     },
-    //   });
-    // }
-    // if (e.target.name === "hbvRegimeSwitchDateStopped") {
-    //   setBasicInfo({
-    //     ...basicInfo,
-    //     hepatitisBTreatment: {
-    //       ...basicInfo.hepatitisBTreatment,
-    //       hepatitisBRegimenSwitch: {
-    //         ...basicInfo.hepatitisBTreatment.hepatitisBRegimenSwitch,
-    //         dateStopped: e.target.value,
-    //       },
-    //     },
-    //   });
-    // }
-    // if (e.target.name === "hbvAdverseEffectReported") {
-    //   setBasicInfo({
-    //     ...basicInfo,
-    //     hepatitisBTreatment: {
-    //       ...basicInfo.hepatitisBTreatment,
-    //       hepatitisBRegimenSwitch: {
-    //         ...basicInfo.hepatitisBTreatment.hepatitisBRegimenSwitch,
-    //         adverseEffectReported: e.target.value,
-    //       },
-    //     },
-    //   });
-    // }
-
-    // if (e.target.name === "hbvRegimeSwitchReason") {
-    //   setBasicInfo({
-    //     ...basicInfo,
-    //     hepatitisBTreatment: {
-    //       ...basicInfo.hepatitisBTreatment,
-    //       hepatitisBRegimenSwitch: {
-    //         ...basicInfo.hepatitisBTreatment.hepatitisBRegimenSwitch,
-    //         reasonForSwitch: e.target.value,
-    //       },
-    //     },
-    //   });
-    // }
+    
   };
+
   const handleInputChangeBasicHBRegSwitch = (e) => {
     setErrors({ ...temp, [e.target.name]: "" });
     if (e.target.name === "hbvRegimeSwitchNewRegimen") {
@@ -476,6 +428,44 @@ const ViralHepatitisForm3 = ({ setStep, userStatus }) => {
         },
       });
     }
+    if (e.target.name === "retreatmentDateTested") {
+      setBasicInfo({
+        ...basicInfo,
+        hepatitisCTreatment: {
+          ...basicInfo.hepatitisCTreatment,
+          hepatitisSvr12Testing: {
+            ...basicInfo.hepatitisCTreatment.hepatitisSvr12Testing,
+            retreatmentDateTested: e.target.value,
+          },
+        },
+      });
+    }
+    
+
+    if (e.target.name === "retreatmentHcvRNAValue") {
+      setBasicInfo({
+        ...basicInfo,
+        hepatitisCTreatment: {
+          ...basicInfo.hepatitisCTreatment,
+          hepatitisSvr12Testing: {
+            ...basicInfo.hepatitisCTreatment.hepatitisSvr12Testing,
+            retreatmentHcvRNAValue: e.target.value,
+          },
+        },
+      });
+    }
+    if (e.target.name === "retreatmentHcvRNA") {
+      setBasicInfo({
+        ...basicInfo,
+        hepatitisCTreatment: {
+          ...basicInfo.hepatitisCTreatment,
+          hepatitisSvr12Testing: {
+            ...basicInfo.hepatitisCTreatment.hepatitisSvr12Testing,
+            retreatmentHcvRNA: e.target.value,
+          },
+        },
+      });
+    }
   };
 
   const handleInputChangeBasicHHCV = (e) => {
@@ -557,7 +547,7 @@ const ViralHepatitisForm3 = ({ setStep, userStatus }) => {
     }
   };
 
-  // to capture the error
+  
   let temp = { ...errors };
   const validate = () => {
     temp.treatmentExperienceB = basicInfo.hepatitisBTreatment
@@ -603,17 +593,17 @@ const ViralHepatitisForm3 = ({ setStep, userStatus }) => {
       ? ""
       : " Treatment experience is required";
 
-    temp.pastTreatmentExperience = basicInfo.hepatitisCTreatment
-      .pastTreatmentExperience
-      ? ""
-      : "Past Treatment experience is required";
+    // temp.pastTreatmentExperience = basicInfo.hepatitisCTreatment
+    //   .pastTreatmentExperience
+    //   ? ""
+    //   : "Past Treatment experience is required";
 
-    temp.pastTreatmentExperience =
-      basicInfo.hepatitisCTreatment.treatmentExperience !== "YES"
-        ? ""
-        : basicInfo.hepatitisCTreatment.pastTreatmentExperience
-        ? ""
-        : "Past Treatment experience is required";
+    // temp.pastTreatmentExperience =
+    //   basicInfo.hepatitisCTreatment.treatmentExperience !== "YES"
+    //     ? ""
+    //     : basicInfo.hepatitisCTreatment.pastTreatmentExperience
+    //     ? ""
+    //     : "Past Treatment experience is required";
     temp.hbvAdverseEffectReported = basicInfo.hepatitisBTreatment
       .hepatitisBRegimenSwitch.adverseEffectReported
       ? ""
@@ -774,7 +764,6 @@ const ViralHepatitisForm3 = ({ setStep, userStatus }) => {
       ? ""
       : " History of adverse effect is required";
 
-    // console.log(temp);
     setErrors({ ...temp });
     return Object.values(temp).every((x) => x == "");
   };
@@ -785,16 +774,13 @@ const ViralHepatitisForm3 = ({ setStep, userStatus }) => {
     // validating the input
     window.scrollTo(0, 0);
 
-    console.log(basicInfo);
-    // console.log(errors);
-    console.log("error", validate());
     if (validate()) {
-      console.log("good to go", basicInfo);
+    
       postDataWithToken(basicInfo, "hepatitis/treatment");
     }
   };
   const onSubmitHandler = (values) => {
-    console.log(values.hbvDateStarted);
+  
     setCookie("hepatitis3", values, 1);
     const enrollmentIds = getCookie("enrollmentIds");
     const restructuredTreatmentPayload = {
@@ -830,6 +816,7 @@ const ViralHepatitisForm3 = ({ setStep, userStatus }) => {
           hbvPastTreatmentRegimen: values.hbvPastTreatmentRegimenForHcv,
           history_of_AdverseEffect: values.hcvRetreatmentHistoryOfAdverseEffect,
           newRegimen: values.hcvRetreatmentNewRegimen,
+          hcvRetreatmentHcvGenotype: values.hcvRetreatmentHcvGenotype,
           prescribedDuration: values.hcvRetreatmentPrescribedDuration,
           retreatmentAdverseEffect: values.hcvRetreatmentAdverseEffect,
         },
@@ -838,8 +825,8 @@ const ViralHepatitisForm3 = ({ setStep, userStatus }) => {
           hcvRNA: values.svr12TestingHcvRna,
           hcvRNAValue: values.svr12TestingHcvRnaValue,
           retreatmentDateTested: formatDate(values.svr12RetreatmentDateTested),
-          // retreatmentHcvRNA: "string",
-          // retreatmentHcvRNAValue: "string",
+          retreatmentHcvRNA:  values.retreatmentHcvRNA,
+          retreatmentHcvRNAValue:  values.retreatmentHcvRNAValue,
         },
         // pastTreatmentExperience: "string",
         prescribedDuration: values.hcvRetreatmentPrescribedDuration,
@@ -865,6 +852,7 @@ const ViralHepatitisForm3 = ({ setStep, userStatus }) => {
       formik.setValues(cookieValue);
     }
   };
+
   const postDataWithToken = async (data, key) => {
     try {
       const response = await axios.post(`${apiUrl}${key}`, data, {
@@ -902,27 +890,7 @@ const ViralHepatitisForm3 = ({ setStep, userStatus }) => {
       name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
   }
 
-  function convertStringBooleanValues(originalObj) {
-    const newObj = {};
-
-    for (const key in originalObj) {
-      if (originalObj.hasOwnProperty(key)) {
-        const value = originalObj[key];
-        if (typeof value === "string") {
-          newObj[key] =
-            value.toLowerCase() === "yes"
-              ? "YES"
-              : value.toLowerCase() === "no"
-              ? "NO"
-              : value;
-        } else {
-          newObj[key] = value;
-        }
-      }
-    }
-
-    return newObj;
-  }
+  
 
   function formatDate(inputDate) {
     // Split the input date string into an array
@@ -953,6 +921,7 @@ const ViralHepatitisForm3 = ({ setStep, userStatus }) => {
     hcvTreatmentRegimenSwitch: true,
     hcvTreatmentRegimenHcvRetreatment: true,
     hcvTreatmentSvr12Testing: true,
+    hcvRetreatmentSvr12Testing: true,
   });
   return (
     <>
@@ -1357,7 +1326,7 @@ const ViralHepatitisForm3 = ({ setStep, userStatus }) => {
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="hbvAdverseEffectReported">
-                              Adverse effect reported{" "}
+                              Adverse events reported{" "}
                             </Label>{" "}
                             <select
                               className="form-control"
@@ -1984,44 +1953,73 @@ const ViralHepatitisForm3 = ({ setStep, userStatus }) => {
                           </div>
                         )}
 
-                        {/* <div className="form-group mb-3 col-md-4">
-                            <FormGroup>
-                              <Label for="svr12TestingHcvRnaValue">
-                                Input HCV RNA value
-                              </Label>
-                              <input
-                                className="form-control"
-                                name="svr12TestingHcvRnaValue"
-                                id="svr12TestingHcvRnaValue"
-                                type="text"
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                value={basicInfo.svr12TestingHcvRnaValue}
-                                style={{
-                                  border: "1px solid #014D88",
-                                  borderRadius: "0.2rem",
-                                }}
-                              />
+                    
 
-                              {formik.errors.svr12TestingHcvRnaValue !== "" ? (
-                                <span className={classes.error}>
-                                  {formik.errors.svr12TestingHcvRnaValue}
-                                </span>
-                              ) : (
-                                ""
-                              )}
-                            </FormGroup>
-                          </div> */}
+                      
+                      </div>
+                    </div>
+                  </Collapse>
+                </div>
+              </div>
 
+
+              <div>
+                <div
+                  style={{
+                    backgroundColor: "#d8f6ff",
+                    width: "95%",
+                    margin: "auto",
+                    marginTop: "5rem",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <p
+                    style={{
+                      color: "black",
+                      fontSize: "15px",
+                      fontWeight: "600",
+                      marginLeft: "10px",
+                      marginTop: "10px",
+                    }}
+                  >
+                    Retreatment SVR 12
+                  </p>
+                  <IconButton
+                    onClick={() =>
+                      setIsDropdownsOpen((prevState) => {
+                        return {
+                          ...prevState,
+                          hcvRetreatmentSvr12Testing:
+                            !prevState.hcvRetreatmentSvr12Testing,
+                        };
+                      })
+                    }
+                    aria-expanded={isDropdownsOpen.hcvRetreatmentSvr12Testing}
+                    aria-label="Expand"
+                  >
+                    <ExpandMoreIcon />
+                  </IconButton>
+                </div>
+                <div className="card-body">
+                  <Collapse in={isDropdownsOpen.hcvRetreatmentSvr12Testing}>
+                    <div
+                      className="basic-form"
+                      style={{ padding: "0 50px 0 50px" }}
+                    >
+                      <div className="row">
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
-                            <Label for="svr12RetreatmentDateTested">
-                              Retreatment date tested
+                            <Label for="retreatmentDateTested">
+                              Date tested
                             </Label>
+                            <span style={{ color: "red" }}> *</span>{" "}
                             <input
                               className="form-control"
-                              name="svr12RetreatmentDateTested"
-                              id="svr12RetreatmentDateTested"
+                              name="retreatmentDateTested"
+                              id="retreatmentDateTested"
+                              type="date"
                               max={moment(new Date()).format("YYYY-MM-DD")}
                               value={
                                 basicInfo.hepatitisCTreatment
@@ -2032,12 +2030,10 @@ const ViralHepatitisForm3 = ({ setStep, userStatus }) => {
                                 border: "1px solid #014D88",
                                 borderRadius: "0.2rem",
                               }}
-                              type="date"
                             />
-
-                            {errors.svr12RetreatmentDateTested !== "" ? (
+                            {errors.retreatmentDateTested !== "" ? (
                               <span className={classes.error}>
-                                {errors.svr12RetreatmentDateTested}
+                                {errors.retreatmentDateTested}
                               </span>
                             ) : (
                               ""
@@ -2047,14 +2043,13 @@ const ViralHepatitisForm3 = ({ setStep, userStatus }) => {
 
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
-                            <Label for="svr12RetreatmentHcvRna">
-                              Retreatment HCV RNA(IU/ml)
-                              <span style={{ color: "red" }}> *</span>{" "}
+                            <Label for="retreatmentHcvRNA">
+                              HCV RNA <span style={{ color: "red" }}> *</span>{" "}
                             </Label>
                             <select
                               className="form-control"
-                              name="svr12RetreatmentHcvRna"
-                              id="svr12RetreatmentHcvRna"
+                              name="retreatmentHcvRNA"
+                              id="retreatmentHcvRNA"
                               value={
                                 basicInfo.hepatitisCTreatment
                                   .hepatitisSvr12Testing.retreatmentHcvRNA
@@ -2070,10 +2065,9 @@ const ViralHepatitisForm3 = ({ setStep, userStatus }) => {
                               <option value="DETECTED">Detected</option>
                               <option value="UNDETECTED">Undetected</option>
                             </select>
-
-                            {errors.svr12RetreatmentHcvRna !== "" ? (
+                            {errors.retreatmentHcvRNA !== "" ? (
                               <span className={classes.error}>
-                                {errors.svr12RetreatmentHcvRna}
+                                {errors.retreatmentHcvRNA}
                               </span>
                             ) : (
                               ""
@@ -2085,43 +2079,38 @@ const ViralHepatitisForm3 = ({ setStep, userStatus }) => {
                           .retreatmentHcvRNA === "DETECTED" && (
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
-                              <Label for="svr12RetreatmentHcvRnaValue">
-                                Input Retreatment HCV RNA value(IU/ml)
-                                <span style={{ color: "red" }}> *</span>{" "}
+                              <Label for="retreatmentHcvRNAValue">
+                                Input HCV RNA value
                               </Label>
                               <input
                                 className="form-control"
+                                name="retreatmentHcvRNAValue"
+                                id="retreatmentHcvRNAValue"
                                 type="text"
-                                name="svr12RetreatmentHcvRnaValue"
-                                id="svr12RetreatmentHcvRnaValue"
                                 value={
                                   basicInfo.hepatitisCTreatment
-                                    .hepatitisSvr12Testing
-                                    .retreatmentHcvRNAValue
+                                    .hepatitisSvr12Testing.retreatmentHcvRNAValue
                                 }
                                 onChange={handleInputChangeBasicHCSVR}
-                                // onBlur={formik.handleBlur}
                                 style={{
                                   border: "1px solid #014D88",
                                   borderRadius: "0.2rem",
                                 }}
                               />
-
-                              {/* {errors.svr12TestingHcvRna !== "" ? (
-                                <span className={classes.error}>
-                                  {errors.svr12TestingHcvRna}
-                                </span>
-                              ) : (
-                                ""
-                              )} */}
                             </FormGroup>
                           </div>
                         )}
+
+                    
+
+                      
                       </div>
                     </div>
                   </Collapse>
                 </div>
               </div>
+
+              
 
               <div>
                 <div
@@ -2204,6 +2193,8 @@ const ViralHepatitisForm3 = ({ setStep, userStatus }) => {
                           </FormGroup>
                         </div>
 
+                        
+
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="hcvRetreatmentPrescribedDuration">
@@ -2266,6 +2257,39 @@ const ViralHepatitisForm3 = ({ setStep, userStatus }) => {
                             {errors.hcvRetreatmentDateStarted !== "" ? (
                               <span className={classes.error}>
                                 {errors.hcvRetreatmentDateStarted}
+                              </span>
+                            ) : (
+                              ""
+                            )}
+                          </FormGroup>
+                        </div>
+
+                        <div className="form-group mb-3 col-md-4">
+                          <FormGroup>
+                            <Label for="hcvRetreatmentHcvGenotype">
+                              HCV genotype
+                            </Label>
+                            <span style={{ color: "red" }}> *</span>
+                            <input
+                              className="form-control"
+                              name="hcvRetreatmentHcvGenotype"
+                              id="hcvRetreatmentHcvGenotype"
+                              
+                              type="text"
+                              value={
+                                basicInfo.hepatitisCTreatment.hcvRetreatment
+                                  .hcvRetreatmentHcvGenotype
+                              }
+                              onChange={handleInputChangeBasicHHCV}
+                              style={{
+                                border: "1px solid #014D88",
+                                borderRadius: "0.2rem",
+                              }}
+                            />
+
+                            {errors.hcvRetreatmentHcvGenotype !== "" ? (
+                              <span className={classes.error}>
+                                {errors.hcvRetreatmentHcvGenotype}
                               </span>
                             ) : (
                               ""

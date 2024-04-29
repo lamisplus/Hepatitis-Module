@@ -128,7 +128,7 @@ const Patients = (props) => {
                 { headers: {"Authorization" : `Bearer ${token}`} }
                 )
                 .then((response) => {
-                    //console.log(response.data)
+                    
                     setPatientList(response.data.filter((x)=> x.vaccination_status!==null));
                 })
                 .catch((error) => {    
@@ -171,7 +171,7 @@ const Patients = (props) => {
         }
     }
     const VaccinationStatus = (patient)=>{
-        //console.log(patient)
+        
         if(patient.vaccination_status===null){
             return (<><Label color="yellow" size="mini">Not Vaccinated</Label></> )
         }else if(patient.vaccination_status==="1"){
@@ -197,7 +197,7 @@ const Patients = (props) => {
 
     }
 
-    console.log(patientList.filter((x)=> x.vaccination_status!==null))
+   
   return (
     <div>
        <Card>

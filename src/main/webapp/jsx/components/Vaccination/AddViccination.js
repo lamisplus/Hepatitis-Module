@@ -59,7 +59,7 @@ const Vaccination = (props) => {
     const patientObj = props.patientObj;
     const classes = useStyles()
     let temp = { ...errors }
-    console.log(props.records)
+   
     const [vaccine, setVaccine] = useState([]);
     const [objValues, setObjValues] = useState(
         {  
@@ -87,11 +87,11 @@ const Vaccination = (props) => {
             { headers: { "Authorization": `Bearer ${token}` } }
         )
         .then((response) => {
-            //console.log(response.data);
+            
             setVaccine(response.data);
         })
         .catch((error) => {
-            //console.log(error);
+            
         });
 
     }

@@ -264,9 +264,7 @@ const UserRegistration = (props) => {
         address && address?.address && address?.address.length > 0
           ? address?.address[0]
           : null;
-      //const getSexId=  genders.length>0 && genders.find((x)=> x.display===patientObj.sex)//get patient sex ID by filtering the request
-      //console.log(newSex)
-      //setValue('dob', format(new Date(patientObj.dateOfBirth), 'yyyy-MM-dd'));
+      
       basicInfo.dob = patientObj.dateOfBirth;
       basicInfo.firstName = patientObj.firstName;
       basicInfo.dateOfRegistration = patientObj.dateOfRegistration;
@@ -325,14 +323,14 @@ const UserRegistration = (props) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        //console.log(response.data);
+       
         const getSexId = response.data.find(
           (x) => x.display === patientObj.sex
         ); //get patient sex ID by filtering the request
         basicInfo.sexId = getSexId.display;
       })
       .catch((error) => {
-        //console.log(error);
+        
       });
   };
   const loadGenders = useCallback(async () => {
@@ -405,7 +403,7 @@ const UserRegistration = (props) => {
         setCountries(response.data);
       })
       .catch((error) => {
-        //console.log(error);
+       
       });
   };
   //Get States from selected country
@@ -426,7 +424,7 @@ const UserRegistration = (props) => {
         setStates(response.data);
       })
       .catch((error) => {
-        //console.log(error);
+        
       });
   }
   //Calculate Date of birth
@@ -459,7 +457,7 @@ const UserRegistration = (props) => {
         setProvinces(response.data);
       })
       .catch((error) => {
-        //console.log(error);
+        
       });
   };
   function getProvincesId(getStateId) {
@@ -472,7 +470,7 @@ const UserRegistration = (props) => {
         setProvinces(response.data);
       })
       .catch((error) => {
-        //console.log(error);
+        
       });
   }
   //Date of Birth and Age handle
@@ -664,11 +662,11 @@ const UserRegistration = (props) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        //console.log(response.data);
+        
         setCarePoints(response.data);
       })
       .catch((error) => {
-        //console.log(error);
+        
       });
   };
   //Get list of Source of Referral
@@ -678,11 +676,11 @@ const UserRegistration = (props) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        //console.log(response.data);
+        
         setSourceReferral(response.data);
       })
       .catch((error) => {
-        //console.log(error);
+        
       });
   };
   //Get list of HIV STATUS ENROLLMENT
@@ -692,11 +690,11 @@ const UserRegistration = (props) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        //console.log(response.data);
+        
         setHivStatus(response.data);
       })
       .catch((error) => {
-        //console.log(error);
+        
       });
   };
   //Get list of HIV STATUS ENROLLMENT
@@ -706,11 +704,11 @@ const UserRegistration = (props) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        //console.log(response.data);
+        
         setEnrollSetting(response.data);
       })
       .catch((error) => {
-        //console.log(error);
+        
       });
   };
   //Get list of HIV STATUS ENROLLMENT
@@ -720,11 +718,11 @@ const UserRegistration = (props) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        //console.log(response.data);
+        
         setTbStatus(response.data);
       })
       .catch((error) => {
-        //console.log(error);
+        
       });
   };
   //Get list of KP
@@ -734,11 +732,11 @@ const UserRegistration = (props) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        //console.log(response.data);
+        
         setKP(response.data);
       })
       .catch((error) => {
-        //console.log(error);
+        
       });
   };
   //Get list of KP
@@ -748,11 +746,11 @@ const UserRegistration = (props) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        //console.log(response.data);
+        
         setPregnancyStatus(response.data);
       })
       .catch((error) => {
-        //console.log(error);
+        
       });
   };
   const handleInputChange = (e) => {

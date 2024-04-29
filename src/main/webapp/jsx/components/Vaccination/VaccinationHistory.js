@@ -143,7 +143,7 @@ const PatientVaccinationHistory = (props) => {
     toggleDeleteModal();
     setRecord(row);
   };
-  console.log(record);
+
   const LoadDeletePage = () => {
     setSaving(true);
     //props.setActiveContent({...props.activeContent, route:'mental-health-view', id:row.id})

@@ -10,9 +10,6 @@ import Steppers from "./Stepper/Stepper";
 import ViralHepatitisForm1 from "./ViralHepatitisForms/Form1";
 import ViralHepatitisForm2 from "./ViralHepatitisForms/Form2";
 import ViralHepatitisForm3 from "./ViralHepatitisForms/Form3";
-import ViralHepatitisForm4 from "./ViralHepatitisForms/Form4";
-import FollowupForm from "./ViralHepatitisForms/FollowUp";
-import LaboratoryRegister from "./ViralHepatitisForms/LaboratoryRegister";
 import { useLocalStorageState } from "../../hooks/useLocalStorageState";
 
 const ViralHepatitisFormsContainer = (props) => {
@@ -23,7 +20,6 @@ const ViralHepatitisFormsContainer = (props) => {
   const location = useLocation();
   const locationState = location.state;
 
-  console.log(locationState);
   useEffect(() => {
     setStep(0);
   }, []);
@@ -44,8 +40,7 @@ const ViralHepatitisFormsContainer = (props) => {
         userStatus={locationState.existingPatient}
       />
     ),
-    // 3: <FollowupForm step={step} setStep={setStep} />,
-    // 4: <LaboratoryRegister/>,
+  
   };
   return (
     <>

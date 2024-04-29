@@ -38,7 +38,7 @@ public class FollowupClinicalParametersDto implements Serializable {
     private String fuAscites ;
     private String fuSeverityOfAscites ;
     private String fuGradeOfEncephalopathy ;
-    private Long fuChildPughScore ;
+    private String fuChildPughScore ;
     private String fuLiverBiopsyStage ;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate fuStagingDateLiverBiopsy ;

@@ -59,7 +59,7 @@ const EditPatient = (props) => {
   const handleInputChange = e => {
     setValues ({...values,  [e.target.name]: e.target.value});
   }
-  console.log(values)
+ 
       /*****  Validation */
       const validate = () => {
         let temp = { ...errors };
@@ -85,7 +85,7 @@ const EditPatient = (props) => {
         };
 
         const handleSubmit = (e) => {
-          console.log(values)
+          
           e.preventDefault();
                 if (validate()) {      
                         setSaving(true);

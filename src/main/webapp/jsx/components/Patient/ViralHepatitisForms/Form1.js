@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import MatButton from "@material-ui/core/Button";
-import { FormGroup, Label, Spinner, Form } from "reactstrap";
+import { FormGroup, Label, Spinner } from "reactstrap";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faCheckSquare,
@@ -8,7 +8,7 @@ import {
   faEdit,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import PhoneInput from "react-phone-input-2";
 import * as moment from "moment";
@@ -26,8 +26,6 @@ import { toast } from "react-toastify";
 import { url as apiUrl, token } from "../../../../api";
 import { useCallback } from "react";
 import { useState } from "react";
-
-// import { FormGroup, Label, Spinner, Input, Form, InputGroup } from "reactstrap";
 
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
@@ -170,9 +168,7 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
 
   const location = useLocation();
   const locationState = location.state;
-
   const [hospitalNumStatus, setHospitalNumStatus] = useState(false);
-
   const [genders, setGenders] = useState([]);
   const [maritalStatusOptions, setMaritalStatusOptions] = useState([]);
   const [educationOptions, setEducationOptions] = useState([]);
@@ -185,9 +181,9 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
     { id: "Non-reactive", display: " Non-Reactive" },
   ]);
   const [provinces, setProvinces] = useState([]);
-
+  
   const [errors, setErrors] = useState({});
-  const [topLevelUnitCountryOptions, settopLevelUnitCountryOptions] = useState(
+  const [topLevelUnitCountryOptions, setTopLevelUnitCountryOptions] = useState(
     []
   );
 
@@ -202,12 +198,18 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
   const [open, setOpen] = React.useState(false);
   const toggle = () => setOpen(!open);
 
-  const sexCodeset = async () => {
-    const response = await axios.get(`${apiUrl}application-codesets/v2/SEX`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    setGenders(response.data.sort());
-  };
+
+
+  const sexCodeset =  useCallback(
+    async() => {
+      const response = await axios.get(`${apiUrl}application-codesets/v2/SEX`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setGenders(response.data.sort());
+    },
+    [],
+  )
+  
 
   const loadMaritalStatus = useCallback(async () => {
     try {
@@ -245,12 +247,9 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        //console.log(response.data);
         setCarePoints(response.data);
       })
-      .catch((error) => {
-        //console.log(error);
-      });
+      .catch((error) => {});
   };
 
   const getHepatitisPoint = () => {
@@ -259,12 +258,9 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        //console.log(response.data);
         setHepatitisStatus(response.data);
       })
-      .catch((error) => {
-        //console.log(error);
-      });
+      .catch((error) => {});
   };
   //Get list of Source of Referral
   const SourceReferral = () => {
@@ -273,12 +269,9 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        //console.log(response.data);
         setSourceReferral(response.data);
       })
-      .catch((error) => {
-        //console.log(error);
-      });
+      .catch((error) => {});
   };
 
   const EnrollmentSetting = () => {
@@ -287,12 +280,9 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        //console.log(response.data);
         setEnrollSetting(response.data);
       })
-      .catch((error) => {
-        //console.log(error);
-      });
+      .catch((error) => {});
   };
 
   const loadRelationships = useCallback(async () => {
@@ -310,7 +300,7 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
       `${apiUrl}organisation-units/parent-organisation-units/0`,
       { headers: { Authorization: `Bearer ${token}` } }
     );
-    settopLevelUnitCountryOptions(response.data.sort());
+    setTopLevelUnitCountryOptions(response.data.sort());
   }, []);
 
   const loadOrganisationUnitsByParentId = async (parentId) => {
@@ -329,7 +319,6 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
     return age_now;
   };
   const phoneNumberFormatCheck = (phone) => {
-    //console.log("err", phone);
     if (
       phone != undefined &&
       typeof phone?.value !== null &&
@@ -349,9 +338,7 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
       .then((response) => {
         setCountries(response.data);
       })
-      .catch((error) => {
-        //console.log(error);
-      });
+      .catch((error) => {});
   };
 
   const handleAgeChange = (e) => {
@@ -421,13 +408,9 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        //console.log(response.data);
         setStates(response.data.sort());
-        console.log(response.data);
       })
-      .catch((error) => {
-        //console.log(error);
-      });
+      .catch((error) => {});
   }
   //fetch province
   const getProvinces = (e) => {
@@ -451,8 +434,6 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
           "Content-Type": "application/json",
         },
       });
-      // Handle the response if needed
-      console.log("Post successful:", response.data);
       toast.success("Enrolment submitted successfully");
 
       setCookie(
@@ -467,7 +448,6 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
       setStep(1);
       return response.data;
     } catch (error) {
-      // Handle any errors that occurred during the request
       toast.error("Enrolment failed");
       console.error("Error posting data:", error.message);
       throw error;
@@ -526,7 +506,6 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
     setCookie("hepatitis1", values, 1);
     setCookie("heaptitis1PayloadValue", restructuredEnrolmentPayload, 1);
     postDataWithToken(restructuredEnrolmentPayload, "hepatitis/enrollment");
-    // setStep(1);
   };
   const classes = useStyles();
   const { formik } = useValidateForm1ValuesHook(onSubmitHandler);
@@ -544,12 +523,9 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        //console.log(response.data);
         setPregnancyStatus(response.data);
       })
-      .catch((error) => {
-        //console.log(error);
-      });
+      .catch((error) => {});
   };
 
   const calculateBMI = () => {
@@ -700,8 +676,6 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
         },
       });
     } else if (e.target.name === "genderId") {
-      console.log(e.target.name);
-
       setBasicInfo({
         ...basicInfo,
         personDto: {
@@ -969,8 +943,6 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
           personId: patientObj.id,
         };
         postDataWithToken(newUserInfo, "hepatitis/enrollment");
-
-        console.log(newUserInfo);
       }
     }
   };

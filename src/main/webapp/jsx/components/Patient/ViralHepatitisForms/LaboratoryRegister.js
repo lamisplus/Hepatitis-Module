@@ -218,11 +218,11 @@ const UserRegistration = (props) => {
             { headers: { "Authorization": `Bearer ${token}` } }
         )
         .then((response) => {
-            //console.log(response.data);
+            
             setVaccine(response.data);
         })
         .catch((error) => {
-            //console.log(error);
+            
         });
 
     }
@@ -279,7 +279,7 @@ const UserRegistration = (props) => {
             setCountries(response.data);
         })
         .catch((error) => {
-        //console.log(error);
+        
         });        
     }
      //Get States from selected country
@@ -298,7 +298,7 @@ const UserRegistration = (props) => {
             setStates(response.data.sort());
         })
         .catch((error) => {
-        //console.log(error);
+        
         });  
     }    
      //fetch province
@@ -313,7 +313,7 @@ const UserRegistration = (props) => {
                 setProvinces(response.data);
             })
             .catch((error) => {
-            //console.log(error);
+            
             });  
     };
     //Date of Birth and Age handle 

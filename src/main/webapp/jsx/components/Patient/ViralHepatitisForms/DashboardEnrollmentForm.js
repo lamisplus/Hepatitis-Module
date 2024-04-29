@@ -236,12 +236,9 @@ const DashboardEnrollmentForm = ({
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        //console.log(response.data);
         setCarePoints(response.data);
       })
-      .catch((error) => {
-        //console.log(error);
-      });
+      .catch((error) => {});
   };
 
   const getHepatitisPoint = () => {
@@ -250,12 +247,9 @@ const DashboardEnrollmentForm = ({
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        //console.log(response.data);
         setHepatitisStatus(response.data);
       })
-      .catch((error) => {
-        //console.log(error);
-      });
+      .catch((error) => {});
   };
   //Get list of Source of Referral
   const SourceReferral = () => {
@@ -264,12 +258,9 @@ const DashboardEnrollmentForm = ({
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        //console.log(response.data);
         setSourceReferral(response.data);
       })
-      .catch((error) => {
-        //console.log(error);
-      });
+      .catch((error) => {});
   };
 
   const EnrollmentSetting = () => {
@@ -278,12 +269,9 @@ const DashboardEnrollmentForm = ({
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        //console.log(response.data);
         setEnrollSetting(response.data);
       })
-      .catch((error) => {
-        //console.log(error);
-      });
+      .catch((error) => {});
   };
 
   const loadRelationships = useCallback(async () => {
@@ -320,7 +308,6 @@ const DashboardEnrollmentForm = ({
     return age_now;
   };
   const phoneNumberFormatCheck = (phone) => {
-    //console.log("err", phone);
     if (
       phone != undefined &&
       typeof phone?.value !== null &&
@@ -340,9 +327,7 @@ const DashboardEnrollmentForm = ({
       .then((response) => {
         setCountries(response.data);
       })
-      .catch((error) => {
-        //console.log(error);
-      });
+      .catch((error) => {});
   };
 
   const handleAgeChange = (e) => {
@@ -412,13 +397,9 @@ const DashboardEnrollmentForm = ({
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        //console.log(response.data);
         setStates(response.data.sort());
-        console.log(response.data);
       })
-      .catch((error) => {
-        //console.log(error);
-      });
+      .catch((error) => {});
   }
   //fetch province
   const getProvinces = (e) => {
@@ -443,7 +424,7 @@ const DashboardEnrollmentForm = ({
         },
       });
       // Handle the response if needed
-      console.log("Post successful:", response.data);
+
       toast.success("Enrolment submitted successfully");
 
       setCookie(
@@ -533,12 +514,9 @@ const DashboardEnrollmentForm = ({
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        //console.log(response.data);
         setPregnancyStatus(response.data);
       })
-      .catch((error) => {
-        //console.log(error);
-      });
+      .catch((error) => {});
   };
 
   const calculateBMI = () => {
@@ -630,10 +608,7 @@ const DashboardEnrollmentForm = ({
     setErrors({ ...temp });
     return Object.values(temp).every((x) => x == "");
   };
-  console.log(
-    basicInfo.personDto.genderId,
-    Number(basicInfo.personDto.genderId) === 376
-  );
+ 
 
   const checkPhoneNumberBasic = (e, inputName) => {
     const limit = 10;
@@ -657,7 +632,7 @@ const DashboardEnrollmentForm = ({
         },
       });
     } else if (e.target.name === "genderId") {
-      console.log(e.target.name);
+     
 
       setBasicInfo({
         ...basicInfo,
@@ -904,8 +879,7 @@ const DashboardEnrollmentForm = ({
       };
       postDataWithToken(newUserInfo, "hepatitis/enrollment");
 
-      console.log(newUserInfo);
-      //   }
+    
     }
   };
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MatButton from "@material-ui/core/Button";
 import { FormGroup, Label, Spinner, Input, Form, InputGroup } from "reactstrap";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -25,6 +25,8 @@ import {
 import { fetchEnrolment } from "../../../services/fetchEnrolment";
 import { fetchFollowup } from "../../../services/fetchFollowup";
 import { useUpdateFollowup } from "../../../hooks/useUpdateFollowup";
+import axios from "axios";
+import { url as apiUrl, token } from "../../../../api";
 
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
@@ -105,6 +107,20 @@ const FollowupUpdate = (props) => {
   const [enrolmentData, setEnrolmentData] = useState(null);
   const [followupData, setFollowupData] = useState(null);
   const [formInitialValue, setFormInitialValue] = useState(null);
+
+  const [childPughData, setChildPughData] = useState([]);
+
+  const fetchChildPughScore = async () => {
+    const response = await axios.get(
+      `${apiUrl}application-codesets/v2/CHILD_PUGH`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    const data = response.data;
+    setChildPughData(data);
+  };
+
   const onSubmit = (values) => {
     const {
       fuTreatmentRegimen,
@@ -165,7 +181,7 @@ const FollowupUpdate = (props) => {
         fuHbvDna,
         fuHbvDnaStatus,
         fuHbsag,
-        fuOutcome
+        fuOutcome,
       },
       followupClinicalParameters: {
         fuAlt,
@@ -190,7 +206,7 @@ const FollowupUpdate = (props) => {
         fuLiverBiopsyStage,
         fuStagingDateLiverBiopsy,
         fuDiagnosis,
-        fuOutcome
+        fuOutcome,
       },
     };
     mutate({ data: formattedData, id: followupData?.id });
@@ -215,11 +231,13 @@ const FollowupUpdate = (props) => {
 
   const formatDate = (dateObj) => {
     if (!dateObj) {
-    return ""
+      return "";
     }
     const formattedDate = `${dateObj?.year}-${dateObj?.monthValue
       ?.toString?.()
-      .padStart?.(2, "0")}-${dateObj?.dayOfMonth?.toString?.().padStart?.(2, "0")}`;
+      .padStart?.(2, "0")}-${dateObj?.dayOfMonth
+      ?.toString?.()
+      .padStart?.(2, "0")}`;
     return formattedDate;
   };
 
@@ -238,12 +256,12 @@ const FollowupUpdate = (props) => {
           ),
           fuNextAppointment: formatDate(
             data?.followupAppointmentDto?.fuNextAppointment
-            ),
-            fuStagingDateLiverBiopsy: formatDate(
-              data?.followupClinicalParametersDto?.fuStagingDateLiverBiopsy
-              ),
-            };
-        console.log(initialValues);
+          ),
+          fuStagingDateLiverBiopsy: formatDate(
+            data?.followupClinicalParametersDto?.fuStagingDateLiverBiopsy
+          ),
+        };
+
         if (formInitialValue === null) {
           setFormInitialValue(initialValues);
           formik.setValues(initialValues);
@@ -253,9 +271,13 @@ const FollowupUpdate = (props) => {
     }
   );
 
+  useEffect(() => {
+    fetchChildPughScore();
+  }, []);
+
   return (
     <>
-     <Card className={classes.root}>
+      <Card className={classes.root}>
         <CardContent>
           <div className="col-xl-12 col-lg-12">
             <form onSubmit={formik.handleSubmit}>
@@ -1126,10 +1148,10 @@ const FollowupUpdate = (props) => {
                               Child pugh score
                             </Label>
                             {/* <span style={{ color: "red" }}> *</span>{" "} */}
-                            <Input
+                            <select
                               className="form-control"
                               disabled={disableInputs}
-                              type="number"
+                              
                               name="fuChildPughScore"
                               id="fuChildPughScore"
                               onBlur={formik.handleBlur}
@@ -1139,7 +1161,15 @@ const FollowupUpdate = (props) => {
                                 border: "1px solid #014D88",
                                 borderRadius: "0.2rem",
                               }}
-                            />
+                            >
+                              <option>Select</option>
+
+                              {childPughData?.map((item) => (
+                                <option key={item?.code} value={item?.code}>
+                                  {item?.display}
+                                </option>
+                              ))}
+                            </select>
 
                             {formik.touched?.fuChildPughScore &&
                               formik?.errors?.fuChildPughScore !== "" && (

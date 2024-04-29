@@ -599,17 +599,17 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent }) => {
       ? ""
       : " Treatment experience is required";
 
-    temp.pastTreatmentExperience = basicInfo.hepatitisCTreatment
-      .pastTreatmentExperience
-      ? ""
-      : "Past Treatment experience is required";
+    // temp.pastTreatmentExperience = basicInfo.hepatitisCTreatment
+    //   .pastTreatmentExperience
+    //   ? ""
+    //   : "Past Treatment experience is required";
 
-    temp.pastTreatmentExperience =
-      basicInfo.hepatitisCTreatment.treatmentExperience !== "YES"
-        ? ""
-        : basicInfo.hepatitisCTreatment.pastTreatmentExperience
-        ? ""
-        : "Past Treatment experience is required";
+    // temp.pastTreatmentExperience =
+    //   basicInfo.hepatitisCTreatment.treatmentExperience !== "YES"
+    //     ? ""
+    //     : basicInfo.hepatitisCTreatment.pastTreatmentExperience
+    //     ? ""
+    //     : "Past Treatment experience is required";
     temp.hbvAdverseEffectReported = basicInfo.hepatitisBTreatment
       .hepatitisBRegimenSwitch.adverseEffectReported
       ? ""
@@ -746,7 +746,7 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent }) => {
       ? ""
       : " History of adverse effect is required";
 
-    // console.log(temp);
+    
     setErrors({ ...temp });
     return Object.values(temp).every((x) => x == "");
   };
@@ -760,7 +760,7 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent }) => {
         }
       )
       .then((response) => {
-        console.log(response.data.uuid);
+       
         setEnrollmentUuid(response.data.uuid);
       })
       .catch((error) => {
@@ -774,12 +774,12 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent }) => {
     window.scrollTo(0, 0);
 
     if (validate()) {
-      console.log("good to go", basicInfo);
+    
       postDataWithToken(basicInfo, "hepatitis/treatment");
     }
   };
   const onSubmitHandler = (values) => {
-    console.log(values.hbvDateStarted);
+   
     setCookie("hepatitis3", values, 1);
     const enrollmentIds = getCookie("enrollmentIds");
     const restructuredTreatmentPayload = {
@@ -1349,7 +1349,7 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent }) => {
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="hbvAdverseEffectReported">
-                              Adverse effect reported{" "}
+                              Adverse event reported{" "}
                             </Label>{" "}
                             <select
                               className="form-control"

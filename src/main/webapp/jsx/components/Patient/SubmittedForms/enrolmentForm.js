@@ -243,11 +243,11 @@ const EnrolmentSubmittedForm = ({
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        //console.log(response.data);
+       
         setCarePoints(response.data);
       })
       .catch((error) => {
-        //console.log(error);
+        
       });
   };
 
@@ -257,11 +257,11 @@ const EnrolmentSubmittedForm = ({
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        //console.log(response.data);
+       
         setHepatitisStatus(response.data);
       })
       .catch((error) => {
-        //console.log(error);
+        
       });
   };
   //Get list of Source of Referral
@@ -271,11 +271,11 @@ const EnrolmentSubmittedForm = ({
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        //console.log(response.data);
+       
         setSourceReferral(response.data);
       })
       .catch((error) => {
-        //console.log(error);
+        
       });
   };
 
@@ -285,11 +285,11 @@ const EnrolmentSubmittedForm = ({
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        //console.log(response.data);
+       
         setEnrollSetting(response.data);
       })
       .catch((error) => {
-        //console.log(error);
+        
       });
   };
 
@@ -327,7 +327,7 @@ const EnrolmentSubmittedForm = ({
     return age_now;
   };
   const phoneNumberFormatCheck = (phone) => {
-    //console.log("err", phone);
+  
     if (
       phone != undefined &&
       typeof phone?.value !== null &&
@@ -348,7 +348,7 @@ const EnrolmentSubmittedForm = ({
         setCountries(response.data);
       })
       .catch((error) => {
-        //console.log(error);
+        
       });
   };
 
@@ -419,12 +419,12 @@ const EnrolmentSubmittedForm = ({
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        //console.log(response.data);
+       
         setStates(response.data.sort());
-        // console.log(response.data);
+        
       })
       .catch((error) => {
-        //console.log(error);
+        
       });
   }
   //fetch province
@@ -563,11 +563,11 @@ const EnrolmentSubmittedForm = ({
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        //console.log(response.data);
+       
         setPregnancyStatus(response.data);
       })
       .catch((error) => {
-        //console.log(error);
+        
       });
   };
 
@@ -945,7 +945,7 @@ const EnrolmentSubmittedForm = ({
 
     // }
   }, []);
-  console.log(patientObj);
+  
   //   runs when never there is change in patient form
   useEffect(() => {
     setInfo({

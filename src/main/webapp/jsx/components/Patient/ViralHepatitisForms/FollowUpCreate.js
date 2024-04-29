@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MatButton from "@material-ui/core/Button";
 import { FormGroup, Label, Spinner, Input, Form, InputGroup } from "reactstrap";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -21,6 +21,8 @@ import { useQuery } from "react-query";
 import { FETCH_ENROLMENT_KEY } from "../../../utils/queryKeys";
 import { fetchEnrolment } from "../../../services/fetchEnrolment";
 import { useSaveFollowup } from "../../../hooks/useSaveFollowup";
+import axios from "axios";
+import { url as apiUrl, token } from "../../../../api";
 
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
@@ -98,6 +100,18 @@ const useStyles = makeStyles((theme) => ({
 const FollowupCreate = (props) => {
   const classes = useStyles();
   const [enrolmentData, setEnrolmentData] = useState(null);
+  const [childPughData, setChildPughData] = useState([]);
+
+  const fetchChildPughScore = async () => {
+    const response = await axios.get(
+      `${apiUrl}application-codesets/v2/CHILD_PUGH`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    const data = response.data;
+    setChildPughData(data);
+  };
 
   const onSubmit = (values) => {
     const {
@@ -159,7 +173,7 @@ const FollowupCreate = (props) => {
         fuHbvDna,
         fuHbvDnaStatus,
         fuHbsag,
-        fuOutcome
+        fuOutcome,
       },
       followupClinicalParameters: {
         fuAlt,
@@ -184,7 +198,7 @@ const FollowupCreate = (props) => {
         fuLiverBiopsyStage,
         fuStagingDateLiverBiopsy,
         fuDiagnosis,
-        fuOutcome
+        fuOutcome,
       },
     };
     mutate(formattedData);
@@ -205,6 +219,10 @@ const FollowupCreate = (props) => {
 
   const { mutate, isLoading } = useSaveFollowup(formik, props);
   const actionType = props?.activeContent?.actionType || "create";
+
+  useEffect(() => {
+    fetchChildPughScore();
+  }, []);
 
   return (
     <>
@@ -1052,9 +1070,9 @@ const FollowupCreate = (props) => {
                               Child pugh score
                             </Label>
                             {/* <span style={{ color: "red" }}> *</span>{" "} */}
-                            <Input
+                            <select
                               className="form-control"
-                              type="number"
+                              
                               name="fuChildPughScore"
                               id="fuChildPughScore"
                               onBlur={formik.handleBlur}
@@ -1064,7 +1082,15 @@ const FollowupCreate = (props) => {
                                 border: "1px solid #014D88",
                                 borderRadius: "0.2rem",
                               }}
-                            />
+                            >
+                              <option>Select</option>
+
+                              {childPughData?.map((item) => (
+                                <option key={item?.code} value={item?.code}>
+                                  {item?.display}
+                                </option>
+                              ))}
+                            </select>
 
                             {formik.touched?.fuChildPughScore &&
                               formik?.errors?.fuChildPughScore !== "" && (
@@ -1074,6 +1100,7 @@ const FollowupCreate = (props) => {
                               )}
                           </FormGroup>
                         </div>
+
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="fuLiverBiopsyStage">

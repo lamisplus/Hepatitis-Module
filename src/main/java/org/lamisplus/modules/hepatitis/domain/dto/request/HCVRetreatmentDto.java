@@ -32,5 +32,6 @@ public class HCVRetreatmentDto implements Serializable {
     private Status history_of_AdverseEffect;
     @NotEmpty(message = "hbvPastTreatmentRegimen can not be empty")
     private String hbvPastTreatmentRegimen;
+    private String hcvRetreatmentHcvGenotype;
 
 }

@@ -102,7 +102,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
   const [enrollmentPersonInfo, setEnrollmentPersonInfo] = useState(
     getCookie("enrollmentIds")
   );
-  console.log(getCookie("enrollmentIds"));
+
   const [basicInfo, setBasicInfo] = useState({
     clinicalParameters: {
       afp: "",
@@ -149,12 +149,60 @@ const ViralHepatitisForm2 = ({ setStep }) => {
       commobidities: "",
       hcRnaValue: "",
       hcvRNA: "",
-      hepatitisCoinfection: "",
+      hepatitisCoinfection: [],
       multipleInfection: "",
     },
   });
-
+  const [childPughData, setChildPughData] = useState([]);
   const [errors, setErrors] = useState({});
+
+  const [selectedOptions, setSelectedOptions] = useState([]);
+
+  const handleCheckboxChange = (event) => {
+    const option = event.target.value;
+    if (event.target.checked) {
+      setSelectedOptions((prevOptions) => {
+        const updatedOptions = [...prevOptions, option];
+
+        setErrors({ ...temp, [event.target.name]: "" });
+        setBasicInfo({
+          ...basicInfo,
+          hepatitisCTest: {
+            ...basicInfo.hepatitisCTest,
+            [event.target.name]: updatedOptions,
+          },
+        });
+
+        return updatedOptions;
+      });
+    } else {
+      setSelectedOptions((prevOptions) => {
+        const updatedOptions = prevOptions.filter((item) => item !== option);
+
+        setErrors({ ...temp, [event.target.name]: "" });
+        setBasicInfo({
+          ...basicInfo,
+          hepatitisCTest: {
+            ...basicInfo.hepatitisCTest,
+            [event.target.name]: updatedOptions,
+          },
+        });
+
+        return updatedOptions;
+      });
+    }
+  };
+
+  const fetchChildPughScore = async () => {
+    const response = await axios.get(
+      `${apiUrl}application-codesets/v2/CHILD_PUGH`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    const data = response.data;
+    setChildPughData(data);
+  };
 
   // handle input changes
   const handleInputChangeBasic = (e) => {
@@ -167,71 +215,6 @@ const ViralHepatitisForm2 = ({ setStep }) => {
         [e.target.name]: e.target.value,
       },
     });
-    //   if (e.target.name === "dateHbvTestRequested" && e.target.value !== "") {
-    //     setBasicInfo({
-    //       ...basicInfo,
-    //       hepatitisBTest: {
-    //         ...basicInfo.hepatitisBTest,
-    //         [e.target.name]: e.target.value,
-    //       },
-    //     });
-    //   }
-    //   if (e.target.name === "dateHbvDnaResultReported" && e.target.value !== "") {
-    //     setBasicInfo({
-    //       ...basicInfo,
-    //       hepatitisBTest: {
-    //         ...basicInfo.hepatitisBTest,
-    //         [e.target.name]: e.target.value,
-    //       },
-    //     });
-    //   }
-    //   if (e.target.name === "stagingDateOfLiverBiopsy" && e.target.value !== "") {
-    //     setBasicInfo({
-    //       ...basicInfo,
-    //       hepatitisBTest: {
-    //         ...basicInfo.hepatitisBTest,
-    //         [e.target.name]: e.target.value,
-    //       },
-    //     });
-    //   }
-    //   if (e.target.name === "hbvDna" && e.target.value !== "") {
-    //     setBasicInfo({
-    //       ...basicInfo,
-    //       hepatitisBTest: {
-    //         ...basicInfo.hepatitisBTest,
-    //         [e.target.name]: e.target.value,
-    //       },
-    //     });
-    //   }
-    //   if (e.target.name === "hvbDnaValue" && e.target.value !== "") {
-    //     setBasicInfo({
-    //       ...basicInfo,
-    //       hepatitisBTest: {
-    //         ...basicInfo.hepatitisBTest,
-    //         [e.target.name]: e.target.value,
-    //       },
-    //     });
-    //   }
-
-    //   if (e.target.name === "hbsAgQuantification" && e.target.value !== "") {
-    //     setBasicInfo({
-    //       ...basicInfo,
-    //       hepatitisBTest: {
-    //         ...basicInfo.hepatitisBTest,
-    //         [e.target.name]: e.target.value,
-    //       },
-    //     });
-    //   }
-
-    //   if (e.target.name === "hbsAgQuantification" && e.target.value !== "") {
-    //     setBasicInfo({
-    //       ...basicInfo,
-    //       hepatitisBTest: {
-    //         ...basicInfo.hepatitisBTest,
-    //         [e.target.name]: e.target.value,
-    //       },
-    //     });
-    //   }
   };
 
   const handleInputChangeBasicForHC = (e) => {
@@ -264,9 +247,9 @@ const ViralHepatitisForm2 = ({ setStep }) => {
       .dateHbvDnaTestRequested
       ? ""
       : "Date HBV DNA test requested is required ";
-    temp.dateHbvTestRequested = basicInfo.hepatitisBTest.dateHbvTestRequested
-      ? ""
-      : "Date HBV test requested is required";
+    // temp.dateHbvTestRequested = basicInfo.hepatitisBTest.dateHbvTestRequested
+    //   ? ""
+    //   : "Date HBV test requested is required";
 
     temp.dateHbvSampleRequested = basicInfo.hepatitisBTest
       .dateHbvSampleRequested
@@ -303,9 +286,9 @@ const ViralHepatitisForm2 = ({ setStep }) => {
     temp.ast = basicInfo.clinicalParameters.ast ? "" : " AST is required";
     temp.alt = basicInfo.clinicalParameters.alt ? "" : " ALT is required";
     temp.hcvRNA = basicInfo.hepatitisCTest.hcvRNA ? "" : "HCV RNA is required";
-    temp.hepatitisCoinfection = basicInfo.hepatitisCTest.hepatitisCoinfection
-      ? ""
-      : "Hepatitis Coinfection is required";
+    // temp.hepatitisCoinfection = basicInfo.hepatitisCTest.hepatitisCoinfection
+    //   ? ""
+    //   : "Hepatitis Coinfection is required";
 
     temp.pst = basicInfo.clinicalParameters.pst ? "" : " PST is required";
     temp.totalBiliRubin = basicInfo.clinicalParameters.totalBiliRubin
@@ -361,27 +344,29 @@ const ViralHepatitisForm2 = ({ setStep }) => {
       ? ""
       : "Liver biopsy stage  is required";
 
-    temp.stagingDateOfLiverBiopsy = basicInfo.hepatitisBTest
-      .stagingDateOfLiverBiopsy
-      ? ""
-      : "Staging date of liver biopsy is required";
+    temp.stagingDateOfLiverBiopsy =
+      basicInfo.clinicalParameters.liverBiopsyStage === "NOT_DONE"
+        ? ""
+        : basicInfo.clinicalParameters.liverBiopsyStage !== "NOT_DONE" &&
+          !basicInfo.hepatitisBTest.stagingDateOfLiverBiopsy
+        ? "Staging date of liver biopsy is required"
+        : "";
 
-    temp.diagnosis_result = basicInfo.clinicalParameters.diagnosis_result
-      ? ""
-      : "Diagnosis is required";
-    //
-
-    //
+    temp.diagnosis_result =
+      basicInfo.clinicalParameters.liverBiopsyStage === "NOT_DONE"
+        ? ""
+        : basicInfo.clinicalParameters.liverBiopsyStage !== "NOT_DONE" &&
+          !basicInfo.hepatitisBTest.diagnosis_result
+        ? "Diagnosis is required"
+        : "";
 
     temp.commobidities = basicInfo.hepatitisCTest.commobidities
       ? ""
-      : "Commobiditie is required";
+      : "Commobidities is required";
     temp.multipleInfection = basicInfo.clinicalParameters.ast
       ? ""
       : "Multiple Infection required";
 
-    // set the temp errors to error
-    console.log(temp);
     setErrors({ ...temp });
     return Object.values(temp).every((x) => x == "");
   };
@@ -394,7 +379,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
           "Content-Type": "application/json",
         },
       });
-      console.log("Post successful:", response.data);
+
       toast.success("Diagnosis submitted successfully");
       setStep(2);
       return response.data;
@@ -409,10 +394,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
     e.preventDefault();
     // validating the input
     window.scrollTo(0, 0);
-    console.log("good to go", errors, temp);
 
-    console.log(basicInfo);
-    // console.log(errors);
     if (validate()) {
       postDataWithToken(basicInfo, "hepatitis/diagnosis");
     }
@@ -442,6 +424,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
         hcvRNA: values.hcvRNA,
         hcRnaValue: values.hcRnaValue,
         hepatitisCoinfection: values.hepatitisCoinfection,
+
         commobidities: values.commobidities,
         multipleInfection: values.multipleInfection,
       },
@@ -486,9 +469,10 @@ const ViralHepatitisForm2 = ({ setStep }) => {
       formik.setValues(cookieValue);
     }
   };
-  //      disabled={action === "view" ? true : false}
+
   useEffect(() => {
     castCookieValueToForm();
+    fetchChildPughScore();
   }, []);
 
   const [isDropdownsOpen, setIsDropdownsOpen] = useState({
@@ -593,7 +577,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                           </FormGroup>
                         </div>
 
-                        <div className="form-group mb-3 col-md-4">
+                        {/* <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="dateHbvTestRequested">
                               Date HBV test requested{" "}
@@ -623,12 +607,12 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                               ""
                             )}
                           </FormGroup>
-                        </div>
+                        </div> */}
 
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="dateHbvSampleRequested">
-                              Date HBV sample Requested{" "}
+                              Date HBV DNA sample collected{" "}
                               <span style={{ color: "red" }}> *</span>{" "}
                             </Label>
                             <input
@@ -1074,7 +1058,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                           </div>
                         )}
 
-                        <div className="form-group mb-3 col-md-4">
+                        {/* <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="hepatitisCoinfection">
                               Hepatitis Coinfection
@@ -1084,6 +1068,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                               className="form-control"
                               name="hepatitisCoinfection"
                               id="hepatitisCoinfection"
+                              multiple
                               onChange={handleInputChangeBasicForHC}
                               value={
                                 basicInfo.hepatitisCTest.hepatitisCoinfection
@@ -1095,6 +1080,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                             >
                               <option value={""}>Select</option>
                               <option value={"HBV_HCV"}>HBV/HCV</option>
+                              <option value={"HBV_HIV"}>HBV/HIV</option>
                               <option value={"HCV_HIV"}>HCV/HIV</option>
                               <option value={"HBV_HDV"}>HBV/HDV</option>
                               <option value={"HBV_HCD_HIV"}>HBV/HCD/HIV</option>
@@ -1107,6 +1093,66 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                               ""
                             )}
                           </FormGroup>
+                        </div> */}
+                        <div className="form-group mb-3 col-md-4">
+                          <Label for="hepatitisCoinfection">
+                            Hepatitis Coinfection
+                          </Label>
+                          <br />
+                          <Label>
+                            <input
+                              // className="form-control"
+                              type="checkbox"
+                              value="HBV_HCV"
+                              onChange={handleCheckboxChange}
+                              checked={selectedOptions.includes("HBV_HCV")}
+                            />
+                            HBV/HCV
+                          </Label>
+                          <br />
+                          <Label>
+                            <input
+                              // className="form-control"
+                              type="checkbox"
+                              value="HBV_HIV"
+                              onChange={handleCheckboxChange}
+                              checked={selectedOptions.includes("HBV_HIV")}
+                            />
+                            HBV/HIV
+                          </Label>
+                          <br />
+                          <Label>
+                            <input
+                              // className="form-control"
+                              type="checkbox"
+                              value="HCV_HIV"
+                              onChange={handleCheckboxChange}
+                              checked={selectedOptions.includes("HCV_HIV")}
+                            />
+                            HCV/HIV
+                          </Label>
+                          <br />
+                          <Label>
+                            <input
+                              // className="form-control"
+                              type="checkbox"
+                              value="HBV_HDV"
+                              onChange={handleCheckboxChange}
+                              checked={selectedOptions.includes("HBV_HDV")}
+                            />
+                            HBV/HDV
+                          </Label>
+                          <br />
+                          <Label>
+                            <input
+                              // className="form-control"
+                              type="checkbox"
+                              value="HBV_HCD_HIV"
+                              onChange={handleCheckboxChange}
+                              checked={selectedOptions.includes("HBV_HCD_HIV")}
+                            />
+                            HBV/HCD/HIV
+                          </Label>
                         </div>
 
                         <div className="form-group mb-3 col-md-4">
@@ -1755,9 +1801,8 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                     <FormGroup>
                       <Label for="childPughScore">Child pugh score</Label>
                       <span style={{ color: "red" }}> *</span>{" "}
-                      <input
+                      <select
                         className="form-control"
-                        type="text"
                         name="childPughScore"
                         id="childPughScore"
                         value={basicInfo.clinicalParameters.childPughScore}
@@ -1767,7 +1812,15 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
                         }}
-                      />
+                      >
+                        <option>Select</option>
+
+                        {childPughData?.map((item) => (
+                          <option key={item?.code} value={item?.code}>
+                            {item?.display}
+                          </option>
+                        ))}
+                      </select>
                       {errors.childPughScore !== "" ? (
                         <span className={classes.error}>
                           {errors.childPughScore}
@@ -1794,11 +1847,17 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                         }}
                       >
                         <option value={""}>Select</option>
+                        <option value={"NO_FIBROSIS"}>No Fibrosis</option>
+                        <option value={"MILD_FIBROSIS"}>Mild Fibrosis</option>
+                        <option value={"MODERATE_FIBROSIS"}>
+                          Moderate Fibrosis
+                        </option>
                         <option value={"FIBROSIS"}> Fibrosis</option>
+                        <option value={"SEVERE_FIBROSIS"}>
+                          Severe Fibrosis
+                        </option>
                         <option value={"CIRRHOSIS"}>Cirrhosis</option>
-                        <option value={"NO_FIBROSIS"}> No Fibrosis</option>
-                        {/* <option value={"CIRRHOSIS"}>Cirrhosis</option> */}
-                        <option value={"HIGH_CC"}>High CC </option>
+                        <option value={"NOT_DONE"}>Not Done</option>
                       </select>
                       {errors.liverBiopsyStage !== "" ? (
                         <span className={classes.error}>
@@ -1809,68 +1868,84 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                       )}
                     </FormGroup>
                   </div>
-                  <div className="form-group mb-3 col-md-4">
-                    <FormGroup>
-                      <Label for="stagingDateOfLiverBiopsy">
-                        Staging date of liver biopsy{" "}
-                      </Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
-                      <input
-                        className="form-control"
-                        type="date"
-                        name="stagingDateOfLiverBiopsy"
-                        max={moment(new Date()).format("YYYY-MM-DD")}
-                        id="stagingDateOfLiverBiopsy"
-                        value={
-                          basicInfo.hepatitisBTest.stagingDateOfLiverBiopsy
-                        }
-                        onChange={handleInputChangeBasic}
-                        // onBlur={formik.handleBlur}
-                        style={{
-                          border: "1px solid #014D88",
-                          borderRadius: "0.2rem",
-                        }}
-                      />
-                      {errors.stagingDateOfLiverBiopsy !== "" ? (
-                        <span className={classes.error}>
-                          {errors.stagingDateOfLiverBiopsy}
-                        </span>
-                      ) : (
-                        ""
-                      )}
-                    </FormGroup>
-                  </div>
 
-                  <div className="form-group mb-3 col-md-4">
-                    <FormGroup>
-                      <Label for="diagnosis_result">Diagnosis</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
-                      <select
-                        className="form-control"
-                        name="diagnosis_result"
-                        id="diagnosis_result"
-                        onChange={handleInputChangeBasicForClinic}
-                        value={basicInfo.clinicalParameters.diagnosis_result}
-                        style={{
-                          border: "1px solid #014D88",
-                          borderRadius: "0.2rem",
-                        }}
-                      >
-                        <option value={""}>Select</option>
-                        <option value={"NO_FIBROSIS"}> No Fibrosis</option>
-                        <option value={"FIBROSIS"}>Fibrosis</option>
-                        <option value={"CIRRHOSIS"}>Cirrhosis</option>
-                        <option value={"HIGH_CC"}>HCC</option>
-                      </select>
-                      {errors.diagnosis_result !== "" ? (
-                        <span className={classes.error}>
-                          {errors.diagnosis_result}
-                        </span>
-                      ) : (
-                        ""
-                      )}
-                    </FormGroup>
-                  </div>
+                  {[
+                    "NO_FIBROSIS",
+                    "MILD_FIBROSIS",
+                    "MODERATE_FIBROSIS",
+                    "FIBROSIS",
+                    "SEVERE_FIBROSIS",
+                    "CIRRHOSIS",
+                  ]?.includes(
+                    basicInfo.clinicalParameters.liverBiopsyStage
+                  ) && (
+                    <>
+                      <div className="form-group mb-3 col-md-4">
+                        <FormGroup>
+                          <Label for="stagingDateOfLiverBiopsy">
+                            Staging date of liver biopsy{" "}
+                          </Label>
+                          <span style={{ color: "red" }}> *</span>{" "}
+                          <input
+                            className="form-control"
+                            type="date"
+                            name="stagingDateOfLiverBiopsy"
+                            max={moment(new Date()).format("YYYY-MM-DD")}
+                            id="stagingDateOfLiverBiopsy"
+                            value={
+                              basicInfo.hepatitisBTest.stagingDateOfLiverBiopsy
+                            }
+                            onChange={handleInputChangeBasic}
+                            // onBlur={formik.handleBlur}
+                            style={{
+                              border: "1px solid #014D88",
+                              borderRadius: "0.2rem",
+                            }}
+                          />
+                          {errors.stagingDateOfLiverBiopsy !== "" ? (
+                            <span className={classes.error}>
+                              {errors.stagingDateOfLiverBiopsy}
+                            </span>
+                          ) : (
+                            ""
+                          )}
+                        </FormGroup>
+                      </div>
+
+                      <div className="form-group mb-3 col-md-4">
+                        <FormGroup>
+                          <Label for="diagnosis_result">Diagnosis</Label>
+                          <span style={{ color: "red" }}> *</span>{" "}
+                          <select
+                            className="form-control"
+                            name="diagnosis_result"
+                            id="diagnosis_result"
+                            onChange={handleInputChangeBasicForClinic}
+                            value={
+                              basicInfo.clinicalParameters.diagnosis_result
+                            }
+                            style={{
+                              border: "1px solid #014D88",
+                              borderRadius: "0.2rem",
+                            }}
+                          >
+                            <option value={""}>Select</option>
+                            <option value={"NO_FIBROSIS"}> No Fibrosis</option>
+                            <option value={"FIBROSIS"}>Fibrosis</option>
+                            <option value={"CIRRHOSIS"}>Cirrhosis</option>
+                            <option value={"HIGH_CC"}>HCC</option>
+                          </select>
+                          {errors.diagnosis_result !== "" ? (
+                            <span className={classes.error}>
+                              {errors.diagnosis_result}
+                            </span>
+                          ) : (
+                            ""
+                          )}
+                        </FormGroup>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             </div>

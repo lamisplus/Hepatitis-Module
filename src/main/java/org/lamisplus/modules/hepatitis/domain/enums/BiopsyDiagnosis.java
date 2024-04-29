@@ -4,5 +4,9 @@ public enum BiopsyDiagnosis {
     NO_FIBROSIS,
     FIBROSIS,
     CIRRHOSIS,
-    HIGH_CC
+    HIGH_CC,
+    SEVERE_FIBROSIS,
+    MILD_FIBROSIS,
+    MODERATE_FIBROSIS,
+    NOT_DONE
 }

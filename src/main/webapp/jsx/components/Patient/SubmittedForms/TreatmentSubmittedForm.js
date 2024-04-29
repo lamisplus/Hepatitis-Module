@@ -159,7 +159,6 @@ const TreatmentSubmittedForm = ({
       treatmentExperience: "",
     },
   });
-  console.log(treatmentInfo);
   const [errors, setErrors] = useState({});
   // handle input changes
   const handleInputChangeBasicHB = (e) => {
@@ -599,10 +598,10 @@ const TreatmentSubmittedForm = ({
       ? ""
       : " Treatment experience is required";
 
-    temp.pastTreatmentExperience = basicInfo.hepatitisCTreatment
-      .pastTreatmentExperience
-      ? ""
-      : "Past Treatment experience is required";
+    // temp.pastTreatmentExperience = basicInfo.hepatitisCTreatment
+    //   .pastTreatmentExperience
+    //   ? ""
+    //   : "Past Treatment experience is required";
 
     temp.hbvAdverseEffectReported = basicInfo.hepatitisBTreatment
       .hepatitisBRegimenSwitch.adverseEffectReported
@@ -722,26 +721,22 @@ const TreatmentSubmittedForm = ({
       ? ""
       : " History of adverse effect is required";
 
-    // console.log(temp);
+   
     setErrors({ ...temp });
     return Object.values(temp).every((x) => x == "");
   };
   // submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // validating the input
-    // window.scrollTo(0, 0);
-
-    console.log(basicInfo);
-    // console.log(errors);
+    
 
     if (validate()) {
-      console.log("good to go", basicInfo);
+     
       postDataWithToken(basicInfo, "hepatitis/treatment");
     }
   };
   const onSubmitHandler = (values) => {
-    console.log(values.hbvDateStarted);
+ 
     setCookie("hepatitis3", values, 1);
     const enrollmentIds = getCookie("enrollmentIds");
     const restructuredTreatmentPayload = {
@@ -825,7 +820,7 @@ const TreatmentSubmittedForm = ({
         }
       );
       // Handle the response if needed
-      console.log("Post successful:", response.data);
+     
       toast.success("Treatment submitted successfully");
       history.push({
         pathname: "/patient-history",
@@ -902,10 +897,10 @@ const TreatmentSubmittedForm = ({
       })
       .then((response) => {
         setTreatmentInfo(response.data);
-        // setEnrollmentUuidT(response.data.id);
+       
       })
       .catch((error) => {
-        //console.log(error);
+        
       });
   };
 
@@ -1187,7 +1182,7 @@ const TreatmentSubmittedForm = ({
     });
   }, [treatmentInfo, enrollmentUuid]);
 
-  console.log(treatmentInfo?.hepatitisBTreatment?.treatmentExperience);
+
   const [isDropdownsOpen, setIsDropdownsOpen] = useState({
     hbvTreatmentRegimenSwitch: true,
     hbvTreatmentReasonforTreatment: true,
@@ -1601,7 +1596,7 @@ const TreatmentSubmittedForm = ({
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="hbvAdverseEffectReported">
-                              Adverse effect reported{" "}
+                              Adverse events reported{" "}
                             </Label>
                             <span style={{ color: "red" }}> *</span>{" "}
                             <select

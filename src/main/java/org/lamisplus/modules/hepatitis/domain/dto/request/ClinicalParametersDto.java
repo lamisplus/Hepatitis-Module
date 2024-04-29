@@ -55,8 +55,8 @@ public class ClinicalParametersDto implements Serializable {
     private Integer gradeOfEncephalopathy;
     @NotEmpty(message = " childPughScore can not be empty")
     private String childPughScore;
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private BiopsyDiagnosis liverBiopsyStage;
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private BiopsyDiagnosis diagnosis_result;
+//    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private String liverBiopsyStage;
+//    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private String diagnosis_result;
 }

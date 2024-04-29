@@ -135,7 +135,7 @@ export const useValidateFollowupFormValuesHook = (onSubmit, operation) => {
     fuAscites: isOperationUpdate ? yup.mixed() : yup.string(),
     fuSeverityOfAscites: isOperationUpdate ? yup.mixed() : yup.string(),
     fuGradeOfEncephalopathy: isOperationUpdate ? yup.mixed() : yup.string(),
-    fuChildPughScore: isOperationUpdate ? yup.mixed() : yup.number(),
+    fuChildPughScore: isOperationUpdate ? yup.mixed() : yup.string(),
     fuLiverBiopsyStage: isOperationUpdate ? yup.mixed() : yup.string(),
     fuStagingDateLiverBiopsy: isOperationUpdate ? yup.mixed() :yup.date(),
     fuDiagnosis: isOperationUpdate ? yup.mixed() : yup.string(),

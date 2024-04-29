@@ -90,7 +90,7 @@ const useStyles = makeStyles((theme) => ({
 
 const FollowupForm = () => {
   const onSubmitHandler = (values) => {
-    console.log(values);
+  
   };
 
   const classes = useStyles();

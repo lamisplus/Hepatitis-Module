@@ -107,24 +107,6 @@ const PatientnHistory = (props) => {
     setRecentActivities(props.recentActivities);
   }, [props.recentActivities]);
 
-  console.log(props.recentActivities);
-  ///GET LIST OF Patients
-  //   const PatientHistory = () => {
-  //     setLoading(true);
-  //     axios
-  //       .get(
-  //         `${baseUrl}prep/activities/patients/${props.patientObj.personId}?full=true`,
-  //         { headers: { Authorization: `Bearer ${token}` } }
-  //       )
-  //       .then((response) => {
-  //         setLoading(false);
-  //         setRecentActivities(response.data[0].activities);
-  //       })
-
-  //       .catch((error) => {
-  //         //console.log(error);
-  //       });
-  //   };
 
   const LoadViewPage = (row, action) => {
     if (row.path === "prep-eligibility") {
