@@ -26,7 +26,7 @@ import { fetchEnrolment } from "../../../services/fetchEnrolment";
 import { fetchFollowup } from "../../../services/fetchFollowup";
 import { useUpdateFollowup } from "../../../hooks/useUpdateFollowup";
 import axios from "axios";
-import { url as apiUrl, token } from "../../../../api";
+import { url as baseUrl, token } from "../../../../api";
 
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
@@ -112,7 +112,7 @@ const FollowupUpdate = (props) => {
 
   const fetchChildPughScore = async () => {
     const response = await axios.get(
-      `${apiUrl}application-codesets/v2/CHILD_PUGH`,
+      `${baseUrl}application-codesets/v2/CHILD_PUGH`,
       {
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -1151,7 +1151,6 @@ const FollowupUpdate = (props) => {
                             <select
                               className="form-control"
                               disabled={disableInputs}
-                              
                               name="fuChildPughScore"
                               id="fuChildPughScore"
                               onBlur={formik.handleBlur}

@@ -31,6 +31,10 @@ import { Modal } from "react-bootstrap";
 import "react-widgets/dist/css/react-widgets.css";
 import { DateTimePicker } from "react-widgets";
 import Steppers from "./Stepper/Stepper";
+import {
+  GetOptions,
+  ImportantString,
+} from "./ViralHepatitisForms/DashboardForm2";
 
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
@@ -257,7 +261,6 @@ const UserRegistration = (props) => {
       ...objValues,
       [e.target.name]: !objValues[e.target.name],
     });
-  
   };
 
   //status for hospital Number
@@ -290,12 +293,9 @@ const UserRegistration = (props) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        
         setVaccine(response.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
   const loadGenders = useCallback(async () => {
     try {
@@ -342,11 +342,7 @@ const UserRegistration = (props) => {
       setRelationshipOptions(response.data);
     } catch (e) {}
   }, []);
-  // const loadTopLevelCountry = useCallback(async () => {
-  //     const response = await axios.get(`${baseUrl}organisation-units/parent-organisation-units/0`, { headers: {"Authorization" : `Bearer ${token}`} });
-  //     settopLevelUnitCountryOptions(response.data);
-  // }, []);
-  //Country List
+
   const GetCountry = () => {
     axios
       .get(`${baseUrl}organisation-units/parent-organisation-units/0`, {
@@ -355,9 +351,7 @@ const UserRegistration = (props) => {
       .then((response) => {
         setCountries(response.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
   //Get States from selected country
   const getStates = (e) => {
@@ -374,9 +368,7 @@ const UserRegistration = (props) => {
       .then((response) => {
         setStates(response.data.sort());
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   }
   //fetch province
   const getProvinces = (e) => {
@@ -390,11 +382,20 @@ const UserRegistration = (props) => {
       .then((response) => {
         setProvinces(response.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
   //Date of Birth and Age handle
+  const handleInputChangeBasicForClinic = (e) => {
+    setErrors({ ...temp, [e.target.name]: "" });
+
+    setBasicInfo({
+      ...basicInfo,
+      clinicalParameters: {
+        ...basicInfo.clinicalParameters,
+        [e.target.name]: e.target.value,
+      },
+    });
+  };
   const handleDobChange = (e) => {
     if (e.target.value) {
       const today = new Date();
@@ -755,23 +756,15 @@ const UserRegistration = (props) => {
     const acceptedNumber = e.slice(0, limit);
     return acceptedNumber;
   };
-  const handleCheckBoxknownMedicalCondition = (e) => {
-    if (e.target.checked) {
-      setObjValues({ ...objValues, knownMedicalCondition: e.target.checked });
-      //setOvcEnrolled(true)
-    } else {
-      setObjValues({ ...objValues, knownMedicalCondition: false });
+  useEffect(() => {
+    alert(3);
+    if (basicInfo.hepatitisBTest.hbvDna === "DETECTED") {
+      setBasicInfo((prev) => ({
+        ...prev,
+        hepatitisBTest: { ...prev.hepatitisBTest, hbvDna: "" },
+      }));
     }
-  };
-  const onClickContactCard = () => {
-    setShowContactCard(!showContactCard);
-  };
-  const onClickRelativeCard = () => {
-    setShowRelative(!showRelative);
-  };
-  const handleCancel = () => {
-    history.push({ pathname: "/" });
-  };
+  });
 
   return (
     <>
@@ -3027,7 +3020,7 @@ const UserRegistration = (props) => {
                     <div className="form-group mb-2 col-md-6">
                       <FormGroup>
                         <Label>
-                          Acites<span style={{ color: "red" }}> *</span>
+                          Ascites<span style={{ color: "red" }}> *</span>
                         </Label>
                         <div className="radio">
                           <label>
@@ -3068,7 +3061,8 @@ const UserRegistration = (props) => {
                       <div className="form-group mb-3 col-md-6">
                         <FormGroup>
                           <Label>
-                            Acites value<span style={{ color: "red" }}> *</span>
+                            Ascites value
+                            <span style={{ color: "red" }}> *</span>
                           </Label>
                           <InputGroup>
                             <Input
@@ -3151,35 +3145,51 @@ const UserRegistration = (props) => {
                         )}
                       </FormGroup>
                     </div>
-                    <div className="form-group mb-3 col-md-6">
+
+                    <div className="form-group mb-3 col-md-4">
                       <FormGroup>
-                        <Label>
-                          Liver biopsy stage
-                          <span style={{ color: "red" }}> *</span>
-                        </Label>
-                        <InputGroup>
-                          <Input
-                            type="select"
-                            name="liverBiopsyStage"
-                            id="liverBiopsyStage"
-                            onChange={handleInputChange}
-                            value={objValues.liverBiopsyStage}
-                          >
-                            <option value="">select</option>
-                            <option value="F0">No Fibrosis</option>
-                            <option value="F1">Mild Fibrosis</option>
-                            <option value="F2">Moderate Fibrosis</option>
-                            <option value="F3">Severe Fibrosis</option>
-                            <option value="F4">Cirrhosis</option>
-                            <option value="not done">Not Done</option>
-                          </Input>
-                        </InputGroup>
-                        {errors.liverBiopsyStage !== "" ? (
+                        <Label for="liverBiopsyStage">Liver biopsy stage</Label>
+                        <ImportantString str="*" />{" "}
+                        <select
+                          className="form-control"
+                          name="liverBiopsyStage"
+                          id="liverBiopsyStage"
+                          onChange={handleInputChangeBasicForClinic}
+                          value={basicInfo.clinicalParameters.liverBiopsyStage}
+                          style={{
+                            border: "1px solid #014D88",
+                            borderRadius: "0.2rem",
+                          }}
+                        >
+                          <GetOptions
+                            options={[
+                              { fldName: "Select", fldValue: "" },
+                              {
+                                fldName: "No Fibrosis",
+                                fldValue: "NO_FIBROSIS",
+                              },
+                              {
+                                fldName: "Mild Fibrosis",
+                                fldValue: "MILD_FIBROSIS",
+                              },
+                              {
+                                fldName: "Moderate Fibrosis",
+                                fldValue: "MODERATE_FIBROSIS",
+                              },
+                              { fldName: "Fibrosis", fldValue: "FIBROSIS" },
+                              {
+                                fldName: "Severe Fibrosis",
+                                fldValue: "SEVERE_FIBROSIS",
+                              },
+                              { fldName: "Cirrhosis", fldValue: "CIRRHOSIS" },
+                              { fldName: "Not Done", fldValue: "NOT_DONE" },
+                            ]}
+                          />
+                        </select>
+                        {errors.liverBiopsyStage && (
                           <span className={classes.error}>
                             {errors.liverBiopsyStage}
                           </span>
-                        ) : (
-                          ""
                         )}
                       </FormGroup>
                     </div>
@@ -3706,7 +3716,7 @@ const UserRegistration = (props) => {
                     <div className="form-group mb-2 col-md-6">
                       <FormGroup>
                         <Label>
-                          Acites<span style={{ color: "red" }}> *</span>
+                          Ascites<span style={{ color: "red" }}> *</span>
                         </Label>
                         <div className="radio">
                           <label>
@@ -3747,7 +3757,8 @@ const UserRegistration = (props) => {
                       <div className="form-group mb-3 col-md-6">
                         <FormGroup>
                           <Label>
-                            Acites value<span style={{ color: "red" }}> *</span>
+                            Ascites value
+                            <span style={{ color: "red" }}> *</span>
                           </Label>
                           <InputGroup>
                             <Input
@@ -3830,35 +3841,51 @@ const UserRegistration = (props) => {
                         )}
                       </FormGroup>
                     </div>
-                    <div className="form-group mb-3 col-md-6">
+
+                    <div className="form-group mb-3 col-md-4">
                       <FormGroup>
-                        <Label>
-                          Liver biopsy stage
-                          <span style={{ color: "red" }}> *</span>
-                        </Label>
-                        <InputGroup>
-                          <Input
-                            type="select"
-                            name="liverBiopsyStage"
-                            id="liverBiopsyStage"
-                            onChange={handleInputChange}
-                            value={objValues.liverBiopsyStage}
-                          >
-                            <option value="">select</option>
-                            <option value="F0">No Fibrosis</option>
-                            <option value="F1">Mild Fibrosis</option>
-                            <option value="F2">Moderate Fibrosis</option>
-                            <option value="F3">Severe Fibrosis</option>
-                            <option value="F4">Cirrhosis</option>
-                            <option value="not done">Not Done</option>
-                          </Input>
-                        </InputGroup>
-                        {errors.liverBiopsyStage !== "" ? (
+                        <Label for="liverBiopsyStage">Liver biopsy stage</Label>
+                        <ImportantString str="*" />{" "}
+                        <select
+                          className="form-control"
+                          name="liverBiopsyStage"
+                          id="liverBiopsyStage"
+                          onChange={handleInputChangeBasicForClinic}
+                          value={basicInfo.clinicalParameters.liverBiopsyStage}
+                          style={{
+                            border: "1px solid #014D88",
+                            borderRadius: "0.2rem",
+                          }}
+                        >
+                          <GetOptions
+                            options={[
+                              { fldName: "Select", fldValue: "" },
+                              {
+                                fldName: "No Fibrosis",
+                                fldValue: "NO_FIBROSIS",
+                              },
+                              {
+                                fldName: "Mild Fibrosis",
+                                fldValue: "MILD_FIBROSIS",
+                              },
+                              {
+                                fldName: "Moderate Fibrosis",
+                                fldValue: "MODERATE_FIBROSIS",
+                              },
+                              { fldName: "Fibrosis", fldValue: "FIBROSIS" },
+                              {
+                                fldName: "Severe Fibrosis",
+                                fldValue: "SEVERE_FIBROSIS",
+                              },
+                              { fldName: "Cirrhosis", fldValue: "CIRRHOSIS" },
+                              { fldName: "Not Done", fldValue: "NOT_DONE" },
+                            ]}
+                          />
+                        </select>
+                        {errors.liverBiopsyStage && (
                           <span className={classes.error}>
                             {errors.liverBiopsyStage}
                           </span>
-                        ) : (
-                          ""
                         )}
                       </FormGroup>
                     </div>

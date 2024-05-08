@@ -20,11 +20,14 @@ import "react-widgets/dist/css/react-widgets.css";
 import { useValidateForm2ValuesHook } from "../../../formSchemas/form1ValidationSchema";
 import { Collapse, IconButton } from "@material-ui/core";
 import { ArrowForward, ExpandMore as ExpandMoreIcon } from "@material-ui/icons";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { getCookie, setCookie } from "../../../helpers/cookieStoragehelpers";
 import axios from "axios";
-import { url as apiUrl, token } from "../../../../api";
+import { url as baseUrl, token } from "../../../../api";
 import { toast } from "react-toastify";
+import {
+  GetOptions,
+  ImportantString,
+} from "../ViralHepatitisForms/DashboardForm2";
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
 // hcRnaValue
@@ -133,7 +136,7 @@ const DiagnosisSubmitedForm = ({
       ultrasoundScan: "",
       urea: "",
     },
-    enrollmentUuid: enrollmentUuid,
+    enrollmentUuid,
     hepatitisBTest: {
       albumin: "",
       antiHDV: "",
@@ -160,7 +163,6 @@ const DiagnosisSubmitedForm = ({
       multipleInfection: "",
     },
   });
-  
 
   const [errors, setErrors] = useState({});
 
@@ -236,7 +238,7 @@ const DiagnosisSubmitedForm = ({
   const postDataWithToken = async (data) => {
     try {
       const response = await axios.put(
-        `${apiUrl}hepatitis/update-hepatitis-diagnosis/${id}`,
+        `${baseUrl}hepatitis/update-hepatitis-diagnosis/${id}`,
         data,
         {
           headers: {
@@ -246,7 +248,7 @@ const DiagnosisSubmitedForm = ({
         }
       );
       // Handle the response if needed
-    
+
       toast.success("Diagnosis submitted successfully");
       history.push({
         pathname: "/patient-history",
@@ -274,7 +276,6 @@ const DiagnosisSubmitedForm = ({
     e.preventDefault();
 
     if (validate()) {
-     
       postDataWithToken(basicInfo, "hepatitis/diagnosis");
     }
   };
@@ -349,25 +350,20 @@ const DiagnosisSubmitedForm = ({
   };
 
   const viewHepatitisDiagnosis = (eId) => {
-    
     axios
-      .get(`${apiUrl}hepatitis/view-hepatitis-diagnosis-by-id/${id}`, {
+      .get(`${baseUrl}hepatitis/view-hepatitis-diagnosis-by-id/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-       
         setDiagnosisInfo(response.data);
-        
       })
-      .catch((error) => {
-     
-      });
+      .catch((error) => {});
   };
 
   useEffect(() => {
     viewHepatitisDiagnosis();
   }, []);
- 
+
   useEffect(() => {
     castCookieValueToForm();
 
@@ -505,6 +501,16 @@ const DiagnosisSubmitedForm = ({
     hepatitisBDropdown: true,
     hepatitisCDropdown: true,
     coInfectionDropdown: true,
+  });
+
+  useEffect(() => {
+    alert;
+    if (basicInfo.hepatitisBTest.hbvDna === "DETECTED") {
+      setBasicInfo((prev) => ({
+        ...prev,
+        hepatitisBTest: { ...prev.hepatitisBTest, hbvDna: "" },
+      }));
+    }
   });
   return (
     <>
@@ -772,7 +778,7 @@ const DiagnosisSubmitedForm = ({
                                 name="hvbDnaValue"
                                 disabled={action === "view" ? true : false}
                                 id="hvbDnaValue"
-                                value={basicInfo.hepatitisBTest.hvbDnaValue}
+                                value={basicInfo.hepatitisBTest.hbvDna}
                                 onChange={handleInputChangeBasic}
                                 // onBlur={formik.handleBlur}
                                 style={{
@@ -1697,7 +1703,7 @@ const DiagnosisSubmitedForm = ({
 
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
-                      <Label for="ascites">Acites</Label>
+                      <Label for="ascites">Ascites</Label>
                       <span style={{ color: "red" }}> *</span>{" "}
                       <select
                         className="form-control"
@@ -1825,12 +1831,11 @@ const DiagnosisSubmitedForm = ({
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
                       <Label for="liverBiopsyStage">Liver biopsy stage</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                      <ImportantString str="*" />{" "}
                       <select
                         className="form-control"
                         name="liverBiopsyStage"
                         id="liverBiopsyStage"
-                        disabled={action === "view" ? true : false}
                         onChange={handleInputChangeBasicForClinic}
                         value={basicInfo.clinicalParameters.liverBiopsyStage}
                         style={{
@@ -1838,21 +1843,32 @@ const DiagnosisSubmitedForm = ({
                           borderRadius: "0.2rem",
                         }}
                       >
-                        <option value={""}>Select</option>
-                        <option value={"FIBROSIS"}> Fibrosis</option>
-                        <option value={"CIRRHOSIS"}>Cirrhosis</option>
-                        <option value={"NO_FIBROSIS"}> No Fibrosis</option>
-                        <option value={"MILD_FIBROSIS"}>Mild Fibrosis</option>
-                        <option value={"MODERATE_FIBROSIS"}>Moderate Fibrosis</option>
-                        <option value={"SEVERE_FIBROSIS"}>Severe Fibrosis </option>
-                        <option value={"NOT_DONE"}>Not Done</option>
+                        <GetOptions
+                          options={[
+                            { fldName: "Select", fldValue: "" },
+                            { fldName: "No Fibrosis", fldValue: "NO_FIBROSIS" },
+                            {
+                              fldName: "Mild Fibrosis",
+                              fldValue: "MILD_FIBROSIS",
+                            },
+                            {
+                              fldName: "Moderate Fibrosis",
+                              fldValue: "MODERATE_FIBROSIS",
+                            },
+                            { fldName: "Fibrosis", fldValue: "FIBROSIS" },
+                            {
+                              fldName: "Severe Fibrosis",
+                              fldValue: "SEVERE_FIBROSIS",
+                            },
+                            { fldName: "Cirrhosis", fldValue: "CIRRHOSIS" },
+                            { fldName: "Not Done", fldValue: "NOT_DONE" },
+                          ]}
+                        />
                       </select>
-                      {errors.liverBiopsyStage !== "" ? (
+                      {errors.liverBiopsyStage && (
                         <span className={classes.error}>
                           {errors.liverBiopsyStage}
                         </span>
-                      ) : (
-                        ""
                       )}
                     </FormGroup>
                   </div>

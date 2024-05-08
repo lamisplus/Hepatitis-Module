@@ -16,6 +16,7 @@ import "../patient.css";
 import "react-widgets/dist/css/react-widgets.css";
 import { useValidateFollowupFormValuesHook } from "../../../formSchemas/form1ValidationSchema";
 import { ArrowForward } from "@material-ui/icons";
+import { ImportantString } from "./DashboardForm2";
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
 const useStyles = makeStyles((theme) => ({
@@ -89,17 +90,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const FollowupForm = () => {
-  const onSubmitHandler = (values) => {
-  
+  const onSubmitHandler = (values) => {};
+  const handleInputChangeBasicForClinic = (e) => {
+    setErrors({ ...temp, [e.target.name]: "" });
+    setBasicInfo({
+      ...basicInfo,
+      clinicalParameters: {
+        ...basicInfo.clinicalParameters,
+        [e.target.name]: e.target.value,
+      },
+    });
   };
-
   const classes = useStyles();
   const { formik } = useValidateFollowupFormValuesHook(onSubmitHandler);
   return (
     <>
-      <CardContent>
-        {/* <PatientCardFollowUp /> */}
-      </CardContent>
       <Card className={classes.root}>
         <CardContent>
           <div className="col-xl-12 col-lg-12">
@@ -844,7 +849,7 @@ const FollowupForm = () => {
 
                     <div className="form-group mb-3 col-md-4">
                       <FormGroup>
-                        <Label for="acites">Acites</Label>
+                        <Label for="acites">Ascites</Label>
                         <select
                           className="form-control"
                           name="acites"
@@ -964,30 +969,47 @@ const FollowupForm = () => {
                     <div className="form-group mb-3 col-md-4">
                       <FormGroup>
                         <Label for="liverBiopsyStage">Liver biopsy stage</Label>
+                        <ImportantString str="*" />{" "}
                         <select
                           className="form-control"
                           name="liverBiopsyStage"
                           id="liverBiopsyStage"
-                          onChange={formik.handleChange}
-                          value={formik.values.liverBiopsyStage}
+                          onChange={handleInputChangeBasicForClinic}
+                          value={basicInfo.clinicalParameters.liverBiopsyStage}
                           style={{
                             border: "1px solid #014D88",
                             borderRadius: "0.2rem",
                           }}
                         >
-                          <option value={""}>Select</option>
-                          <option value={"FIBROSIS"}> Fibrosis</option>
-                          <option value={"CIRRHOSIS"}>Cirrhosis</option>
-                          <option value={"NO_FIBROSIS"}> No Fibrosis</option>
-                          {/* <option value={"CIRRHOSIS"}>Cirrhosis</option> */}
-                          <option value={"HIGH_CC"}>High CC </option>
+                          <GetOptions
+                            options={[
+                              { fldName: "Select", fldValue: "" },
+                              {
+                                fldName: "No Fibrosis",
+                                fldValue: "NO_FIBROSIS",
+                              },
+                              {
+                                fldName: "Mild Fibrosis",
+                                fldValue: "MILD_FIBROSIS",
+                              },
+                              {
+                                fldName: "Moderate Fibrosis",
+                                fldValue: "MODERATE_FIBROSIS",
+                              },
+                              { fldName: "Fibrosis", fldValue: "FIBROSIS" },
+                              {
+                                fldName: "Severe Fibrosis",
+                                fldValue: "SEVERE_FIBROSIS",
+                              },
+                              { fldName: "Cirrhosis", fldValue: "CIRRHOSIS" },
+                              { fldName: "Not Done", fldValue: "NOT_DONE" },
+                            ]}
+                          />
                         </select>
-                        {formik.errors.liverBiopsyStage !== "" ? (
+                        {errors.liverBiopsyStage && (
                           <span className={classes.error}>
-                            {formik.errors.liverBiopsyStage}
+                            {errors.liverBiopsyStage}
                           </span>
-                        ) : (
-                          ""
                         )}
                       </FormGroup>
                     </div>

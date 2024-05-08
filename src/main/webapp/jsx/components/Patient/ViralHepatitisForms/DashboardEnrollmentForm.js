@@ -21,7 +21,23 @@ import { ArrowForward } from "@material-ui/icons";
 import { getCookie, setCookie } from "../../../helpers/cookieStoragehelpers";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { url as apiUrl, token } from "../../../../api";
+import {
+  token,
+  url as baseUrl,
+  hivStatsEnrolPath,
+  srcRefPath,
+  erollmentSettingPath,
+  tbStatsPath,
+  targetGroupPath,
+  pregnancyStatsPath,
+  sexPath,
+  maritalStatsPath,
+  educationPath,
+  occupationPath,
+  relationshipPath,
+  careEntryPointPath,
+  hepatitisScreeningResultPath,
+} from "../../../api";
 import { useCallback } from "react";
 import { useState } from "react";
 
@@ -194,16 +210,19 @@ const DashboardEnrollmentForm = ({
   const toggle = () => setOpen(!open);
 
   const sexCodeset = async () => {
-    const response = await axios.get(`${apiUrl}application-codesets/v2/SEX`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await axios.get(
+      `${baseUrl}application-codesets/v2/${sexPath}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
     setGenders(response.data.sort());
   };
 
   const loadMaritalStatus = useCallback(async () => {
     try {
       const response = await axios.get(
-        `${apiUrl}application-codesets/v2/MARITAL_STATUS`,
+        `${baseUrl}application-codesets/v2//${maritalStatsPath}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setMaritalStatusOptions(response.data.sort());
@@ -213,7 +232,7 @@ const DashboardEnrollmentForm = ({
   const loadEducation = useCallback(async () => {
     try {
       const response = await axios.get(
-        `${apiUrl}application-codesets/v2/EDUCATION`,
+        `${baseUrl}application-codesets/v2//${educationPath}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setEducationOptions(response.data.sort());
@@ -223,7 +242,7 @@ const DashboardEnrollmentForm = ({
   const loadOccupation = useCallback(async () => {
     try {
       const response = await axios.get(
-        `${apiUrl}application-codesets/v2/OCCUPATION`,
+        `${baseUrl}application-codesets/v2//${occupationPath}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setOccupationOptions(response.data.sort());
@@ -232,7 +251,7 @@ const DashboardEnrollmentForm = ({
 
   const CareEntryPoint = () => {
     axios
-      .get(`${apiUrl}application-codesets/v2/POINT_ENTRY`, {
+      .get(`${baseUrl}application-codesets/v2//${careEntryPointPath}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -243,9 +262,12 @@ const DashboardEnrollmentForm = ({
 
   const getHepatitisPoint = () => {
     axios
-      .get(`${apiUrl}application-codesets/v2/HEPATITIS_SCREENING_RESULT`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .get(
+        `${baseUrl}application-codesets/v2//${hepatitisScreeningResultPath}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
       .then((response) => {
         setHepatitisStatus(response.data);
       })
@@ -254,7 +276,7 @@ const DashboardEnrollmentForm = ({
   //Get list of Source of Referral
   const SourceReferral = () => {
     axios
-      .get(`${apiUrl}application-codesets/v2/SOURCE_REFERRAL`, {
+      .get(`${baseUrl}application-codesets/v2//${srcRefPath}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -265,7 +287,7 @@ const DashboardEnrollmentForm = ({
 
   const EnrollmentSetting = () => {
     axios
-      .get(`${apiUrl}application-codesets/v2/ENROLLMENT_SETTING`, {
+      .get(`${baseUrl}application-codesets/v2//${erollmentSettingPath}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -277,7 +299,7 @@ const DashboardEnrollmentForm = ({
   const loadRelationships = useCallback(async () => {
     try {
       const response = await axios.get(
-        `${apiUrl}application-codesets/v2/RELATIONSHIP`,
+        `${baseUrl}application-codesets/v2//${relationshipPath}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setRelationshipOptions(response.data.sort());
@@ -286,7 +308,7 @@ const DashboardEnrollmentForm = ({
 
   const loadTopLevelCountry = useCallback(async () => {
     const response = await axios.get(
-      `${apiUrl}organisation-units/parent-organisation-units/0`,
+      `${baseUrl}organisation-units/parent-organisation-units/0`,
       { headers: { Authorization: `Bearer ${token}` } }
     );
     settopLevelUnitCountryOptions(response.data.sort());
@@ -294,7 +316,7 @@ const DashboardEnrollmentForm = ({
 
   const loadOrganisationUnitsByParentId = async (parentId) => {
     const response = await axios.get(
-      `${apiUrl}organisation-units/parent-organisation-units/${parentId}`,
+      `${baseUrl}organisation-units/parent-organisation-units/${parentId}`,
       { headers: { Authorization: `Bearer ${token}` } }
     );
     return response.data;
@@ -321,7 +343,7 @@ const DashboardEnrollmentForm = ({
   //Country List
   const GetCountry = () => {
     axios
-      .get(`${apiUrl}organisation-units/parent-organisation-units/0`, {
+      .get(`${baseUrl}organisation-units/parent-organisation-units/0`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -345,7 +367,6 @@ const DashboardEnrollmentForm = ({
       currentDate.setMonth(5);
       const estDob = moment(currentDate.toISOString());
       const dobNew = estDob.add(e.target.value * -1, "years");
-      //setBasicInfo({...basicInfo, dob: moment(dobNew).format("YYYY-MM-DD")});
 
       basicInfo.personDto.dateOfBirth = moment(dobNew).format("YYYY-MM-DD");
 
@@ -354,7 +375,6 @@ const DashboardEnrollmentForm = ({
     setBasicInfo({ ...basicInfo, age: Math.abs(e.target.value) });
   };
 
-  //Date of Birth and Age handle
   const handleDobChange = (e) => {
     if (e.target.value) {
       const today = new Date();
@@ -366,34 +386,21 @@ const DashboardEnrollmentForm = ({
         age_now--;
       }
       basicInfo.age = age_now;
-      //setBasicInfo({...basicInfo, age: age_now});
     } else {
       setBasicInfo({ ...basicInfo, age: "" });
     }
-    // setBasicInfo({
-    //   ...basicInfo,
-    //   personDto: {
-    //     ...basicInfo.personDto,
-    //     dateOfRegistration: e.target.value,
-    //   },
-    // });
-
-    // setBasicInfo({ ...basicInfo, dob: e.target.value });
     if (basicInfo.age !== "" && basicInfo.age >= 60) {
       toggle();
     }
   };
-
-  //Get States from selected country
   const getStates = () => {
     const getCountryId = info?.countryId;
     setStateByCountryId(1);
     setInfo({ ...info, countryId: getCountryId });
   };
-  //Get list of State
   function setStateByCountryId(id) {
     axios
-      .get(`${apiUrl}organisation-units/parent-organisation-units/${id}`, {
+      .get(`${baseUrl}organisation-units/parent-organisation-units/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -401,14 +408,15 @@ const DashboardEnrollmentForm = ({
       })
       .catch((error) => {});
   }
-  //fetch province
   const getProvinces = (e) => {
     const stateId = e?.target?.value;
-    // setBasicInfo({ ...basicInfo, stateId: e?.target?.value });
     axios
-      .get(`${apiUrl}organisation-units/parent-organisation-units/${stateId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .get(
+        `${baseUrl}organisation-units/parent-organisation-units/${stateId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
       .then((response) => {
         setProvinces(response.data.sort());
       })
@@ -417,14 +425,12 @@ const DashboardEnrollmentForm = ({
 
   const postDataWithToken = async (data, key) => {
     try {
-      const response = await axios.post(`${apiUrl}${key}`, data, {
+      const response = await axios.post(`${baseUrl}${key}`, data, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       });
-      // Handle the response if needed
-
       toast.success("Enrolment submitted successfully");
 
       setCookie(
@@ -438,7 +444,6 @@ const DashboardEnrollmentForm = ({
       );
       return response.data;
     } catch (error) {
-      // Handle any errors that occurred during the request
       toast.error("Enrolment failed");
       console.error("Error posting data:", error.message);
       throw error;
@@ -510,7 +515,7 @@ const DashboardEnrollmentForm = ({
 
   const PregnancyStatus = () => {
     axios
-      .get(`${apiUrl}application-codesets/v2/PREGNANCY_STATUS`, {
+      .get(`${baseUrl}application-codesets/v2/PREGNANCY_STATUS`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -554,39 +559,8 @@ const DashboardEnrollmentForm = ({
     }
   };
 
-  // to capture the error
   let temp = { ...errors };
   const validate = () => {
-    // if (userStatus === "new") {
-
-    //   temp.dateOfRegistration = info.dateOfRegistration
-    //     ? ""
-    //     : "Date of Registration is required.";
-
-    //   temp.hospitalNumber = info.value ? "" : "Hospital Id is required";
-    //   temp.streetAddress = basicInfo.streetAddress ? "" : "Address is required";
-
-    //   temp.surname = basicInfo.personDto.surname ? "" : "Surname is required";
-    //   temp.firstName = basicInfo.personDto.firstName
-    //     ? ""
-    //     : "First name is required";
-
-    //   temp.phone = basicInfo.phone ? "" : "Phone Number  is required.";
-
-    //   temp.stateId = info.stateId ? "" : "State is required.";
-    //   temp.district = info.district ? "" : "Province/LGA is required.";
-
-    //   temp.dateOfBirth = info.dateOfBirth ? "" : "Date of Birth is required.";
-
-    //   temp.maritalStatusId = basicInfo.personDto.maritalStatusId
-    //     ? ""
-    //     : "Marital Status is required";
-
-    //   temp.educationId = info.educationId ? "" : "Education is required";
-
-    //   temp.genderId = basicInfo.personDto.genderId ? "" : "sex is required";
-    // }
-
     temp.careEntryPoint = basicInfo.careEntryPoint
       ? ""
       : "careEntryPoint is required";
@@ -608,20 +582,14 @@ const DashboardEnrollmentForm = ({
     setErrors({ ...temp });
     return Object.values(temp).every((x) => x == "");
   };
- 
 
   const checkPhoneNumberBasic = (e, inputName) => {
     const limit = 10;
     setBasicInfo({ ...basicInfo, [inputName]: e });
   };
 
-  // handle input changes
   const handleInputChangeBasic = (e) => {
     setErrors({ ...temp, [e.target.name]: "" });
-    //manupulate inpute fields base on gender/sex
-    // if (e.target.name === "sexId" && e.target.value === "377") {
-    //   setfemaleStatus(true);
-    // }
     if (e.target.name === "firstName") {
       const name = alphabetOnly(e.target.value);
       setBasicInfo({
@@ -632,8 +600,6 @@ const DashboardEnrollmentForm = ({
         },
       });
     } else if (e.target.name === "genderId") {
-     
-
       setBasicInfo({
         ...basicInfo,
         personDto: {
@@ -642,13 +608,6 @@ const DashboardEnrollmentForm = ({
           sexId: e.target.value,
         },
       });
-      // setBasicInfo({
-      //   ...basicInfo,
-      //   personDto: {
-      //     ...basicInfo.personDto,
-      //
-      //   },
-      // });
     } else if (e.target.name === "surname") {
       const name = alphabetOnly(e.target.value);
       setBasicInfo({
@@ -709,13 +668,12 @@ const DashboardEnrollmentForm = ({
     } else {
       setInfo({ ...info, [e.target.name]: e.target.value });
     }
-    //manupulate inpute fields base on gender/sex
     if (e.target.name === "hospitalNumber") {
       if (e.target.value !== "") {
         async function getHosiptalNumber() {
           const hosiptalNumber = e.target.value;
           const response = await axios.post(
-            `${apiUrl}patient/exist/hospital-number`,
+            `${baseUrl}patient/exist/hospital-number`,
             hosiptalNumber,
             {
               headers: {
@@ -782,8 +740,6 @@ const DashboardEnrollmentForm = ({
           ],
         },
       });
-
-      // getProvinces(e);
     }
     if (e.target.name === "dateOfBirth" && e.target.value !== "") {
       handleDobChange(e);
@@ -840,35 +796,13 @@ const DashboardEnrollmentForm = ({
         },
       });
     }
-
-    // }
-    // if (e.target.name === "firstName" && e.target.value !== "") {
-    //   const name = alphabetOnly(e.target.value);
-    //   setBasicInfo({ ...basicInfo, [e.target.name]: name });
-    // }
-    // if (e.target.name === "surname" && e.target.value !== "") {
-    //   const name = alphabetOnly(e.target.value);
-    //   setBasicInfo({ ...basicInfo, [e.target.name]: name });
-    // }
-    // if (e.target.name === "otherName" && e.target.value !== "") {
-    //   const name = alphabetOnly(e.target.value);
-    //   setBasicInfo({ ...basicInfo, [e.target.name]: name });
-    // }
-
-    // if (e.target.name === "stateId" && e.target.value !== "") {
-    //   getProvinces(e);
-    // }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // validating the input
     window.scrollTo(0, 0);
 
     if (validate()) {
-      //   if (userStatus) {
-      //     postDataWithToken(basicInfo, "hepatitis/enrollment");
-      //   } else {
       let userInfo = basicInfo;
       delete userInfo.personDto;
       delete userInfo.address;
@@ -878,8 +812,6 @@ const DashboardEnrollmentForm = ({
         personId: patientObj.id,
       };
       postDataWithToken(newUserInfo, "hepatitis/enrollment");
-
-    
     }
   };
 
@@ -900,20 +832,17 @@ const DashboardEnrollmentForm = ({
     loadOccupation();
     getStates();
     GetCountry();
-    // getHepatitisPoint();
   }, []);
-  // calculate bmi when weight and height changes
   useEffect(() => {
     if (basicInfo.weight && basicInfo.height) {
       calculateBMI();
     }
-  }, [basicInfo.weight, basicInfo.height, info.stateId]); // Runs whenever 'data' changes
+  }, [basicInfo.weight, basicInfo.height, info.stateId]);
   return (
     <>
       <Card className={classes.root}>
         <CardContent>
           <div className="col-xl-12 col-lg-12">
-            {/* <Form onSubmit={formik.handleSubmit}> */}
             {userStatus === "new" && (
               <div className="card">
                 <div
@@ -947,7 +876,6 @@ const DashboardEnrollmentForm = ({
                             value={info.dateOfRegistration}
                             onChange={handleInputChangesForInfo}
                             max={moment(new Date()).format("YYYY-MM-DD")}
-                            // onBlur={formik.handleBlur}
                             style={{
                               border: "1px solid #014D88",
                               borderRadius: "0.2rem",
@@ -994,13 +922,6 @@ const DashboardEnrollmentForm = ({
                           ) : (
                             ""
                           )}
-                          {/* {hospitalNumStatus2 === true ? (
-                          <span className={classes.success}>
-                            {"Hospital number is OK."}
-                          </span>
-                        ) : (
-                          ""
-                        )} */}
                         </FormGroup>
                       </div>
 
@@ -1106,7 +1027,6 @@ const DashboardEnrollmentForm = ({
                               setErrors({ ...errors, phone: "" });
                               checkPhoneNumberBasic(e, "phone");
                             }}
-                            //onChange={(e)=>{handleInputChangeBasic(e,'phoneNumber')}}
                           />
                           {errors.phone !== "" ? (
                             <span className={classes.error}>
@@ -1115,41 +1035,8 @@ const DashboardEnrollmentForm = ({
                           ) : (
                             ""
                           )}
-                          {/* {basicInfo.phoneNumber.length >13 ||  basicInfo.phoneNumber.length <13? (
-                                                <span className={classes.error}>{"The maximum and minimum required number is 13 digit"}</span>
-                                                ) : "" } */}
                         </FormGroup>
                       </div>
-
-                      {/* <div className="form-group mb-3 col-md-4">
-                        <FormGroup>
-                          <Label for="residentialAddress">
-                            Residential Address{" "}
-                            <span style={{ color: "red" }}> *</span>{" "}
-                          </Label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            name="residentialAddress"
-                            id="residentialAddress"
-                            value={basicInfo.residentialAddress}
-                            onChange={handleInputChangeBasic}
-                            onBlur={formik.handleBlur}
-                            style={{
-                              border: "1px solid #014D88",
-                              borderRadius: "0.2rem",
-                            }}
-                          />
-                          {formik.errors.residentialAddress !== "" ? (
-                            <span className={classes.error}>
-                              {formik.errors.residentialAddress}
-                            </span>
-                          ) : (
-                            ""
-                          )}
-                        </FormGroup>
-                      </div> */}
-
                       <div className="form-group mb-3 col-md-4">
                         <FormGroup>
                           <Label for="countryId">
@@ -1250,7 +1137,6 @@ const DashboardEnrollmentForm = ({
                           )}
                         </FormGroup>
                       </div>
-                      {/*  */}
                       <div className="form-group  col-md-4">
                         <FormGroup>
                           <Label>
@@ -1278,8 +1164,6 @@ const DashboardEnrollmentForm = ({
                           )}
                         </FormGroup>
                       </div>
-
-                      {/*  */}
                       <div className="form-group mb-3 col-md-4">
                         <FormGroup>
                           <Label for="landmark">Landmark </Label>
@@ -1290,23 +1174,14 @@ const DashboardEnrollmentForm = ({
                             id="landmark"
                             value={basicInfo.landmark}
                             onChange={handleInputChangeBasic}
-                            // onBlur={formik.handleBlur}
                             style={{
                               border: "1px solid #014D88",
                               borderRadius: "0.2rem",
                             }}
                           />
-                          {/* {formik.errors.landmark !== "" ? (
-                          <span className={classes.error}>
-                            {formik.errors.landmark}
-                          </span>
-                        ) : (
-                          ""
-                        )} */}
                         </FormGroup>
                       </div>
 
-                      {/* new date of registration with actual/estimated date  */}
                       <div className="form-group mb-3 col-md-4">
                         <FormGroup>
                           <Label>Date Of Birth</Label>
@@ -1343,9 +1218,6 @@ const DashboardEnrollmentForm = ({
                           </div>
                         </FormGroup>
                       </div>
-
-                      {/* end of new date of reg with actual/estimated  date */}
-
                       <div className="form-group mb-3 col-md-4">
                         <FormGroup>
                           <Label for="dateOfBirth">
@@ -1360,7 +1232,6 @@ const DashboardEnrollmentForm = ({
                             max={moment(new Date()).format("YYYY-MM-DD")}
                             value={info.dateOfBirth}
                             onChange={handleInputChangesForInfo}
-                            // onBlur={formik.handleBlur}
                             style={{
                               border: "1px solid #014D88",
                               borderRadius: "0.2rem",
@@ -1394,48 +1265,7 @@ const DashboardEnrollmentForm = ({
                             }}
                           />
                         </FormGroup>
-                        {/* <p>
-                        <b style={{ color: "red" }}>
-                          {basicInfo.age !== "" && basicInfo.age < 10
-                            ? "The minimum age is 10"
-                            : " "}{" "}
-                        </b>
-                      </p> */}
                       </div>
-
-                      {/* <div className="form-group mb-3 col-md-4">
-                      <FormGroup>
-                        <Label for="isDateOfBirthEstimated">
-                          Is date Of estimated
-                          <span style={{ color: "red" }}> *</span>{" "}
-                        </Label>
-                        <select
-                          className="form-control"
-                          // type="date"
-                          name="isDateOfBirthEstimated"
-                          id="isDateOfBirthEstimated"
-                          value={basicInfo.isDateOfBirthEstimated}
-                          onChange={handleInputChangeBasic}
-                          onBlur={formik.handleBlur}
-                          style={{
-                            border: "1px solid #014D88",
-                            borderRadius: "0.2rem",
-                          }}
-                        >
-                          <option>Select</option>
-                          <option value={true}>Yes</option>
-                          <option value={false}>No</option>
-                        </select>
-                        {formik.errors.isDateOfBirthEstimated !== "" ? (
-                          <span className={classes.error}>
-                            {formik.errors.isDateOfBirthEstimated}
-                          </span>
-                        ) : (
-                          ""
-                        )}
-                      </FormGroup>
-                    </div> */}
-
                       <div className="form-group mb-3 col-md-4">
                         <FormGroup>
                           <Label for="employmentStatusId">Occupation</Label>
@@ -1445,7 +1275,6 @@ const DashboardEnrollmentForm = ({
                             id="employmentStatusId"
                             value={info.employmentStatusId}
                             onChange={handleInputChangesForInfo}
-                            // onBlur={formik.handleBlur}
                             style={{
                               border: "1px solid #014D88",
                               borderRadius: "0.2rem",
@@ -1461,13 +1290,6 @@ const DashboardEnrollmentForm = ({
                               </option>
                             ))}
                           </select>
-                          {/* {errors.district !== "" ? (
-                          <span className={classes.error}>
-                            {errors.district}
-                          </span>
-                        ) : (
-                          ""
-                        )} */}
                         </FormGroup>
                       </div>
                       <div className="form-group mb-3 col-md-4">
@@ -1538,41 +1360,6 @@ const DashboardEnrollmentForm = ({
                           )}
                         </FormGroup>
                       </div>
-
-                      {/* <div className="form-group mb-3 col-md-4">
-                        <FormGroup>
-                          <Label for="relationship">
-                            Relationship{" "}
-                            <span style={{ color: "red" }}> *</span>{" "}
-                          </Label>
-                          <select
-                            className="form-control"
-                            name="relationship"
-                            id="relationship"
-                            value={basicInfo.relationship}
-                            onChange={handleInputChangeBasic}
-                            // onBlur={formik.handleBlur}
-                            style={{
-                              border: "1px solid #014D88",
-                              borderRadius: "0.2rem",
-                            }}
-                          >
-                            <option>Select</option>
-                            {relationshipOptions.map((item, index) => (
-                              <option value={Number(item.id)}>
-                                {item.display}
-                              </option>
-                            ))}
-                          </select>
-                          {errors.relationship !== "" ? (
-                            <span className={classes.error}>
-                              {errors.relationship}
-                            </span>
-                          ) : (
-                            ""
-                          )}
-                        </FormGroup>
-                      </div> */}
 
                       <div className="form-group mb-3 col-md-4">
                         <FormGroup>
@@ -1689,36 +1476,6 @@ const DashboardEnrollmentForm = ({
                       )}
                     </FormGroup>
                   </div>
-                  {/* <div className="form-group mb-3 col-md-4">
-                      <FormGroup>
-                        <Label for="sex">
-                          Sex <span style={{ color: "red" }}> *</span>{" "}
-                        </Label>
-                        <select
-                          className="form-control"
-                          name="sex"
-                          id="sex"
-                          value={basicInfo.sex}
-                          onChange={handleInputChangeBasic}
-                          onBlur={formik.handleBlur}
-                          style={{
-                            border: "1px solid #014D88",
-                            borderRadius: "0.2rem",
-                          }}
-                        >
-                          <option value="">Select</option>
-                          <option value="male">Male</option>
-                          <option value="female">Female</option>
-                        </select>
-                        {formik.errors.sex !== "" ? (
-                          <span className={classes.error}>
-                            {formik.errors.sex}
-                          </span>
-                        ) : (
-                          ""
-                        )}
-                      </FormGroup>
-                    </div> */}
 
                   {Number(basicInfo.personDto.genderId) === 377 && (
                     <div className="form-group mb-3 col-md-4">
@@ -1732,7 +1489,6 @@ const DashboardEnrollmentForm = ({
                           id="pregnancy"
                           value={basicInfo.pregnancy}
                           onChange={handleInputChangeBasic}
-                          // onBlur={formik.handleBlur}
                           style={{
                             border: "1px solid #014D88",
                             borderRadius: "0.2rem",
@@ -1741,11 +1497,6 @@ const DashboardEnrollmentForm = ({
                           <option value="">Select </option>
                           <option value="NO">No </option>
                           <option value="YES">Yes </option>
-                          {/* {pregnancyStatus.map((value) => (
-                            <option key={value.id} value={value.id}>
-                              {value.display}
-                            </option>
-                          ))} */}
                         </select>
                         {errors.pregnancy !== "" ? (
                           <span className={classes.error}>
@@ -1826,13 +1577,6 @@ const DashboardEnrollmentForm = ({
                           borderRadius: "0.2rem",
                         }}
                       />
-                      {/* {formik.errors.bmi !== "" ? (
-                          <span className={classes.error}>
-                            {formik.errors.bmi}
-                          </span>
-                        ) : (
-                          ""
-                        )} */}
                     </FormGroup>
                   </div>
 
@@ -1847,7 +1591,6 @@ const DashboardEnrollmentForm = ({
                         id="breastfeeding"
                         value={basicInfo.breastfeeding}
                         onChange={handleInputChangeBasic}
-                        // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
@@ -1887,13 +1630,6 @@ const DashboardEnrollmentForm = ({
                         <option value={"YES"}>Yes</option>
                         <option value={"NO"}>No</option>
                       </select>
-                      {/* {formik.errors.historyOfUsingAbusedSubstance !== "" ? (
-                        <span className={classes.error}>
-                          {formik.errors.historyOfUsingAbusedSubstance}
-                        </span>
-                      ) : (
-                        ""
-                      )} */}
                     </FormGroup>
                   </div>
                 </div>
@@ -1942,18 +1678,6 @@ const DashboardEnrollmentForm = ({
                           </option>
                         ))}
                       </select>
-                      {/* <input
-                        className="form-control"
-                        type="text"
-                        name="hepatitisB"
-                        id="hepatitisB"
-                        onChange={handleInputChangeBasic}
-                        onBlur={formik.handleBlur}
-                        style={{
-                          border: "1px solid #014D88",
-                          borderRadius: "0.2rem",
-                        }}
-                      /> */}
                       {errors.hepatitisB !== "" ? (
                         <span className={classes.error}>
                           {errors.hepatitisB}
@@ -2018,27 +1742,6 @@ const DashboardEnrollmentForm = ({
                           </option>
                         ))}
                       </select>
-
-                      {/* <input
-                        className="form-control"
-                        type="text"
-                        name="hepatitisC"
-                        id="hepatitisC"
-                        value={basicInfo.hepatitisC}
-                        onChange={handleInputChangeBasic}
-                        onBlur={formik.handleBlur}
-                        style={{
-                          border: "1px solid #014D88",
-                          borderRadius: "0.2rem",
-                        }}
-                      /> */}
-                      {/* {errors.pregnancy !== "" ? (
-                        <span className={classes.error}>
-                          {errors.pregnancy}
-                        </span>
-                      ) : (
-                        ""
-                      )} */}
                     </FormGroup>
                   </div>
                 </div>

@@ -16,7 +16,6 @@ import DasboardTreatmentForm from "./ViralHepatitisForms/DashboardTreatmentForm"
 import PatientHistory from "./PatientHistoryy";
 import FollowUpHome from "./ViralHepatitisForms/PatientCardFollowUpHome";
 
-
 const styles = (theme) => ({
   root: {
     width: "100%",
@@ -75,23 +74,16 @@ function PatientCard(props) {
       ? history.location.state.prepId
       : {};
 
-  
-
- 
-
   const getRecentActivties = () => {
     axios
       .get(`${baseUrl}hepatitis/activities/${patientObj.personUuid}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        setRecentActivities(response.data);
-        
+        setRecentActivities(response?.data);
       })
 
-      .catch((error) => {
-      
-      });
+      .catch((error) => {});
   };
 
   useEffect(() => {
@@ -166,7 +158,7 @@ function PatientCard(props) {
               recentActivities={recentActivities}
               getRecentActivties={getRecentActivties}
             />
-          )}          
+          )}
         </CardContent>
       </Card>
     </div>

@@ -20,6 +20,7 @@ import { useValidateForm2ValuesHook } from "../../../formSchemas/form1Validation
 import { Collapse, IconButton } from "@material-ui/core";
 import { ArrowForward, ExpandMore as ExpandMoreIcon } from "@material-ui/icons";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { GetOptions, ImportantString } from "./DashboardForm2";
 
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
@@ -101,6 +102,19 @@ const ViralHepatitisForm4 = () => {
     hepatitisCDropdown: false,
     coInfectionDropdown: false,
   });
+
+  const handleInputChangeBasicForClinic = (e) => {
+    setErrors({ ...temp, [e.target.name]: "" });
+
+    setBasicInfo({
+      ...basicInfo,
+      clinicalParameters: {
+        ...basicInfo.clinicalParameters,
+        [e.target.name]: e.target.value,
+      },
+    });
+  };
+
   return (
     <>
       <Card className={classes.root}>
@@ -1130,7 +1144,7 @@ const ViralHepatitisForm4 = () => {
 
                     <div className="form-group mb-3 col-md-4">
                       <FormGroup>
-                        <Label for="acites">Acites</Label>
+                        <Label for="acites">Ascites</Label>
                         <select
                           className="form-control"
                           name="acites"
@@ -1254,30 +1268,47 @@ const ViralHepatitisForm4 = () => {
                     <div className="form-group mb-3 col-md-4">
                       <FormGroup>
                         <Label for="liverBiopsyStage">Liver biopsy stage</Label>
+                        <ImportantString str="*" />{" "}
                         <select
                           className="form-control"
                           name="liverBiopsyStage"
                           id="liverBiopsyStage"
-                          onChange={formik.handleChange}
-                          value={formik.values.liverBiopsyStage}
+                          onChange={handleInputChangeBasicForClinic}
+                          value={basicInfo.clinicalParameters.liverBiopsyStage}
                           style={{
                             border: "1px solid #014D88",
                             borderRadius: "0.2rem",
                           }}
                         >
-                          <option value={""}>Select</option>
-                          <option value={"FIBROSIS"}> Fibrosis</option>
-                          <option value={"CIRRHOSIS"}>Cirrhosis</option>
-                          <option value={"NO_FIBROSIS"}> No Fibrosis</option>
-                          {/* <option value={"CIRRHOSIS"}>Cirrhosis</option> */}
-                          <option value={"HIGH_CC"}>High CC </option>
+                          <GetOptions
+                            options={[
+                              { fldName: "Select", fldValue: "" },
+                              {
+                                fldName: "No Fibrosis",
+                                fldValue: "NO_FIBROSIS",
+                              },
+                              {
+                                fldName: "Mild Fibrosis",
+                                fldValue: "MILD_FIBROSIS",
+                              },
+                              {
+                                fldName: "Moderate Fibrosis",
+                                fldValue: "MODERATE_FIBROSIS",
+                              },
+                              { fldName: "Fibrosis", fldValue: "FIBROSIS" },
+                              {
+                                fldName: "Severe Fibrosis",
+                                fldValue: "SEVERE_FIBROSIS",
+                              },
+                              { fldName: "Cirrhosis", fldValue: "CIRRHOSIS" },
+                              { fldName: "Not Done", fldValue: "NOT_DONE" },
+                            ]}
+                          />
                         </select>
-                        {formik.errors.liverBiopsyStage !== "" ? (
+                        {errors.liverBiopsyStage && (
                           <span className={classes.error}>
-                            {formik.errors.liverBiopsyStage}
+                            {errors.liverBiopsyStage}
                           </span>
-                        ) : (
-                          ""
                         )}
                       </FormGroup>
                     </div>

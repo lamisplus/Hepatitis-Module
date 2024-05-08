@@ -20,13 +20,27 @@ import { useValidateForm1ValuesHook } from "../../../formSchemas/form1Validation
 import { ArrowForward } from "@material-ui/icons";
 import { getCookie, setCookie } from "../../../helpers/cookieStoragehelpers";
 import axios from "axios";
+import {
+  token,
+  url as baseUrl,
+  hivStatsEnrolPath,
+  srcRefPath,
+  erollmentSettingPath,
+  tbStatsPath,
+  targetGroupPath,
+  pregnancyStatsPath,
+  sexPath,
+  maritalStatsPath,
+  educationPath,
+  occupationPath,
+  relationshipPath,
+  careEntryPointPath,
+  hepatitisScreeningResultPath,
+} from "../../../../api";
 import { toast } from "react-toastify";
-import { url as apiUrl, token } from "../../../../api";
 import { useCallback } from "react";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
-
-// import { FormGroup, Label, Spinner, Input, Form, InputGroup } from "reactstrap";
 
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
@@ -102,7 +116,6 @@ const useStyles = makeStyles((theme) => ({
 
 const EnrolmentSubmittedForm = ({
   action,
-  setStep,
   userStatus,
   patientObj,
   allPatientInfo,
@@ -122,8 +135,6 @@ const EnrolmentSubmittedForm = ({
     bmi: "",
     hepatitisB: "",
     height: "",
-    // streetAddress: "",
-    // address: [],
     careEntryPoint: "",
     age: "",
     phoneNumber: "",
@@ -175,7 +186,6 @@ const EnrolmentSubmittedForm = ({
   const [maritalStatusOptions, setMaritalStatusOptions] = useState([]);
   const [educationOptions, setEducationOptions] = useState([]);
   const [occupationOptions, setOccupationOptions] = useState([]);
-  const [relationshipOptions, setRelationshipOptions] = useState([]);
   const [countries, setCountries] = useState([]);
   const [states, setStates] = useState([]);
   const [hepatitisStatus, setHepatitisStatus] = useState([
@@ -183,34 +193,26 @@ const EnrolmentSubmittedForm = ({
     { id: "Non-reactive", display: " Non-Reactive" },
   ]);
   const [provinces, setProvinces] = useState([]);
-
   const [errors, setErrors] = useState({});
-  const [topLevelUnitCountryOptions, settopLevelUnitCountryOptions] = useState(
-    []
-  );
-
   const [ageDisabled, setAgeDisabled] = useState(true);
-  // const [isDateOfBirthEstimated, setIsDateOfBirthEstimated] = useState(false);
-
   const [carePoints, setCarePoints] = useState([]);
-  const [sourceReferral, setSourceReferral] = useState([]);
-  const [pregnancyStatus, setPregnancyStatus] = useState([]);
-  const [disabledAgeBaseOnAge, setDisabledAgeBaseOnAge] = useState(false);
-
   const [open, setOpen] = React.useState(false);
   const toggle = () => setOpen(!open);
 
   const sexCodeset = async () => {
-    const response = await axios.get(`${apiUrl}application-codesets/v2/SEX`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await axios.get(
+      `${baseUrl}application-codesets/v2/${sexPath}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
     setGenders(response.data.sort());
   };
 
   const loadMaritalStatus = useCallback(async () => {
     try {
       const response = await axios.get(
-        `${apiUrl}application-codesets/v2/MARITAL_STATUS`,
+        `${baseUrl}application-codesets/v2/${maritalStatsPath}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setMaritalStatusOptions(response.data.sort());
@@ -220,7 +222,7 @@ const EnrolmentSubmittedForm = ({
   const loadEducation = useCallback(async () => {
     try {
       const response = await axios.get(
-        `${apiUrl}application-codesets/v2/EDUCATION`,
+        `${baseUrl}application-codesets/v2/${educationPath}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setEducationOptions(response.data.sort());
@@ -230,7 +232,7 @@ const EnrolmentSubmittedForm = ({
   const loadOccupation = useCallback(async () => {
     try {
       const response = await axios.get(
-        `${apiUrl}application-codesets/v2/OCCUPATION`,
+        `${baseUrl}application-codesets/v2/${occupationPath}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setOccupationOptions(response.data.sort());
@@ -239,64 +241,42 @@ const EnrolmentSubmittedForm = ({
 
   const CareEntryPoint = () => {
     axios
-      .get(`${apiUrl}application-codesets/v2/POINT_ENTRY`, {
+      .get(`${baseUrl}application-codesets/v2/${hivStatsEnrolPath}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-       
         setCarePoints(response.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
 
-  const getHepatitisPoint = () => {
-    axios
-      .get(`${apiUrl}application-codesets/v2/HEPATITIS_SCREENING_RESULT`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-       
-        setHepatitisStatus(response.data);
-      })
-      .catch((error) => {
-        
-      });
-  };
   //Get list of Source of Referral
   const SourceReferral = () => {
     axios
-      .get(`${apiUrl}application-codesets/v2/SOURCE_REFERRAL`, {
+      .get(`${baseUrl}application-codesets/v2/${srcRefPath}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-       
         setSourceReferral(response.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
 
   const EnrollmentSetting = () => {
     axios
-      .get(`${apiUrl}application-codesets/v2/ENROLLMENT_SETTING`, {
+      .get(`${baseUrl}application-codesets/v2/${erollmentSettingPath}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-       
         setEnrollSetting(response.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
 
   const loadRelationships = useCallback(async () => {
     try {
       const response = await axios.get(
-        `${apiUrl}application-codesets/v2/RELATIONSHIP`,
+        `${baseUrl}application-codesets/v2/${relationshipPath}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setRelationshipOptions(response.data.sort());
@@ -305,15 +285,15 @@ const EnrolmentSubmittedForm = ({
 
   const loadTopLevelCountry = useCallback(async () => {
     const response = await axios.get(
-      `${apiUrl}organisation-units/parent-organisation-units/0`,
+      `${baseUrl}organisation-units/parent-organisation-units/0`,
       { headers: { Authorization: `Bearer ${token}` } }
     );
-    settopLevelUnitCountryOptions(response.data.sort());
+    setCountries(response.data.sort());
   }, []);
 
   const loadOrganisationUnitsByParentId = async (parentId) => {
     const response = await axios.get(
-      `${apiUrl}organisation-units/parent-organisation-units/${parentId}`,
+      `${baseUrl}organisation-units/parent-organisation-units/${parentId}`,
       { headers: { Authorization: `Bearer ${token}` } }
     );
     return response.data;
@@ -327,7 +307,6 @@ const EnrolmentSubmittedForm = ({
     return age_now;
   };
   const phoneNumberFormatCheck = (phone) => {
-  
     if (
       phone != undefined &&
       typeof phone?.value !== null &&
@@ -341,15 +320,13 @@ const EnrolmentSubmittedForm = ({
   //Country List
   const GetCountry = () => {
     axios
-      .get(`${apiUrl}organisation-units/parent-organisation-units/0`, {
+      .get(`${baseUrl}organisation-units/parent-organisation-units/0`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
         setCountries(response.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
 
   const handleAgeChange = (e) => {
@@ -367,8 +344,6 @@ const EnrolmentSubmittedForm = ({
       currentDate.setMonth(5);
       const estDob = moment(currentDate.toISOString());
       const dobNew = estDob.add(e.target.value * -1, "years");
-      //setBasicInfo({...basicInfo, dob: moment(dobNew).format("YYYY-MM-DD")});
-
       basicInfo.personDto.dateOfBirth = moment(dobNew).format("YYYY-MM-DD");
 
       setInfo({ ...info, dateOfBirth: moment(dobNew).format("YYYY-MM-DD") });
@@ -376,7 +351,6 @@ const EnrolmentSubmittedForm = ({
     setBasicInfo({ ...basicInfo, age: Math.abs(e.target.value) });
   };
 
-  //Date of Birth and Age handle
   const handleDobChange = (e) => {
     if (e.target.value) {
       const today = new Date();
@@ -388,70 +362,53 @@ const EnrolmentSubmittedForm = ({
         age_now--;
       }
       basicInfo.age = age_now;
-      //setBasicInfo({...basicInfo, age: age_now});
     } else {
       setBasicInfo({ ...basicInfo, age: "" });
     }
-    // setBasicInfo({
-    //   ...basicInfo,
-    //   personDto: {
-    //     ...basicInfo.personDto,
-    //     dateOfRegistration: e.target.value,
-    //   },
-    // });
-
-    // setBasicInfo({ ...basicInfo, dob: e.target.value });
     if (basicInfo.age !== "" && basicInfo.age >= 60) {
       toggle();
     }
   };
 
-  //Get States from selected country
   const getStates = () => {
     const getCountryId = info?.countryId;
     setStateByCountryId(1);
     setInfo({ ...info, countryId: getCountryId });
   };
-  //Get list of State
   function setStateByCountryId(id) {
     axios
-      .get(`${apiUrl}organisation-units/parent-organisation-units/${id}`, {
+      .get(`${baseUrl}organisation-units/parent-organisation-units/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-       
         setStates(response.data.sort());
-        
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   }
-  //fetch province
   const getProvinces = (e) => {
     const stateId = e?.target?.value;
 
-    // setBasicInfo({ ...basicInfo, stateId: e?.target?.value });
     axios
-      .get(`${apiUrl}organisation-units/parent-organisation-units/${stateId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .get(
+        `${baseUrl}organisation-units/parent-organisation-units/${stateId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
       .then((response) => {
         setProvinces(response.data.sort());
       })
       .catch((error) => {});
   };
-  //  allPatientInfo?.address?.address[0]?.stateId
-
-  //fetch province
   const getProvincesForFilledForm = () => {
     const stateId = allPatientInfo?.address?.address[0]?.stateId;
-
-    // setBasicInfo({ ...basicInfo, stateId: e?.target?.value });
     axios
-      .get(`${apiUrl}organisation-units/parent-organisation-units/${stateId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .get(
+        `${baseUrl}organisation-units/parent-organisation-units/${stateId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
       .then((response) => {
         setProvinces(response.data.sort());
       })
@@ -460,7 +417,7 @@ const EnrolmentSubmittedForm = ({
   const postDataWithToken = async (data) => {
     try {
       const response = await axios.put(
-        `${apiUrl}hepatitis/update-hepatitis-enrollment/${patientObj.enrollmentId}`,
+        `${baseUrl}hepatitis/update-hepatitis-enrollment/${patientObj.enrollmentId}`,
         data,
         {
           headers: {
@@ -469,7 +426,6 @@ const EnrolmentSubmittedForm = ({
           },
         }
       );
-      // Handle the response if needed
       toast.success("Enrolment submitted successfully");
       history.push({
         pathname: "/patient-history",
@@ -484,10 +440,8 @@ const EnrolmentSubmittedForm = ({
         },
         1
       );
-      //   setStep(1);
       return response.data;
     } catch (error) {
-      // Handle any errors that occurred during the request
       toast.error("Enrolment failed");
       throw error;
     }
@@ -559,16 +513,13 @@ const EnrolmentSubmittedForm = ({
 
   const PregnancyStatus = () => {
     axios
-      .get(`${apiUrl}application-codesets/v2/PREGNANCY_STATUS`, {
+      .get(`${baseUrl}application-codesets/v2/PREGNANCY_STATUS`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-       
         setPregnancyStatus(response.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
 
   const calculateBMI = () => {
@@ -769,7 +720,7 @@ const EnrolmentSubmittedForm = ({
         async function getHosiptalNumber() {
           const hosiptalNumber = e.target.value;
           const response = await axios.post(
-            `${apiUrl}patient/exist/hospital-number`,
+            `${baseUrl}patient/exist/hospital-number`,
             hosiptalNumber,
             {
               headers: {
@@ -911,7 +862,7 @@ const EnrolmentSubmittedForm = ({
   const viewHepatitisEnrollment = (value) => {
     axios
       .get(
-        `${apiUrl}hepatitis/view-hepatitis-enrollment/${patientObj.personUuid}`,
+        `${baseUrl}hepatitis/view-hepatitis-enrollment/${patientObj.personUuid}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -945,7 +896,7 @@ const EnrolmentSubmittedForm = ({
 
     // }
   }, []);
-  
+
   //   runs when never there is change in patient form
   useEffect(() => {
     setInfo({
@@ -1131,13 +1082,6 @@ const EnrolmentSubmittedForm = ({
                         ) : (
                           ""
                         )}
-                        {/* {hospitalNumStatus2 === true ? (
-                          <span className={classes.success}>
-                            {"Hospital number is OK."}
-                          </span>
-                        ) : (
-                          ""
-                        )} */}
                       </FormGroup>
                     </div>
 
@@ -1232,7 +1176,6 @@ const EnrolmentSubmittedForm = ({
                           containerStyle={{
                             width: "100%",
                             border: "1px solid #014D88",
-                            // backgroundColor: "#e9ecef !important",
                           }}
                           disabled={true}
                           inputStyle={{ width: "100%", borderRadius: "0px" }}
@@ -1245,55 +1188,19 @@ const EnrolmentSubmittedForm = ({
                             ng: "...-...-....",
                             at: "(....) ...-....",
                           }}
-                          // value={basicInfo.phoneNumber}
-
                           value={basicInfo?.phoneNumber}
                           onChange={(e) => {
                             setErrors({ ...errors, phone: "" });
                             checkPhoneNumberBasic(e, "phone");
                           }}
-                          //onChange={(e)=>{handleInputChangeBasic(e,'phoneNumber')}}
                         />
                         {errors.phone !== "" ? (
                           <span className={classes.error}>{errors.phone}</span>
                         ) : (
                           ""
                         )}
-                        {/* {basicInfo.phoneNumber.length >13 ||  basicInfo.phoneNumber.length <13? (
-                                                <span className={classes.error}>{"The maximum and minimum required number is 13 digit"}</span>
-                                                ) : "" } */}
                       </FormGroup>
                     </div>
-
-                    {/* <div className="form-group mb-3 col-md-4">
-                        <FormGroup>
-                          <Label for="residentialAddress">
-                            Residential Address{" "}
-                            <span style={{ color: "red" }}> *</span>{" "}
-                          </Label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            name="residentialAddress"
-                            id="residentialAddress"
-                            value={basicInfo.residentialAddress}
-                            onChange={handleInputChangeBasic}
-                            onBlur={formik.handleBlur}
-                            style={{
-                              border: "1px solid #014D88",
-                              borderRadius: "0.2rem",
-                            }}
-                          />
-                          {formik.errors.residentialAddress !== "" ? (
-                            <span className={classes.error}>
-                              {formik.errors.residentialAddress}
-                            </span>
-                          ) : (
-                            ""
-                          )}
-                        </FormGroup>
-                      </div> */}
-
                     <div className="form-group mb-3 col-md-4">
                       <FormGroup>
                         <Label for="countryId">

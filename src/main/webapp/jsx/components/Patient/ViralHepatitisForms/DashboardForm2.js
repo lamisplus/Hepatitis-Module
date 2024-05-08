@@ -19,7 +19,7 @@ import { useValidateForm2ValuesHook } from "../../../formSchemas/form1Validation
 import { ArrowForward, ExpandMore as ExpandMoreIcon } from "@material-ui/icons";
 import { getCookie, setCookie } from "../../../helpers/cookieStoragehelpers";
 import axios from "axios";
-import { url as apiUrl, token } from "../../../../api";
+import { url as baseUrl, token } from "../../../../api";
 import moment from "moment";
 import { toast } from "react-toastify";
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
@@ -102,7 +102,9 @@ export const ImportantString = ({ str }) => (
 export const GetOptions = ({ options }) => (
   <React.Fragment>
     {options.map(({ fldName, fldValue }) => (
-      <option value={fldValue}>{fldName}</option>
+      <option key={fldName} value={fldValue}>
+        {fldName}
+      </option>
     ))}
   </React.Fragment>
 );
@@ -173,7 +175,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
 
   const fetchChildPughScore = async () => {
     const response = await axios.get(
-      `${apiUrl}application-codesets/v2/CHILD_PUGH`,
+      `${baseUrl}application-codesets/v2/CHILD_PUGH`,
       {
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -185,7 +187,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
   const viewHepatitisEnrollment = () => {
     axios
       .get(
-        `${apiUrl}hepatitis/view-hepatitis-enrollment/${patientObj?.personUuid}`,
+        `${baseUrl}hepatitis/view-hepatitis-enrollment/${patientObj?.personUuid}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -394,7 +396,9 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
       : "Fibroscan  is required";
 
     ctScan = basicInfo.hepatitisBTest.ctScan ? "" : "CT scan  is required";
-    ascites = basicInfo.clinicalParameters.ascites ? "" : "Acites  is required";
+    ascites = basicInfo.clinicalParameters.ascites
+      ? ""
+      : "Ascites  is required";
     gradeOfEncephalopathy = basicInfo.clinicalParameters.gradeOfEncephalopathy
       ? ""
       : "Grade of Encephalopathy  is required";
@@ -431,7 +435,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
 
   const postDataWithToken = async (data, key) => {
     try {
-      const response = await axios.post(`${apiUrl}${key}`, data, {
+      const response = await axios.post(`${baseUrl}${key}`, data, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -540,11 +544,45 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
       enrollmentUuid: enrollmentUuid,
     });
   }, [enrollmentUuid]);
+
+  useEffect(() => {
+    if (basicInfo.hepatitisBTest.hbvDna === "UNDETECTED") {
+      setBasicInfo((prev) => ({
+        ...prev,
+        hepatitisBTest: { ...prev.hepatitisBTest, hvbDnaValue: "" },
+      }));
+    }
+  }, [basicInfo.hepatitisBTest.hbvDna]);
+  useEffect(() => {
+    if (basicInfo.hepatitisCTest.hcvRNA === "UNDETECTED") {
+      setBasicInfo((prev) => ({
+        ...prev,
+        hepatitisCTest: { ...prev.hepatitisCTest, hcRnaValue: "" },
+      }));
+    }
+  }, [basicInfo.hepatitisCTest.hcvRNA]);
+
   const [isDropdownsOpen, setIsDropdownsOpen] = useState({
     hepatitisBDropdown: true,
     hepatitisCDropdown: true,
     coInfectionDropdown: true,
   });
+  useEffect(() => {
+    if (basicInfo.hepatitisBTest.hbvDna === "UNDETECTED") {
+      setBasicInfo((prev) => ({
+        ...prev,
+        hepatitisBTest: { ...prev.hepatitisBTest, hbvDna: "" },
+      }));
+    }
+  }, [basicInfo.hepatitisBTest.hbvDna]);
+  useEffect(() => {
+    if (basicInfo.hepatitisCTest.hcvRNA === "UNDETECTED") {
+      setBasicInfo((prev) => ({
+        ...prev,
+        hepatitisCTest: { ...prev.hepatitisCTest, hcRnaValue: "" },
+      }));
+    }
+  }, [basicInfo.hepatitisCTest.hcvRNA]);
   return (
     <>
       <Card className={classes.root}>
@@ -1018,37 +1056,51 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                       style={{ padding: "0 50px 0 50px" }}
                     >
                       <div className="row">
-                        <div className="form-group mb-3 col-md-4">
+                        <div className="form-group mb-2 col-md-4">
                           <FormGroup>
-                            <Label for="hcvRNA">HCV RNA (IU/ml)</Label>
-                            <ImportantString str="*" />{" "}
-                            <select
-                              className="form-control"
-                              name="hcvRNA"
-                              id="hcvRNA"
-                              onChange={handleInputChangeBasicForHC}
-                              value={basicInfo.hepatitisCTest.hcvRNA}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            >
-                              <GetOptions
-                                options={[
-                                  { fldName: "Select", fldValue: "" },
-                                  { fldName: "Detected", fldValue: "DETECTED" },
-                                  {
-                                    fldName: "Undetected",
-                                    fldValue: "UNDETECTED",
-                                  },
-                                ]}
-                              />
-                            </select>
-                            {errors.hcvRNA && (
-                              <span className={classes.error}>
-                                {errors.hcvRNA}
-                              </span>
-                            )}
+                            <Label>
+                              HCV RNA(UI/ml){" "}
+                              <span style={{ color: "red" }}> *</span>
+                            </Label>
+                            <div className="radio">
+                              <label>
+                                <input
+                                  type="radio"
+                                  value="DETECTED"
+                                  name="hcvRNA"
+                                  checked={
+                                    basicInfo.hepatitisCTest.hcvRNA ===
+                                    "DETECTED"
+                                  }
+                                  onChange={handleInputChangeBasicForHC}
+                                  style={{
+                                    border: "1px solid #014D88",
+                                    borderRadius: "0.2rem",
+                                  }}
+                                />{" "}
+                                Detected
+                              </label>
+                            </div>
+                            <div className="radio">
+                              <label>
+                                <input
+                                  type="radio"
+                                  value="UNDETECTED"
+                                  name="hcvRNA"
+                                  checked={
+                                    basicInfo.hepatitisCTest.hcvRNA ===
+                                    "UNDETECTED"
+                                  }
+                                  onChange={handleInputChangeBasicForHC}
+                                  style={{
+                                    border: "1px solid #014D88",
+                                    borderRadius: "0.2rem",
+                                  }}
+                                />{" "}
+                                Undetected{" "}
+                                <span style={{ color: "red" }}> *</span>{" "}
+                              </label>
+                            </div>
                           </FormGroup>
                         </div>
                         {basicInfo.hepatitisCTest.hcvRNA === "DETECTED" && (
@@ -1667,7 +1719,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
 
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
-                      <Label for="ascites">Acites</Label>
+                      <Label for="ascites">Ascites</Label>
                       <ImportantString str="*" />{" "}
                       <select
                         className="form-control"

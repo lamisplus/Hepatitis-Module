@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
-import { format } from "date-fns";
 import MatButton from "@material-ui/core/Button";
 import Button from "@material-ui/core/Button";
 import { FormGroup, Label, Spinner, Input, Form } from "reactstrap";
@@ -12,8 +11,6 @@ import {
   faEdit,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import * as moment from "moment";
 import { makeStyles } from "@material-ui/core/styles";
 import { Card, CardContent } from "@material-ui/core";
@@ -25,13 +22,25 @@ import "react-toastify/dist/ReactToastify.css";
 import "react-widgets/dist/css/react-widgets.css";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { TiArrowBack } from "react-icons/ti";
-import { useForm } from "react-hook-form";
-import { token, url as baseUrl } from "../../../api";
+import {
+  token,
+  url as baseUrl,
+  hivStatsEnrolPath,
+  srcRefPath,
+  erollmentSettingPath,
+  tbStatsPath,
+  targetGroupPath,
+  pregnancyStatsPath,
+  sexPath,
+  maritalStatsPath,
+  educationPath,
+  occupationPath,
+  relationshipPath,
+  careEntryPointPath,
+} from "../../../api";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-import { getValue } from "@syncfusion/ej2-base";
 import "./patient.css";
-// import Form from 'react-bootstrap/Form';
 import { Modal } from "react-bootstrap";
 
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
@@ -139,15 +148,11 @@ const UserRegistration = (props) => {
     middleName: "",
   });
 
-  const [today, setToday] = useState(
-    new Date().toISOString().substr(0, 10).replace("T", " ")
-  );
   const [contacts, setContacts] = useState([]);
   const [saving, setSaving] = useState(false);
   const [disabledAgeBaseOnAge, setDisabledAgeBaseOnAge] = useState(false);
   const [ageDisabled, setAgeDisabled] = useState(true);
   const [showRelative, setShowRelative] = useState(false);
-  const [editRelative, setEditRelative] = useState(null);
   const [genders, setGenders] = useState([]);
   const [maritalStatusOptions, setMaritalStatusOptions] = useState([]);
   const [educationOptions, setEducationOptions] = useState([]);
@@ -157,21 +162,11 @@ const UserRegistration = (props) => {
   const [states, setStates] = useState([]);
   const [provinces, setProvinces] = useState([]);
   const [errors, setErrors] = useState({});
-  const [topLevelUnitCountryOptions, settopLevelUnitCountryOptions] = useState(
-    []
-  );
-  const [patientDTO, setPatientDTO] = useState({
-    person: "",
-    hivEnrollment: "",
-  });
   const userDetail =
     props.location && props.location.state ? props.location.state.user : null;
   const classes = useStyles();
   const history = useHistory();
   const location = useLocation();
-  //HIV INFORMATION
-  const [femaleStatus, setfemaleStatus] = useState(false);
-  //const [values, setValues] = useState([]);
   const [objValues, setObjValues] = useState({
     dateEnrolled: "",
     dateOfLastHivNegativeTest: "",
@@ -186,19 +181,7 @@ const UserRegistration = (props) => {
     ancUnique: "",
   });
   const [carePoints, setCarePoints] = useState([]);
-  const [sourceReferral, setSourceReferral] = useState([]);
   const [hivStatus, setHivStatus] = useState([]);
-  const [enrollSetting, setEnrollSetting] = useState([]);
-  const [tbStatus, setTbStatus] = useState([]);
-  const [kP, setKP] = useState([]);
-  const [newSex, setNewSex] = useState([]);
-  const [pregnancyStatus, setPregnancyStatus] = useState([]);
-  //set ro show the facility name field if is transfer in
-  const [transferIn, setTransferIn] = useState(false);
-  // display the OVC number if patient is enrolled into OVC
-  const [ovcEnrolled, setOvcEnrolled] = useState(false);
-  //Input fields to hidden base on some conditions
-  const [hideTargetGroup, setHideTargetGroup] = useState("false");
   const [open, setOpen] = React.useState(false);
   const toggle = () => setOpen(!open);
   const locationState = location.state;
@@ -226,9 +209,7 @@ const UserRegistration = (props) => {
     if (patientObj) {
       const contacts =
         patientObj && patientObj.contact ? patientObj.contact : [];
-      //setContacts(patientObj.contacts);
       let newConatctsInfo = [];
-      //Manipulate relatives contact  address:"",
       const actualcontacts =
         contacts.contact &&
         contacts.contact.length > 0 &&
@@ -264,7 +245,7 @@ const UserRegistration = (props) => {
         address && address?.address && address?.address.length > 0
           ? address?.address[0]
           : null;
-      
+
       basicInfo.dob = patientObj.dateOfBirth;
       basicInfo.firstName = patientObj.firstName;
       basicInfo.dateOfRegistration = patientObj.dateOfRegistration;
@@ -286,7 +267,6 @@ const UserRegistration = (props) => {
           : "";
       basicInfo.genderId =
         patientObj && patientObj.gender ? patientObj.gender.id : null;
-      //basicInfo.sexId=patientObj.sex
       basicInfo.educationId =
         patientObj && patientObj.education ? patientObj.education.id : "";
       basicInfo.phoneNumber = phone && phone.value ? phone.value : "";
@@ -319,24 +299,21 @@ const UserRegistration = (props) => {
   //Get list of Source of Referral
   const getSex = () => {
     axios
-      .get(`${baseUrl}application-codesets/v2/SEX`, {
+      .get(`${baseUrl}application-codesets/v2/${sexPath}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-       
         const getSexId = response.data.find(
           (x) => x.display === patientObj.sex
         ); //get patient sex ID by filtering the request
         basicInfo.sexId = getSexId.display;
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
   const loadGenders = useCallback(async () => {
     try {
       const response = await axios.get(
-        `${baseUrl}application-codesets/v2/SEX`,
+        `${baseUrl}application-codesets/v2/${sexPath}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setGenders(response.data);
@@ -345,7 +322,7 @@ const UserRegistration = (props) => {
   const loadMaritalStatus = useCallback(async () => {
     try {
       const response = await axios.get(
-        `${baseUrl}application-codesets/v2/MARITAL_STATUS`,
+        `${baseUrl}application-codesets/v2/${maritalStatsPath}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setMaritalStatusOptions(response.data);
@@ -354,7 +331,7 @@ const UserRegistration = (props) => {
   const loadEducation = useCallback(async () => {
     try {
       const response = await axios.get(
-        `${baseUrl}application-codesets/v2/EDUCATION`,
+        `${baseUrl}application-codesets/v2/${educationPath}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setEducationOptions(response.data);
@@ -363,7 +340,7 @@ const UserRegistration = (props) => {
   const loadOccupation = useCallback(async () => {
     try {
       const response = await axios.get(
-        `${baseUrl}application-codesets/v2/OCCUPATION`,
+        `${baseUrl}application-codesets/v2/${occupationPath}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setOccupationOptions(response.data);
@@ -372,7 +349,7 @@ const UserRegistration = (props) => {
   const loadRelationships = useCallback(async () => {
     try {
       const response = await axios.get(
-        `${baseUrl}application-codesets/v2/RELATIONSHIP`,
+        `${baseUrl}application-codesets/v2/${relationshipPath}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setRelationshipOptions(response.data);
@@ -385,13 +362,6 @@ const UserRegistration = (props) => {
     );
     settopLevelUnitCountryOptions(response.data);
   }, []);
-  const loadOrganisationUnitsByParentId = async (parentId) => {
-    const response = await axios.get(
-      `${baseUrl}organisation-units/parent-organisation-units/${parentId}`,
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-    return response.data;
-  };
 
   //Country List
   const GetCountry = () => {
@@ -402,9 +372,7 @@ const UserRegistration = (props) => {
       .then((response) => {
         setCountries(response.data);
       })
-      .catch((error) => {
-       
-      });
+      .catch((error) => {});
   };
   //Get States from selected country
   const getStates = (e) => {
@@ -423,9 +391,7 @@ const UserRegistration = (props) => {
       .then((response) => {
         setStates(response.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   }
   //Calculate Date of birth
   const calculate_age = (dob) => {
@@ -456,9 +422,7 @@ const UserRegistration = (props) => {
       .then((response) => {
         setProvinces(response.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
   function getProvincesId(getStateId) {
     axios
@@ -469,9 +433,7 @@ const UserRegistration = (props) => {
       .then((response) => {
         setProvinces(response.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   }
   //Date of Birth and Age handle
   const handleDobChange = (e) => {
@@ -490,7 +452,6 @@ const UserRegistration = (props) => {
         age_now--;
       }
       basicInfo.age = age_now;
-      //setBasicInfo({...basicInfo, age: age_now});
     } else {
       setBasicInfo({ ...basicInfo, age: "" });
     }
@@ -658,100 +619,79 @@ const UserRegistration = (props) => {
 
   const CareEntryPoint = () => {
     axios
-      .get(`${baseUrl}application-codesets/v2/POINT_ENTRY`, {
+      .get(`${baseUrl}application-codesets/v2/${careEntryPointPath}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        
         setCarePoints(response.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
   //Get list of Source of Referral
   const SourceReferral = () => {
     axios
-      .get(`${baseUrl}application-codesets/v2/SOURCE_REFERRAL`, {
+      .get(`${baseUrl}application-codesets/v2/${sourceRe}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        
         setSourceReferral(response.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
   //Get list of HIV STATUS ENROLLMENT
   const HivStatus = () => {
     axios
-      .get(`${baseUrl}application-codesets/v2/HIV_STATUS_ENROL`, {
+      .get(`${baseUrl}application-codesets/v2/${hivStatsEnrolPath}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        
         setHivStatus(response.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
   //Get list of HIV STATUS ENROLLMENT
   const EnrollmentSetting = () => {
     axios
-      .get(`${baseUrl}application-codesets/v2/ENROLLMENT_SETTING`, {
+      .get(`${baseUrl}application-codesets/v2/${erollmentSettingPath}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        
         setEnrollSetting(response.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
   //Get list of HIV STATUS ENROLLMENT
   const TBStatus = () => {
     axios
-      .get(`${baseUrl}application-codesets/v2/TB_STATUS`, {
+      .get(`${baseUrl}application-codesets/v2/${tbStatsPath}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        
         setTbStatus(response.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
   //Get list of KP
   const KP = () => {
     axios
-      .get(`${baseUrl}application-codesets/v2/TARGET_GROUP`, {
+      .get(`${baseUrl}application-codesets/v2/${targetGroupPath}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        
         setKP(response.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
   //Get list of KP
   const PregnancyStatus = () => {
     axios
-      .get(`${baseUrl}application-codesets/v2/PREGANACY_STATUS`, {
+      .get(`${baseUrl}application-codesets/v2/${pregnancyStatsPath}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        
         setPregnancyStatus(response.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
   const handleInputChange = (e) => {
     setErrors({ ...errors, [e.target.name]: "" });
@@ -766,14 +706,7 @@ const UserRegistration = (props) => {
     setErrors({ ...errors, [inputName]: "" });
     setBasicInfo({ ...basicInfo, [inputName]: e.slice(0, limit) });
   };
-  //Handle CheckBox
-  const handleCheckBox = (e) => {
-    if (e.target.checked) {
-      setOvcEnrolled(true);
-    } else {
-      setOvcEnrolled(false);
-    }
-  };
+
   const handleCancel = () => {
     history.push({ pathname: "/" });
   };

@@ -21,7 +21,23 @@ import { ArrowForward } from "@material-ui/icons";
 import { getCookie, setCookie } from "../../../helpers/cookieStoragehelpers";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { url as apiUrl, token } from "../../../../api";
+import {
+  token,
+  url as baseUrl,
+  hivStatsEnrolPath,
+  srcRefPath,
+  erollmentSettingPath,
+  tbStatsPath,
+  targetGroupPath,
+  pregnancyStatsPath,
+  sexPath,
+  maritalStatsPath,
+  educationPath,
+  occupationPath,
+  relationshipPath,
+  careEntryPointPath,
+  hepatitisScreeningResultPath,
+} from "../../../../api";
 import { useCallback } from "react";
 import { useState } from "react";
 // import { FormGroup, Label, Spinner, Input, Form, InputGroup } from "reactstrap";
@@ -198,16 +214,19 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
   const toggle = () => setOpen(!open);
 
   const sexCodeset = async () => {
-    const response = await axios.get(`${apiUrl}application-codesets/v2/SEX`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await axios.get(
+      `${baseUrl}application-codesets/v2/${sexPath}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
     setGenders(response.data.sort());
   };
 
   const loadMaritalStatus = useCallback(async () => {
     try {
       const response = await axios.get(
-        `${apiUrl}application-codesets/v2/MARITAL_STATUS`,
+        `${baseUrl}application-codesets/v2/${maritalStatsPath}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setMaritalStatusOptions(response.data.sort());
@@ -217,7 +236,7 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
   const loadEducation = useCallback(async () => {
     try {
       const response = await axios.get(
-        `${apiUrl}application-codesets/v2/EDUCATION`,
+        `${baseUrl}application-codesets/v2/${educationPath}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setEducationOptions(response.data.sort());
@@ -227,7 +246,7 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
   const loadOccupation = useCallback(async () => {
     try {
       const response = await axios.get(
-        `${apiUrl}application-codesets/v2/OCCUPATION`,
+        `${baseUrl}application-codesets/v2/${occupationPath}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setOccupationOptions(response.data.sort());
@@ -236,64 +255,55 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
 
   const CareEntryPoint = () => {
     axios
-      .get(`${apiUrl}application-codesets/v2/POINT_ENTRY`, {
+      .get(`${baseUrl}application-codesets/v2/${careEntryPointPath}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        
         setCarePoints(response.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
 
   const getHepatitisPoint = () => {
     axios
-      .get(`${apiUrl}application-codesets/v2/HEPATITIS_SCREENING_RESULT`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .get(
+        `${baseUrl}application-codesets/v2/${hepatitisScreeningResultPath}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
       .then((response) => {
-        
         setHepatitisStatus(response.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
   //Get list of Source of Referral
   const SourceReferral = () => {
     axios
-      .get(`${apiUrl}application-codesets/v2/SOURCE_REFERRAL`, {
+      .get(`${baseUrl}application-codesets/v2/${srcRefPath}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        
         setSourceReferral(response.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
 
   const EnrollmentSetting = () => {
     axios
-      .get(`${apiUrl}application-codesets/v2/ENROLLMENT_SETTING`, {
+      .get(`${baseUrl}application-codesets/v2/${erollmentSettingPath}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        
         setEnrollSetting(response.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
 
   const loadRelationships = useCallback(async () => {
     try {
       const response = await axios.get(
-        `${apiUrl}application-codesets/v2/RELATIONSHIP`,
+        `${baseUrl}application-codesets/v2/${relationshipPath}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setRelationshipOptions(response.data.sort());
@@ -302,7 +312,7 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
 
   const loadTopLevelCountry = useCallback(async () => {
     const response = await axios.get(
-      `${apiUrl}organisation-units/parent-organisation-units/0`,
+      `${baseUrl}organisation-units/parent-organisation-units/0`,
       { headers: { Authorization: `Bearer ${token}` } }
     );
     settopLevelUnitCountryOptions(response.data.sort());
@@ -310,7 +320,7 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
 
   const loadOrganisationUnitsByParentId = async (parentId) => {
     const response = await axios.get(
-      `${apiUrl}organisation-units/parent-organisation-units/${parentId}`,
+      `${baseUrl}organisation-units/parent-organisation-units/${parentId}`,
       { headers: { Authorization: `Bearer ${token}` } }
     );
     return response.data;
@@ -324,7 +334,6 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
     return age_now;
   };
   const phoneNumberFormatCheck = (phone) => {
-    
     if (
       phone != undefined &&
       typeof phone?.value !== null &&
@@ -338,15 +347,13 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
   //Country List
   const GetCountry = () => {
     axios
-      .get(`${apiUrl}organisation-units/parent-organisation-units/0`, {
+      .get(`${baseUrl}organisation-units/parent-organisation-units/0`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
         setCountries(response.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
 
   const handleAgeChange = (e) => {
@@ -412,26 +419,25 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
   //Get list of State
   function setStateByCountryId(id) {
     axios
-      .get(`${apiUrl}organisation-units/parent-organisation-units/${id}`, {
+      .get(`${baseUrl}organisation-units/parent-organisation-units/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        
         setStates(response.data.sort());
-        
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   }
   //fetch province
   const getProvinces = (e) => {
     const stateId = e?.target?.value;
     // setBasicInfo({ ...basicInfo, stateId: e?.target?.value });
     axios
-      .get(`${apiUrl}organisation-units/parent-organisation-units/${stateId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .get(
+        `${baseUrl}organisation-units/parent-organisation-units/${stateId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
       .then((response) => {
         setProvinces(response.data.sort());
       })
@@ -440,14 +446,14 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
 
   const postDataWithToken = async (data, key) => {
     try {
-      const response = await axios.post(`${apiUrl}${key}`, data, {
+      const response = await axios.post(`${baseUrl}${key}`, data, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       });
       // Handle the response if needed
-    
+
       toast.success("Enrolment submitted successfully");
 
       setCookie(
@@ -535,16 +541,13 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
 
   const PregnancyStatus = () => {
     axios
-      .get(`${apiUrl}application-codesets/v2/PREGNANCY_STATUS`, {
+      .get(`${baseUrl}application-codesets/v2/PREGNANCY_STATUS`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        
         setPregnancyStatus(response.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
 
   const calculateBMI = () => {
@@ -554,8 +557,6 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
     let heightSquare = convertMeterToCM * convertMeterToCM;
 
     setBasicInfo({ ...basicInfo, bmi: mass / heightSquare });
-
-   
 
     return mass / heightSquare;
   };
@@ -690,8 +691,6 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
         },
       });
     } else if (e.target.name === "genderId") {
-     
-
       setBasicInfo({
         ...basicInfo,
         personDto: {
@@ -773,7 +772,7 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
         async function getHosiptalNumber() {
           const hosiptalNumber = e.target.value;
           const response = await axios.post(
-            `${apiUrl}patient/exist/hospital-number`,
+            `${baseUrl}patient/exist/hospital-number`,
             hosiptalNumber,
             {
               headers: {
@@ -959,8 +958,6 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
           personId: patientObj.id,
         };
         postDataWithToken(newUserInfo, "hepatitis/enrollment");
-
-     
       }
     }
   };
