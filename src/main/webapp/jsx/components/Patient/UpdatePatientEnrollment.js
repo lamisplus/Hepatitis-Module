@@ -35,6 +35,7 @@ import "./patient.css";
 import EnrolmentSubmittedForm from "./SubmittedForms/enrolmentForm";
 import DiagnosisSubmitedForm from "./SubmittedForms/DiagnosisSubmittedForm";
 import TreatmentSubmittedForm from "./SubmittedForms/TreatmentSubmittedForm";
+import ViralHepatitisForm2 from "./ViralHepatitisForms/Form2";
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
 const useStyles = makeStyles((theme) => ({
@@ -88,8 +89,6 @@ const UserRegistration = (props) => {
   const [enrollmentUuidT, setEnrollmentUuidT] = useState("");
   const [allPatientInfo, setAllPatientInfo] = useState({});
 
-  
-
   const viewHepatitisTreatment = (eId) => {
     axios
       .get(`${baseUrl}hepatitis/view-hepatitis-treatment/${eId}`, {
@@ -99,9 +98,7 @@ const UserRegistration = (props) => {
         setTreatmentInfo(response.data);
         setEnrollmentUuidT(response.data.id);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
   const viewHepatitisEnrollment = (value) => {
     axios
@@ -123,12 +120,9 @@ const UserRegistration = (props) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        
         setAllPatientInfo(response.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
   useEffect(() => {
     viewHepatitisEnrollment();
@@ -168,7 +162,7 @@ const UserRegistration = (props) => {
           )}
 
           {locationState.showForm.diagnosis && (
-            <DiagnosisSubmitedForm
+            <ViralHepatitisForm2
               action={locationState.actionType}
               patientObj={locationState.patientObj}
               // diagnosisInfo={diagnosisInfo}

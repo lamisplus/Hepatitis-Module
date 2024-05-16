@@ -405,10 +405,13 @@ const FollowupUpdate = (props) => {
                               id="fuBmi"
                               // onBlur={formik.handleBlur}
                               // onChange={formik.handleChange}
-                              value={
-                                Number(formik?.values?.fuWeight) /
-                                Number(formik?.values?.fuHeight)
-                              }
+                              value={Math.round(
+                                Number(formik?.values?.fuHeight) /
+                                  Math.pow(
+                                    Number(formik?.values?.fuHeight) / 100,
+                                    2
+                                  )
+                              )}
                               style={{
                                 border: "1px solid #014D88",
                                 borderRadius: "0.2rem",

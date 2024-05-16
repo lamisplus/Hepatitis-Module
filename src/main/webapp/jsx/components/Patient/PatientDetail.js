@@ -11,10 +11,10 @@ import { token, url as baseUrl } from "../../../api";
 import axios from "axios";
 import SubMenu from "./SubMenu";
 import RecentHistory from "./../History/RecentHistory";
-import DashboardForm2 from "./ViralHepatitisForms/DashboardForm2";
 import DasboardTreatmentForm from "./ViralHepatitisForms/DashboardTreatmentForm";
 import PatientHistory from "./PatientHistoryy";
 import FollowUpHome from "./ViralHepatitisForms/PatientCardFollowUpHome";
+import ViralHepatitisForm2 from "./ViralHepatitisForms/Form2";
 
 const styles = (theme) => ({
   root: {
@@ -129,7 +129,7 @@ function PatientCard(props) {
             />
           )}
           {activeContent.route === "diagnosis" && (
-            <DashboardForm2
+            <ViralHepatitisForm2
               patientObj={patientObj}
               setActiveContent={setActiveContent}
               activeContent={activeContent}

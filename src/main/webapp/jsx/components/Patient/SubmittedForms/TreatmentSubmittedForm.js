@@ -25,6 +25,7 @@ import axios from "axios";
 import { url as baseUrl, token } from "../../../../api";
 import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
+import isBefore from "date-fns/isBefore";
 
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
@@ -578,10 +579,14 @@ const TreatmentSubmittedForm = ({
       ? ""
       : "New Regimen is required";
 
-    temp.hbvRegimeSwitchDateStarted = basicInfo.hepatitisBTreatment
-      .hepatitisBRegimenSwitch.dateStarted
-      ? ""
-      : "Date Started is required";
+    temp.hbvRegimeSwitchDateStarted =
+      basicInfo.hepatitisBTreatment.hepatitisBRegimenSwitch.dateStarted &&
+      isBefore(
+        basicInfo.hepatitisBTreatment.hepatitisBRegimenSwitch.dateStarted,
+        basicInfo.hepatitisBTreatment.hepatitisBRegimenSwitch.dateCompleted
+      )
+        ? ""
+        : "Date Started is required";
 
     temp.hbvRegimeSwitchReason = basicInfo.hepatitisBTreatment
       .hepatitisBRegimenSwitch.reasonForSwitch
@@ -611,9 +616,14 @@ const TreatmentSubmittedForm = ({
       .hbvPastTreatmentRegimen
       ? ""
       : "Hbv Past treatment regimen is required";
-    temp.dateStarted = basicInfo.hepatitisBTreatment.dateStarted
-      ? ""
-      : "Date started is required";
+    temp.dateStarted =
+      basicInfo.hepatitisBTreatment.dateStarted &&
+      isBefore(
+        basicInfo.hepatitisBTreatment.dateStarted,
+        basicInfo.hepatitisBTreatment.dateCompleted
+      )
+        ? ""
+        : "Date started is required";
 
     temp.hbvReasonForTreatmentEligibility = basicInfo.hepatitisBTreatment
       .reasonForHepatitisBTreatment.reasonsForTreatment
@@ -630,9 +640,14 @@ const TreatmentSubmittedForm = ({
       ? ""
       : "Adverse Effect Reported is required";
 
-    temp.hcvDateStarted = basicInfo.hepatitisCTreatment.dateStarted
-      ? ""
-      : "Date started is required";
+    temp.hcvDateStarted =
+      basicInfo.hepatitisCTreatment.dateStarted &&
+      isBefore(
+        basicInfo.hepatitisCTreatment.dateStarted,
+        basicInfo.hepatitisCTreatment.dateCompleted
+      )
+        ? ""
+        : "Date started is required";
 
     temp.hcvDateCompleted = basicInfo.hepatitisCTreatment.dateCompleted
       ? ""
@@ -678,10 +693,14 @@ const TreatmentSubmittedForm = ({
       ? ""
       : "Prescribed Duration is required";
 
-    temp.hcvRetreatmentDateStarted = basicInfo.hepatitisCTreatment
-      .hcvRetreatment.dateStarted
-      ? ""
-      : "Date started is required";
+    temp.hcvRetreatmentDateStarted =
+      basicInfo.hepatitisCTreatment.hcvRetreatment.dateStarted &&
+      isBefore(
+        basicInfo.hepatitisCTreatment.hcvRetreatment.dateStarted,
+        basicInfo.hepatitisCTreatment.hcvRetreatment.dateCompleted
+      )
+        ? ""
+        : "Date started is required";
 
     temp.hcvRetreatmentAdverseEffect = basicInfo.hepatitisCTreatment
       .hcvRetreatment.retreatmentAdverseEffect
@@ -847,6 +866,53 @@ const TreatmentSubmittedForm = ({
   useEffect(() => {
     viewHepatitisTreatment();
   }, []);
+
+  useEffect(() => {
+    if (basicInfo.hepatitisBTreatment.treatmentExperience === "NO") {
+      setBasicInfo({
+        ...basicInfo,
+        hepatitisBTreatment: {
+          ...basicInfo.hepatitisBTreatment,
+          hbvPastTreatmentRegimen: "",
+        },
+      });
+    }
+  }, [basicInfo.hepatitisBTreatment.treatmentExperience]);
+  useEffect(() => {
+    if (
+      basicInfo.hepatitisCTreatment.hepatitisSvr12Testing.hcvRNA ===
+      "UNDETECTED"
+    ) {
+      setBasicInfo({
+        ...basicInfo,
+        hepatitisCTreatment: {
+          ...basicInfo.hepatitisCTreatment,
+          hepatitisSvr12Testing: {
+            ...basicInfo.hepatitisCTreatment.hepatitisSvr12Testing,
+            hcvRNAValue: "",
+          },
+        },
+      });
+    }
+  }, [basicInfo.hepatitisCTreatment.hepatitisSvr12Testing.hcvRNA]);
+  useEffect(() => {
+    if (
+      basicInfo.hepatitisCTreatment.hepatitisSvr12Testing.retreatmentHcvRNA ===
+      "UNDETECTED"
+    ) {
+      setBasicInfo({
+        ...basicInfo,
+        hepatitisCTreatment: {
+          ...basicInfo.hepatitisCTreatment,
+          hepatitisSvr12Testing: {
+            ...basicInfo.hepatitisCTreatment.hepatitisSvr12Testing,
+            retreatmentHcvRNAValue: "",
+          },
+        },
+      });
+    }
+  }, [basicInfo.hepatitisCTreatment.hepatitisSvr12Testing.retreatmentHcvRNA]);
+
   useEffect(() => {
     castCookieValueToForm();
     setBasicInfo({
@@ -1151,7 +1217,7 @@ const TreatmentSubmittedForm = ({
                         )} */}
                       <div className="form-group mb-3 col-md-4">
                         <FormGroup>
-                          <Label for="hbvNewRegimen">New regime</Label>
+                          <Label for="hbvNewRegimen">New regimen</Label>
                           <span style={{ color: "red" }}> *</span>{" "}
                           <input
                             className="form-control"
@@ -1896,7 +1962,8 @@ const TreatmentSubmittedForm = ({
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="svr12TestingHcvRna">
-                              HCV RNA <span style={{ color: "red" }}> *</span>{" "}
+                              HCV RNA(IU/ml){" "}
+                              <span style={{ color: "red" }}> *</span>{" "}
                             </Label>
                             <select
                               className="form-control"
@@ -1933,7 +2000,7 @@ const TreatmentSubmittedForm = ({
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
                               <Label for="svr12TestingHcvRnaValue">
-                                Input HCV RNA value
+                                Input HCV RNA value (IU/ml)
                               </Label>
                               <input
                                 className="form-control"

@@ -20,6 +20,7 @@ import { FETCH_ENROLMENT_KEY, FETCH_FOLLOWUP_KEY } from "../../utils/queryKeys";
 import { fetchEnrolment } from "../../services/fetchEnrolment";
 import { fetchFollowup } from "../../services/fetchFollowup";
 import { queryClient } from "../../utils/queryClient";
+import { da } from "date-fns/locale";
 
 const RecentHistory = (props) => {
   let history = useHistory();
@@ -64,12 +65,9 @@ const RecentHistory = (props) => {
     for (let index = 0; index < array.length; index++) {
       const activityRecord = array[index];
       if (activityRecord?.path === "hepatitis_followup") {
-        queryClient.prefetchQuery([
-          FETCH_FOLLOWUP_KEY,
-          activityRecord?.recordId,
-        ],
-        ()=>fetchFollowup(activityRecord?.recordId)
-        
+        queryClient.prefetchQuery(
+          [FETCH_FOLLOWUP_KEY, activityRecord?.recordId],
+          () => fetchFollowup(activityRecord?.recordId)
         );
       }
     }
@@ -79,16 +77,12 @@ const RecentHistory = (props) => {
     [FETCH_ENROLMENT_KEY, props?.patientObj?.personUuid],
     () => fetchEnrolment(props?.patientObj?.personUuid),
     {
-      onSuccess: (data) => {
-        setEnrolmentData(data);
-        prefetchAllFollowUp()
+      onSuccess: ({ uuid }) => {
+        setEnrolmentData(uuid);
+        prefetchAllFollowUp();
       },
     }
   );
-
-  
-
-  
 
   const ActivityName = (name) => {
     if (name === "Hepatitis Enrollment") {
@@ -105,7 +99,7 @@ const RecentHistory = (props) => {
   };
 
   const LoadViewPage = (row, action) => {
-    prefetchAllFollowUp()
+    prefetchAllFollowUp();
     if (row.path === "hepatitis_enrollment") {
       //props.setActiveContent({...props.activeContent, route:'anc-enrollment', id:row.id, actionType:action})
       history.push({
@@ -155,14 +149,14 @@ const RecentHistory = (props) => {
           ...props.activeContent,
           route: "patient-followup",
           actionType: "update",
-          followupRecord: row
+          followupRecord: row,
         });
       } else {
         props.setActiveContent({
           ...props.activeContent,
           route: "patient-followup",
           actionType: "view",
-          followupRecord: row
+          followupRecord: row,
         });
       }
     }

@@ -174,7 +174,6 @@ const UserRegistration = (props) => {
   const [showContactCard, setShowContactCard] = useState(true);
   const [vaccine, setVaccine] = useState([]);
 
-  //const [showRelativeCard, setShowRelativeCard] = useState(false);
   const [objValues, setObjValues] = useState({
     adverseEffect: "",
     batchNumber: "",
@@ -257,7 +256,7 @@ const UserRegistration = (props) => {
     commentNewRegimen: "",
   });
   const handleAncillaryInputChange = async (e) => {
-    await setObjValues({
+    setObjValues({
       ...objValues,
       [e.target.name]: !objValues[e.target.name],
     });
@@ -282,10 +281,13 @@ const UserRegistration = (props) => {
     VACCINE();
     GetCountry();
     setStateByCountryId();
-    if (basicInfo.dateOfRegistration < basicInfo.dob) {
+    if (
+      isBefore(new Date(basicInfo.dateOfRegistration), new Date(basicInfo.dob))
+    ) {
       toast.error("Date of registration can not be earlier than date of birth");
     }
   }, [basicInfo.dateOfRegistration]);
+
   //covid/codeset?category=VACCINE
   const VACCINE = () => {
     axios
@@ -436,7 +438,6 @@ const UserRegistration = (props) => {
       currentDate.setMonth(5);
       const estDob = moment(currentDate.toISOString());
       const dobNew = estDob.add(ageNumber * -1, "years");
-      //setBasicInfo({...basicInfo, dob: moment(dobNew).format("YYYY-MM-DD")});
       basicInfo.dob = moment(dobNew).format("YYYY-MM-DD");
       if (ageNumber !== "" && ageNumber >= 60) {
         toggle();
@@ -757,7 +758,6 @@ const UserRegistration = (props) => {
     return acceptedNumber;
   };
   useEffect(() => {
-    alert(3);
     if (basicInfo.hepatitisBTest.hbvDna === "DETECTED") {
       setBasicInfo((prev) => ({
         ...prev,
@@ -1924,7 +1924,7 @@ const UserRegistration = (props) => {
                             value={objValues.height}
                           />
                         </InputGroup>
-                        {errors.height !== "" ? (
+                        {errors.height ? (
                           <span className={classes.error}>{errors.height}</span>
                         ) : (
                           ""
@@ -1937,16 +1937,17 @@ const UserRegistration = (props) => {
                         <Label>
                           BMI <span style={{ color: "red" }}> *</span>
                         </Label>
-                        <InputGroup>
-                          <Input
-                            type="text"
-                            name="bmi"
-                            id="bmi"
-                            onChange={handleInputChange}
-                            value={objValues.bmi}
-                          />
-                        </InputGroup>
-                        {errors.bmi !== "" ? (
+                        <Input
+                          type="text"
+                          name="bmi"
+                          id="bmi"
+                          onChange={handleInputChange}
+                          value={Math.round(
+                            objValues.weight /
+                              Math.pow(objValues.height / 100, 2)
+                          )}
+                        />
+                        {errors.bmi ? (
                           <span className={classes.error}>{errors.bmi}</span>
                         ) : (
                           ""
@@ -2475,7 +2476,7 @@ const UserRegistration = (props) => {
                       <div className="form-group mb-3 col-md-6">
                         <FormGroup>
                           <Label>
-                            HCV RNA result
+                            HCV RNA result (IU/ml)
                             <span style={{ color: "red" }}> *</span>
                           </Label>
                           <InputGroup>

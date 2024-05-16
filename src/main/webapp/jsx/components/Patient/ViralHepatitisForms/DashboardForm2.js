@@ -271,51 +271,6 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
   };
 
   let temp = { ...errors };
-  let {
-    dateHbvDnaResultRepor,
-    dateHbvDnaResultReported,
-    dateHbvDnaTestRequested,
-    dateHbvSampleRequeste,
-    dateHbvTestRequested,
-    diagnosis_result,
-    directBiliribin,
-    hepatitisBTest,
-    antiHDV,
-    hbeAG,
-    hbsAgQuantification,
-    hbvDna,
-    treatmentEligible,
-    totalBiliRubin,
-    pmtctEligible,
-    prothrombinTimeNR,
-    plt,
-    comment,
-    coInfectionDropdown,
-    commobidities,
-    albumin,
-    altValue,
-    urea,
-    creatinine,
-    fib4,
-    fibroscan,
-    ultrasoundScan,
-    multipleInfection,
-    dateHbvSampleRequested,
-    gradeOfEncephalopathy,
-    ast,
-    ascites,
-    alt,
-    astValue,
-    apriScore,
-    ctScan,
-    childPughScore,
-    liverBiopsyStage,
-    stagingDateOfLiverBiopsy,
-    hcvRNA,
-    hepatitisCoinfection,
-    pst,
-    afp,
-  } = temp;
 
   const validate = () => {
     dateHbvDnaTestRequested = basicInfo.hepatitisBTest.dateHbvDnaTestRequested
@@ -1107,7 +1062,8 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
                               <Label for="hcRnaValue">
-                                Input HCV RNA Value <ImportantString str="*" />{" "}
+                                Input HCV RNA Value (IU/ml){" "}
+                                <ImportantString str="*" />{" "}
                               </Label>
                               <ImportantString str="*" />{" "}
                               <input

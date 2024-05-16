@@ -111,7 +111,6 @@ const DiagnosisSubmitedForm = ({
 }) => {
   const [diagnosisInfo, setDiagnosisInfo] = useState({});
   let history = useHistory();
-  const [userId, setUserId] = useState(getCookie("enrollmentIds"));
 
   const [basicInfo, setBasicInfo] = useState({
     clinicalParameters: {
@@ -142,9 +141,9 @@ const DiagnosisSubmitedForm = ({
       antiHDV: "",
       comment: "",
       ctScan: "",
-      dateHbvDnaTestRequested: `${diagnosisInfo?.hepatitisBTest?.dateHbvDnaTestRequested.year}-${diagnosisInfo?.hepatitisBTest?.dateHbvDnaTestRequested.monthValue}-${diagnosisInfo?.hepatitisBTest?.dateHbvDnaTestRequested.dayOfMonth}`,
-      dateHbvSampleRequested: `${diagnosisInfo?.hepatitisBTest?.dateHbvSampleRequested.year}-${diagnosisInfo?.hepatitisBTest?.dateHbvSampleRequested.monthValue}-${diagnosisInfo?.hepatitisBTest?.dateHbvSampleRequested.dayOfMonth}`,
-      dateHbvTestRequested: `${diagnosisInfo?.hepatitisBTest?.dateHbvTestRequested.year}-${diagnosisInfo?.hepatitisBTest?.dateHbvTestRequested.monthValue}-${diagnosisInfo?.hepatitisBTest?.dateHbvTestRequested.dayOfMonth}`,
+      dateHbvDnaTestRequested: `${diagnosisInfo?.hepatitisBTest?.dateHbvDnaTestRequested?.year}-${diagnosisInfo?.hepatitisBTest?.dateHbvDnaTestRequested?.monthValue}-${diagnosisInfo?.hepatitisBTest?.dateHbvDnaTestRequested?.dayOfMonth}`,
+      dateHbvSampleRequested: `${diagnosisInfo?.hepatitisBTest?.dateHbvSampleRequested?.year}-${diagnosisInfo?.hepatitisBTest?.dateHbvSampleRequested?.monthValue}-${diagnosisInfo?.hepatitisBTest?.dateHbvSampleRequested?.dayOfMonth}`,
+      dateHbvTestRequested: `${diagnosisInfo?.hepatitisBTest?.dateHbvTestRequested?.year}-${diagnosisInfo?.hepatitisBTest?.dateHbvTestRequested?.monthValue}-${diagnosisInfo?.hepatitisBTest?.dateHbvTestRequested?.dayOfMonth}`,
       hbeAG: "",
       // attaching missing props
       dateHbvDnaResultReported: "",
@@ -504,7 +503,6 @@ const DiagnosisSubmitedForm = ({
   });
 
   useEffect(() => {
-    alert;
     if (basicInfo.hepatitisBTest.hbvDna === "DETECTED") {
       setBasicInfo((prev) => ({
         ...prev,
@@ -1068,7 +1066,7 @@ const DiagnosisSubmitedForm = ({
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
                               <Label for="hcRnaValue">
-                                Input HCV RNA Value{" "}
+                                Input HCV RNA Value (IU/ml){" "}
                                 <span style={{ color: "red" }}> *</span>{" "}
                               </Label>
                               <span style={{ color: "red" }}> *</span>{" "}

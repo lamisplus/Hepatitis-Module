@@ -266,9 +266,12 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
 
   const getHepatitisPoint = () => {
     axios
-      .get(`${baseUrl}application-codesets/v2/${hepatitisScreeningResultPath}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .get(
+        `${baseUrl}application-codesets/v2/${hepatitisScreeningResultPath}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
       .then((response) => {
         setHepatitisStatus(response.data);
       })
@@ -420,9 +423,12 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
     const stateId = e?.target?.value;
     // setBasicInfo({ ...basicInfo, stateId: e?.target?.value });
     axios
-      .get(`${baseUrl}organisation-units/parent-organisation-units/${stateId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .get(
+        `${baseUrl}organisation-units/parent-organisation-units/${stateId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
       .then((response) => {
         setProvinces(response.data.sort());
       })
@@ -1591,7 +1597,6 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
                             id="educationId"
                             value={info.educationId}
                             onChange={handleInputChangesForInfo}
-                            // onBlur={formik.handleBlur}
                             style={{
                               border: "1px solid #014D88",
                               borderRadius: "0.2rem",
@@ -1613,42 +1618,6 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
                           )}
                         </FormGroup>
                       </div>
-
-                      {/* <div className="form-group mb-3 col-md-4">
-                        <FormGroup>
-                          <Label for="relationship">
-                            Relationship{" "}
-                            <span style={{ color: "red" }}> *</span>{" "}
-                          </Label>
-                          <select
-                            className="form-control"
-                            name="relationship"
-                            id="relationship"
-                            value={basicInfo.relationship}
-                            onChange={handleInputChangeBasic}
-                            // onBlur={formik.handleBlur}
-                            style={{
-                              border: "1px solid #014D88",
-                              borderRadius: "0.2rem",
-                            }}
-                          >
-                            <option>Select</option>
-                            {relationshipOptions.map((item, index) => (
-                              <option value={Number(item.id)}>
-                                {item.display}
-                              </option>
-                            ))}
-                          </select>
-                          {errors.relationship !== "" ? (
-                            <span className={classes.error}>
-                              {errors.relationship}
-                            </span>
-                          ) : (
-                            ""
-                          )}
-                        </FormGroup>
-                      </div> */}
-
                       <div className="form-group mb-3 col-md-4">
                         <FormGroup>
                           <Label for="sexId">
@@ -1660,7 +1629,6 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
                             id="genderId"
                             value={basicInfo.personDto.genderId}
                             onChange={handleInputChangeBasic}
-                            // onBlur={formik.handleBlur}
                             style={{
                               border: "1px solid #014D88",
                               borderRadius: "0.2rem",

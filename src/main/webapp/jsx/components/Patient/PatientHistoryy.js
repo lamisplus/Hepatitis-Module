@@ -35,6 +35,8 @@ import { useQuery } from "react-query";
 import { fetchFollowup } from "../../services/fetchFollowup";
 import { FETCH_ENROLMENT_KEY, FETCH_FOLLOWUP_KEY } from "../../utils/queryKeys";
 import { useArchiveFollowup } from "../../hooks/useArchiveFollowup";
+import { fetchEnrolment } from "../../services/fetchEnrolment";
+import { queryClient } from "../../utils/queryClient";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -72,7 +74,6 @@ const PatientHistory = (props) => {
   const toggle = () => setOpen(!open);
   let notToBeUpdated = ["pmtct_infant_information"];
 
-
   useEffect(() => {
     setRecentActivities(props.recentActivities);
   }, [props.recentActivities]);
@@ -82,12 +83,9 @@ const PatientHistory = (props) => {
     for (let index = 0; index < array.length; index++) {
       const activityRecord = array[index];
       if (activityRecord?.path === "hepatitis_followup") {
-        queryClient.prefetchQuery([
-          FETCH_FOLLOWUP_KEY,
-          activityRecord?.recordId,
-        ],
-        ()=>fetchFollowup(activityRecord?.recordId)
-        
+        queryClient.prefetchQuery(
+          [FETCH_FOLLOWUP_KEY, activityRecord?.recordId],
+          () => fetchFollowup(activityRecord?.recordId)
         );
       }
     }
@@ -99,16 +97,13 @@ const PatientHistory = (props) => {
     {
       onSuccess: (data) => {
         setEnrolmentData(data);
-        prefetchAllFollowUp()
+        prefetchAllFollowUp();
       },
     }
   );
 
-  
-
   const LoadViewPage = (row, action) => {
     if (row.path === "hepatitis_enrollment") {
-      //props.setActiveContent({...props.activeContent, route:'anc-enrollment', id:row.id, actionType:action})
       history.push({
         pathname: "/update-patient",
         state: {
@@ -150,26 +145,23 @@ const PatientHistory = (props) => {
           },
         },
       });
-    } 
-    else if (row.path === "hepatitis_followup") {
+    } else if (row.path === "hepatitis_followup") {
       if (action === "update") {
         props.setActiveContent({
           ...props.activeContent,
           route: "patient-followup",
           actionType: "update",
-          followupRecord: row
+          followupRecord: row,
         });
       } else {
         props.setActiveContent({
           ...props.activeContent,
           route: "patient-followup",
           actionType: "view",
-          followupRecord: row
+          followupRecord: row,
         });
       }
-    }
-    
-    else if (row.path === "anc-mother-visit") {
+    } else if (row.path === "anc-mother-visit") {
       props.setActiveContent({
         ...props.activeContent,
         route: "consultation",
@@ -255,9 +247,7 @@ const PatientHistory = (props) => {
             toast.error("Something went wrong. Please try again...");
           }
         });
-    }
-
-    else if (row.path === "hepatitis_followup") {
+    } else if (row.path === "hepatitis_followup") {
       setSaving(true);
 
       mutate(row?.recordId);

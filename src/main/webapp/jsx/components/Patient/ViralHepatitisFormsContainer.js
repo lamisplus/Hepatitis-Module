@@ -11,6 +11,7 @@ import ViralHepatitisForm1 from "./ViralHepatitisForms/Form1";
 import ViralHepatitisForm2 from "./ViralHepatitisForms/Form2";
 import ViralHepatitisForm3 from "./ViralHepatitisForms/Form3";
 import { useLocalStorageState } from "../../hooks/useLocalStorageState";
+import DasboardTreatmentForm from "./ViralHepatitisForms/DashboardTreatmentForm";
 
 const ViralHepatitisFormsContainer = (props) => {
   const [step, setStep] = useLocalStorageState(
@@ -32,15 +33,22 @@ const ViralHepatitisFormsContainer = (props) => {
         patientObj={locationState.patientObj}
       />
     ),
-    1: <ViralHepatitisForm2 step={step} setStep={setStep} />,
-    2: (
-      <ViralHepatitisForm3
+    1: (
+      <ViralHepatitisForm2
         step={step}
         setStep={setStep}
         userStatus={locationState.existingPatient}
+        patientObj={locationState.patientObj}
       />
     ),
-  
+    2: (
+      <DasboardTreatmentForm
+        step={step}
+        setStep={setStep}
+        userStatus={locationState.existingPatient}
+        patientObj={locationState.patientObj}
+      />
+    ),
   };
   return (
     <>

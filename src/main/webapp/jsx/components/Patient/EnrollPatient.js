@@ -246,7 +246,7 @@ const UserRegistration = (props) => {
           ? address?.address[0]
           : null;
 
-      basicInfo.dob = patientObj.dateOfBirth;
+      basicInfo.dob = patientObj?.dateOfBirth;
       basicInfo.firstName = patientObj.firstName;
       basicInfo.dateOfRegistration = patientObj.dateOfRegistration;
       basicInfo.middleName = patientObj.otherName;
@@ -283,7 +283,7 @@ const UserRegistration = (props) => {
       basicInfo.stateId = country && country.stateId ? country.stateId : "";
       basicInfo.district = country && country.district ? country.district : "";
       const patientAge = calculate_age(
-        moment(patientObj.dateOfBirth).format("DD-MM-YYYY")
+        moment(patientObj?.dateOfBirth).format("DD-MM-YYYY")
       );
       basicInfo.age = patientAge;
       setfemaleStatus(patientObj.sex === "Female" ? true : false);

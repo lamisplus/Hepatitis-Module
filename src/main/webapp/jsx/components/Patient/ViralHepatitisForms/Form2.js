@@ -24,7 +24,16 @@ import { getCookie, setCookie } from "../../../helpers/cookieStoragehelpers";
 import axios from "axios";
 import { url as baseUrl, token } from "../../../../api";
 import { toast } from "react-toastify";
-import { GetOptions, ImportantString } from "./DashboardForm2";
+import {
+  GetOptions,
+  ImportantString,
+  YesOrNoSelectInput,
+} from "./DashboardForm2";
+import { isNotInTheFutureOrBeforeBirth } from "../../../helpers/dateValidators";
+import { useQuery } from "react-query";
+import { fetchEnrolment } from "../../../services/fetchEnrolment";
+import { FETCH_ENROLMENT_KEY } from "../../../utils/queryKeys";
+const { isBefore } = require("date-fns");
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
 // hcRnaValue
@@ -105,6 +114,45 @@ export const GetHepatitisCoinfectionCheckBoxValues = ({
   label,
   placeholder,
   id,
+  selectedOptions,
+}) => {
+  return (
+    <div>
+      <input
+        type="checkbox"
+        value={val}
+        onChange={onChangeHandler}
+        checked={
+          selectedOptions.filter((item) => item.includes(checked)).length
+        }
+      />
+      <Label>
+        <span className="p-2">{label}</span>{" "}
+      </Label>
+      <span>
+        <input
+          className="form-control"
+          type="text"
+          name={id}
+          id={id}
+          placeholder={placeholder}
+          style={{
+            border: "1px solid #014D88",
+            borderRadius: "0.2rem",
+          }}
+        />
+      </span>
+    </div>
+  );
+};
+export const GetClinicalParamsCheckBoxValues = ({
+  val,
+  onChangeHandler,
+  checked,
+  label,
+  placeholder,
+  id,
+  selectedOptions,
 }) => {
   return (
     <div>
@@ -184,21 +232,76 @@ export const HepatitisCoinfection = ({
     </div>
   );
 };
-
-const ViralHepatitisForm2 = ({ setStep }) => {
-  const [userId, setUserId] = useState(getCookie("enrollmentIds"));
-  const [enrollmentPersonInfo, setEnrollmentPersonInfo] = useState(
-    getCookie("enrollmentIds")
+export const ClinicalParamCheckOption = ({
+  title,
+  checkName,
+  placeholder,
+  checkValue,
+  handleCheckboxChange,
+  selectedOptions,
+  clinicalParamValueHandler,
+}) => {
+  return (
+    <div className="form-group my-3 col-md-4">
+      <input
+        type="checkbox"
+        value={checkValue}
+        onChange={handleCheckboxChange}
+        checked={
+          selectedOptions.filter((item) => item.includes(checkValue)).length
+        }
+      />
+      <Label>
+        <span className="p-2">{title}</span>{" "}
+      </Label>
+      {selectedOptions.filter((item) => item.includes(checkValue)).length ? (
+        <span style={{ fontSize: "1.2em" }}>
+          <ImportantString str="*" />
+          <input
+            onChange={(e) =>
+              clinicalParamValueHandler(
+                e.target.value,
+                checkValue,
+                selectedOptions
+              )
+            }
+            className="form-control"
+            type="text"
+            name={checkName}
+            id={checkName}
+            placeholder={placeholder}
+            style={{
+              border: "1px solid #014D88",
+              borderRadius: "0.2rem",
+            }}
+          />
+        </span>
+      ) : null}
+    </div>
   );
+};
 
+const ViralHepatitisForm2 = ({
+  submit,
+  action,
+  setStep,
+  userStatus,
+  patientObj,
+  id,
+  setActiveContent,
+  activeContent,
+  route,
+}) => {
+  const [enrollmentUuid, setEnrollmentUuid] = useState(
+    getCookie("enrollmentIds")?.enrollmentUuid
+  );
+  const [enrollmentPersonInfo, setEnrollmentPersonInfo] = useState(
+    getCookie("enrollmentIds")?.enrollmentUuid
+  );
   const [basicInfo, setBasicInfo] = useState({
     clinicalParameters: {
-      afp: "",
-      alt: "",
       apriScore: "",
       ascites: "",
-      ast: "",
-      astValue: "",
       childPughScore: "",
       creatinine: "",
       diagnosis_result: "",
@@ -214,7 +317,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
       ultrasoundScan: "",
       urea: "",
     },
-    enrollmentUuid: userId?.enrollmentUuid,
+    enrollmentUuid,
     hepatitisBTest: {
       albumin: "",
       antiHDV: "",
@@ -234,6 +337,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
       treatmentEligible: "",
     },
     hepatitisCTest: {
+      selectedClinicalParamsOptions: [],
       commobidities: "",
       hcRnaValue: "",
       hcvRNA: "DETECTED",
@@ -245,7 +349,45 @@ const ViralHepatitisForm2 = ({ setStep }) => {
   const [errors, setErrors] = useState({});
 
   const [selectedOptions, setSelectedOptions] = useState([]);
+  const [selectedClinicalParamsOptions, setSelectedClinicalParamsOptions] =
+    useState([]);
 
+  const handleClinicalParamsCheckboxChange = (event) => {
+    const option = event.target.value;
+    if (event.target.checked) {
+      setSelectedClinicalParamsOptions((prevOptions) => {
+        const updatedOptions = [...prevOptions, option];
+
+        setErrors({ ...temp, [event.target.name]: "" });
+        setBasicInfo({
+          ...basicInfo,
+          hepatitisCTest: {
+            ...basicInfo.hepatitisCTest,
+            hepatitisClinicalParams: updatedOptions,
+          },
+        });
+
+        return updatedOptions;
+      });
+    } else {
+      setSelectedClinicalParamsOptions((prevOptions) => {
+        const updatedOptions = prevOptions.filter(
+          (item) => !item.includes(option)
+        );
+
+        setErrors({ ...temp, [event.target.name]: "" });
+        setBasicInfo({
+          ...basicInfo,
+          hepatitisCTest: {
+            ...basicInfo.hepatitisCTest,
+            [event.target.name]: updatedOptions,
+          },
+        });
+
+        return updatedOptions;
+      });
+    }
+  };
   const handleCheckboxChange = (event) => {
     const option = event.target.value;
     if (event.target.checked) {
@@ -286,7 +428,28 @@ const ViralHepatitisForm2 = ({ setStep }) => {
     const selectedOptionIndex = selectedOptions.indexOf(coinfection);
     if (selectedOptionIndex > -1) {
       const splittedStrArr = selectedOptions[selectedOptionIndex].split(".");
-      const isCoinfectionValueSet = splittedStrArr.length == 2;
+      const isCoinfectionValueSet = splittedStrArr.length === 2;
+      selectedOptions[selectedOptionIndex] =
+        `${
+          isCoinfectionValueSet
+            ? splittedStrArr[0]
+            : isCoinfectionValueSet
+            ? splittedStrArr[0]
+            : selectedOptions[selectedOptionIndex]
+        }` +
+        "." +
+        value;
+    }
+  };
+  const clinicalParamsValueHandler = (
+    value,
+    clinicalParam,
+    selectedOptions
+  ) => {
+    const selectedOptionIndex = selectedOptions.indexOf(clinicalParam);
+    if (selectedOptionIndex > -1) {
+      const splittedStrArr = selectedOptions[selectedOptionIndex].split(".");
+      const isCoinfectionValueSet = splittedStrArr.length === 2;
       selectedOptions[selectedOptionIndex] =
         `${
           isCoinfectionValueSet
@@ -349,20 +512,32 @@ const ViralHepatitisForm2 = ({ setStep }) => {
 
   let temp = { ...errors };
   const validate = () => {
-    temp.dateHbvDnaTestRequested = basicInfo.hepatitisBTest
-      .dateHbvDnaTestRequested
-      ? ""
-      : "Date HBV DNA test requested is required ";
+    temp.dateHbvDnaTestRequested =
+      basicInfo.hepatitisBTest.dateHbvDnaTestRequested &&
+      isNotInTheFutureOrBeforeBirth(
+        basicInfo.hepatitisBTest.dateHbvDnaTestRequested,
+        patientObj?.dateOfBirth
+      )
+        ? ""
+        : "Date HBV DNA test requested is invalid";
 
-    temp.dateHbvSampleRequested = basicInfo.hepatitisBTest
-      .dateHbvSampleRequested
-      ? ""
-      : "Date HBV Sample requested is required";
+    temp.dateHbvSampleRequested =
+      basicInfo.hepatitisBTest.dateHbvSampleRequested &&
+      isNotInTheFutureOrBeforeBirth(
+        basicInfo.hepatitisBTest.dateHbvSampleRequested,
+        patientObj?.dateOfBirth
+      )
+        ? ""
+        : "Date HBV Sample requested invalid";
 
-    temp.dateHbvDnaResultReported = basicInfo.hepatitisBTest
-      .dateHbvDnaResultReported
-      ? ""
-      : "Date of HBV DNA result reported is required";
+    temp.dateHbvDnaResultReported =
+      basicInfo.hepatitisBTest.dateHbvDnaResultReported &&
+      isNotInTheFutureOrBeforeBirth(
+        basicInfo.hepatitisBTest.dateHbvDnaResultReported,
+        patientObj?.dateOfBirth
+      )
+        ? ""
+        : "Date of HBV DNA result reported is invalid";
 
     temp.hbsAgQuantification = basicInfo.hepatitisBTest.hbsAgQuantification
       ? ""
@@ -377,12 +552,8 @@ const ViralHepatitisForm2 = ({ setStep }) => {
     temp.treatmentEligible = basicInfo.hepatitisBTest.treatmentEligible
       ? ""
       : " Treatment Eligible is required";
-
-    temp.ast = basicInfo.clinicalParameters.ast ? "" : " AST is required";
-    temp.alt = basicInfo.clinicalParameters.alt ? "" : " ALT is required";
     temp.hcvRNA = basicInfo.hepatitisCTest.hcvRNA ? "" : "HCV RNA is required";
 
-    temp.pst = basicInfo.clinicalParameters.pst ? "" : " PST is required";
     temp.totalBiliRubin = basicInfo.clinicalParameters.totalBiliRubin
       ? ""
       : " ALT is required";
@@ -440,9 +611,13 @@ const ViralHepatitisForm2 = ({ setStep }) => {
       basicInfo.clinicalParameters.liverBiopsyStage === "NOT_DONE"
         ? ""
         : basicInfo.clinicalParameters.liverBiopsyStage !== "NOT_DONE" &&
-          !basicInfo.hepatitisBTest.stagingDateOfLiverBiopsy
-        ? "Staging date of liver biopsy is required"
-        : "";
+          basicInfo.hepatitisBTest.stagingDateOfLiverBiopsy &&
+          isNotInTheFutureOrBeforeBirth(
+            basicInfo.hepatitisBTest.stagingDateOfLiverBiopsy,
+            patientObj?.dateOfBirth
+          )
+        ? ""
+        : "Staging date of liver biopsy is required";
 
     temp.diagnosis_result = basicInfo.clinicalParameters.liverBiopsyStage
       ? ""
@@ -451,14 +626,20 @@ const ViralHepatitisForm2 = ({ setStep }) => {
     temp.commobidities = basicInfo.hepatitisCTest.commobidities
       ? ""
       : "Commobidities is required";
-    temp.multipleInfection = basicInfo.clinicalParameters.ast
-      ? ""
-      : "Multiple Infection required";
     const unsetValues = selectedOptions.filter((item) => {
       const coinfectionAndValueArr = item.split(".");
       return isNaN(coinfectionAndValueArr[1]);
     });
     temp.hepatitisCoinfection = !unsetValues.length
+      ? ""
+      : "Clinical value parameters are all required";
+    const UnsetHepatitisClinicalValues = selectedClinicalParamsOptions.filter(
+      (item) => {
+        const hepatitisClinicalParams = item.split(".");
+        return isNaN(hepatitisClinicalParams[1]);
+      }
+    );
+    temp.hepatitisClinicalParams = !UnsetHepatitisClinicalValues.length
       ? ""
       : "Coinfection values are all required";
 
@@ -476,7 +657,12 @@ const ViralHepatitisForm2 = ({ setStep }) => {
       });
 
       toast.success("Diagnosis submitted successfully");
-      setStep(2);
+      if (setActiveContent) {
+        setActiveContent((prev) => ({ ...prev, route: "recent-history" }));
+      }
+      if (setStep) {
+        setStep(2);
+      }
       return response.data;
     } catch (error) {
       toast.error("Diagnosis failed");
@@ -496,9 +682,8 @@ const ViralHepatitisForm2 = ({ setStep }) => {
   };
   const onSubmitHandler = (values) => {
     window.scrollTo(0, 0);
-    const enrollmentIds = getCookie("enrollmentIds");
     const restructuredDiagnosisPayload = {
-      enrollmentUuid: enrollmentIds?.enrollmentUuid,
+      enrollmentUuid,
       hepatitisBTest: {
         dateHbvTestRequested: values.dateHbvTestRequested,
         dateHbvSampleRequested: values.dateHbvSampleRequested,
@@ -524,10 +709,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
         multipleInfection: values.multipleInfection,
       },
       clinicalParameters: {
-        ast: values.ast,
-        alt: values.alt,
-        pst: values.plt,
-        astValue: values.astValue,
+        clinicalParameters: values.clinicalParametersOptions,
         totalBiliRubin: values.totalBiliRubin,
         directBiliribin: values.directBiliribin,
         apriScore: values.apriScore,
@@ -546,10 +728,22 @@ const ViralHepatitisForm2 = ({ setStep }) => {
         diagnosis_result: values.diagnosis_result,
       },
     };
+
     setCookie("hepatitis2", values, 1);
     setCookie("heaptitis2PayloadValue", restructuredDiagnosisPayload, 1);
     postDataWithToken(restructuredDiagnosisPayload, "hepatitis/diagnosis");
   };
+
+  useQuery(
+    [FETCH_ENROLMENT_KEY, patientObj?.personUuid],
+    () => fetchEnrolment(patientObj?.personUuid),
+    {
+      onSuccess: ({ uuid }) => {
+        const actualUuid = uuid || getCookie("enrollmentIds")?.enrollmentUuid;
+        setEnrollmentUuid(actualUuid);
+      },
+    }
+  );
 
   const moveBack = () => {
     window.scrollTo(0, 0);
@@ -558,17 +752,16 @@ const ViralHepatitisForm2 = ({ setStep }) => {
   const classes = useStyles();
   const { formik } = useValidateForm2ValuesHook(onSubmitHandler);
 
-  const castCookieValueToForm = () => {
-    const cookieValue = getCookie("hepatitis2");
-    if (cookieValue) {
-      formik.setValues(cookieValue);
-    }
-  };
-
   useEffect(() => {
-    castCookieValueToForm();
     fetchChildPughScore();
   }, []);
+
+  useEffect(() => {
+    setBasicInfo({
+      ...basicInfo,
+      enrollmentUuid,
+    });
+  }, [enrollmentUuid]);
 
   const [isDropdownsOpen, setIsDropdownsOpen] = useState({
     hepatitisBDropdown: true,
@@ -591,6 +784,14 @@ const ViralHepatitisForm2 = ({ setStep }) => {
       }));
     }
   }, [basicInfo.hepatitisCTest.hcvRNA]);
+  useEffect(() => {
+    if (basicInfo.hepatitisCTest.commobidities === "NO") {
+      setBasicInfo((prev) => ({
+        ...prev,
+        hepatitisCTest: { ...prev.hepatitisCTest, multipleInfection: "" },
+      }));
+    }
+  }, [basicInfo.hepatitisCTest.commobidities]);
   return (
     <>
       <Card className={classes.root}>
@@ -994,13 +1195,6 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                                 height: "120px",
                               }}
                             />
-                            {/* {errors.comment !== "" ? (
-                              <span className={classes.error}>
-                                {errors.comment}
-                              </span>
-                            ) : (
-                              ""
-                            )} */}
                           </FormGroup>
                         </div>
                       </div>
@@ -1105,7 +1299,7 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
                               <Label for="hcRnaValue">
-                                Input HCV RNA Value{" "}
+                                Input HCV RNA Value (IU/ml){" "}
                                 <span style={{ color: "red" }}> *</span>{" "}
                               </Label>
                               <input
@@ -1201,61 +1395,60 @@ const ViralHepatitisForm2 = ({ setStep }) => {
 
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
-                            <Label for="commobidities">
-                              Commobidities{" "}
-                              <span style={{ color: "red" }}> *</span>{" "}
-                            </Label>
-                            <input
+                            <Label for="pmtctEligible">Commobidities</Label>
+                            <ImportantString str="*" />{" "}
+                            <select
                               className="form-control"
-                              type="text"
                               name="commobidities"
                               id="commobidities"
-                              value={basicInfo.hepatitisCTest.commobidities}
                               onChange={handleInputChangeBasicForHC}
-                              // onBlur={formik.handleBlur}
+                              value={basicInfo.hepatitisCTest.commobidities}
                               style={{
                                 border: "1px solid #014D88",
                                 borderRadius: "0.2rem",
                               }}
-                            />
-                            {errors.commobidities !== "" ? (
+                            >
+                              <YesOrNoSelectInput />
+                            </select>
+                            {errors.commobidities && (
                               <span className={classes.error}>
                                 {errors.commobidities}
                               </span>
-                            ) : (
-                              ""
                             )}
                           </FormGroup>
                         </div>
 
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="multipleInfection">
-                              Specify multiple infection{" "}
-                              <span style={{ color: "red" }}> *</span>{" "}
-                            </Label>
-                            <input
-                              className="form-control"
-                              type="text"
-                              name="multipleInfection"
-                              id="multipleInfection"
-                              value={basicInfo.hepatitisCTest.multipleInfection}
-                              onChange={handleInputChangeBasicForHC}
-                              // onBlur={formik.handleBlur}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            />
-                            {errors.multipleInfection !== "" ? (
-                              <span className={classes.error}>
-                                {errors.multipleInfection}
-                              </span>
-                            ) : (
-                              ""
-                            )}
-                          </FormGroup>
-                        </div>
+                        {basicInfo.hepatitisCTest.commobidities === "YES" && (
+                          <div className="form-group mb-3 col-md-4">
+                            <FormGroup>
+                              <Label for="multipleInfection">
+                                Specify multiple infection{" "}
+                                <span style={{ color: "red" }}> *</span>{" "}
+                              </Label>
+                              <input
+                                className="form-control"
+                                type="text"
+                                name="multipleInfection"
+                                id="multipleInfection"
+                                value={
+                                  basicInfo.hepatitisCTest.multipleInfection
+                                }
+                                onChange={handleInputChangeBasicForHC}
+                                style={{
+                                  border: "1px solid #014D88",
+                                  borderRadius: "0.2rem",
+                                }}
+                              />
+                              {errors.multipleInfection !== "" ? (
+                                <span className={classes.error}>
+                                  {errors.multipleInfection}
+                                </span>
+                              ) : (
+                                ""
+                              )}
+                            </FormGroup>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </Collapse>
@@ -1280,91 +1473,58 @@ const ViralHepatitisForm2 = ({ setStep }) => {
 
               <div className="card-body">
                 <div className="row">
-                  <div className="form-group mb-3 col-md-4">
-                    <FormGroup>
-                      <Label for="ast">AST (IU/ml)</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
-                      <select
-                        className="form-control"
-                        name="ast"
-                        id="ast"
-                        onChange={handleInputChangeBasicForClinic}
-                        value={basicInfo.clinicalParameters.ast}
-                        style={{
-                          border: "1px solid #014D88",
-                          borderRadius: "0.2rem",
-                        }}
-                      >
-                        <option value={""}>Select</option>
-                        <option value={"YES"}>Yes</option>
-                        <option value={"NO"}>No</option>
-                      </select>
-                      {errors.ast !== "" ? (
-                        <span className={classes.error}>{errors.ast}</span>
-                      ) : (
-                        ""
-                      )}
-                    </FormGroup>
-                  </div>
-                  <div className="form-group mb-3 col-md-4">
-                    <FormGroup>
-                      <Label for="alt">ALT (IU/ml)</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
-                      <select
-                        className="form-control"
-                        name="alt"
-                        id="alt"
-                        onChange={handleInputChangeBasicForClinic}
-                        value={basicInfo.clinicalParameters.alt}
-                        style={{
-                          border: "1px solid #014D88",
-                          borderRadius: "0.2rem",
-                        }}
-                      >
-                        <option value={""}>Select</option>
-                        <option value={"YES"}>Yes</option>
-                        <option value={"NO"}>No</option>
-                      </select>
-                      {errors.alt !== "" ? (
-                        <span className={classes.error}>{errors.alt}</span>
-                      ) : (
-                        ""
-                      )}
-                    </FormGroup>
-                  </div>
-                  <div className="form-group mb-3 col-md-4">
-                    <FormGroup>
-                      <Label for="pst">PST (mm3)</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
-                      <select
-                        className="form-control"
-                        name="pst"
-                        id="pst"
-                        onChange={handleInputChangeBasicForClinic}
-                        value={basicInfo.clinicalParameters.pst}
-                        style={{
-                          border: "1px solid #014D88",
-                          borderRadius: "0.2rem",
-                        }}
-                      >
-                        <option value={""}>Select</option>
-                        <option value={"YES"}>Yes</option>
-                        <option value={"NO"}>No</option>
-                      </select>
-                      {errors.pst !== "" ? (
-                        <span className={classes.error}>{errors.pst}</span>
-                      ) : (
-                        ""
-                      )}
-                    </FormGroup>
-                  </div>
+                  {[
+                    {
+                      title: "AST (IU/ml)",
+                      checkName: "hbvHcvValue",
+                      placeholder: "Ast...",
+                      checkValue: "AST",
+                      actualValue: "AST_VALUE",
+                    },
+                    {
+                      title: "PST (mm3)",
+                      checkName: "PstValue",
+                      placeholder: "Hst...",
+                      checkValue: "PST",
+                      actualValue: "PST_VALUE",
+                    },
+                    {
+                      title: "ALT (IU/ml)",
+                      checkName: "altValue",
+                      placeholder: "alt...",
+                      checkValue: "ALT",
+                      actualValue: "ALT_VALUE",
+                    },
+                  ].map(
+                    ({
+                      title,
+                      checkName,
+                      placeholder,
+                      actualValue,
+                      checkValue,
+                    }) => (
+                      <ClinicalParamCheckOption
+                        key={title}
+                        title={title}
+                        checkName={checkName}
+                        placeholder={placeholder}
+                        actualValue={actualValue}
+                        checkValue={checkValue}
+                        handleCheckboxChange={
+                          handleClinicalParamsCheckboxChange
+                        }
+                        selectedOptions={selectedClinicalParamsOptions}
+                        clinicalParamValueHandler={clinicalParamsValueHandler}
+                      />
+                    )
+                  )}
                 </div>
                 <div className="row">
                   {basicInfo.ast === "YES" && (
                     <div className="form-group mb-3 col-md-4">
                       <FormGroup>
                         <Label for="astValue">
-                          Input AST value{" "}
+                          {" "}
                           <span style={{ color: "red" }}> *</span>{" "}
                         </Label>
                         <input
@@ -1573,7 +1733,6 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                         id="prothrombinTimeNR"
                         value={basicInfo.clinicalParameters.prothrombinTimeNR}
                         onChange={handleInputChangeBasicForClinic}
-                        // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
@@ -1599,7 +1758,6 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                         id="urea"
                         value={basicInfo.clinicalParameters.urea}
                         onChange={handleInputChangeBasicForClinic}
-                        // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
@@ -1624,7 +1782,6 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                         id="creatinine"
                         value={basicInfo.clinicalParameters.creatinine}
                         onChange={handleInputChangeBasicForClinic}
-                        // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
@@ -1680,7 +1837,6 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                         id="afp"
                         value={basicInfo.clinicalParameters.afp}
                         onChange={handleInputChangeBasicForClinic}
-                        // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
@@ -1705,7 +1861,6 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                         id="fibroscan"
                         value={basicInfo.clinicalParameters.fibroscan}
                         onChange={handleInputChangeBasicForClinic}
-                        // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
@@ -1797,11 +1952,6 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                             Massive/Gross
                           </option>
                         </select>
-                        {/* {errors.fib4 !== "" ? (
-                          <span className={classes.error}>{errors.fib4}</span>
-                        ) : (
-                          ""
-                        )} */}
                       </FormGroup>
                     </div>
                   )}
@@ -2023,10 +2173,11 @@ const ViralHepatitisForm2 = ({ setStep }) => {
                 onClick={handleSubmit}
                 style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}
               >
-                <span style={{ textTransform: "capitalize" }}>Next</span>
+                <span style={{ textTransform: "capitalize" }}>
+                  {submit ? "Submit" : "Next"}
+                </span>
               </MatButton>
             </div>
-            {/* </Form> */}
           </div>
         </CardContent>
       </Card>
