@@ -23,9 +23,9 @@ import java.io.Serializable;
 @Builder
 public class ClinicalParametersDto implements Serializable {
 
-    private Status ast;
-    private Status alt;
-    private Status pst;
+//    private Status ast;
+//    private Status alt;
+//    private Status pst;
     @NotEmpty(message = "astValue can not be empty")
     private String astValue;
     @NotEmpty(message = "totalBiliRubin can not be empty")
