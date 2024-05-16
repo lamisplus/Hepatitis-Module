@@ -601,7 +601,7 @@ const ViralHepatitisForm4 = () => {
                             <div className="form-group mb-3 col-md-4">
                               <FormGroup>
                                 <Label for="hcvValue">
-                                  Input HCV RNA Value{" "}
+                                  Input HCV RNA Value (IU/ml)
                                   <span style={{ color: "red" }}> *</span>{" "}
                                 </Label>
                                 <input

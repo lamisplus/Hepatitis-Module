@@ -1722,7 +1722,8 @@ const ViralHepatitisForm3 = ({ setStep, userStatus }) => {
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="svr12TestingHcvRna">
-                              HCV RNA <span style={{ color: "red" }}> *</span>{" "}
+                              HCV RNA(IU/ml)
+                              <span style={{ color: "red" }}> *</span>{" "}
                             </Label>
                             <select
                               className="form-control"
@@ -1758,7 +1759,7 @@ const ViralHepatitisForm3 = ({ setStep, userStatus }) => {
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
                               <Label for="svr12TestingHcvRnaValue">
-                                Input HCV RNA value
+                                Input HCV RNA value (IU/ml)
                               </Label>
                               <input
                                 className="form-control"
@@ -1865,7 +1866,8 @@ const ViralHepatitisForm3 = ({ setStep, userStatus }) => {
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="retreatmentHcvRNA">
-                              HCV RNA <span style={{ color: "red" }}> *</span>{" "}
+                              HCV RNA (IU/ml){" "}
+                              <span style={{ color: "red" }}> *</span>{" "}
                             </Label>
                             <select
                               className="form-control"
@@ -1901,7 +1903,7 @@ const ViralHepatitisForm3 = ({ setStep, userStatus }) => {
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
                               <Label for="retreatmentHcvRNAValue">
-                                Input HCV RNA value
+                                Input HCV RNA value (IU/ml)
                               </Label>
                               <input
                                 className="form-control"
