@@ -52,16 +52,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         log.info("GLOBAL_EXCEPTION_HANDLER: {}", errors);
         return errors;
     }
-
-
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    @ExceptionHandler(HttpMessageNotReadableException.class)
-//    public ResponseEntity<?> httpMessageNotReadableException(HttpMessageNotReadableException ex) {
-//        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, "Format Error. This could be as a result an error in date format", ex);
-//        return ResponseEntity.status(apiError.getStatus()).body(apiError);
-//    }
-
-
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<?> illegalArgumentException(IllegalArgumentException ex) {

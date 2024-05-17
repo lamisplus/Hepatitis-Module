@@ -1,7 +1,4 @@
 package org.lamisplus.modules.hepatitis.service.impl;
-
-
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
@@ -103,10 +100,6 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         HepatitisEnrollment enrollment = getHepatitisEnrollment(enrollmentId);
         HepatitisDiagnosis hepatitisDiagnosis = mapper.mapToDiagnosis(diagnosisDto);
         log.info("I am here 1");
-//        if(diagnosisRepository.existsHepatitisDiagnosisByHepatitisEnrollmentUuid(enrollment.getUuid())) {
-//            throw new RecordExistException(HepatitisEnrollment.class, "uuid",
-//                    enrollment.getUuid()+" Duplicate Enrollment: You have already enrolled for treatment");
-//        }
         hepatitisDiagnosis.setHepatitisEnrollment(enrollment);
         hepatitisDiagnosis.setFacilityId(enrollment.getFacilityId());
         hepatitisDiagnosis.setArchived(0);
@@ -181,13 +174,11 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         personMetaDataDto.setPageSize(persons.getSize());
         personMetaDataDto.setTotalPages(persons.getTotalPages());
         personMetaDataDto.setCurrentPage(persons.getNumber());
-        //personMetaDataDto.setRecords(personResponseDtos);
         personMetaDataDto.setRecords(persons.getContent().stream().map(this::getDtoFromPerson).collect(Collectors.toList()));
         return personMetaDataDto;
     }
 
     public PersonResponseDto getDtoFromPerson(PatientPerson person) {
-        //Log.info("person {}", person);
         PersonResponseDto personResponseDto = new PersonResponseDto();
         personResponseDto.setId(person.getId());
         personResponseDto.setNinNumber(person.getNinNumber());
@@ -207,7 +198,6 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         personResponseDto.setMaritalStatus(parseJsonString(person.getMaritalStatus()));
         personResponseDto.setSex(person.getSex());
         personResponseDto.setGender(parseJsonString(person.getGender()));
-//        personResponseDto.setDeceased(person.getDeceased());
         personResponseDto.setDateOfRegistration(person.getDateOfRegistration());
         personResponseDto.setActive(person.getActive());
         personResponseDto.setDeceasedDateTime(person.getDeceasedDateTime());
@@ -240,7 +230,6 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     public HepatitisEnrollment viewHepatitisEnrollmentByPersonUuid(String personUuid) {
         HepatitisEnrollment enrollment = enrollmentRepository.findHepatitisEnrollmentByPersonUuidAndArchived(personUuid, 0);
         return enrollment;
-//        return enrollmentEntityToDTO(enrollment);
     }
 
     public HepatitisDiagnosis viewHepatitisDiagnosisByEnrollmentUuid(String enrollmentUuid) {
@@ -257,7 +246,6 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         return hepatitisTreatment;
     }
 
-
     public HepatitisFollowup viewHepatitisFollowupByEnrollmentUuid(String enrollmentUuid) {
         HepatitisEnrollment enrollment = enrollmentRepository.findHepatitisEnrollmentByUuidAndArchived(enrollmentUuid, 0);
 
@@ -269,9 +257,6 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 
         return hepatitisFollowup;
     }
-
-
-
 
     private HepatitisEnrollmentResponse enrollmentEntityToDTO(HepatitisEnrollment enrollment) {
         HepatitisEnrollmentResponse hepatitisResponseDto = new HepatitisEnrollmentResponse();
@@ -323,7 +308,6 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         return treatmentDto;
     }
 
-
     public FollowupDto updateHepatitisFollowup(Long id, FollowupDto followupDto) {
         HepatitisFollowup existingHepatitisFollowup = followupRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(HepatitisTreatment.class, "Hepatitis follow up not found with id: " + id));
@@ -331,8 +315,6 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         followupRepository.save(hepatitisFollowup);
         return followupDto;
     }
-
-
 
     public List<ActivityTracker> getActivityTracker(String personUuid) {
         ArrayList<ActivityTracker> activityTrackers = new ArrayList<>();
@@ -375,8 +357,6 @@ public class EnrollmentServiceImpl implements EnrollmentService {
                 });
             }
 
-
-
             hepatitisTreatments = this.treatmentRepository.findHepatitisTreatmentsByHepatitisEnrollmentAndArchived(hepatitisEnrollment, 0);
 
             if(!(hepatitisTreatments.isEmpty())) {
@@ -392,8 +372,6 @@ public class EnrollmentServiceImpl implements EnrollmentService {
                     activityTrackers.add(activityTracker);
                 });
             }
-
-
             hepatitisFollowups = this.followupRepository.findHepatitisFollowupsByHepatitisEnrollmentAndArchived(hepatitisEnrollment, 0);
 
             if(!(hepatitisFollowups.isEmpty())) {
@@ -409,8 +387,6 @@ public class EnrollmentServiceImpl implements EnrollmentService {
                     activityTrackers.add(activityTracker);
                 });
             }
-
-//
         }
         return activityTrackers;
     }
@@ -433,7 +409,6 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         return hepatitisTreatment;
     }
 
-
     public HepatitisFollowup viewHepatitisFollowupById(Long id) {
         HepatitisFollowup hepatitisFollowup = this.followupRepository.findHepatitisFollowupsByIdAndArchived(id, 0);
         if(hepatitisFollowup == null) {
@@ -442,7 +417,6 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         }
         return hepatitisFollowup;
     }
-
 
     public String archiveDiagnosis(Long id){
         HepatitisDiagnosis existingHepatitisDiagnosis = diagnosisRepository.findHepatitisDiagnosisByIdAndArchived(id, 0);
@@ -466,7 +440,6 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         treatmentRepository.save(existingHepatitisTreatment);
         return "Treatment deleted successfully.";
     }
-
 
     public String archiveFollowup(Long id){
 

@@ -5,7 +5,6 @@ import PatientVaccinatedLIst from "./Patient/PatientVaccinatedLIst";
 import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import { FaUserPlus } from "react-icons/fa";
-//import PageTitle from "./../layouts/PageTitle";
 import HepatitisPatients from "./Patient/HepatitisPatient";
 import ViralHepatitis from "./Patient/ViralHepatitisForms/Form1";
 import ViralHepatitisSummaryFormContainer from "./Patient/ViralHepatitisSummaryFormContainer";

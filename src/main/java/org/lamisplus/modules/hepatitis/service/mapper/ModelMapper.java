@@ -1,5 +1,4 @@
 package org.lamisplus.modules.hepatitis.service.mapper;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -13,9 +12,7 @@ import org.lamisplus.modules.hepatitis.domain.enums.Status;
 import lombok.RequiredArgsConstructor;
 import org.lamisplus.modules.patient.domain.entity.Person;
 import org.springframework.stereotype.Component;
-
 import java.util.UUID;
-
 
 @Slf4j
 @RequiredArgsConstructor
@@ -25,11 +22,6 @@ public class ModelMapper {
         String careEntryPoint = enrollmentDto.getCareEntryPoint();
         String pregnancy = enrollmentDto.getPregnancy().toUpperCase();
         Status pregnancyEnum;
-//        if(pregnancy.equals("YES") || pregnancy.equals("NO")) {
-//            pregnancyEnum = Status.valueOf(pregnancy);
-//        } else {
-//            pregnancyEnum = Status.NO;
-//        }
         if (pregnancy.equals("YES")) {
             pregnancyEnum = Status.YES;
         } else if (pregnancy.equals("NO")) {
@@ -45,11 +37,6 @@ public class ModelMapper {
 
         String breastfeeding = enrollmentDto.getBreastfeeding().toUpperCase();
         Status breastfeedingEnum;
-//        if(breastfeeding.equals("YES") || breastfeeding.equals("NO")) {
-//            breastfeedingEnum = Status.valueOf(breastfeeding);
-//        } else {
-//            breastfeedingEnum = Status.NO;
-//        }
 
         if (breastfeeding.equals("YES")) {
             breastfeedingEnum = Status.YES;
@@ -113,7 +100,6 @@ public class ModelMapper {
             hepatitisCNode = objectMapper.convertValue(hepatitisCTestDto, JsonNode.class);
         }
 
-
         ClinicalParametersDto clinicalParametersDto = diagnosisDto.getClinicalParameters();
         JsonNode clinicalParametersNode = null;
         if(clinicalParametersDto != null) {
@@ -156,11 +142,8 @@ public class ModelMapper {
         return hepatitisTreatment;
     }
 
-
     public HepatitisFollowup mapToFollowup(FollowupDto followupDto) {
         ObjectMapper objectMapper = new ObjectMapper();
-
-
 
         FollowupAppointmentDto followupAppointments = followupDto.getFollowupAppointment();
         JsonNode appointmentsNode = null;
@@ -190,7 +173,6 @@ public class ModelMapper {
         return followup;
     }
 
-
     public HepatitisEnrollment updateHepatitisEnrollmentMapper(HepatitisEnrollment existingEnrollment, HepatitisEnrollmentDto enrollmentDto) {
         String careEntryPoint = enrollmentDto.getCareEntryPoint();
         String pregnancy = enrollmentDto.getPregnancy().toUpperCase();
@@ -214,7 +196,6 @@ public class ModelMapper {
             screeningNode = objectMapper.convertValue(hepatitisScreeningDto, JsonNode.class);
         }
 
-        // Update the fields of the existing entity
         existingEnrollment.setCareEntryPoint(careEntryPoint);
         existingEnrollment.setPregnancy(pregnancyEnum);
         existingEnrollment.setWeight(weight);
@@ -224,9 +205,6 @@ public class ModelMapper {
         existingEnrollment.setBreastfeeding(breastfeedingEnum);
         existingEnrollment.setHistoryOfUsingAbusedSubstance(historyOfUsingAbusedSubstanceEnum);
         existingEnrollment.setScreening(screeningNode);
-
-        // Optionally, update other fields if needed
-
         return existingEnrollment;
     }
 
@@ -242,13 +220,9 @@ public class ModelMapper {
         ClinicalParametersDto clinicalParametersDto = diagnosisDto.getClinicalParameters();
         JsonNode clinicalParametersNode = (clinicalParametersDto != null) ? objectMapper.convertValue(clinicalParametersDto, JsonNode.class) : null;
 
-        // Update the fields of the existing entity
         existingDiagnosis.setHepatitisBTest(hepatitisBNode);
         existingDiagnosis.setHepatitisCTest(hepatitisCNode);
         existingDiagnosis.setClinicalParameters(clinicalParametersNode);
-
-        // Optionally, update other fields if needed
-
         return existingDiagnosis;
     }
 
@@ -261,14 +235,10 @@ public class ModelMapper {
         HepatitisCTreatmentDto hepatitisCTreatmentDto = treatmentDto.getHepatitisCTreatment();
         JsonNode hepatitisCNode = (hepatitisCTreatmentDto != null) ? objectMapper.convertValue(hepatitisCTreatmentDto, JsonNode.class) : null;
 
-        // Update the fields of the existing entity
         existingTreatment.setHepatitisBTreatmentDto(hepatitisBNode);
         existingTreatment.setHepatitisCTreatmentDto(hepatitisCNode);
-
-
         return existingTreatment;
     }
-
 
     public HepatitisFollowup updateHepatitisFollowupMapper(HepatitisFollowup exisitingFollowup, FollowupDto followupDto) {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -281,21 +251,11 @@ public class ModelMapper {
 
         FollowupPreliminaryDto preliminaryDto = followupDto.getFollowupPreliminary();
         JsonNode preliminaryNode = (preliminaryDto != null) ? objectMapper.convertValue(preliminaryDto, JsonNode.class) : null;
-
-
-
-        // Update the fields of the existing entity
-
         exisitingFollowup.setFollowupAppointmentDto(appointmentNode);
         exisitingFollowup.setFollowupClinicalParametersDto(clinicalParametersNode);
         exisitingFollowup.setFollowupPreliminaryDto(preliminaryNode);
-
-
         return exisitingFollowup;
     }
-
-
-
     private Status mapToStatusEnum(String status) {
         if ("YES".equalsIgnoreCase(status) || "NO".equalsIgnoreCase(status)) {
             return Status.valueOf(status);
@@ -303,6 +263,4 @@ public class ModelMapper {
             return Status.NO;
         }
     }
-
-
 }

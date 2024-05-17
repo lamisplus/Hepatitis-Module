@@ -6,7 +6,6 @@
 
     <property name="autoIncrement" value="true"/>
 
-
     <changeSet failOnError="true" author="peter-data-fi" id="20230209-002">
         <preConditions onFail="MARK_RAN">
             <not>
@@ -71,9 +70,7 @@
 
         </sql>
     </changeSet>
-
 <!--    hepatitis_diagnosis-->
-
     <changeSet failOnError="true" author="peter-data-fi" id="20230209-007">
         <preConditions onFail="MARK_RAN">
             <not>
@@ -152,7 +149,6 @@
         </sql>
     </changeSet>
 
-
 <!--    hepatitis_treatments-->
     <changeSet failOnError="true" author="peter-data-fi" id="20230209-012">
         <preConditions onFail="MARK_RAN">
@@ -215,9 +211,6 @@
             DROP CONSTRAINT hepatitis_treatments_hepatitis_enrollments_fk_uuid;
         </sql>
     </changeSet>
-
-
-
     <!--    hepatitis_followups -->
     <changeSet failOnError="true" author="emmanuel-data-fi" id="20240423-016">
         <preConditions onFail="MARK_RAN">

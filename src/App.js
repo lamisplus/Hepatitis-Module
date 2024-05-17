@@ -1,6 +1,5 @@
 import React from "react";
 import { MemoryRouter as Router, Switch, Route } from "react-router-dom";
-
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./main/webapp/vendor/bootstrap-select/dist/css/bootstrap-select.min.css";
@@ -8,7 +7,6 @@ import "./../src/main/webapp/css/style.css";
 import "bootstrap/dist/css/bootstrap.css";
 import Home from "./main/webapp/jsx/components/Home";
 import PatientDetail from "./main/webapp/jsx/components/Patient/PatientDetail";
-// import RegisterPatientPage from './main/webapp/jsx/components/Patient/RegisterPatient';
 import EnrollPatientPage from "./main/webapp/jsx/components/Patient/EnrollPatient";
 import UpdatePatientEnrollment from "./main/webapp/jsx/components/Patient/UpdatePatientEnrollment";
 import ViralHepatitisFormsContainer from "./main/webapp/jsx/components/Patient/ViralHepatitisFormsContainer";
@@ -22,11 +20,10 @@ export default function App() {
       <Router>
         <div>
           <ToastContainer />
-          
+
           <Switch>
             <Route path="/patient-history">
               <PatientDetail />
-            
             </Route>
             <Route path="/register-patient">
               <ViralHepatitisFormsContainer />

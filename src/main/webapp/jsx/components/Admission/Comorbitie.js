@@ -4,8 +4,6 @@ import MatButton from '@material-ui/core/Button'
 import { makeStyles } from '@material-ui/core/styles'
 import SaveIcon from '@material-ui/icons/Save'
 import CancelIcon from '@material-ui/icons/Cancel'
-// import { Alert } from 'reactstrap';
-// import { Spinner } from 'reactstrap';
 import axios from "axios";
 import { toast} from "react-toastify";
 import { url as baseUrl } from "./../../../api";
@@ -22,7 +20,7 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center'
     },
     form: {
-        width: '100%', // Fix IE 11 issue.
+        width: '100%',
         marginTop: theme.spacing(3)
     },
     submit: {
@@ -62,7 +60,6 @@ const Commorbitie = (props) => {
     useEffect(() => {
         patients()
       }, []);
-        ///GET LIST OF Patients
         async function patients() {
             axios
                 .get(`${baseUrl}covid/questions-by-category/COMORBIDITIES`,
@@ -71,7 +68,6 @@ const Commorbitie = (props) => {
                 .then((response) => {
                     
                     setVaccination(response.data);
-                    //setValues(response.data)
                 })
                 .catch((error) => {    
                 });        
@@ -80,7 +76,6 @@ const Commorbitie = (props) => {
             setValues ({...values,  [e.target.name]: e.target.value});
           }
           
-    /**** Submit Button Processing  */
     const handleSubmit = (e) => {        
         e.preventDefault();
         const obj = (Object.entries(values).map(([key, value]) => ({
@@ -102,8 +97,6 @@ const Commorbitie = (props) => {
                   toast.success("Record save successful");
                   props.getComobitieHistory()
                   props.toggle()
-                  //history.push("/")
-
               })
               .catch(error => {
                   setSaving(false);
@@ -143,7 +136,6 @@ const Commorbitie = (props) => {
                                                             type="date"
                                                             name={value.id}
                                                             id={value.id}
-                                                            //value={value.name}
                                                             onChange={handleInputChange}
                                                             required
                                                             >
@@ -159,7 +151,6 @@ const Commorbitie = (props) => {
                                                             type="number"
                                                             name={value.id}
                                                             id={value.id}
-                                                            //value={value.name}
                                                             onChange={handleInputChange}
                                                             required
                                                             >
@@ -175,7 +166,6 @@ const Commorbitie = (props) => {
                                                                 type="select"
                                                                 name={value.id}
                                                                 id={value.id}
-                                                                //value={values.name}
                                                                 onChange={handleInputChange}
                                                                 required
                                                                 >
@@ -196,7 +186,6 @@ const Commorbitie = (props) => {
                                                                 type="select"
                                                                 name={value.id}
                                                                 id={value.id}
-                                                                //value={values.name}
                                                                 onChange={handleInputChange}
                                                                 required
                                                                 >
