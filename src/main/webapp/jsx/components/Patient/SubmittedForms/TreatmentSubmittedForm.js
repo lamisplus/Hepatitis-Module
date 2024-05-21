@@ -601,12 +601,12 @@ const TreatmentSubmittedForm = ({
     temp.hbvAdverseEffectReported = basicInfo.hepatitisBTreatment
       .hepatitisBRegimenSwitch.adverseEffectReported
       ? ""
-      : "Adverse effect is required";
+      : "Adverse events is required";
 
     temp.historyOfAdverseEffect = basicInfo.hepatitisBTreatment
       .historyOfAdverseEffect
       ? ""
-      : "History ofAdverse effect is required";
+      : "History ofAdverse events is required";
 
     temp.newRegimen = basicInfo.hepatitisBTreatment.newRegimen
       ? ""
@@ -638,7 +638,7 @@ const TreatmentSubmittedForm = ({
     temp.hcvAdverseEventReported = basicInfo.hepatitisCTreatment
       .adverseEffectReported
       ? ""
-      : "Adverse Effect Reported is required";
+      : "Adverse events Reported is required";
 
     temp.hcvDateStarted =
       basicInfo.hepatitisCTreatment.dateStarted &&
@@ -705,12 +705,12 @@ const TreatmentSubmittedForm = ({
     temp.hcvRetreatmentAdverseEffect = basicInfo.hepatitisCTreatment
       .hcvRetreatment.retreatmentAdverseEffect
       ? ""
-      : " Retreatment Adverse effect is required";
+      : " Retreatment Adverse events is required";
 
     temp.hcvRetreatmentHistoryOfAdverseEffect = basicInfo.hepatitisCTreatment
       .hcvRetreatment.history_of_AdverseEffect
       ? ""
-      : " History of adverse effect is required";
+      : " History of adverse event is required";
 
     setErrors({ ...temp });
     return Object.values(temp).every((x) => x == "");
@@ -2317,7 +2317,7 @@ const TreatmentSubmittedForm = ({
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="hcvRetreatmentAdverseEffect">
-                              Retreatment Adverse effect
+                              Retreatment Adverse events
                               <span style={{ color: "red" }}> *</span>{" "}
                             </Label>
                             <select

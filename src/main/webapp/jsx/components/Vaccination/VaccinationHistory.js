@@ -5,8 +5,6 @@ import { url as baseUrl } from "./../../../api";
 import { token as token } from "./../../../api";
 import { forwardRef } from "react";
 import "semantic-ui-css/semantic.min.css";
-import { Icon } from "semantic-ui-react";
-import { Link } from "react-router-dom";
 import AddBox from "@material-ui/icons/AddBox";
 import ArrowUpward from "@material-ui/icons/ArrowUpward";
 import Check from "@material-ui/icons/Check";
@@ -28,10 +26,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "react-widgets/dist/css/react-widgets.css";
 import { makeStyles } from "@material-ui/core/styles";
-//import { useHistory } from "react-router-dom";
 import { FaUserPlus } from "react-icons/fa";
-import { FaShare } from "react-icons/fa";
-import { Dropdown, Menu, Icon as IconMenu } from "semantic-ui-react";
 import "@reach/menu-button/styles.css";
 import { Modal } from "react-bootstrap";
 import Vaccination from "./../Vaccination/AddViccination";
@@ -204,7 +199,7 @@ const PatientVaccinationHistory = (props) => {
               { title: "Location", field: "location", filtering: false },
               { title: "Batch Number", field: "batchNumber", filtering: false },
               {
-                title: "Adverse Effect ",
+                title: "Adverse events ",
                 field: "adverseEffect",
                 filtering: false,
               },
@@ -215,34 +210,6 @@ const PatientVaccinationHistory = (props) => {
               },
               { title: "Actions", field: "actions", filtering: false },
             ]}
-            //   data={ vacinationList.map((row) => ({
-            //         vaccine: row.vaccineName,
-            //         vaccineDate: row.vaccineDate,
-            //         batchNumber: row.batchNumber,
-            //         doseNumber: row.doseNumber,
-            //         location: row.location,
-            //         vaccinationFacility: row.vaccinationFacility,
-            //         adverseEffect: row.adverseEffect,
-            //         actions:
-
-            //         <div>
-            //             <Menu.Menu position='right'  >
-            //             <Menu.Item >
-            //                 <Button style={{backgroundColor:'rgb(153,46,98)', color:"#fff"}} primary>
-            //                 <Dropdown item text='Action'>
-
-            //                 <Dropdown.Menu style={{ marginTop:"10px", }}>
-            //                     <Dropdown.Item onClick={()=>LoadEditModal(row)} ><IconMenu name='edit' />Edit</Dropdown.Item>
-            //                     <Dropdown.Item onClick={()=>LoadDeleteModal(row)} > <IconMenu name='trash' /> Delete</Dropdown.Item>
-            //                 </Dropdown.Menu>
-            //             </Dropdown>
-            //                 </Button>
-            //             </Menu.Item>
-            //             </Menu.Menu>
-            //         </div>
-
-            //       }))}
-
             options={{
               headerStyle: {
                 backgroundColor: "#014d88",

@@ -361,7 +361,7 @@ const Vaccination = (props) => {
 
                       <div className="form-group mb-3 col-md-6">
                         <FormGroup>
-                          <Label>Adverse Effect </Label>
+                          <Label>Adverse events </Label>
                           <InputGroup>
                             <Input
                               type="text"

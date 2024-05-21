@@ -587,18 +587,18 @@ const ViralHepatitisForm3 = ({ setStep, userStatus }) => {
     temp.hbvAdverseEffectReported = basicInfo.hepatitisBTreatment
       .hepatitisBRegimenSwitch.adverseEffectReported
       ? ""
-      : "Adverse effect is required";
+      : "Adverse events is required";
     temp.hbvAdverseEffectReported =
       basicInfo.hepatitisBTreatment.hepatitisBRegimenSwitch.newRegime === ""
         ? ""
         : basicInfo.hepatitisBTreatment.hepatitisBRegimenSwitch
             .adverseEffectReported
         ? ""
-        : "Adverse effect is required";
+        : "Adverse events is required";
     temp.historyOfAdverseEffect = basicInfo.hepatitisBTreatment
       .historyOfAdverseEffect
       ? ""
-      : "History ofAdverse effect is required";
+      : "History ofAdverse events is required";
 
     temp.hbvPastTreatmentRegimen = basicInfo.hepatitisBTreatment
       .hbvPastTreatmentRegimen
@@ -690,12 +690,12 @@ const ViralHepatitisForm3 = ({ setStep, userStatus }) => {
     temp.hcvRetreatmentAdverseEffect = basicInfo.hepatitisCTreatment
       .hcvRetreatment.retreatmentAdverseEffect
       ? ""
-      : " Retreatment Adverse effect is required";
+      : " Retreatment Adverse events is required";
 
     temp.hcvRetreatmentHistoryOfAdverseEffect = basicInfo.hepatitisCTreatment
       .hcvRetreatment.history_of_AdverseEffect
       ? ""
-      : " History of adverse effect is required";
+      : " History of adverse events is required";
 
     setErrors({ ...temp });
     return Object.values(temp).every((x) => x == "");
@@ -2114,7 +2114,7 @@ const ViralHepatitisForm3 = ({ setStep, userStatus }) => {
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="hcvRetreatmentAdverseEffect">
-                              Retreatment Adverse effect
+                              Retreatment Adverse events
                               <span style={{ color: "red" }}> *</span>{" "}
                             </Label>
                             <select
@@ -2148,7 +2148,7 @@ const ViralHepatitisForm3 = ({ setStep, userStatus }) => {
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="hcvRetreatmentHistoryOfAdverseEffect">
-                              History of adverse effect
+                              History of adverse events
                               <span style={{ color: "red" }}> *</span>{" "}
                             </Label>
                             <select
