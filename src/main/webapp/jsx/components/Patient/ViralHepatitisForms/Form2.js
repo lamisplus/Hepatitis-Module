@@ -33,6 +33,8 @@ import { isNotInTheFutureOrBeforeBirth } from "../../../helpers/dateValidators";
 import { useQuery } from "react-query";
 import { fetchEnrolment } from "../../../services/fetchEnrolment";
 import { FETCH_ENROLMENT_KEY } from "../../../utils/queryKeys";
+import { isNumber } from "highcharts";
+import { isNumeric } from "validator";
 const { isBefore } = require("date-fns");
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
@@ -539,9 +541,11 @@ const ViralHepatitisForm2 = ({
         ? ""
         : "Date of HBV DNA result reported is invalid";
 
-    temp.hbsAgQuantification = basicInfo.hepatitisBTest.hbsAgQuantification
+    temp.hbsAgQuantification = isNumeric(
+      basicInfo.hepatitisBTest.hbsAgQuantification.toString()
+    )
       ? ""
-      : "HBsAG Quantification is required";
+      : "HBsAG Quantification is invalid";
 
     temp.hbeAG = basicInfo.hepatitisBTest.hbeAG ? "" : "HbeAG is required";
 
@@ -552,43 +556,70 @@ const ViralHepatitisForm2 = ({
     temp.treatmentEligible = basicInfo.hepatitisBTest.treatmentEligible
       ? ""
       : " Treatment Eligible is required";
-    temp.hcvRNA = basicInfo.hepatitisCTest.hcvRNA ? "" : "HCV RNA is required";
-
-    temp.totalBiliRubin = basicInfo.clinicalParameters.totalBiliRubin
+    temp.hcvRnaValue = isNumeric(basicInfo.hepatitisCTest.hcRnaValue.toString())
       ? ""
-      : " ALT is required";
-    temp.directBiliribin = basicInfo.clinicalParameters.directBiliribin
+      : "HCV RNA is invalid";
+    temp.hvbDnaValue = isNumeric(
+      basicInfo.hepatitisBTest.hvbDnaValue.toString()
+    )
       ? ""
-      : "Direct Bilirubin is required";
+      : "HVB DNA is invalid";
 
-    temp.albumin = basicInfo.hepatitisBTest.albumin
+    temp.totalBiliRubin = isNumeric(
+      basicInfo.clinicalParameters.totalBiliRubin.toString()
+    )
       ? ""
-      : "Albumin is required";
-
-    temp.apriScore = basicInfo.clinicalParameters.apriScore
+      : " ALT is invalid";
+    temp.directBiliribin = isNumeric(
+      basicInfo.clinicalParameters.directBiliribin.toString()
+    )
       ? ""
-      : "APRI score is required";
+      : "Direct Bilirubin is invalid";
 
-    temp.fib4 = basicInfo.clinicalParameters.fib4 ? "" : "FIB-4 is required";
-
-    temp.prothrombinTimeNR = basicInfo.clinicalParameters.prothrombinTimeNR
+    temp.albumin = isNumeric(basicInfo.hepatitisBTest.albumin.toString())
       ? ""
-      : "Prothrombin time/INR is required";
+      : "Albumin is invalid";
 
-    temp.urea = basicInfo.clinicalParameters.urea ? "" : "Urea is required";
-
-    temp.creatinine = basicInfo.clinicalParameters.creatinine
+    temp.apriScore = isNumeric(
+      basicInfo.clinicalParameters.apriScore.toString()
+    )
       ? ""
-      : "Creatinine is required";
+      : "APRI score is invalid";
 
-    temp.ultrasoundScan = basicInfo.clinicalParameters.ultrasoundScan
+    temp.fib4 = isNumeric(basicInfo.clinicalParameters.fib4.toString())
       ? ""
-      : "Ultrasound scan is required";
+      : "FIB-4 is invalid";
 
-    temp.afp = basicInfo.clinicalParameters.afp ? "" : "AFP  is required";
-    temp.fibroscan = basicInfo.clinicalParameters.fibroscan
+    temp.prothrombinTimeNR = isNumeric(
+      basicInfo.clinicalParameters.prothrombinTimeNR.toString()
+    )
       ? ""
-      : "Fibroscan  is required";
+      : "Prothrombin time/INR is invalid";
+
+    temp.urea = isNumeric(basicInfo.clinicalParameters.urea.toString())
+      ? ""
+      : "Urea is invalid";
+
+    temp.creatinine = isNumeric(
+      basicInfo.clinicalParameters.creatinine.toString()
+    )
+      ? ""
+      : "Creatinine is invalid";
+
+    temp.ultrasoundScan = isNumeric(
+      basicInfo.clinicalParameters.ultrasoundScan.toString()
+    )
+      ? ""
+      : "Ultrasound scan is invalid";
+
+    temp.afp = isNumeric(basicInfo.clinicalParameters.afp.toString())
+      ? ""
+      : "AFP  is required";
+    temp.fibroscan = isNumeric(
+      basicInfo.clinicalParameters.fibroscan.toString()
+    )
+      ? ""
+      : "Fibroscan  is invalid";
 
     temp.ctScan = basicInfo.hepatitisBTest.ctScan ? "" : "CT scan  is required";
     temp.ascites = basicInfo.clinicalParameters.ascites
@@ -597,11 +628,11 @@ const ViralHepatitisForm2 = ({
     temp.gradeOfEncephalopathy = basicInfo.clinicalParameters
       .gradeOfEncephalopathy
       ? ""
-      : "Grade of Encephalopathy  is required";
+      : "Grade of Encephalopathy  is invalid";
 
     temp.childPughScore = basicInfo.clinicalParameters.childPughScore
       ? ""
-      : "Child pugh score  is required";
+      : "Child pugh score is required";
 
     temp.liverBiopsyStage = basicInfo.clinicalParameters.liverBiopsyStage
       ? ""
@@ -622,21 +653,20 @@ const ViralHepatitisForm2 = ({
     temp.diagnosis_result = basicInfo.clinicalParameters.liverBiopsyStage
       ? ""
       : "Diagnosis is required";
-
-    temp.commobidities = basicInfo.hepatitisCTest.commobidities
-      ? ""
-      : "Commobidities is required";
+    //get unset clinical values
     const unsetValues = selectedOptions.filter((item) => {
       const coinfectionAndValueArr = item.split(".");
-      return isNaN(coinfectionAndValueArr[1]);
+      return !isNumeric(coinfectionAndValueArr[1]);
     });
+
     temp.hepatitisCoinfection = !unsetValues.length
       ? ""
-      : "Clinical value parameters are all required";
+      : "Clinical value parameters are all required and must be number(s)";
+
     const UnsetHepatitisClinicalValues = selectedClinicalParamsOptions.filter(
       (item) => {
         const hepatitisClinicalParams = item.split(".");
-        return isNaN(hepatitisClinicalParams[1]);
+        return isNumeric(hepatitisClinicalParams[1].toString());
       }
     );
     temp.hepatitisClinicalParams = !UnsetHepatitisClinicalValues.length
@@ -897,6 +927,9 @@ const ViralHepatitisForm2 = ({
                               type="date"
                               name="dateHbvSampleRequested"
                               max={moment(new Date()).format("YYYY-MM-DD")}
+                              min={
+                                basicInfo.hepatitisBTest.dateHbvDnaTestRequested
+                              }
                               id="dateHbvSampleRequested"
                               value={
                                 basicInfo.hepatitisBTest.dateHbvSampleRequested
@@ -928,13 +961,15 @@ const ViralHepatitisForm2 = ({
                               type="date"
                               name="dateHbvDnaResultReported"
                               max={moment(new Date()).format("YYYY-MM-DD")}
+                              min={
+                                basicInfo.hepatitisBTest.dateHbvSampleRequested
+                              }
                               id="dateHbvDnaResultReported"
                               value={
                                 basicInfo.hepatitisBTest
                                   .dateHbvDnaResultReported
                               }
                               onChange={handleInputChangeBasic}
-                              // onBlur={formik.handleBlur}
                               style={{
                                 border: "1px solid #014D88",
                                 borderRadius: "0.2rem",
@@ -1315,6 +1350,13 @@ const ViralHepatitisForm2 = ({
                                 }}
                               />
                             </FormGroup>
+                            {errors.hcvRnaValue !== "" ? (
+                              <span className={classes.error}>
+                                {errors.hcvRnaValue}
+                              </span>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         )}
                         <div className="form-group mb-3 col-md-12">
@@ -1384,7 +1426,7 @@ const ViralHepatitisForm2 = ({
                               )
                             )}
                           </div>
-                          {errors.antiHDV !== "" ? (
+                          {errors.hepatitisCoinfection !== "" ? (
                             <span className={classes.error}>
                               {errors.hepatitisCoinfection}
                             </span>
@@ -1410,11 +1452,6 @@ const ViralHepatitisForm2 = ({
                             >
                               <YesOrNoSelectInput />
                             </select>
-                            {errors.commobidities && (
-                              <span className={classes.error}>
-                                {errors.commobidities}
-                              </span>
-                            )}
                           </FormGroup>
                         </div>
 
@@ -1852,7 +1889,7 @@ const ViralHepatitisForm2 = ({
 
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
-                      <Label for="fibroscan">Fibroscan (ng/ml)</Label>
+                      <Label for="fibroscan">Fibroscan</Label>
                       <span style={{ color: "red" }}> *</span>{" "}
                       <input
                         className="form-control"
