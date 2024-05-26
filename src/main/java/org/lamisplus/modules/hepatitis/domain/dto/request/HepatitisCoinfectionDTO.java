@@ -13,16 +13,15 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 public class HepatitisCoinfectionDTO {
     @NotEmpty(message = " hbvHcv can not be empty")
-    @Pattern(regexp = "^[0-9]*$", message = "Field must be a number")
+    @Pattern(regexp = "[0-9]+", message = "Field must be a number")
     private String hbvHcv;
     @NotEmpty(message = " hbvHdv can not be empty")
-    @Pattern(regexp = "^[0-9]*$", message = "Field must be a number")
+    @Pattern(regexp = "[0-9]+", message = "Field must be a number")
     private String hbvHdv;
     @NotEmpty(message = "hbvHiv can not be empty")
-    @Pattern(regexp = "^[0-9]*$", message = "Field must be a number")
+    @Pattern(regexp = "[0-9]+", message = "Field must be a number")
     private String hbvHiv;
     @NotEmpty(message = "hbvHcdHiv can not be empty")
-   // @Digits(message = "m")
-    @Pattern(regexp = "^[0-9]*$", message = "Field must be a number")
+    @Pattern(regexp = "[0-9]+", message = "Field must be a number")
     private String hbvHcdHiv;
 }
