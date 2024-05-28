@@ -203,8 +203,6 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
   );
 
   const [ageDisabled, setAgeDisabled] = useState(true);
-  // const [isDateOfBirthEstimated, setIsDateOfBirthEstimated] = useState(false);
-
   const [carePoints, setCarePoints] = useState([]);
   const [sourceReferral, setSourceReferral] = useState([]);
   const [pregnancyStatus, setPregnancyStatus] = useState([]);

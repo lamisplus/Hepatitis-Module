@@ -142,7 +142,6 @@ const HepatitisPatients = (props) => {
         )
         .then((response) => response)
         .then((result) => {
-         
           if (result?.data === "") {
             resolve({
               data: [],
@@ -205,6 +204,7 @@ const HepatitisPatients = (props) => {
                               fontSize: "12px",
                               color: "#fff",
                               fontWeight: "bolder",
+                              whiteSpace: "nowrap",
                             }}
                           >
                             Patient Dashboard

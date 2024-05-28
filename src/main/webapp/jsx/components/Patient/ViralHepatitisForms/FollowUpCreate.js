@@ -115,6 +115,7 @@ const FollowupCreate = (props) => {
 
   const onSubmit = (values) => {
     const {
+      fuGenotype,
       fuTreatmentRegimen,
       fuNextAppointment,
       fuClinicalName,
@@ -251,6 +252,31 @@ const FollowupCreate = (props) => {
                       style={{ padding: "0 50px 0 50px" }}
                     >
                       <div className="row">
+                        <div className="form-group mb-3 col-md-4">
+                          <FormGroup>
+                            <Label for="fuHbeag">HCV Genotype</Label>
+                            <Input
+                              className="form-control"
+                              type="number"
+                              name="fuHbeag"
+                              id="fuHbeag"
+                              onBlur={formik.handleBlur}
+                              onChange={formik.handleChange}
+                              value={formik?.values?.fuGenotype}
+                              style={{
+                                border: "1px solid #014D88",
+                                borderRadius: "0.2rem",
+                              }}
+                            />
+
+                            {formik.touched?.fuGenotype &&
+                              formik?.errors?.fuGenotype !== "" && (
+                                <span className={classes.error}>
+                                  {formik?.errors?.fuGenotype}
+                                </span>
+                              )}
+                          </FormGroup>
+                        </div>
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="fuDateOfVisit">Date of Visit</Label>
@@ -430,10 +456,9 @@ const FollowupCreate = (props) => {
                             <Label for="fuHbsagQuantification">
                               HBsAg quantification
                             </Label>
-                            {/* <span style={{ color: "red" }}> *</span>{" "} */}
                             <Input
                               className="form-control"
-                              type="number"
+                              type="text"
                               name="fuHbsagQuantification"
                               id="fuHbsagQuantification"
                               onBlur={formik.handleBlur}
@@ -557,7 +582,7 @@ const FollowupCreate = (props) => {
                   }}
                 >
                   <h5 className="card-title" style={{ color: "#fff" }}>
-                    Clinical Parameters
+                    Ancillary testing/Clinical parameters
                   </h5>
                 </div>
                 <div>

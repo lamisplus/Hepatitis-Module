@@ -30,7 +30,6 @@ import {
 } from "../ViralHepatitisForms/DashboardForm2";
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
-// hcRnaValue
 const useStyles = makeStyles((theme) => ({
   card: {
     margin: theme.spacing(20),
@@ -689,7 +688,6 @@ const DiagnosisSubmitedForm = ({
                                   .dateHbvDnaResultReported
                               }
                               onChange={handleInputChangeBasic}
-                              // onBlur={formik.handleBlur}
                               style={{
                                 border: "1px solid #014D88",
                                 borderRadius: "0.2rem",
@@ -721,7 +719,6 @@ const DiagnosisSubmitedForm = ({
                                     basicInfo.hepatitisBTest.hbvDna ===
                                     "DETECTED"
                                   }
-                                  // onBlur={formik.handleBlur}
                                   onChange={handleInputChangeBasic}
                                   style={{
                                     border: "1px solid #014D88",
@@ -752,14 +749,6 @@ const DiagnosisSubmitedForm = ({
                                 Undetected{" "}
                                 <span style={{ color: "red" }}> *</span>{" "}
                               </label>
-                              {/* 
-                              {errors.stagingDateOfLiverBiopsy !== "" ? (
-                                <span className={classes.error}>
-                                  {errors.stagingDateOfLiverBiopsy}
-                                </span>
-                              ) : (
-                                ""
-                              )} */}
                             </div>
                           </FormGroup>
                         </div>
@@ -1592,9 +1581,7 @@ const DiagnosisSubmitedForm = ({
 
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
-                      <Label for="ultrasoundScan">
-                        Ultrasound scan (μmol/L)
-                      </Label>
+                      <Label for="ultrasoundScan">Ultrasound scan</Label>
                       <span style={{ color: "red" }}> *</span>{" "}
                       <input
                         className="form-control"
@@ -1648,7 +1635,7 @@ const DiagnosisSubmitedForm = ({
 
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
-                      <Label for="fibroscan">Fibroscan (ng/ml)</Label>
+                      <Label for="fibroscan">Fibroscan (Kpa)</Label>
                       <span style={{ color: "red" }}> *</span>{" "}
                       <input
                         className="form-control"
@@ -1941,17 +1928,6 @@ const DiagnosisSubmitedForm = ({
             <br />
             {action === "update" && (
               <div className="d-flex justify-content-end">
-                {/* <MatButton
-                type="button"
-                variant="contained"
-                color="primary"
-                onClick={moveBack}
-                className={classes.button}
-                startIcon={<ArrowBackIcon />}
-                style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}
-              >
-                <span style={{ textTransform: "capitalize" }}>Previous</span>
-              </MatButton> */}
                 <MatButton
                   type="submit"
                   variant="contained"

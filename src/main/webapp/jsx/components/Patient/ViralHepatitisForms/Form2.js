@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import MatButton from "@material-ui/core/Button";
 import { FormGroup, Label, Spinner, Input, Form, InputGroup } from "reactstrap";
 import moment from "moment";
@@ -33,12 +33,9 @@ import { isNotInTheFutureOrBeforeBirth } from "../../../helpers/dateValidators";
 import { useQuery } from "react-query";
 import { fetchEnrolment } from "../../../services/fetchEnrolment";
 import { FETCH_ENROLMENT_KEY } from "../../../utils/queryKeys";
-import { isNumber } from "highcharts";
 import { isNumeric } from "validator";
-const { isBefore } = require("date-fns");
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
-// hcRnaValue
 const useStyles = makeStyles((theme) => ({
   card: {
     margin: theme.spacing(20),
@@ -290,6 +287,7 @@ const ViralHepatitisForm2 = ({
   userStatus,
   patientObj,
   id,
+  diagnosisInfo,
   setActiveContent,
   activeContent,
   route,
@@ -359,7 +357,6 @@ const ViralHepatitisForm2 = ({
     if (event.target.checked) {
       setSelectedClinicalParamsOptions((prevOptions) => {
         const updatedOptions = [...prevOptions, option];
-
         setErrors({ ...temp, [event.target.name]: "" });
         setBasicInfo({
           ...basicInfo,
@@ -476,7 +473,6 @@ const ViralHepatitisForm2 = ({
     setChildPughData(data);
   };
 
-  // handle input changes
   const handleInputChangeBasic = (e) => {
     setErrors({ ...temp, [e.target.name]: "" });
 
@@ -488,7 +484,17 @@ const ViralHepatitisForm2 = ({
       },
     });
   };
-
+  const getApriScore = useMemo(() => {
+    let clinicalValues = [...selectedClinicalParamsOptions];
+    let plt = clinicalValues
+      ?.filter((item) => item.includes("PST"))[0]
+      ?.split(".")[1];
+    let ast = clinicalValues
+      ?.filter((item) => item.includes("AST"))[0]
+      ?.split(".")[1];
+    let apriScore = ast && plt ? parseInt((ast / plt) * 100) : "N/A";
+    return apriScore;
+  }, [selectedClinicalParamsOptions]);
   const handleInputChangeBasicForHC = (e) => {
     setErrors({ ...temp, [e.target.name]: "" });
 
@@ -502,15 +508,33 @@ const ViralHepatitisForm2 = ({
   };
   const handleInputChangeBasicForClinic = (e) => {
     setErrors({ ...temp, [e.target.name]: "" });
-
-    setBasicInfo({
-      ...basicInfo,
+    setBasicInfo((prev) => ({
+      ...prev,
       clinicalParameters: {
-        ...basicInfo.clinicalParameters,
+        ...prev.clinicalParameters,
         [e.target.name]: e.target.value,
       },
-    });
+    }));
   };
+
+  const getFib4 = useMemo(() => {
+    let clinicalValues = [...selectedClinicalParamsOptions];
+    let plt = clinicalValues
+      ?.filter((item) => item.includes("PST"))[0]
+      ?.split(".")[1];
+    let ast = clinicalValues
+      ?.filter((item) => item.includes("AST"))[0]
+      ?.split(".")[1];
+    let alt = clinicalValues
+      ?.filter((item) => item.includes("ALT"))[0]
+      ?.split(".")[1];
+    let fib4 =
+      ast && plt && alt
+        ? parseInt((patientObj?.age * ast) / (plt * plt))
+        : "N/A";
+    console.log("fib4: ", fib4);
+    return fib4;
+  }, selectedClinicalParamsOptions);
 
   let temp = { ...errors };
   const validate = () => {
@@ -522,7 +546,6 @@ const ViralHepatitisForm2 = ({
       )
         ? ""
         : "Date HBV DNA test requested is invalid";
-
     temp.dateHbvSampleRequested =
       basicInfo.hepatitisBTest.dateHbvSampleRequested &&
       isNotInTheFutureOrBeforeBirth(
@@ -541,11 +564,11 @@ const ViralHepatitisForm2 = ({
         ? ""
         : "Date of HBV DNA result reported is invalid";
 
-    temp.hbsAgQuantification = isNumeric(
-      basicInfo.hepatitisBTest.hbsAgQuantification.toString()
-    )
-      ? ""
-      : "HBsAG Quantification is invalid";
+    temp.hbsAgQuantification =
+      basicInfo.hepatitisBTest?.hbsAgQuantification &&
+      isNumeric(basicInfo.hepatitisBTest?.hbsAgQuantification.toString())
+        ? ""
+        : "HBsAG Quantification is invalid";
 
     temp.hbeAG = basicInfo.hepatitisBTest.hbeAG ? "" : "HbeAG is required";
 
@@ -556,70 +579,68 @@ const ViralHepatitisForm2 = ({
     temp.treatmentEligible = basicInfo.hepatitisBTest.treatmentEligible
       ? ""
       : " Treatment Eligible is required";
-    temp.hcvRnaValue = isNumeric(basicInfo.hepatitisCTest.hcRnaValue.toString())
-      ? ""
-      : "HCV RNA is invalid";
-    temp.hvbDnaValue = isNumeric(
-      basicInfo.hepatitisBTest.hvbDnaValue.toString()
-    )
-      ? ""
-      : "HVB DNA is invalid";
+    temp.hcvRnaValue =
+      basicInfo.hepatitisCTest.hcRnaValue &&
+      isNumeric(basicInfo.hepatitisCTest.hcRnaValue.toString())
+        ? ""
+        : "HCV RNA is invalid";
+    temp.hvbDnaValue =
+      basicInfo.hepatitisBTest.hvbDnaValue &&
+      isNumeric(basicInfo.hepatitisBTest.hvbDnaValue.toString())
+        ? ""
+        : "HVB DNA is invalid";
 
-    temp.totalBiliRubin = isNumeric(
-      basicInfo.clinicalParameters.totalBiliRubin.toString()
-    )
-      ? ""
-      : " ALT is invalid";
-    temp.directBiliribin = isNumeric(
-      basicInfo.clinicalParameters.directBiliribin.toString()
-    )
-      ? ""
-      : "Direct Bilirubin is invalid";
+    temp.totalBiliRubin =
+      basicInfo.clinicalParameters.totalBiliRubin &&
+      isNumeric(basicInfo.clinicalParameters.totalBiliRubin.toString())
+        ? ""
+        : " ALT is invalid";
+    temp.directBiliribin =
+      basicInfo.clinicalParameters.directBiliribin &&
+      isNumeric(basicInfo.clinicalParameters.directBiliribin.toString())
+        ? ""
+        : "Direct Bilirubin is invalid";
 
-    temp.albumin = isNumeric(basicInfo.hepatitisBTest.albumin.toString())
-      ? ""
-      : "Albumin is invalid";
+    temp.albumin =
+      basicInfo.hepatitisBTest.albumin &&
+      isNumeric(basicInfo.hepatitisBTest.albumin.toString())
+        ? ""
+        : "Albumin is invalid";
 
-    temp.apriScore = isNumeric(
-      basicInfo.clinicalParameters.apriScore.toString()
-    )
-      ? ""
-      : "APRI score is invalid";
+    temp.prothrombinTimeNR =
+      basicInfo.clinicalParameters.prothrombinTimeNR &&
+      isNumeric(basicInfo.clinicalParameters.prothrombinTimeNR.toString())
+        ? ""
+        : "Prothrombin time/INR is invalid";
 
-    temp.fib4 = isNumeric(basicInfo.clinicalParameters.fib4.toString())
-      ? ""
-      : "FIB-4 is invalid";
+    temp.urea =
+      basicInfo.clinicalParameters.urea &&
+      isNumeric(basicInfo.clinicalParameters.urea.toString())
+        ? ""
+        : "Urea is invalid";
 
-    temp.prothrombinTimeNR = isNumeric(
-      basicInfo.clinicalParameters.prothrombinTimeNR.toString()
-    )
-      ? ""
-      : "Prothrombin time/INR is invalid";
+    temp.creatinine =
+      basicInfo.clinicalParameters.creatinine &&
+      isNumeric(basicInfo.clinicalParameters.creatinine.toString())
+        ? ""
+        : "Creatinine is invalid";
 
-    temp.urea = isNumeric(basicInfo.clinicalParameters.urea.toString())
-      ? ""
-      : "Urea is invalid";
+    temp.ultrasoundScan =
+      basicInfo.clinicalParameters.ultrasoundScan &&
+      isNumeric(basicInfo.clinicalParameters.ultrasoundScan.toString())
+        ? ""
+        : "Ultrasound scan is invalid";
 
-    temp.creatinine = isNumeric(
-      basicInfo.clinicalParameters.creatinine.toString()
-    )
-      ? ""
-      : "Creatinine is invalid";
-
-    temp.ultrasoundScan = isNumeric(
-      basicInfo.clinicalParameters.ultrasoundScan.toString()
-    )
-      ? ""
-      : "Ultrasound scan is invalid";
-
-    temp.afp = isNumeric(basicInfo.clinicalParameters.afp.toString())
-      ? ""
-      : "AFP  is required";
-    temp.fibroscan = isNumeric(
-      basicInfo.clinicalParameters.fibroscan.toString()
-    )
-      ? ""
-      : "Fibroscan  is invalid";
+    temp.afp =
+      basicInfo.clinicalParameters.afp &&
+      isNumeric(basicInfo.clinicalParameters.afp.toString())
+        ? ""
+        : "AFP  is required";
+    temp.fibroscan =
+      basicInfo.clinicalParameters.fibroscan &&
+      isNumeric(basicInfo.clinicalParameters.fibroscan.toString())
+        ? ""
+        : "Fibroscan  is invalid";
 
     temp.ctScan = basicInfo.hepatitisBTest.ctScan ? "" : "CT scan  is required";
     temp.ascites = basicInfo.clinicalParameters.ascites
@@ -656,22 +677,22 @@ const ViralHepatitisForm2 = ({
     //get unset clinical values
     const unsetValues = selectedOptions.filter((item) => {
       const coinfectionAndValueArr = item.split(".");
-      return !isNumeric(coinfectionAndValueArr[1]);
+      return !isNumeric(String(coinfectionAndValueArr[1]));
     });
 
     temp.hepatitisCoinfection = !unsetValues.length
       ? ""
-      : "Clinical value parameters are all required and must be number(s)";
+      : "Coinfection values are all required and only numbers are allowed";
 
-    const UnsetHepatitisClinicalValues = selectedClinicalParamsOptions.filter(
+    const unsetHepatitisClinicalValues = selectedClinicalParamsOptions.filter(
       (item) => {
         const hepatitisClinicalParams = item.split(".");
-        return isNumeric(hepatitisClinicalParams[1].toString());
+        return !isNumeric(String(hepatitisClinicalParams[1]));
       }
     );
-    temp.hepatitisClinicalParams = !UnsetHepatitisClinicalValues.length
+    temp.hepatitisClinicalParams = !unsetHepatitisClinicalValues.length
       ? ""
-      : "Coinfection values are all required";
+      : "All clinical value parameters are required and only numbers are allowed";
 
     setErrors({ ...temp });
     return Object.values(temp).every((x) => x == "");
@@ -703,7 +724,6 @@ const ViralHepatitisForm2 = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // validating the input
     window.scrollTo(0, 0);
 
     if (validate()) {
@@ -783,10 +803,19 @@ const ViralHepatitisForm2 = ({
   const { formik } = useValidateForm2ValuesHook(onSubmitHandler);
 
   useEffect(() => {
+    console.log(diagnosisInfo);
+    if (diagnosisInfo) {
+      setBasicInfo(diagnosisInfo);
+    }
+  }, []);
+
+  useEffect(() => {
     fetchChildPughScore();
   }, []);
 
   useEffect(() => {
+    alert("right here");
+
     setBasicInfo({
       ...basicInfo,
       enrollmentUuid,
@@ -822,6 +851,7 @@ const ViralHepatitisForm2 = ({
       }));
     }
   }, [basicInfo.hepatitisCTest.commobidities]);
+
   return (
     <>
       <Card className={classes.root}>
@@ -1070,7 +1100,7 @@ const ViralHepatitisForm2 = ({
                             </Label>
                             <input
                               className="form-control"
-                              type="text"
+                              type="number"
                               name="hbsAgQuantification"
                               id="hbsAgQuantification"
                               value={
@@ -1187,8 +1217,7 @@ const ViralHepatitisForm2 = ({
                           </FormGroup>
                         </div>
 
-                        {Number(enrollmentPersonInfo?.person?.gender.id) ===
-                          377 && (
+                        {Number(patientObj?.gender) === "female" && (
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
                               <Label for="pmtctEligible">PMTCT Eligible</Label>
@@ -1368,35 +1397,35 @@ const ViralHepatitisForm2 = ({
 
                             {[
                               {
-                                title: "HBV/HCV",
+                                title: "HBV/HCV (IU/ml)",
                                 checkName: "hbvHcvValue",
                                 placeholder: "hbv/hcv...",
                                 checkValue: "HBV_HCV",
                                 actualValue: "HBV_HCV_VALUE",
                               },
                               {
-                                title: "HBV/HIV",
+                                title: "HBV/HIV (IU/ml)",
                                 checkName: "hbvHivValue",
                                 placeholder: "hbv/hiv...",
                                 checkValue: "HBV_HIV",
                                 actualValue: "HBV_HIV_VALUE",
                               },
                               {
-                                title: "HCV/HIV",
+                                title: "HCV/HIV (IU/ml)",
                                 checkName: "hcvHivValue",
                                 placeholder: "hcv/hiv...",
                                 checkValue: "HCV_HIV",
                                 actualValue: "HCV_HIV_VALUE",
                               },
                               {
-                                title: "HBV/HDV",
+                                title: "HBV/HDV (IU/ml)",
                                 checkName: "hbvHdvValue",
                                 placeholder: "hbv/hdv...",
                                 checkValue: "HBV_HDV",
                                 actualValue: "HBV_HDV_VALUE",
                               },
                               {
-                                title: "HBV/HCD/HIV",
+                                title: "HBV/HCD/HIV (IU/ml)",
                                 checkName: "hbvHcdHivValue",
                                 placeholder: "hbv/hcd/Hiv...",
                                 checkValue: "HBV_HCD_HIV",
@@ -1438,7 +1467,6 @@ const ViralHepatitisForm2 = ({
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="pmtctEligible">Commobidities</Label>
-                            <ImportantString str="*" />{" "}
                             <select
                               className="form-control"
                               name="commobidities"
@@ -1519,9 +1547,9 @@ const ViralHepatitisForm2 = ({
                       actualValue: "AST_VALUE",
                     },
                     {
-                      title: "PST (mm3)",
+                      title: "PLT (mm3)",
                       checkName: "PstValue",
-                      placeholder: "Hst...",
+                      placeholder: "Plt...",
                       checkValue: "PST",
                       actualValue: "PST_VALUE",
                     },
@@ -1555,6 +1583,13 @@ const ViralHepatitisForm2 = ({
                       />
                     )
                   )}
+                  {errors.hepatitisClinicalParams !== "" ? (
+                    <span className={classes.error}>
+                      {errors.hepatitisClinicalParams}
+                    </span>
+                  ) : (
+                    ""
+                  )}
                 </div>
                 <div className="row">
                   {basicInfo.ast === "YES" && (
@@ -1571,7 +1606,6 @@ const ViralHepatitisForm2 = ({
                           id="astValue"
                           value={basicInfo.clinicalParameters.astValue}
                           onChange={handleInputChangeBasicForClinic}
-                          // onBlur={formik.handleBlur}
                           style={{
                             border: "1px solid #014D88",
                             borderRadius: "0.2rem",
@@ -1607,7 +1641,7 @@ const ViralHepatitisForm2 = ({
                     <div className="form-group mb-3 col-md-4">
                       <FormGroup>
                         <Label for="pstValue">
-                          Input PST value{" "}
+                          Input PLT value{" "}
                           <span style={{ color: "red" }}> *</span>{" "}
                         </Label>
                         <input
@@ -1639,7 +1673,6 @@ const ViralHepatitisForm2 = ({
                         id="totalBiliRubin"
                         value={basicInfo.clinicalParameters.totalBiliRubin}
                         onChange={handleInputChangeBasicForClinic}
-                        // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
@@ -1716,21 +1749,14 @@ const ViralHepatitisForm2 = ({
                         type="text"
                         name="apriScore"
                         id="apriScore"
-                        value={basicInfo.clinicalParameters.apriScore}
+                        value={getApriScore}
                         onChange={handleInputChangeBasicForClinic}
-                        // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
                         }}
+                        readOnly
                       />
-                      {errors.apriScore !== "" ? (
-                        <span className={classes.error}>
-                          {errors.apriScore}
-                        </span>
-                      ) : (
-                        ""
-                      )}
                     </FormGroup>
                   </div>
                   <div className="form-group mb-3 col-md-4">
@@ -1742,19 +1768,14 @@ const ViralHepatitisForm2 = ({
                         type="text"
                         name="fib4"
                         id="fib4"
-                        value={basicInfo.clinicalParameters.fib4}
+                        value={getFib4}
                         onChange={handleInputChangeBasicForClinic}
-                        // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
                         }}
+                        readOnly
                       />
-                      {errors.fib4 !== "" ? (
-                        <span className={classes.error}>{errors.fib4}</span>
-                      ) : (
-                        ""
-                      )}
                     </FormGroup>
                   </div>
                   <div className="form-group mb-3 col-md-4">
@@ -1836,9 +1857,7 @@ const ViralHepatitisForm2 = ({
 
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
-                      <Label for="ultrasoundScan">
-                        Ultrasound scan (μmol/L)
-                      </Label>
+                      <Label for="ultrasoundScan">Ultrasound scan</Label>
                       <span style={{ color: "red" }}> *</span>{" "}
                       <input
                         className="form-control"
@@ -1889,7 +1908,7 @@ const ViralHepatitisForm2 = ({
 
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
-                      <Label for="fibroscan">Fibroscan</Label>
+                      <Label for="fibroscan">Fibroscan (Kpa)</Label>
                       <span style={{ color: "red" }}> *</span>{" "}
                       <input
                         className="form-control"
@@ -2016,7 +2035,6 @@ const ViralHepatitisForm2 = ({
                         <option value={2}>2</option>
                         <option value={3}>3</option>
                         <option value={4}>4</option>
-                        <option value={5}>5</option>
                       </select>
                       {errors.gradeOfEncephalopathy !== "" ? (
                         <span className={classes.error}>
