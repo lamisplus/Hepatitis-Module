@@ -532,7 +532,6 @@ const ViralHepatitisForm2 = ({
       ast && plt && alt
         ? parseInt((patientObj?.age * ast) / (plt * plt))
         : "N/A";
-    console.log("fib4: ", fib4);
     return fib4;
   }, selectedClinicalParamsOptions);
 
@@ -730,6 +729,12 @@ const ViralHepatitisForm2 = ({
       postDataWithToken(basicInfo, "hepatitis/diagnosis");
     }
   };
+  const transformDate = (dateObj) => {
+    const isoDate = new Date(
+      `${dateObj?.year}, ${dateObj?.monthValue}, ${dateObj?.dayOfMonth}`
+    );
+    return moment(isoDate).format("YYYY-MM-DD");
+  };
   const onSubmitHandler = (values) => {
     window.scrollTo(0, 0);
     const restructuredDiagnosisPayload = {
@@ -802,20 +807,40 @@ const ViralHepatitisForm2 = ({
   const classes = useStyles();
   const { formik } = useValidateForm2ValuesHook(onSubmitHandler);
 
-  useEffect(() => {
-    console.log(diagnosisInfo);
-    if (diagnosisInfo) {
-      setBasicInfo(diagnosisInfo);
-    }
-  }, []);
+  const viewHepatitisDiagnosis = (eId) => {
+    axios
+      .get(`${baseUrl}hepatitis/view-hepatitis-diagnosis-by-id/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(({ data }) => {
+        const dataCopy = JSON.parse(JSON.stringify(data));
+        dataCopy.hepatitisBTest.dateHbvDnaResultReported = transformDate(
+          dataCopy.hepatitisBTest.dateHbvDnaResultReported
+        );
+        dataCopy.hepatitisBTest.dateHbvDnaTestRequested = transformDate(
+          dataCopy.hepatitisBTest.dateHbvDnaTestRequested
+        );
+        dataCopy.hepatitisBTest.dateHbvSampleRequested = transformDate(
+          dataCopy.hepatitisBTest.dateHbvSampleRequested
+        );
+        dataCopy.hepatitisBTest.dateHbvTestRequested = transformDate(
+          dataCopy.hepatitisBTest.dateHbvTestRequested
+        );
+        dataCopy.hepatitisBTest.stagingDateOfLiverBiopsy = transformDate(
+          dataCopy.hepatitisBTest.stagingDateOfLiverBiopsy
+        );
+        console.log(dataCopy);
+
+        setBasicInfo(dataCopy);
+      })
+      .catch((error) => console.log(error));
+  };
 
   useEffect(() => {
     fetchChildPughScore();
   }, []);
 
   useEffect(() => {
-    alert("right here");
-
     setBasicInfo({
       ...basicInfo,
       enrollmentUuid,
@@ -851,7 +876,9 @@ const ViralHepatitisForm2 = ({
       }));
     }
   }, [basicInfo.hepatitisCTest.commobidities]);
-
+  useEffect(() => {
+    viewHepatitisDiagnosis();
+  }, []);
   return (
     <>
       <Card className={classes.root}>

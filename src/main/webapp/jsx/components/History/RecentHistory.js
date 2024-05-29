@@ -114,7 +114,6 @@ const RecentHistory = (props) => {
         },
       });
     } else if (row.path === "hepatitis_diagnosis") {
-      alert("hepatitis_diagnosis: ", true);
       history.push({
         pathname: "/update-patient",
         state: {
