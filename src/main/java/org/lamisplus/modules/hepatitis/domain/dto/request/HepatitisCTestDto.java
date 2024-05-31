@@ -24,6 +24,8 @@ public class HepatitisCTestDto implements Serializable {
     private String hcRnaValue;
     @NotEmpty(message = "hepatitisCoinfection can not be empty")
     private String[] hepatitisCoinfection;
+    @NotEmpty(message = "astPltAndAlt can not be empty")
+    private String[] astPltAndAlt;
     @NotEmpty(message = "commobidities can not be empty")
     private String commobidities;
     @NotEmpty(message = "multipleInfection can be empty")

@@ -223,7 +223,9 @@ const FollowupCreate = (props) => {
   const actionType = props?.activeContent?.actionType || "create";
 
   useEffect(() => {
-    fetchHBsAG().then(({ data }) => setHbsagResult(data));
+    fetchHBsAG().then(({ data }) => {
+      setHbsagResult(data);
+    });
     fetchChildPughScore();
   }, []);
 
@@ -465,7 +467,7 @@ const FollowupCreate = (props) => {
                             </Label>
                             <Input
                               className="form-control"
-                              type="text"
+                              type="number"
                               name="fuHbsagQuantification"
                               id="fuHbsagQuantification"
                               onBlur={formik.handleBlur}

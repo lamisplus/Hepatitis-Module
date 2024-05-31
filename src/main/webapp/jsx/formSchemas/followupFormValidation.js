@@ -41,7 +41,9 @@ export const useValidateForm1ValuesHook = (onSubmit) => {
     height: isOperationUpdate ? yup.mixed() : yup.number(),
     hepatitisB: isOperationUpdate ? yup.mixed() : yup.number(),
     breastfeeding: isOperationUpdate ? yup.mixed() : yup.number(),
-    historyOfUsingAbusedSubstance: isOperationUpdate ? yup.mixed() : yup.number(),
+    historyOfUsingAbusedSubstance: isOperationUpdate
+      ? yup.mixed()
+      : yup.number(),
     dateOfFirstHepatitisBPositiveScreening: yup.date(),
     hepatitisC: isOperationUpdate ? yup.mixed() : yup.number(),
     surname: isOperationUpdate ? yup.mixed() : yup.number(),
@@ -65,7 +67,7 @@ export const useValidateForm1ValuesHook = (onSubmit) => {
 };
 
 export const useValidateFollowupFormValuesHook = (onSubmit, operation) => {
-  const isOperationUpdate = operation === "update" ? true: false
+  const isOperationUpdate = operation === "update" ? true : false;
   const followupFormIntialValue = {
     fuDateOfVisit: "",
     fuWeight: "",
@@ -112,9 +114,9 @@ export const useValidateFollowupFormValuesHook = (onSubmit, operation) => {
     fuHeight: isOperationUpdate ? yup.mixed() : yup.number(),
     // fuBmi: isOperationUpdate ? yup.mixed() : yup.number(),
     fuBloodPressure: isOperationUpdate ? yup.mixed() : yup.number(),
-    fuHbsag: isOperationUpdate ? yup.mixed() : yup.number(),
+    fuHbsag: isOperationUpdate ? yup.mixed() : yup.string(),
     fuHbsagQuantification: isOperationUpdate ? yup.mixed() : yup.number(),
-    fuHbeag: isOperationUpdate ? yup.mixed() : yup.number(),
+    fuHbeag: isOperationUpdate ? yup.mixed() : yup.string(),
     fuHbvDna: isOperationUpdate ? yup.mixed() : yup.number(),
     fuHbvDnaStatus: isOperationUpdate ? yup.mixed() : yup.string(),
     fuAlt: isOperationUpdate ? yup.mixed() : yup.number(),
@@ -137,10 +139,10 @@ export const useValidateFollowupFormValuesHook = (onSubmit, operation) => {
     fuGradeOfEncephalopathy: isOperationUpdate ? yup.mixed() : yup.string(),
     fuChildPughScore: isOperationUpdate ? yup.mixed() : yup.string(),
     fuLiverBiopsyStage: isOperationUpdate ? yup.mixed() : yup.string(),
-    fuStagingDateLiverBiopsy: isOperationUpdate ? yup.mixed() :yup.date(),
+    fuStagingDateLiverBiopsy: isOperationUpdate ? yup.mixed() : yup.date(),
     fuDiagnosis: isOperationUpdate ? yup.mixed() : yup.string(),
     fuTreatmentRegimen: isOperationUpdate ? yup.mixed() : yup.string(),
-    fuNextAppointment: isOperationUpdate ? yup.mixed() :yup.date(),
+    fuNextAppointment: isOperationUpdate ? yup.mixed() : yup.date(),
     fuClinicalName: isOperationUpdate ? yup.mixed() : yup.string(),
     fuOutcome: isOperationUpdate ? yup.mixed() : yup.string(),
     fuRemark: isOperationUpdate ? yup.mixed() : yup.string(),

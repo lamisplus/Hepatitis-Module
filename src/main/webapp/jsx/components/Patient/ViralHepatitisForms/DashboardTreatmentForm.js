@@ -141,7 +141,6 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent, setStep }) => {
       hcvNewRegimen: "",
       newRegimenDateStarted: "",
       newRegimenDateStopped: "",
-      newRegimenHistoryOfAdverseEffect: "",
       hcvRetreatment: {
         hcvGenotype: "",
         dateStarted: "",
@@ -313,6 +312,16 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent, setStep }) => {
         },
       });
     }
+    if (e.target.name === "hcvNewRegimenHistoryOfAdverseEffect") {
+      setBasicInfo({
+        ...basicInfo,
+        hepatitisCTreatment: {
+          ...basicInfo.hepatitisCTreatment,
+          hcvNewRegimenHistoryOfAdverseEffect: e.target.value,
+        },
+      });
+    }
+
     if (e.target.name === "historyOfAdverseEffect") {
       setBasicInfo({
         ...basicInfo,
@@ -830,62 +839,6 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent, setStep }) => {
     }
   };
 
-  /**
-   * {
-    "enrollmentUuid": "130a4822-0ddc-4827-882b-007385acafb8",
-    "hepatitisBTreatment": {
-        "hbvDateStarted": "2024-05-11",
-        "hbvDateStopped": "2024-05-16",
-        "hbvPastTreatmentRegimen": "Entecavir",
-        "newRegimenPrescribedDuration": "8",
-        "hepatitisBRegimenSwitch": {
-            "adverseEffectReported": "YES",
-            "dateStarted": "2024-05-03",
-            "dateStopped": "2024-05-03",
-            "newRegimen": "TDF",
-            "reasonForSwitch": "value of Reason for switch"
-        },
-        "historyOfAdverseEffect": "YES",
-        "hbvNewRegimen": "TAF",
-        "newRegimenDateStarted": "2024-05-24",
-        "newRegimenDateStopped": "2024-05-24",
-        "reasonForHepatitisBTreatment": {
-            "comment": "hj",
-            "reasonsForTreatment": "treatment eligible"
-        },
-        "treatmentExperience": "YES"
-    },
-    "hepatitisCTreatment": {
-        "adverseEffectReported": "YES",
-        "hcvDateCompleted": "",
-        "hcvDateStarted": "",
-        "hbvPastTreatmentRegimen": "",
-        "hcvRetreatment": {
-            "hcvGenotype": "AA",
-            "dateStarted": "2024-05-25",
-            "dateStopped": "",
-            "hbvPastTreatmentRegimen": "",
-            "history_of_AdverseEffect": "YES",
-            "newRegimen": "SOF/DCV",
-            "prescribedDuration": "8",
-            "retreatmentAdverseEffect": "YES"
-        },
-        "hepatitisSvr12Testing": {
-            "dateTested": "2024-05-10",
-            "hcvRNA": "DETECTED",
-            "hcvRNAValue": "7",
-            "retreatmentDateTested": "2024-05-09",
-            "retreatmentHcvRNA": "DETECTED",
-            "retreatmentHcvRNAValue": "3"
-        },
-        "pastTreatmentExperience": "SOF/VEL/VOX",
-        "prescribedDuration": "12",
-        "treatmentExperience": "YES",
-        "dateStarted": "2024-05-09",
-        "dateCompleted": "2024-05-17"
-    }
-}
-   */
   const onSubmitHandler = (values) => {
     setCookie("hepatitis3", values, 1);
     const restructuredTreatmentPayload = {
@@ -2152,11 +2105,11 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent, setStep }) => {
                             <span style={{ color: "red" }}> *</span>{" "}
                             <select
                               className="form-control"
-                              name="newRegimenHistoryOfAdverseEffect"
-                              id="newRegimenHistoryOfAdverseEffect"
+                              name="hcvAdverseEventReported"
+                              id="hcvAdverseEventReported"
                               value={
                                 basicInfo.hepatitisCTreatment
-                                  .newRegimenHistoryOfAdverseEffect
+                                  .adverseEffectReported
                               }
                               onChange={handleInputChangeBasicHC}
                               style={{
@@ -2168,9 +2121,9 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent, setStep }) => {
                               <option value={"YES"}>Yes</option>
                               <option value={"NO"}>No</option>
                             </select>
-                            {errors.newRegimenHistoryOfAdverseEffect ? (
+                            {errors.adverseEffectReported ? (
                               <span className={classes.error}>
-                                {errors.newRegimenHistoryOfAdverseEffect}
+                                {errors.adverseEffectReported}
                               </span>
                             ) : (
                               ""

@@ -204,13 +204,12 @@ export const HepatitisCoinfection = ({
   handleCheckboxChange,
   selectedOptions,
   coinfectionValueHandler,
-  action,
 }) => {
-  console.log(selectedOptions);
   return (
     <div className="form-group my-2 col-md-4">
       <input
         type="checkbox"
+        value={checkValue}
         onChange={handleCheckboxChange}
         checked={
           selectedOptions.filter((item) => item.includes(checkValue)).length
@@ -223,7 +222,6 @@ export const HepatitisCoinfection = ({
         <span style={{ fontSize: "1.2em" }}>
           <ImportantString str="*" />
           <input
-            disabled={action === "view"}
             onChange={(e) =>
               coinfectionValueHandler(
                 e.target.value,
@@ -232,9 +230,8 @@ export const HepatitisCoinfection = ({
               )
             }
             className="form-control"
-            type="number"
+            type="text"
             name={checkName}
-            value={getConditionalFieldsValue(selectedOptions, checkValue)}
             id={checkName}
             placeholder={placeholder}
             style={{
@@ -269,7 +266,7 @@ export const ClinicalParamCheckOption = ({
       <Label>
         <span className="p-2">{title}</span>{" "}
       </Label>
-      {selectedOptions.filter((item) => item.includes(checkValue)).length ? (
+      {selectedOptions?.filter((item) => item.includes(checkValue)).length ? (
         <span style={{ fontSize: "1.2em" }}>
           <ImportantString str="*" />
           <input
@@ -778,7 +775,7 @@ const ViralHepatitisForm2 = ({
         hcvRNA: values.hcvRNA,
         hcRnaValue: values.hcRnaValue,
         hepatitisCoinfection: values.hepatitisCoinfection,
-
+        astPltAndAlt: values.selectedClinicalParamsOptions,
         commobidities: values.commobidities,
         multipleInfection: values.multipleInfection,
       },
@@ -850,6 +847,7 @@ const ViralHepatitisForm2 = ({
           dataCopy.hepatitisBTest.stagingDateOfLiverBiopsy
         );
         setSelectedOptions(dataCopy.hepatitisCTest.hepatitisCoinfection);
+        // setSelectedClinicalParamsOptions(dataCopy.clinicalParameters);
         setBasicInfo(dataCopy);
       })
       .catch((error) => console.log(error));

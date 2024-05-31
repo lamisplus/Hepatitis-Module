@@ -25,9 +25,9 @@ public class FollowupPreliminaryDto implements Serializable {
     private Long fuBmi ;
     private Long fuBloodPressure ;
     private Long fuHbsagQuantification ;
-    private Long fuHbeag ;
+    private String fuHbeag ;
     private Long fuHbvDna ;
     private String fuHbvDnaStatus;
-    private Long fuHbsag;
+    private String fuHbsag;
 
 }
