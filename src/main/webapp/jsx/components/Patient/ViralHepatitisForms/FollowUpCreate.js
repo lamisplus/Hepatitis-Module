@@ -23,6 +23,7 @@ import { fetchEnrolment } from "../../../services/fetchEnrolment";
 import { useSaveFollowup } from "../../../hooks/useSaveFollowup";
 import axios from "axios";
 import { url as baseUrl, token } from "../../../../api";
+import { fetchHBsAG } from "./Form2";
 
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
@@ -101,7 +102,7 @@ const FollowupCreate = (props) => {
   const classes = useStyles();
   const [enrolmentData, setEnrolmentData] = useState(null);
   const [childPughData, setChildPughData] = useState([]);
-
+  const [hbsagResult, setHbsagResult] = useState(null);
   const fetchChildPughScore = async () => {
     const response = await axios.get(
       `${baseUrl}application-codesets/v2/CHILD_PUGH`,
@@ -222,6 +223,7 @@ const FollowupCreate = (props) => {
   const actionType = props?.activeContent?.actionType || "create";
 
   useEffect(() => {
+    fetchHBsAG().then(({ data }) => setHbsagResult(data));
     fetchChildPughScore();
   }, []);
 
@@ -268,7 +270,6 @@ const FollowupCreate = (props) => {
                                 borderRadius: "0.2rem",
                               }}
                             />
-
                             {formik.touched?.fuGenotype &&
                               formik?.errors?.fuGenotype !== "" && (
                                 <span className={classes.error}>
@@ -429,9 +430,8 @@ const FollowupCreate = (props) => {
                           <FormGroup>
                             <Label for="fuHbsag">HBsAg</Label>
                             {/* <span style={{ color: "red" }}> *</span>{" "} */}
-                            <Input
+                            <select
                               className="form-control"
-                              type="number"
                               name="fuHbsag"
                               id="fuHbsag"
                               onBlur={formik.handleBlur}
@@ -441,7 +441,14 @@ const FollowupCreate = (props) => {
                                 border: "1px solid #014D88",
                                 borderRadius: "0.2rem",
                               }}
-                            />
+                            >
+                              <option value="">Select</option>
+                              {hbsagResult?.map(({ display }) => (
+                                <option key={display} value={display}>
+                                  {display}
+                                </option>
+                              ))}
+                            </select>
                             {formik.touched?.fuHbsag &&
                               formik?.errors?.fuHbsag !== "" && (
                                 <span className={classes.error}>
@@ -482,9 +489,8 @@ const FollowupCreate = (props) => {
                           <FormGroup>
                             <Label for="fuHbeag">HBeAg</Label>
                             {/* <span style={{ color: "red" }}> *</span>{" "} */}
-                            <Input
+                            <select
                               className="form-control"
-                              type="number"
                               name="fuHbeag"
                               id="fuHbeag"
                               onBlur={formik.handleBlur}
@@ -494,10 +500,17 @@ const FollowupCreate = (props) => {
                                 border: "1px solid #014D88",
                                 borderRadius: "0.2rem",
                               }}
-                            />
+                            >
+                              <option value="">Select</option>
+                              {hbsagResult?.map(({ display }) => (
+                                <option key={display} value={display}>
+                                  {display}
+                                </option>
+                              ))}
+                            </select>
 
                             {formik.touched?.fuHbeag &&
-                              formik?.errors?.fuHbeag !== "" && (
+                              formik?.errors?.fuHbeag && (
                                 <span className={classes.error}>
                                   {formik?.errors?.fuHbeag}
                                 </span>
@@ -524,7 +537,7 @@ const FollowupCreate = (props) => {
                             />
 
                             {formik.touched?.fuHbvDna &&
-                              formik?.errors?.fuHbvDna !== "" && (
+                              formik?.errors?.fuHbvDna && (
                                 <span className={classes.error}>
                                   {formik?.errors?.fuHbvDna}
                                 </span>
@@ -558,7 +571,7 @@ const FollowupCreate = (props) => {
                             </select>
 
                             {formik.touched?.fuHbvDnaStatus &&
-                              formik?.errors?.fuHbvDnaStatus !== "" && (
+                              formik?.errors?.fuHbvDnaStatus && (
                                 <span className={classes.error}>
                                   {formik?.errors?.fuHbvDnaStatus}
                                 </span>
@@ -609,12 +622,11 @@ const FollowupCreate = (props) => {
                                 borderRadius: "0.2rem",
                               }}
                             />
-                            {formik.touched?.fuAlt &&
-                              formik?.errors?.fuAlt !== "" && (
-                                <span className={classes.error}>
-                                  {formik?.errors?.fuAlt}
-                                </span>
-                              )}
+                            {formik.touched?.fuAlt && formik?.errors?.fuAlt && (
+                              <span className={classes.error}>
+                                {formik?.errors?.fuAlt}
+                              </span>
+                            )}
                           </FormGroup>
                         </div>
 
@@ -635,12 +647,11 @@ const FollowupCreate = (props) => {
                                 borderRadius: "0.2rem",
                               }}
                             />
-                            {formik.touched?.fuAst &&
-                              formik?.errors?.fuAst !== "" && (
-                                <span className={classes.error}>
-                                  {formik?.errors?.fuAst}
-                                </span>
-                              )}
+                            {formik.touched?.fuAst && formik?.errors?.fuAst && (
+                              <span className={classes.error}>
+                                {formik?.errors?.fuAst}
+                              </span>
+                            )}
                           </FormGroup>
                         </div>
 

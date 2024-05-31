@@ -270,8 +270,11 @@ const FollowupUpdate = (props) => {
       refetchOnMount: "always",
     }
   );
-
+  const [hbsagResult, setHbsagResult] = useState(null);
   useEffect(() => {
+    fetchHBsAG().then(({ data }) => {
+      setHbsagResult(data);
+    });
     fetchChildPughScore();
   }, []);
 
@@ -329,7 +332,7 @@ const FollowupUpdate = (props) => {
                               }}
                             />
                             {formik.touched?.fuDateOfVisit &&
-                              formik?.errors?.fuDateOfVisit !== "" && (
+                              formik?.errors?.fuDateOfVisit && (
                                 <span className={classes.error}>
                                   {formik?.errors?.fuDateOfVisit}
                                 </span>
@@ -357,7 +360,7 @@ const FollowupUpdate = (props) => {
                             />
 
                             {formik.touched?.fuWeight &&
-                              formik?.errors?.fuWeight !== "" && (
+                              formik?.errors?.fuWeight && (
                                 <span className={classes.error}>
                                   {formik?.errors?.fuWeight}
                                 </span>
@@ -385,7 +388,7 @@ const FollowupUpdate = (props) => {
                             />
 
                             {formik.touched?.fuHeight &&
-                              formik?.errors?.fuHeight !== "" && (
+                              formik?.errors?.fuHeight && (
                                 <span className={classes.error}>
                                   {formik?.errors?.fuHeight}
                                 </span>
@@ -418,12 +421,11 @@ const FollowupUpdate = (props) => {
                               }}
                             />
 
-                            {formik.touched?.fuBmi &&
-                              formik?.errors?.fuBmi !== "" && (
-                                <span className={classes.error}>
-                                  {formik?.errors?.fuBmi}
-                                </span>
-                              )}
+                            {formik.touched?.fuBmi && formik?.errors?.fuBmi && (
+                              <span className={classes.error}>
+                                {formik?.errors?.fuBmi}
+                              </span>
+                            )}
                           </FormGroup>
                         </div>
 
@@ -449,7 +451,7 @@ const FollowupUpdate = (props) => {
                             />
 
                             {formik.touched?.fuBloodPressure &&
-                              formik?.errors?.fuBloodPressure !== "" && (
+                              formik?.errors?.fuBloodPressure && (
                                 <span className={classes.error}>
                                   {formik?.errors?.fuBloodPressure}
                                 </span>
@@ -461,10 +463,9 @@ const FollowupUpdate = (props) => {
                           <FormGroup>
                             <Label for="fuHbsag">HBsAg</Label>
                             {/* <span style={{ color: "red" }}> *</span>{" "} */}
-                            <Input
+                            <select
                               className="form-control"
                               disabled={disableInputs}
-                              type="number"
                               name="fuHbsag"
                               id="fuHbsag"
                               onBlur={formik.handleBlur}
@@ -474,9 +475,16 @@ const FollowupUpdate = (props) => {
                                 border: "1px solid #014D88",
                                 borderRadius: "0.2rem",
                               }}
-                            />
+                            >
+                              <options value="">Select</options>
+                              {hbsagResult.map(({ display }) => (
+                                <option key={diplay} value={display}>
+                                  {display}
+                                </option>
+                              ))}
+                            </select>
                             {formik.touched?.fuHbsag &&
-                              formik?.errors?.fuHbsag !== "" && (
+                              formik?.errors?.fuHbsag && (
                                 <span className={classes.error}>
                                   {formik?.errors?.fuHbsag}
                                 </span>
