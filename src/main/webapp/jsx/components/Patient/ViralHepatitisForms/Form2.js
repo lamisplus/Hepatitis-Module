@@ -192,14 +192,26 @@ export const HepatitisCoinfection = ({
   handleCheckboxChange,
   basicInfo,
   handleCoinfectionsInputValue,
+  action,
 }) => {
   return (
     <div className="form-group my-2 col-md-4">
-      <input type="checkbox" name={checkName} onChange={handleCheckboxChange} />
+      <input
+        type="checkbox"
+        disabled={action === "view"}
+        name={checkName}
+        checked={
+          basicInfo.hepatitisBTest.hepatitisCoinfection &&
+          !!basicInfo.hepatitisBTest.hepatitisCoinfection[checkName]
+        }
+        onChange={handleCheckboxChange}
+      />
       <Label>
         <span className="p-2">{title}</span>{" "}
       </Label>
-      {basicInfo.hepatitisBTest.hepatitisCoinfection?.checkName >= -1 ? (
+      {basicInfo.hepatitisBTest.hepatitisCoinfection &&
+      basicInfo.hepatitisBTest.hepatitisCoinfection[checkName] &&
+      basicInfo.hepatitisBTest.hepatitisCoinfection[checkName] >= -1 ? (
         <span style={{ fontSize: "1.2em" }}>
           <ImportantString str="*" />
           <input
@@ -207,6 +219,14 @@ export const HepatitisCoinfection = ({
             className="form-control"
             type="text"
             name={checkName}
+            value={
+              basicInfo.hepatitisBTest.hepatitisCoinfection[checkName] &&
+              Math.sign(
+                basicInfo.hepatitisBTest.hepatitisCoinfection[checkName]
+              ) === 1
+                ? basicInfo.hepatitisBTest.hepatitisCoinfection[checkName]
+                : ""
+            }
             id={checkName}
             placeholder={placeholder}
             style={{
@@ -226,15 +246,27 @@ export const CheckOptionsParams = ({
   handleCheckboxChange,
   handleClinicalParamsInputValue,
   basicInfo,
+  action,
 }) => {
   return (
     <div className="form-group my-3 col-md-4">
-      <input type="checkbox" name={checkName} onChange={handleCheckboxChange} />
+      <input
+        type="checkbox"
+        disabled={action === "view"}
+        name={checkName}
+        checked={
+          basicInfo.hepatitisCTest.selectedClinicalParamsOptions &&
+          !!basicInfo.hepatitisCTest.selectedClinicalParamsOptions[checkName]
+        }
+        onChange={handleCheckboxChange}
+      />
       <Label>
         <span className="p-2">{title}</span>{" "}
       </Label>
-      {basicInfo.hepatitisCTest.selectedClinicalParamsOptions?.checkName >=
-      -1 ? (
+      {basicInfo.hepatitisCTest.selectedClinicalParamsOptions &&
+      basicInfo.hepatitisCTest.selectedClinicalParamsOptions[checkName] &&
+      basicInfo.hepatitisCTest.selectedClinicalParamsOptions[checkName] >=
+        -1 ? (
         <span style={{ fontSize: "1.2em" }}>
           <ImportantString str="*" />
           <input
@@ -242,6 +274,16 @@ export const CheckOptionsParams = ({
             className="form-control"
             type="text"
             name={checkName}
+            value={
+              basicInfo.hepatitisCTest.selectedClinicalParamsOptions[
+                checkName
+              ] &&
+              Math.sign(
+                basicInfo.hepatitisBTest.hepatitisCoinfection[checkName]
+              ) === 1
+                ? basicInfo.hepatitisBTest.hepatitisCoinfection[checkName]
+                : ""
+            }
             id={checkName}
             placeholder={placeholder}
             style={{
@@ -324,35 +366,37 @@ const ViralHepatitisForm2 = ({
   const [errors, setErrors] = useState({});
 
   const handleCoinfectionsCheckbox = (event) => {
-    setBasicInfo({
-      ...basicInfo,
-      hepatitisBTest: {
-        ...basicInfo.hepatitisBTest,
-        hepatitisCoinfection: {
-          ...basicInfo.hepatitisBTest.hepatitisCoinfection,
-          [event.target.name]: !basicInfo.hepatitisBTest.hepatitisCoinfection[
-            event.target.name
-          ]
-            ? -1
-            : undefined,
+    basicInfo.hepatitisBTest.hepatitisCoinfection &&
+      setBasicInfo({
+        ...basicInfo,
+        hepatitisBTest: {
+          ...basicInfo.hepatitisBTest,
+          hepatitisCoinfection: {
+            ...basicInfo.hepatitisBTest.hepatitisCoinfection,
+            [event.target.name]: !basicInfo.hepatitisBTest.hepatitisCoinfection[
+              event.target.name
+            ]
+              ? -1
+              : undefined,
+          },
         },
-      },
-    });
+      });
   };
   const handleClinicalParamsCheckbox = (event) => {
-    setBasicInfo({
-      ...basicInfo,
-      hepatitisCTest: {
-        ...basicInfo.hepatitisCTest,
-        selectedClinicalParamsOptions: {
-          ...basicInfo.hepatitisCTest.selectedClinicalParamsOptions,
-          [event.target.name]: !basicInfo.hepatitisCTest
-            .selectedClinicalParamsOptions[event.target.name]
-            ? -1
-            : undefined,
+    basicInfo.hepatitisCTest.selectedClinicalParamsOptions &&
+      setBasicInfo({
+        ...basicInfo,
+        hepatitisCTest: {
+          ...basicInfo.hepatitisCTest,
+          selectedClinicalParamsOptions: {
+            ...basicInfo.hepatitisCTest.selectedClinicalParamsOptions,
+            [event.target.name]: !basicInfo.hepatitisCTest
+              .selectedClinicalParamsOptions[event.target.name]
+              ? -1
+              : undefined,
+          },
         },
-      },
-    });
+      });
   };
   const handleClinicalParamsInputValue = (event) => {
     setBasicInfo({
@@ -679,7 +723,6 @@ const ViralHepatitisForm2 = ({
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(({ data }) => {
-        console.log(data);
         const dataCopy = JSON.parse(JSON.stringify(data));
         dataCopy.hepatitisBTest.dateHbvDnaResultReported = transformDate(
           dataCopy.hepatitisBTest.dateHbvDnaResultReported
@@ -771,9 +814,6 @@ const ViralHepatitisForm2 = ({
   useEffect(() => {
     viewHepatitisDiagnosis();
   }, []);
-  useEffect(() => {
-    console.log("current form state: ", basicInfo);
-  }, [basicInfo]);
   return (
     <>
       <Card className={classes.root}>
@@ -1389,13 +1429,13 @@ const ViralHepatitisForm2 = ({
                                   actualValue={actualValue}
                                   checkValue={checkValue}
                                   basicInfo={basicInfo}
+                                  action={action}
                                   handleCoinfectionsInputValue={
                                     handleCoinfectionsInputValue
                                   }
                                   handleCheckboxChange={
                                     handleCoinfectionsCheckbox
                                   }
-                                  action={action}
                                 />
                               )
                             )}
@@ -1519,6 +1559,7 @@ const ViralHepatitisForm2 = ({
                         actualValue={actualValue}
                         basicInfo={basicInfo}
                         checkValue={checkValue}
+                        action={action}
                         handleClinicalParamsInputValue={
                           handleClinicalParamsInputValue
                         }
