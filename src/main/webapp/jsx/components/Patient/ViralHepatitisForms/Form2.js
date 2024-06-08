@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import MatButton from "@material-ui/core/Button";
-import { FormGroup, Label, Spinner, Input, Form, InputGroup } from "reactstrap";
+import { FormGroup, Label, Spinner } from "reactstrap";
 import moment from "moment";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -113,7 +113,6 @@ export const GetHepatitisCoinfectionCheckBoxValues = ({
   label,
   placeholder,
   id,
-  selectedOptions,
   action,
 }) => {
   return (
@@ -123,9 +122,7 @@ export const GetHepatitisCoinfectionCheckBoxValues = ({
         type="checkbox"
         value={val}
         onChange={onChangeHandler}
-        checked={
-          selectedOptions.filter((item) => item.includes(checked)).length
-        }
+        checked={checked}
       />
       <Label>
         <span className="p-2">{label}</span>{" "}
@@ -154,7 +151,6 @@ export const GetClinicalParamsCheckBoxValues = ({
   label,
   placeholder,
   id,
-  selectedOptions,
 }) => {
   return (
     <div>
@@ -162,9 +158,7 @@ export const GetClinicalParamsCheckBoxValues = ({
         type="checkbox"
         value={val}
         onChange={onChangeHandler}
-        checked={
-          selectedOptions.filter((item) => item.includes(checked)).length
-        }
+        checked={checked}
       />
       <Label>
         <span className="p-2">{label}</span>{" "}
@@ -186,11 +180,6 @@ export const GetClinicalParamsCheckBoxValues = ({
   );
 };
 
-const getConditionalFieldsValue = (options, value) => {
-  const item = options.filter((item) => item.includes(value));
-  return item[0].split(".")[1];
-};
-
 export const fetchHBsAG = async () => {
   return await axios.get(`${baseUrl}application-codesets/v2/HBsAg_RESULT`, {
     headers: { Authorization: `Bearer ${token}` },
@@ -200,35 +189,21 @@ export const HepatitisCoinfection = ({
   title,
   checkName,
   placeholder,
-  checkValue,
   handleCheckboxChange,
-  selectedOptions,
-  coinfectionValueHandler,
+  basicInfo,
+  handleCoinfectionsInputValue,
 }) => {
   return (
     <div className="form-group my-2 col-md-4">
-      <input
-        type="checkbox"
-        value={checkValue}
-        onChange={handleCheckboxChange}
-        checked={
-          selectedOptions.filter((item) => item.includes(checkValue)).length
-        }
-      />
+      <input type="checkbox" name={checkName} onChange={handleCheckboxChange} />
       <Label>
         <span className="p-2">{title}</span>{" "}
       </Label>
-      {selectedOptions.filter((item) => item.includes(checkValue)).length ? (
+      {basicInfo.hepatitisBTest.hepatitisCoinfection?.checkName >= -1 ? (
         <span style={{ fontSize: "1.2em" }}>
           <ImportantString str="*" />
           <input
-            onChange={(e) =>
-              coinfectionValueHandler(
-                e.target.value,
-                checkValue,
-                selectedOptions
-              )
-            }
+            onChange={(e) => handleCoinfectionsInputValue(e)}
             className="form-control"
             type="text"
             name={checkName}
@@ -244,43 +219,29 @@ export const HepatitisCoinfection = ({
     </div>
   );
 };
-export const ClinicalParamCheckOption = ({
+export const CheckOptionsParams = ({
   title,
   checkName,
   placeholder,
-  checkValue,
   handleCheckboxChange,
-  selectedOptions,
-  clinicalParamValueHandler,
+  handleClinicalParamsInputValue,
+  basicInfo,
 }) => {
   return (
     <div className="form-group my-3 col-md-4">
-      <input
-        type="checkbox"
-        value={checkValue}
-        onChange={handleCheckboxChange}
-        checked={
-          selectedOptions.filter((item) => item.includes(checkValue)).length
-        }
-      />
+      <input type="checkbox" name={checkName} onChange={handleCheckboxChange} />
       <Label>
         <span className="p-2">{title}</span>{" "}
       </Label>
-      {selectedOptions?.filter((item) => item.includes(checkValue)).length ? (
+      {basicInfo.hepatitisCTest.selectedClinicalParamsOptions?.checkName >=
+      -1 ? (
         <span style={{ fontSize: "1.2em" }}>
           <ImportantString str="*" />
           <input
-            onChange={(e) =>
-              clinicalParamValueHandler(
-                e.target.value,
-                checkValue,
-                selectedOptions
-              )
-            }
+            onChange={(e) => handleClinicalParamsInputValue(e)}
             className="form-control"
             type="text"
             name={checkName}
-            value={getConditionalFieldsValue(selectedOptions, checkValue)}
             id={checkName}
             placeholder={placeholder}
             style={{
@@ -293,18 +254,13 @@ export const ClinicalParamCheckOption = ({
     </div>
   );
 };
-
 const ViralHepatitisForm2 = ({
   submit,
   setStep,
   action,
-  userStatus,
   patientObj,
   id,
-  diagnosisInfo,
   setActiveContent,
-  activeContent,
-  route,
 }) => {
   const [enrollmentUuid, setEnrollmentUuid] = useState(
     getCookie("enrollmentIds")?.enrollmentUuid
@@ -322,7 +278,6 @@ const ViralHepatitisForm2 = ({
       gradeOfEncephalopathy: "",
       liverBiopsyStage: "",
       prothrombinTimeNR: "",
-      pst: "",
       severityOfAscites: "MILD",
       totalBiliRubin: "",
       ultrasoundScan: "",
@@ -338,7 +293,13 @@ const ViralHepatitisForm2 = ({
       dateHbvSampleRequested: "",
       dateHbvTestRequested: "",
       hbeAG: "",
-      // attaching missing props
+      hepatitisCoinfection: {
+        hbvHcv: undefined,
+        hbvHiv: undefined,
+        hcvHiv: undefined,
+        hbvHdv: undefined,
+        hbvHcdHiv: undefined,
+      },
       dateHbvDnaResultReported: "",
       hbsAgQuantification: "",
       hbvDna: "DETECTED",
@@ -348,131 +309,75 @@ const ViralHepatitisForm2 = ({
       treatmentEligible: "",
     },
     hepatitisCTest: {
-      selectedClinicalParamsOptions: [],
+      selectedClinicalParamsOptions: {
+        ast: undefined,
+        plt: undefined,
+        alt: undefined,
+      },
       commobidities: "",
       hcRnaValue: "",
       hcvRNA: "DETECTED",
-      hepatitisCoinfection: [],
       multipleInfection: "",
     },
   });
   const [childPughData, setChildPughData] = useState([]);
   const [errors, setErrors] = useState({});
 
-  const [selectedOptions, setSelectedOptions] = useState([]);
-  const [selectedClinicalParamsOptions, setSelectedClinicalParamsOptions] =
-    useState([]);
-
-  const handleClinicalParamsCheckboxChange = (event) => {
-    const option = event.target.value;
-    if (event.target.checked) {
-      setSelectedClinicalParamsOptions((prevOptions) => {
-        const updatedOptions = [...prevOptions, option];
-        setErrors({ ...temp, [event.target.name]: "" });
-        setBasicInfo({
-          ...basicInfo,
-          hepatitisCTest: {
-            ...basicInfo.hepatitisCTest,
-            hepatitisClinicalParams: updatedOptions,
-          },
-        });
-
-        return updatedOptions;
-      });
-    } else {
-      setSelectedClinicalParamsOptions((prevOptions) => {
-        const updatedOptions = prevOptions.filter(
-          (item) => !item.includes(option)
-        );
-
-        setErrors({ ...temp, [event.target.name]: "" });
-        setBasicInfo({
-          ...basicInfo,
-          hepatitisCTest: {
-            ...basicInfo.hepatitisCTest,
-            [event.target.name]: updatedOptions,
-          },
-        });
-
-        return updatedOptions;
-      });
-    }
+  const handleCoinfectionsCheckbox = (event) => {
+    setBasicInfo({
+      ...basicInfo,
+      hepatitisBTest: {
+        ...basicInfo.hepatitisBTest,
+        hepatitisCoinfection: {
+          ...basicInfo.hepatitisBTest.hepatitisCoinfection,
+          [event.target.name]: !basicInfo.hepatitisBTest.hepatitisCoinfection[
+            event.target.name
+          ]
+            ? -1
+            : undefined,
+        },
+      },
+    });
   };
-  const handleCheckboxChange = (event) => {
-    const option = event.target.value;
-    if (event.target.checked) {
-      setSelectedOptions((prevOptions) => {
-        const updatedOptions = [...prevOptions, option];
-
-        setErrors({ ...temp, [event.target.name]: "" });
-        setBasicInfo({
-          ...basicInfo,
-          hepatitisCTest: {
-            ...basicInfo.hepatitisCTest,
-            hepatitisCoinfection: updatedOptions,
-          },
-        });
-
-        return updatedOptions;
-      });
-    } else {
-      setSelectedOptions((prevOptions) => {
-        const updatedOptions = prevOptions.filter(
-          (item) => !item.includes(option)
-        );
-
-        setErrors({ ...temp, [event.target.name]: "" });
-        setBasicInfo({
-          ...basicInfo,
-          hepatitisCTest: {
-            ...basicInfo.hepatitisCTest,
-            [event.target.name]: updatedOptions,
-          },
-        });
-
-        return updatedOptions;
-      });
-    }
+  const handleClinicalParamsCheckbox = (event) => {
+    setBasicInfo({
+      ...basicInfo,
+      hepatitisCTest: {
+        ...basicInfo.hepatitisCTest,
+        selectedClinicalParamsOptions: {
+          ...basicInfo.hepatitisCTest.selectedClinicalParamsOptions,
+          [event.target.name]: !basicInfo.hepatitisCTest
+            .selectedClinicalParamsOptions[event.target.name]
+            ? -1
+            : undefined,
+        },
+      },
+    });
   };
-  const coinfectionValueHandler = (value, coinfection, selectedOptions) => {
-    const selectedOptionIndex = selectedOptions.indexOf(coinfection);
-    if (selectedOptionIndex > -1) {
-      const splittedStrArr = selectedOptions[selectedOptionIndex].split(".");
-      const isCoinfectionValueSet = splittedStrArr.length === 2;
-      selectedOptions[selectedOptionIndex] =
-        `${
-          isCoinfectionValueSet
-            ? splittedStrArr[0]
-            : isCoinfectionValueSet
-            ? splittedStrArr[0]
-            : selectedOptions[selectedOptionIndex]
-        }` +
-        "." +
-        value;
-    }
+  const handleClinicalParamsInputValue = (event) => {
+    setBasicInfo({
+      ...basicInfo,
+      hepatitisCTest: {
+        ...basicInfo.hepatitisCTest,
+        selectedClinicalParamsOptions: {
+          ...basicInfo.hepatitisCTest.selectedClinicalParamsOptions,
+          [event.target.name]: event.target.value,
+        },
+      },
+    });
   };
-  const clinicalParamsValueHandler = (
-    value,
-    clinicalParam,
-    selectedOptions
-  ) => {
-    const selectedOptionIndex = selectedOptions.indexOf(clinicalParam);
-    if (selectedOptionIndex > -1) {
-      const splittedStrArr = selectedOptions[selectedOptionIndex].split(".");
-      const isCoinfectionValueSet = splittedStrArr.length === 2;
-      selectedOptions[selectedOptionIndex] =
-        `${
-          isCoinfectionValueSet
-            ? splittedStrArr[0]
-            : isCoinfectionValueSet
-            ? splittedStrArr[0]
-            : selectedOptions[selectedOptionIndex]
-        }` +
-        "." +
-        value;
-    }
+  const handleCoinfectionsInputValue = (event) => {
+    setBasicInfo({
+      ...basicInfo,
+      hepatitisBTest: {
+        ...basicInfo.hepatitisBTest,
+        hepatitisCoinfection: {
+          ...basicInfo.hepatitisBTest.hepatitisCoinfection,
+          [event.target.name]: event.target.value,
+        },
+      },
+    });
   };
-
   const fetchChildPughScore = async () => {
     const response = await axios.get(
       `${baseUrl}application-codesets/v2/CHILD_PUGH`,
@@ -495,17 +400,6 @@ const ViralHepatitisForm2 = ({
       },
     });
   };
-  const getApriScore = useMemo(() => {
-    let clinicalValues = [...selectedClinicalParamsOptions];
-    let plt = clinicalValues
-      ?.filter((item) => item.includes("PST"))[0]
-      ?.split(".")[1];
-    let ast = clinicalValues
-      ?.filter((item) => item.includes("AST"))[0]
-      ?.split(".")[1];
-    let apriScore = ast && plt ? parseInt((ast / plt) * 100) : "N/A";
-    return apriScore;
-  }, [selectedClinicalParamsOptions]);
 
   const handleInputChangeBasicForHC = (e) => {
     setErrors({ ...temp, [e.target.name]: "" });
@@ -528,24 +422,6 @@ const ViralHepatitisForm2 = ({
       },
     }));
   };
-
-  const getFib4 = useMemo(() => {
-    let clinicalValues = [...selectedClinicalParamsOptions];
-    let plt = clinicalValues
-      ?.filter((item) => item.includes("PST"))[0]
-      ?.split(".")[1];
-    let ast = clinicalValues
-      ?.filter((item) => item.includes("AST"))[0]
-      ?.split(".")[1];
-    let alt = clinicalValues
-      ?.filter((item) => item.includes("ALT"))[0]
-      ?.split(".")[1];
-    let fib4 =
-      ast && plt && alt
-        ? parseInt((patientObj?.age * ast) / (plt * plt))
-        : "N/A";
-    return fib4;
-  }, selectedClinicalParamsOptions);
 
   let temp = { ...errors };
   const validate = () => {
@@ -645,12 +521,6 @@ const ViralHepatitisForm2 = ({
       isNumeric(basicInfo.clinicalParameters.ultrasoundScan.toString())
         ? ""
         : "Ultrasound scan is invalid";
-
-    temp.afp =
-      basicInfo.clinicalParameters.afp &&
-      isNumeric(basicInfo.clinicalParameters.afp.toString())
-        ? ""
-        : "AFP  is required";
     temp.fibroscan =
       basicInfo.clinicalParameters.fibroscan &&
       isNumeric(basicInfo.clinicalParameters.fibroscan.toString())
@@ -689,25 +559,6 @@ const ViralHepatitisForm2 = ({
     temp.diagnosis_result = basicInfo.clinicalParameters.liverBiopsyStage
       ? ""
       : "Diagnosis is required";
-    //get unset clinical values
-    const unsetValues = selectedOptions.filter((item) => {
-      const coinfectionAndValueArr = item.split(".");
-      return !isNumeric(String(coinfectionAndValueArr[1]));
-    });
-
-    temp.hepatitisCoinfection = !unsetValues.length
-      ? ""
-      : "Coinfection values are all required and only numbers are allowed";
-
-    const unsetHepatitisClinicalValues = selectedClinicalParamsOptions.filter(
-      (item) => {
-        const hepatitisClinicalParams = item.split(".");
-        return !isNumeric(String(hepatitisClinicalParams[1]));
-      }
-    );
-    temp.hepatitisClinicalParams = !unsetHepatitisClinicalValues.length
-      ? ""
-      : "All clinical value parameters are required and only numbers are allowed";
 
     setErrors({ ...temp });
     return Object.values(temp).every((x) => x == "");
@@ -775,7 +626,6 @@ const ViralHepatitisForm2 = ({
         hcvRNA: values.hcvRNA,
         hcRnaValue: values.hcRnaValue,
         hepatitisCoinfection: values.hepatitisCoinfection,
-        astPltAndAlt: values.selectedClinicalParamsOptions,
         commobidities: values.commobidities,
         multipleInfection: values.multipleInfection,
       },
@@ -846,12 +696,28 @@ const ViralHepatitisForm2 = ({
         dataCopy.hepatitisBTest.stagingDateOfLiverBiopsy = transformDate(
           dataCopy.hepatitisBTest.stagingDateOfLiverBiopsy
         );
-        setSelectedOptions(dataCopy.hepatitisCTest.hepatitisCoinfection);
-        // setSelectedClinicalParamsOptions(dataCopy.clinicalParameters);
         setBasicInfo(dataCopy);
       })
       .catch((error) => console.log(error));
   };
+  const calulateApriScore = () =>
+    basicInfo.hepatitisCTest.selectedClinicalParamsOptions?.ast === -1
+      ? ""
+      : parseInt(
+          (basicInfo.hepatitisCTest.selectedClinicalParamsOptions?.ast /
+            basicInfo.hepatitisCTest.selectedClinicalParamsOptions?.plt) *
+            100
+        );
+
+  const calulateFib4 = () =>
+    basicInfo.hepatitisCTest.selectedClinicalParamsOptions?.ast === -1
+      ? ""
+      : parseInt(
+          (patientObj?.age *
+            basicInfo.hepatitisCTest.selectedClinicalParamsOptions?.ast) /
+            (basicInfo.hepatitisCTest.selectedClinicalParamsOptions?.plt *
+              basicInfo.hepatitisCTest.selectedClinicalParamsOptions?.alt)
+        );
 
   useEffect(() => {
     fetchChildPughScore();
@@ -905,6 +771,9 @@ const ViralHepatitisForm2 = ({
   useEffect(() => {
     viewHepatitisDiagnosis();
   }, []);
+  useEffect(() => {
+    console.log("current form state: ", basicInfo);
+  }, [basicInfo]);
   return (
     <>
       <Card className={classes.root}>
@@ -1167,7 +1036,6 @@ const ViralHepatitisForm2 = ({
                                   basicInfo.hepatitisBTest.hbsAgQuantification
                                 }
                                 onChange={handleInputChangeBasic}
-                                // onBlur={formik.handleBlur}
                                 style={{
                                   border: "1px solid #014D88",
                                   borderRadius: "0.2rem",
@@ -1315,7 +1183,6 @@ const ViralHepatitisForm2 = ({
                         <div className="form-group mb-3 col-md-4-12">
                           <FormGroup>
                             <Label for="comment">Comment</Label>
-                            {/* <span style={{ color: "red" }}> *</span>{" "} */}
                             <textarea
                               className="form-control"
                               name="comment"
@@ -1473,35 +1340,35 @@ const ViralHepatitisForm2 = ({
                             {[
                               {
                                 title: "HBV/HCV (IU/ml)",
-                                checkName: "hbvHcvValue",
+                                checkName: "hbvHcv",
                                 placeholder: "hbv/hcv...",
                                 checkValue: "HBV_HCV",
                                 actualValue: "HBV_HCV_VALUE",
                               },
                               {
                                 title: "HBV/HIV (IU/ml)",
-                                checkName: "hbvHivValue",
+                                checkName: "hbvHiv",
                                 placeholder: "hbv/hiv...",
                                 checkValue: "HBV_HIV",
                                 actualValue: "HBV_HIV_VALUE",
                               },
                               {
                                 title: "HCV/HIV (IU/ml)",
-                                checkName: "hcvHivValue",
+                                checkName: "hcvHiv",
                                 placeholder: "hcv/hiv...",
                                 checkValue: "HCV_HIV",
                                 actualValue: "HCV_HIV_VALUE",
                               },
                               {
                                 title: "HBV/HDV (IU/ml)",
-                                checkName: "hbvHdvValue",
+                                checkName: "hbvHdv",
                                 placeholder: "hbv/hdv...",
                                 checkValue: "HBV_HDV",
                                 actualValue: "HBV_HDV_VALUE",
                               },
                               {
                                 title: "HBV/HCD/HIV (IU/ml)",
-                                checkName: "hbvHcdHivValue",
+                                checkName: "hbvHcdHiv",
                                 placeholder: "hbv/hcd/Hiv...",
                                 checkValue: "HBV_HCD_HIV",
                                 actualValue: "HBV_HCD_HIV_VALUE",
@@ -1521,10 +1388,12 @@ const ViralHepatitisForm2 = ({
                                   placeholder={placeholder}
                                   actualValue={actualValue}
                                   checkValue={checkValue}
-                                  handleCheckboxChange={handleCheckboxChange}
-                                  selectedOptions={selectedOptions}
-                                  coinfectionValueHandler={
-                                    coinfectionValueHandler
+                                  basicInfo={basicInfo}
+                                  handleCoinfectionsInputValue={
+                                    handleCoinfectionsInputValue
+                                  }
+                                  handleCheckboxChange={
+                                    handleCoinfectionsCheckbox
                                   }
                                   action={action}
                                 />
@@ -1618,24 +1487,21 @@ const ViralHepatitisForm2 = ({
                   {[
                     {
                       title: "AST (IU/ml)",
-                      checkName: "hbvHcvValue",
+                      checkName: "ast",
                       placeholder: "Ast...",
                       checkValue: "AST",
-                      actualValue: "AST_VALUE",
                     },
                     {
                       title: "PLT (mm3)",
-                      checkName: "PstValue",
+                      checkName: "plt",
                       placeholder: "Plt...",
                       checkValue: "PST",
-                      actualValue: "PST_VALUE",
                     },
                     {
                       title: "ALT (IU/ml)",
-                      checkName: "altValue",
+                      checkName: "alt",
                       placeholder: "alt...",
                       checkValue: "ALT",
-                      actualValue: "ALT_VALUE",
                     },
                   ].map(
                     ({
@@ -1645,18 +1511,18 @@ const ViralHepatitisForm2 = ({
                       actualValue,
                       checkValue,
                     }) => (
-                      <ClinicalParamCheckOption
+                      <CheckOptionsParams
                         key={title}
                         title={title}
                         checkName={checkName}
                         placeholder={placeholder}
                         actualValue={actualValue}
+                        basicInfo={basicInfo}
                         checkValue={checkValue}
-                        handleCheckboxChange={
-                          handleClinicalParamsCheckboxChange
+                        handleClinicalParamsInputValue={
+                          handleClinicalParamsInputValue
                         }
-                        selectedOptions={selectedClinicalParamsOptions}
-                        clinicalParamValueHandler={clinicalParamsValueHandler}
+                        handleCheckboxChange={handleClinicalParamsCheckbox}
                       />
                     )
                   )}
@@ -1706,7 +1572,6 @@ const ViralHepatitisForm2 = ({
                           id="altValue"
                           value={basicInfo.clinicalParameters.altValue}
                           onChange={handleInputChangeBasicForClinic}
-                          // onBlur={formik.handleBlur}
                           style={{
                             border: "1px solid #014D88",
                             borderRadius: "0.2rem",
@@ -1730,7 +1595,6 @@ const ViralHepatitisForm2 = ({
                           id="pstValue"
                           value={basicInfo.clinicalParameters.pstValue}
                           onChange={handleInputChangeBasicForClinic}
-                          // onBlur={formik.handleBlur}
                           style={{
                             border: "1px solid #014D88",
                             borderRadius: "0.2rem",
@@ -1781,7 +1645,6 @@ const ViralHepatitisForm2 = ({
                         id="directBiliribin"
                         value={basicInfo.clinicalParameters.directBiliribin}
                         onChange={handleInputChangeBasicForClinic}
-                        // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
@@ -1808,7 +1671,6 @@ const ViralHepatitisForm2 = ({
                         id="albumin"
                         value={basicInfo.hepatitisBTest.albumin}
                         onChange={handleInputChangeBasic}
-                        // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
@@ -1832,7 +1694,12 @@ const ViralHepatitisForm2 = ({
                         type="text"
                         name="apriScore"
                         id="apriScore"
-                        value={getApriScore}
+                        value={
+                          isNaN(calulateApriScore()) ||
+                          Math.sign(calulateApriScore()) === -1
+                            ? ""
+                            : calulateApriScore()
+                        }
                         onChange={handleInputChangeBasicForClinic}
                         style={{
                           border: "1px solid #014D88",
@@ -1852,7 +1719,12 @@ const ViralHepatitisForm2 = ({
                         type="text"
                         name="fib4"
                         id="fib4"
-                        value={getFib4}
+                        value={
+                          isNaN(calulateFib4()) ||
+                          Math.sign(calulateFib4()) === -1
+                            ? ""
+                            : calulateFib4()
+                        }
                         onChange={handleInputChangeBasicForClinic}
                         style={{
                           border: "1px solid #014D88",
@@ -1954,7 +1826,6 @@ const ViralHepatitisForm2 = ({
                         id="ultrasoundScan"
                         value={basicInfo.clinicalParameters.ultrasoundScan}
                         onChange={handleInputChangeBasicForClinic}
-                        // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
@@ -2033,7 +1904,6 @@ const ViralHepatitisForm2 = ({
                         id="ctScan"
                         value={basicInfo.hepatitisBTest.ctScan}
                         onChange={handleInputChangeBasic}
-                        // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
@@ -2151,7 +2021,6 @@ const ViralHepatitisForm2 = ({
                         id="childPughScore"
                         value={basicInfo.clinicalParameters.childPughScore}
                         onChange={handleInputChangeBasicForClinic}
-                        // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
@@ -2249,7 +2118,6 @@ const ViralHepatitisForm2 = ({
                               basicInfo.hepatitisBTest.stagingDateOfLiverBiopsy
                             }
                             onChange={handleInputChangeBasic}
-                            // onBlur={formik.handleBlur}
                             style={{
                               border: "1px solid #014D88",
                               borderRadius: "0.2rem",
