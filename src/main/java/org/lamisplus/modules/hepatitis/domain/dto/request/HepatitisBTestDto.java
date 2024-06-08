@@ -70,4 +70,6 @@ public class HepatitisBTestDto implements Serializable {
     @NotEmpty(message ="comment can not be empty")
     private String comment;
 
+
+
 }

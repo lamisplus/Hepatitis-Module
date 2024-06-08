@@ -22,7 +22,7 @@ public class HepatitisCoinfectionDTO {
     @Pattern(regexp = "^[0-9]*$", message = "Field must be a number")
     private String hbvHiv;
     @NotEmpty(message = "hbvHcdHiv can not be empty")
-    // @Digits(message = "m")
+   // @Digits(message = "m")
     @Pattern(regexp = "^[0-9]*$", message = "Field must be a number")
     private String hbvHcdHiv;
 }

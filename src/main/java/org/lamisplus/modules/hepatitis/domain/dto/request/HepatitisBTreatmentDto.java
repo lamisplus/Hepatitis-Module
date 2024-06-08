@@ -47,5 +47,11 @@ public class HepatitisBTreatmentDto implements Serializable {
     @NotNull(message = "reasonForHepatitisBTreatment cannot be null or empty")
     private  ReasonForHepatitisBTreatmentDto reasonForHepatitisBTreatment;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate newRegimenDateStarted;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate newRegimenDateCompleted;
+
 }
 
