@@ -46,7 +46,6 @@ const RecentHistory = (props) => {
       activityDate: props.patientObj.dateOfRegistration,
     },
   ]);
-  const [infants, setInfants] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [saving, setSaving] = useState(false);
   const [record, setRecord] = useState(null);
@@ -101,7 +100,6 @@ const RecentHistory = (props) => {
   const LoadViewPage = (row, action) => {
     prefetchAllFollowUp();
     if (row.path === "hepatitis_enrollment") {
-      //props.setActiveContent({...props.activeContent, route:'anc-enrollment', id:row.id, actionType:action})
       history.push({
         pathname: "/update-patient",
         state: {

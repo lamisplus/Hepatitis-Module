@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import MatButton from "@material-ui/core/Button";
-import { FormGroup, Label, Spinner, Input, Form, InputGroup } from "reactstrap";
+import { FormGroup, Label, Spinner } from "reactstrap";
 import moment from "moment";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -33,10 +33,9 @@ import { isNotInTheFutureOrBeforeBirth } from "../../../helpers/dateValidators";
 import { useQuery } from "react-query";
 import { fetchEnrolment } from "../../../services/fetchEnrolment";
 import { FETCH_ENROLMENT_KEY } from "../../../utils/queryKeys";
-const { isBefore } = require("date-fns");
+import { isNumeric } from "validator";
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
-// hcRnaValue
 const useStyles = makeStyles((theme) => ({
   card: {
     margin: theme.spacing(20),
@@ -114,23 +113,23 @@ export const GetHepatitisCoinfectionCheckBoxValues = ({
   label,
   placeholder,
   id,
-  selectedOptions,
+  action,
 }) => {
   return (
     <div>
       <input
+        disabled={action === "view"}
         type="checkbox"
         value={val}
         onChange={onChangeHandler}
-        checked={
-          selectedOptions.filter((item) => item.includes(checked)).length
-        }
+        checked={checked}
       />
       <Label>
         <span className="p-2">{label}</span>{" "}
       </Label>
       <span>
         <input
+          disabled={action === "view"}
           className="form-control"
           type="text"
           name={id}
@@ -152,7 +151,6 @@ export const GetClinicalParamsCheckBoxValues = ({
   label,
   placeholder,
   id,
-  selectedOptions,
 }) => {
   return (
     <div>
@@ -160,9 +158,7 @@ export const GetClinicalParamsCheckBoxValues = ({
         type="checkbox"
         value={val}
         onChange={onChangeHandler}
-        checked={
-          selectedOptions.filter((item) => item.includes(checked)).length
-        }
+        checked={checked}
       />
       <Label>
         <span className="p-2">{label}</span>{" "}
@@ -184,39 +180,30 @@ export const GetClinicalParamsCheckBoxValues = ({
   );
 };
 
+export const fetchHBsAG = async () => {
+  return await axios.get(`${baseUrl}application-codesets/v2/HBsAg_RESULT`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
 export const HepatitisCoinfection = ({
   title,
   checkName,
   placeholder,
-  checkValue,
   handleCheckboxChange,
-  selectedOptions,
-  coinfectionValueHandler,
+  basicInfo,
+  handleCoinfectionsInputValue,
 }) => {
   return (
     <div className="form-group my-2 col-md-4">
-      <input
-        type="checkbox"
-        value={checkValue}
-        onChange={handleCheckboxChange}
-        checked={
-          selectedOptions.filter((item) => item.includes(checkValue)).length
-        }
-      />
+      <input type="checkbox" name={checkName} onChange={handleCheckboxChange} />
       <Label>
         <span className="p-2">{title}</span>{" "}
       </Label>
-      {selectedOptions.filter((item) => item.includes(checkValue)).length ? (
+      {basicInfo.hepatitisBTest.hepatitisCoinfection?.checkName >= -1 ? (
         <span style={{ fontSize: "1.2em" }}>
           <ImportantString str="*" />
           <input
-            onChange={(e) =>
-              coinfectionValueHandler(
-                e.target.value,
-                checkValue,
-                selectedOptions
-              )
-            }
+            onChange={(e) => handleCoinfectionsInputValue(e)}
             className="form-control"
             type="text"
             name={checkName}
@@ -232,39 +219,26 @@ export const HepatitisCoinfection = ({
     </div>
   );
 };
-export const ClinicalParamCheckOption = ({
+export const CheckOptionsParams = ({
   title,
   checkName,
   placeholder,
-  checkValue,
   handleCheckboxChange,
-  selectedOptions,
-  clinicalParamValueHandler,
+  handleClinicalParamsInputValue,
+  basicInfo,
 }) => {
   return (
     <div className="form-group my-3 col-md-4">
-      <input
-        type="checkbox"
-        value={checkValue}
-        onChange={handleCheckboxChange}
-        checked={
-          selectedOptions.filter((item) => item.includes(checkValue)).length
-        }
-      />
+      <input type="checkbox" name={checkName} onChange={handleCheckboxChange} />
       <Label>
         <span className="p-2">{title}</span>{" "}
       </Label>
-      {selectedOptions.filter((item) => item.includes(checkValue)).length ? (
+      {basicInfo.hepatitisCTest.selectedClinicalParamsOptions?.checkName >=
+      -1 ? (
         <span style={{ fontSize: "1.2em" }}>
           <ImportantString str="*" />
           <input
-            onChange={(e) =>
-              clinicalParamValueHandler(
-                e.target.value,
-                checkValue,
-                selectedOptions
-              )
-            }
+            onChange={(e) => handleClinicalParamsInputValue(e)}
             className="form-control"
             type="text"
             name={checkName}
@@ -280,22 +254,15 @@ export const ClinicalParamCheckOption = ({
     </div>
   );
 };
-
 const ViralHepatitisForm2 = ({
   submit,
-  action,
   setStep,
-  userStatus,
+  action,
   patientObj,
   id,
   setActiveContent,
-  activeContent,
-  route,
 }) => {
   const [enrollmentUuid, setEnrollmentUuid] = useState(
-    getCookie("enrollmentIds")?.enrollmentUuid
-  );
-  const [enrollmentPersonInfo, setEnrollmentPersonInfo] = useState(
     getCookie("enrollmentIds")?.enrollmentUuid
   );
   const [basicInfo, setBasicInfo] = useState({
@@ -311,7 +278,6 @@ const ViralHepatitisForm2 = ({
       gradeOfEncephalopathy: "",
       liverBiopsyStage: "",
       prothrombinTimeNR: "",
-      pst: "",
       severityOfAscites: "MILD",
       totalBiliRubin: "",
       ultrasoundScan: "",
@@ -327,7 +293,13 @@ const ViralHepatitisForm2 = ({
       dateHbvSampleRequested: "",
       dateHbvTestRequested: "",
       hbeAG: "",
-      // attaching missing props
+      hepatitisCoinfection: {
+        hbvHcv: undefined,
+        hbvHiv: undefined,
+        hcvHiv: undefined,
+        hbvHdv: undefined,
+        hbvHcdHiv: undefined,
+      },
       dateHbvDnaResultReported: "",
       hbsAgQuantification: "",
       hbvDna: "DETECTED",
@@ -337,132 +309,75 @@ const ViralHepatitisForm2 = ({
       treatmentEligible: "",
     },
     hepatitisCTest: {
-      selectedClinicalParamsOptions: [],
+      selectedClinicalParamsOptions: {
+        ast: undefined,
+        plt: undefined,
+        alt: undefined,
+      },
       commobidities: "",
       hcRnaValue: "",
       hcvRNA: "DETECTED",
-      hepatitisCoinfection: [],
       multipleInfection: "",
     },
   });
   const [childPughData, setChildPughData] = useState([]);
   const [errors, setErrors] = useState({});
 
-  const [selectedOptions, setSelectedOptions] = useState([]);
-  const [selectedClinicalParamsOptions, setSelectedClinicalParamsOptions] =
-    useState([]);
-
-  const handleClinicalParamsCheckboxChange = (event) => {
-    const option = event.target.value;
-    if (event.target.checked) {
-      setSelectedClinicalParamsOptions((prevOptions) => {
-        const updatedOptions = [...prevOptions, option];
-
-        setErrors({ ...temp, [event.target.name]: "" });
-        setBasicInfo({
-          ...basicInfo,
-          hepatitisCTest: {
-            ...basicInfo.hepatitisCTest,
-            hepatitisClinicalParams: updatedOptions,
-          },
-        });
-
-        return updatedOptions;
-      });
-    } else {
-      setSelectedClinicalParamsOptions((prevOptions) => {
-        const updatedOptions = prevOptions.filter(
-          (item) => !item.includes(option)
-        );
-
-        setErrors({ ...temp, [event.target.name]: "" });
-        setBasicInfo({
-          ...basicInfo,
-          hepatitisCTest: {
-            ...basicInfo.hepatitisCTest,
-            [event.target.name]: updatedOptions,
-          },
-        });
-
-        return updatedOptions;
-      });
-    }
+  const handleCoinfectionsCheckbox = (event) => {
+    setBasicInfo({
+      ...basicInfo,
+      hepatitisBTest: {
+        ...basicInfo.hepatitisBTest,
+        hepatitisCoinfection: {
+          ...basicInfo.hepatitisBTest.hepatitisCoinfection,
+          [event.target.name]: !basicInfo.hepatitisBTest.hepatitisCoinfection[
+            event.target.name
+          ]
+            ? -1
+            : undefined,
+        },
+      },
+    });
   };
-  const handleCheckboxChange = (event) => {
-    const option = event.target.value;
-    if (event.target.checked) {
-      setSelectedOptions((prevOptions) => {
-        const updatedOptions = [...prevOptions, option];
-
-        setErrors({ ...temp, [event.target.name]: "" });
-        setBasicInfo({
-          ...basicInfo,
-          hepatitisCTest: {
-            ...basicInfo.hepatitisCTest,
-            hepatitisCoinfection: updatedOptions,
-          },
-        });
-
-        return updatedOptions;
-      });
-    } else {
-      setSelectedOptions((prevOptions) => {
-        const updatedOptions = prevOptions.filter(
-          (item) => !item.includes(option)
-        );
-
-        setErrors({ ...temp, [event.target.name]: "" });
-        setBasicInfo({
-          ...basicInfo,
-          hepatitisCTest: {
-            ...basicInfo.hepatitisCTest,
-            [event.target.name]: updatedOptions,
-          },
-        });
-
-        return updatedOptions;
-      });
-    }
+  const handleClinicalParamsCheckbox = (event) => {
+    setBasicInfo({
+      ...basicInfo,
+      hepatitisCTest: {
+        ...basicInfo.hepatitisCTest,
+        selectedClinicalParamsOptions: {
+          ...basicInfo.hepatitisCTest.selectedClinicalParamsOptions,
+          [event.target.name]: !basicInfo.hepatitisCTest
+            .selectedClinicalParamsOptions[event.target.name]
+            ? -1
+            : undefined,
+        },
+      },
+    });
   };
-  const coinfectionValueHandler = (value, coinfection, selectedOptions) => {
-    const selectedOptionIndex = selectedOptions.indexOf(coinfection);
-    if (selectedOptionIndex > -1) {
-      const splittedStrArr = selectedOptions[selectedOptionIndex].split(".");
-      const isCoinfectionValueSet = splittedStrArr.length === 2;
-      selectedOptions[selectedOptionIndex] =
-        `${
-          isCoinfectionValueSet
-            ? splittedStrArr[0]
-            : isCoinfectionValueSet
-            ? splittedStrArr[0]
-            : selectedOptions[selectedOptionIndex]
-        }` +
-        "." +
-        value;
-    }
+  const handleClinicalParamsInputValue = (event) => {
+    setBasicInfo({
+      ...basicInfo,
+      hepatitisCTest: {
+        ...basicInfo.hepatitisCTest,
+        selectedClinicalParamsOptions: {
+          ...basicInfo.hepatitisCTest.selectedClinicalParamsOptions,
+          [event.target.name]: event.target.value,
+        },
+      },
+    });
   };
-  const clinicalParamsValueHandler = (
-    value,
-    clinicalParam,
-    selectedOptions
-  ) => {
-    const selectedOptionIndex = selectedOptions.indexOf(clinicalParam);
-    if (selectedOptionIndex > -1) {
-      const splittedStrArr = selectedOptions[selectedOptionIndex].split(".");
-      const isCoinfectionValueSet = splittedStrArr.length === 2;
-      selectedOptions[selectedOptionIndex] =
-        `${
-          isCoinfectionValueSet
-            ? splittedStrArr[0]
-            : isCoinfectionValueSet
-            ? splittedStrArr[0]
-            : selectedOptions[selectedOptionIndex]
-        }` +
-        "." +
-        value;
-    }
+  const handleCoinfectionsInputValue = (event) => {
+    setBasicInfo({
+      ...basicInfo,
+      hepatitisBTest: {
+        ...basicInfo.hepatitisBTest,
+        hepatitisCoinfection: {
+          ...basicInfo.hepatitisBTest.hepatitisCoinfection,
+          [event.target.name]: event.target.value,
+        },
+      },
+    });
   };
-
   const fetchChildPughScore = async () => {
     const response = await axios.get(
       `${baseUrl}application-codesets/v2/CHILD_PUGH`,
@@ -474,7 +389,6 @@ const ViralHepatitisForm2 = ({
     setChildPughData(data);
   };
 
-  // handle input changes
   const handleInputChangeBasic = (e) => {
     setErrors({ ...temp, [e.target.name]: "" });
 
@@ -500,14 +414,13 @@ const ViralHepatitisForm2 = ({
   };
   const handleInputChangeBasicForClinic = (e) => {
     setErrors({ ...temp, [e.target.name]: "" });
-
-    setBasicInfo({
-      ...basicInfo,
+    setBasicInfo((prev) => ({
+      ...prev,
       clinicalParameters: {
-        ...basicInfo.clinicalParameters,
+        ...prev.clinicalParameters,
         [e.target.name]: e.target.value,
       },
-    });
+    }));
   };
 
   let temp = { ...errors };
@@ -520,7 +433,6 @@ const ViralHepatitisForm2 = ({
       )
         ? ""
         : "Date HBV DNA test requested is invalid";
-
     temp.dateHbvSampleRequested =
       basicInfo.hepatitisBTest.dateHbvSampleRequested &&
       isNotInTheFutureOrBeforeBirth(
@@ -539,9 +451,11 @@ const ViralHepatitisForm2 = ({
         ? ""
         : "Date of HBV DNA result reported is invalid";
 
-    temp.hbsAgQuantification = basicInfo.hepatitisBTest.hbsAgQuantification
-      ? ""
-      : "HBsAG Quantification is required";
+    temp.hbsAgQuantification =
+      basicInfo.hepatitisBTest?.hbsAgQuantification &&
+      isNumeric(basicInfo.hepatitisBTest?.hbsAgQuantification.toString())
+        ? ""
+        : "HBsAG Quantification is invalid";
 
     temp.hbeAG = basicInfo.hepatitisBTest.hbeAG ? "" : "HbeAG is required";
 
@@ -549,46 +463,69 @@ const ViralHepatitisForm2 = ({
       ? ""
       : "Anti-HDV is required";
 
-    temp.treatmentEligible = basicInfo.hepatitisBTest.treatmentEligible
-      ? ""
-      : " Treatment Eligible is required";
-    temp.hcvRNA = basicInfo.hepatitisCTest.hcvRNA ? "" : "HCV RNA is required";
+    temp.treatmentEligible =
+      basicInfo.hepatitisBTest.treatmentEligible ||
+      basicInfo.hepatitisBTest.hbvDna === "UNDETECTED" ||
+      basicInfo.hepatitisBTest.hbeAG === "NON_REACTIVE" ||
+      basicInfo.hepatitisBTest.antiHDV === "NON_REACTIVE"
+        ? ""
+        : " Treatment Eligible is required";
+    temp.hcvRnaValue =
+      basicInfo.hepatitisCTest.hcRnaValue &&
+      isNumeric(basicInfo.hepatitisCTest.hcRnaValue.toString())
+        ? ""
+        : "HCV RNA is invalid";
+    temp.hvbDnaValue =
+      basicInfo.hepatitisBTest.hvbDnaValue &&
+      isNumeric(basicInfo.hepatitisBTest.hvbDnaValue.toString())
+        ? ""
+        : "HVB DNA is invalid";
 
-    temp.totalBiliRubin = basicInfo.clinicalParameters.totalBiliRubin
-      ? ""
-      : " ALT is required";
-    temp.directBiliribin = basicInfo.clinicalParameters.directBiliribin
-      ? ""
-      : "Direct Bilirubin is required";
+    temp.totalBiliRubin =
+      basicInfo.clinicalParameters.totalBiliRubin &&
+      isNumeric(basicInfo.clinicalParameters.totalBiliRubin.toString())
+        ? ""
+        : " ALT is invalid";
+    temp.directBiliribin =
+      basicInfo.clinicalParameters.directBiliribin &&
+      isNumeric(basicInfo.clinicalParameters.directBiliribin.toString())
+        ? ""
+        : "Direct Bilirubin is invalid";
 
-    temp.albumin = basicInfo.hepatitisBTest.albumin
-      ? ""
-      : "Albumin is required";
+    temp.albumin =
+      basicInfo.hepatitisBTest.albumin &&
+      isNumeric(basicInfo.hepatitisBTest.albumin.toString())
+        ? ""
+        : "Albumin is invalid";
 
-    temp.apriScore = basicInfo.clinicalParameters.apriScore
-      ? ""
-      : "APRI score is required";
+    temp.prothrombinTimeNR =
+      basicInfo.clinicalParameters.prothrombinTimeNR &&
+      isNumeric(basicInfo.clinicalParameters.prothrombinTimeNR.toString())
+        ? ""
+        : "Prothrombin time/INR is invalid";
 
-    temp.fib4 = basicInfo.clinicalParameters.fib4 ? "" : "FIB-4 is required";
+    temp.urea =
+      basicInfo.clinicalParameters.urea &&
+      isNumeric(basicInfo.clinicalParameters.urea.toString())
+        ? ""
+        : "Urea is invalid";
 
-    temp.prothrombinTimeNR = basicInfo.clinicalParameters.prothrombinTimeNR
-      ? ""
-      : "Prothrombin time/INR is required";
+    temp.creatinine =
+      basicInfo.clinicalParameters.creatinine &&
+      isNumeric(basicInfo.clinicalParameters.creatinine.toString())
+        ? ""
+        : "Creatinine is invalid";
 
-    temp.urea = basicInfo.clinicalParameters.urea ? "" : "Urea is required";
-
-    temp.creatinine = basicInfo.clinicalParameters.creatinine
-      ? ""
-      : "Creatinine is required";
-
-    temp.ultrasoundScan = basicInfo.clinicalParameters.ultrasoundScan
-      ? ""
-      : "Ultrasound scan is required";
-
-    temp.afp = basicInfo.clinicalParameters.afp ? "" : "AFP  is required";
-    temp.fibroscan = basicInfo.clinicalParameters.fibroscan
-      ? ""
-      : "Fibroscan  is required";
+    temp.ultrasoundScan =
+      basicInfo.clinicalParameters.ultrasoundScan &&
+      isNumeric(basicInfo.clinicalParameters.ultrasoundScan.toString())
+        ? ""
+        : "Ultrasound scan is invalid";
+    temp.fibroscan =
+      basicInfo.clinicalParameters.fibroscan &&
+      isNumeric(basicInfo.clinicalParameters.fibroscan.toString())
+        ? ""
+        : "Fibroscan  is invalid";
 
     temp.ctScan = basicInfo.hepatitisBTest.ctScan ? "" : "CT scan  is required";
     temp.ascites = basicInfo.clinicalParameters.ascites
@@ -597,11 +534,11 @@ const ViralHepatitisForm2 = ({
     temp.gradeOfEncephalopathy = basicInfo.clinicalParameters
       .gradeOfEncephalopathy
       ? ""
-      : "Grade of Encephalopathy  is required";
+      : "Grade of Encephalopathy  is invalid";
 
     temp.childPughScore = basicInfo.clinicalParameters.childPughScore
       ? ""
-      : "Child pugh score  is required";
+      : "Child pugh score is required";
 
     temp.liverBiopsyStage = basicInfo.clinicalParameters.liverBiopsyStage
       ? ""
@@ -622,26 +559,6 @@ const ViralHepatitisForm2 = ({
     temp.diagnosis_result = basicInfo.clinicalParameters.liverBiopsyStage
       ? ""
       : "Diagnosis is required";
-
-    temp.commobidities = basicInfo.hepatitisCTest.commobidities
-      ? ""
-      : "Commobidities is required";
-    const unsetValues = selectedOptions.filter((item) => {
-      const coinfectionAndValueArr = item.split(".");
-      return isNaN(coinfectionAndValueArr[1]);
-    });
-    temp.hepatitisCoinfection = !unsetValues.length
-      ? ""
-      : "Clinical value parameters are all required";
-    const UnsetHepatitisClinicalValues = selectedClinicalParamsOptions.filter(
-      (item) => {
-        const hepatitisClinicalParams = item.split(".");
-        return isNaN(hepatitisClinicalParams[1]);
-      }
-    );
-    temp.hepatitisClinicalParams = !UnsetHepatitisClinicalValues.length
-      ? ""
-      : "Coinfection values are all required";
 
     setErrors({ ...temp });
     return Object.values(temp).every((x) => x == "");
@@ -673,12 +590,17 @@ const ViralHepatitisForm2 = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // validating the input
     window.scrollTo(0, 0);
 
     if (validate()) {
       postDataWithToken(basicInfo, "hepatitis/diagnosis");
     }
+  };
+  const transformDate = (dateObj) => {
+    const isoDate = new Date(
+      `${dateObj?.year}, ${dateObj?.monthValue}, ${dateObj?.dayOfMonth}`
+    );
+    return moment(isoDate).format("YYYY-MM-DD");
   };
   const onSubmitHandler = (values) => {
     window.scrollTo(0, 0);
@@ -704,7 +626,6 @@ const ViralHepatitisForm2 = ({
         hcvRNA: values.hcvRNA,
         hcRnaValue: values.hcRnaValue,
         hepatitisCoinfection: values.hepatitisCoinfection,
-
         commobidities: values.commobidities,
         multipleInfection: values.multipleInfection,
       },
@@ -752,6 +673,52 @@ const ViralHepatitisForm2 = ({
   const classes = useStyles();
   const { formik } = useValidateForm2ValuesHook(onSubmitHandler);
 
+  const viewHepatitisDiagnosis = (eId) => {
+    axios
+      .get(`${baseUrl}hepatitis/view-hepatitis-diagnosis-by-id/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(({ data }) => {
+        console.log(data);
+        const dataCopy = JSON.parse(JSON.stringify(data));
+        dataCopy.hepatitisBTest.dateHbvDnaResultReported = transformDate(
+          dataCopy.hepatitisBTest.dateHbvDnaResultReported
+        );
+        dataCopy.hepatitisBTest.dateHbvDnaTestRequested = transformDate(
+          dataCopy.hepatitisBTest.dateHbvDnaTestRequested
+        );
+        dataCopy.hepatitisBTest.dateHbvSampleRequested = transformDate(
+          dataCopy.hepatitisBTest.dateHbvSampleRequested
+        );
+        dataCopy.hepatitisBTest.dateHbvTestRequested = transformDate(
+          dataCopy.hepatitisBTest.dateHbvTestRequested
+        );
+        dataCopy.hepatitisBTest.stagingDateOfLiverBiopsy = transformDate(
+          dataCopy.hepatitisBTest.stagingDateOfLiverBiopsy
+        );
+        setBasicInfo(dataCopy);
+      })
+      .catch((error) => console.log(error));
+  };
+  const calulateApriScore = () =>
+    basicInfo.hepatitisCTest.selectedClinicalParamsOptions?.ast === -1
+      ? ""
+      : parseInt(
+          (basicInfo.hepatitisCTest.selectedClinicalParamsOptions?.ast /
+            basicInfo.hepatitisCTest.selectedClinicalParamsOptions?.plt) *
+            100
+        );
+
+  const calulateFib4 = () =>
+    basicInfo.hepatitisCTest.selectedClinicalParamsOptions?.ast === -1
+      ? ""
+      : parseInt(
+          (patientObj?.age *
+            basicInfo.hepatitisCTest.selectedClinicalParamsOptions?.ast) /
+            (basicInfo.hepatitisCTest.selectedClinicalParamsOptions?.plt *
+              basicInfo.hepatitisCTest.selectedClinicalParamsOptions?.alt)
+        );
+
   useEffect(() => {
     fetchChildPughScore();
   }, []);
@@ -768,11 +735,20 @@ const ViralHepatitisForm2 = ({
     hepatitisCDropdown: true,
     coInfectionDropdown: true,
   });
+
   useEffect(() => {
     if (basicInfo.hepatitisBTest.hbvDna === "UNDETECTED") {
       setBasicInfo((prev) => ({
         ...prev,
         hepatitisBTest: { ...prev.hepatitisBTest, hvbDnaValue: "" },
+      }));
+    }
+  }, [basicInfo.hepatitisBTest.hbvDna]);
+  useEffect(() => {
+    if (basicInfo.hepatitisBTest.hbvDna === "UNDETECTED") {
+      setBasicInfo((prev) => ({
+        ...prev,
+        hepatitisBTest: { ...prev.hepatitisBTest, hbsAgQuantification: "" },
       }));
     }
   }, [basicInfo.hepatitisBTest.hbvDna]);
@@ -792,6 +768,12 @@ const ViralHepatitisForm2 = ({
       }));
     }
   }, [basicInfo.hepatitisCTest.commobidities]);
+  useEffect(() => {
+    viewHepatitisDiagnosis();
+  }, []);
+  useEffect(() => {
+    console.log("current form state: ", basicInfo);
+  }, [basicInfo]);
   return (
     <>
       <Card className={classes.root}>
@@ -865,6 +847,7 @@ const ViralHepatitisForm2 = ({
                             <input
                               className="form-control"
                               type="date"
+                              disabled={action === "view"}
                               name="dateHbvDnaTestRequested"
                               max={moment(new Date()).format("YYYY-MM-DD")}
                               id="dateHbvDnaTestRequested"
@@ -895,8 +878,12 @@ const ViralHepatitisForm2 = ({
                             <input
                               className="form-control"
                               type="date"
+                              disabled={action === "view"}
                               name="dateHbvSampleRequested"
                               max={moment(new Date()).format("YYYY-MM-DD")}
+                              min={
+                                basicInfo.hepatitisBTest.dateHbvDnaTestRequested
+                              }
                               id="dateHbvSampleRequested"
                               value={
                                 basicInfo.hepatitisBTest.dateHbvSampleRequested
@@ -926,15 +913,18 @@ const ViralHepatitisForm2 = ({
                             <input
                               className="form-control"
                               type="date"
+                              disabled={action === "view"}
                               name="dateHbvDnaResultReported"
                               max={moment(new Date()).format("YYYY-MM-DD")}
+                              min={
+                                basicInfo.hepatitisBTest.dateHbvSampleRequested
+                              }
                               id="dateHbvDnaResultReported"
                               value={
                                 basicInfo.hepatitisBTest
                                   .dateHbvDnaResultReported
                               }
                               onChange={handleInputChangeBasic}
-                              // onBlur={formik.handleBlur}
                               style={{
                                 border: "1px solid #014D88",
                                 borderRadius: "0.2rem",
@@ -961,6 +951,7 @@ const ViralHepatitisForm2 = ({
                                 <input
                                   type="radio"
                                   value="DETECTED"
+                                  disabled={action === "view"}
                                   name="hbvDna"
                                   checked={
                                     basicInfo.hepatitisBTest.hbvDna ===
@@ -979,6 +970,7 @@ const ViralHepatitisForm2 = ({
                               <label>
                                 <input
                                   type="radio"
+                                  disabled={action === "view"}
                                   value="UNDETECTED"
                                   name="hbvDna"
                                   checked={
@@ -1005,8 +997,9 @@ const ViralHepatitisForm2 = ({
                                 <span style={{ color: "red" }}> *</span>{" "}
                               </Label>
                               <input
+                                disabled={action === "view"}
                                 className="form-control"
-                                type="text"
+                                type="number"
                                 name="hvbDnaValue"
                                 id="hvbDnaValue"
                                 value={basicInfo.hepatitisBTest.hvbDnaValue}
@@ -1026,37 +1019,38 @@ const ViralHepatitisForm2 = ({
                             </FormGroup>
                           </div>
                         )}
-
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="hbsAgQuantification">
-                              HBsAG Quantification (IU/ml){" "}
-                              <span style={{ color: "red" }}> *</span>{" "}
-                            </Label>
-                            <input
-                              className="form-control"
-                              type="text"
-                              name="hbsAgQuantification"
-                              id="hbsAgQuantification"
-                              value={
-                                basicInfo.hepatitisBTest.hbsAgQuantification
-                              }
-                              onChange={handleInputChangeBasic}
-                              // onBlur={formik.handleBlur}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            />
-                            {errors.hbsAgQuantification !== "" ? (
-                              <span className={classes.error}>
-                                {errors.hbsAgQuantification}
-                              </span>
-                            ) : (
-                              ""
-                            )}
-                          </FormGroup>
-                        </div>
+                        {basicInfo.hepatitisBTest.hbvDna === "DETECTED" && (
+                          <div className="form-group mb-3 col-md-4">
+                            <FormGroup>
+                              <Label for="hbsAgQuantification">
+                                HBsAG Quantification (IU/ml){" "}
+                                <span style={{ color: "red" }}> *</span>{" "}
+                              </Label>
+                              <input
+                                className="form-control"
+                                type="number"
+                                disabled={action === "view"}
+                                name="hbsAgQuantification"
+                                id="hbsAgQuantification"
+                                value={
+                                  basicInfo.hepatitisBTest.hbsAgQuantification
+                                }
+                                onChange={handleInputChangeBasic}
+                                style={{
+                                  border: "1px solid #014D88",
+                                  borderRadius: "0.2rem",
+                                }}
+                              />
+                              {errors.hbsAgQuantification !== "" ? (
+                                <span className={classes.error}>
+                                  {errors.hbsAgQuantification}
+                                </span>
+                              ) : (
+                                ""
+                              )}
+                            </FormGroup>
+                          </div>
+                        )}
 
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
@@ -1066,6 +1060,7 @@ const ViralHepatitisForm2 = ({
                               className="form-control"
                               name="hbeAG"
                               id="hbeAG"
+                              disabled={action === "view"}
                               onChange={handleInputChangeBasic}
                               value={basicInfo.hepatitisBTest.hbeAG}
                               style={{
@@ -1097,6 +1092,7 @@ const ViralHepatitisForm2 = ({
                               className="form-control"
                               name="antiHDV"
                               id="antiHDV"
+                              disabled={action === "view"}
                               onChange={handleInputChangeBasic}
                               value={basicInfo.hepatitisBTest.antiHDV}
                               style={{
@@ -1120,45 +1116,52 @@ const ViralHepatitisForm2 = ({
                             )}
                           </FormGroup>
                         </div>
+                        {basicInfo.hepatitisBTest.hbvDna === "UNDETECTED" &&
+                        basicInfo.hepatitisBTest.hbeAG === "NON_REACTIVE" &&
+                        basicInfo.hepatitisBTest.antiHDV ===
+                          "NON_REACTIVE" ? null : (
+                          <div className="form-group mb-3 col-md-4">
+                            <FormGroup>
+                              <Label for="treatmentEligible">
+                                Treatment Eligible
+                              </Label>
+                              <span style={{ color: "red" }}> *</span>{" "}
+                              <select
+                                className="form-control"
+                                name="treatmentEligible"
+                                id="treatmentEligible"
+                                disabled={action === "view"}
+                                onChange={handleInputChangeBasic}
+                                value={
+                                  basicInfo.hepatitisBTest.treatmentEligible
+                                }
+                                style={{
+                                  border: "1px solid #014D88",
+                                  borderRadius: "0.2rem",
+                                }}
+                              >
+                                <option value={""}>Select</option>
+                                <option value={"YES"}>Yes</option>
+                                <option value={"NO"}>No</option>
+                              </select>
+                              {errors.treatmentEligible !== "" ? (
+                                <span className={classes.error}>
+                                  {errors.treatmentEligible}
+                                </span>
+                              ) : (
+                                ""
+                              )}
+                            </FormGroup>
+                          </div>
+                        )}
 
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="treatmentEligible">
-                              Treatment Eligible
-                            </Label>
-                            <span style={{ color: "red" }}> *</span>{" "}
-                            <select
-                              className="form-control"
-                              name="treatmentEligible"
-                              id="treatmentEligible"
-                              onChange={handleInputChangeBasic}
-                              value={basicInfo.hepatitisBTest.treatmentEligible}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            >
-                              <option value={""}>Select</option>
-                              <option value={"YES"}>Yes</option>
-                              <option value={"NO"}>No</option>
-                            </select>
-                            {errors.treatmentEligible !== "" ? (
-                              <span className={classes.error}>
-                                {errors.treatmentEligible}
-                              </span>
-                            ) : (
-                              ""
-                            )}
-                          </FormGroup>
-                        </div>
-
-                        {Number(enrollmentPersonInfo?.person?.gender.id) ===
-                          377 && (
+                        {patientObj?.gender.toLowerCase() === "female" && (
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
                               <Label for="pmtctEligible">PMTCT Eligible</Label>
                               <span style={{ color: "red" }}> *</span>{" "}
                               <select
+                                disabled={action === "view"}
                                 className="form-control"
                                 name="pmtctEligible"
                                 id="pmtctEligible"
@@ -1180,11 +1183,11 @@ const ViralHepatitisForm2 = ({
                         <div className="form-group mb-3 col-md-4-12">
                           <FormGroup>
                             <Label for="comment">Comment</Label>
-                            {/* <span style={{ color: "red" }}> *</span>{" "} */}
                             <textarea
                               className="form-control"
                               name="comment"
                               id="comment"
+                              disabled={action === "view"}
                               onChange={handleInputChangeBasic}
                               value={basicInfo.hepatitisBTest.comment}
                               cols="50"
@@ -1259,6 +1262,7 @@ const ViralHepatitisForm2 = ({
                                 <input
                                   type="radio"
                                   value="DETECTED"
+                                  disabled={action === "view"}
                                   name="hcvRNA"
                                   checked={
                                     basicInfo.hepatitisCTest.hcvRNA ===
@@ -1279,6 +1283,7 @@ const ViralHepatitisForm2 = ({
                                   type="radio"
                                   value="UNDETECTED"
                                   name="hcvRNA"
+                                  disabled={action === "view"}
                                   checked={
                                     basicInfo.hepatitisCTest.hcvRNA ===
                                     "UNDETECTED"
@@ -1304,8 +1309,9 @@ const ViralHepatitisForm2 = ({
                               </Label>
                               <input
                                 className="form-control"
-                                type="text"
+                                type="number"
                                 name="hcRnaValue"
+                                disabled={action === "view"}
                                 id="hcRnaValue"
                                 value={basicInfo.hepatitisCTest.hcRnaValue}
                                 onChange={handleInputChangeBasicForHC}
@@ -1315,6 +1321,13 @@ const ViralHepatitisForm2 = ({
                                 }}
                               />
                             </FormGroup>
+                            {errors.hcvRnaValue !== "" ? (
+                              <span className={classes.error}>
+                                {errors.hcvRnaValue}
+                              </span>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         )}
                         <div className="form-group mb-3 col-md-12">
@@ -1326,36 +1339,36 @@ const ViralHepatitisForm2 = ({
 
                             {[
                               {
-                                title: "HBV/HCV",
-                                checkName: "hbvHcvValue",
+                                title: "HBV/HCV (IU/ml)",
+                                checkName: "hbvHcv",
                                 placeholder: "hbv/hcv...",
                                 checkValue: "HBV_HCV",
                                 actualValue: "HBV_HCV_VALUE",
                               },
                               {
-                                title: "HBV/HIV",
-                                checkName: "hbvHivValue",
+                                title: "HBV/HIV (IU/ml)",
+                                checkName: "hbvHiv",
                                 placeholder: "hbv/hiv...",
                                 checkValue: "HBV_HIV",
                                 actualValue: "HBV_HIV_VALUE",
                               },
                               {
-                                title: "HCV/HIV",
-                                checkName: "hcvHivValue",
+                                title: "HCV/HIV (IU/ml)",
+                                checkName: "hcvHiv",
                                 placeholder: "hcv/hiv...",
                                 checkValue: "HCV_HIV",
                                 actualValue: "HCV_HIV_VALUE",
                               },
                               {
-                                title: "HBV/HDV",
-                                checkName: "hbvHdvValue",
+                                title: "HBV/HDV (IU/ml)",
+                                checkName: "hbvHdv",
                                 placeholder: "hbv/hdv...",
                                 checkValue: "HBV_HDV",
                                 actualValue: "HBV_HDV_VALUE",
                               },
                               {
-                                title: "HBV/HCD/HIV",
-                                checkName: "hbvHcdHivValue",
+                                title: "HBV/HCD/HIV (IU/ml)",
+                                checkName: "hbvHcdHiv",
                                 placeholder: "hbv/hcd/Hiv...",
                                 checkValue: "HBV_HCD_HIV",
                                 actualValue: "HBV_HCD_HIV_VALUE",
@@ -1375,16 +1388,19 @@ const ViralHepatitisForm2 = ({
                                   placeholder={placeholder}
                                   actualValue={actualValue}
                                   checkValue={checkValue}
-                                  handleCheckboxChange={handleCheckboxChange}
-                                  selectedOptions={selectedOptions}
-                                  coinfectionValueHandler={
-                                    coinfectionValueHandler
+                                  basicInfo={basicInfo}
+                                  handleCoinfectionsInputValue={
+                                    handleCoinfectionsInputValue
                                   }
+                                  handleCheckboxChange={
+                                    handleCoinfectionsCheckbox
+                                  }
+                                  action={action}
                                 />
                               )
                             )}
                           </div>
-                          {errors.antiHDV !== "" ? (
+                          {errors.hepatitisCoinfection !== "" ? (
                             <span className={classes.error}>
                               {errors.hepatitisCoinfection}
                             </span>
@@ -1396,10 +1412,10 @@ const ViralHepatitisForm2 = ({
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="pmtctEligible">Commobidities</Label>
-                            <ImportantString str="*" />{" "}
                             <select
                               className="form-control"
                               name="commobidities"
+                              disabled={action === "view"}
                               id="commobidities"
                               onChange={handleInputChangeBasicForHC}
                               value={basicInfo.hepatitisCTest.commobidities}
@@ -1410,11 +1426,6 @@ const ViralHepatitisForm2 = ({
                             >
                               <YesOrNoSelectInput />
                             </select>
-                            {errors.commobidities && (
-                              <span className={classes.error}>
-                                {errors.commobidities}
-                              </span>
-                            )}
                           </FormGroup>
                         </div>
 
@@ -1426,6 +1437,7 @@ const ViralHepatitisForm2 = ({
                                 <span style={{ color: "red" }}> *</span>{" "}
                               </Label>
                               <input
+                                disabled={action === "view"}
                                 className="form-control"
                                 type="text"
                                 name="multipleInfection"
@@ -1455,7 +1467,6 @@ const ViralHepatitisForm2 = ({
                 </div>
               </div>
             </div>
-
             <div className="card">
               <div
                 className="card-header"
@@ -1476,24 +1487,21 @@ const ViralHepatitisForm2 = ({
                   {[
                     {
                       title: "AST (IU/ml)",
-                      checkName: "hbvHcvValue",
+                      checkName: "ast",
                       placeholder: "Ast...",
                       checkValue: "AST",
-                      actualValue: "AST_VALUE",
                     },
                     {
-                      title: "PST (mm3)",
-                      checkName: "PstValue",
-                      placeholder: "Hst...",
+                      title: "PLT (mm3)",
+                      checkName: "plt",
+                      placeholder: "Plt...",
                       checkValue: "PST",
-                      actualValue: "PST_VALUE",
                     },
                     {
                       title: "ALT (IU/ml)",
-                      checkName: "altValue",
+                      checkName: "alt",
                       placeholder: "alt...",
                       checkValue: "ALT",
-                      actualValue: "ALT_VALUE",
                     },
                   ].map(
                     ({
@@ -1503,20 +1511,27 @@ const ViralHepatitisForm2 = ({
                       actualValue,
                       checkValue,
                     }) => (
-                      <ClinicalParamCheckOption
+                      <CheckOptionsParams
                         key={title}
                         title={title}
                         checkName={checkName}
                         placeholder={placeholder}
                         actualValue={actualValue}
+                        basicInfo={basicInfo}
                         checkValue={checkValue}
-                        handleCheckboxChange={
-                          handleClinicalParamsCheckboxChange
+                        handleClinicalParamsInputValue={
+                          handleClinicalParamsInputValue
                         }
-                        selectedOptions={selectedClinicalParamsOptions}
-                        clinicalParamValueHandler={clinicalParamsValueHandler}
+                        handleCheckboxChange={handleClinicalParamsCheckbox}
                       />
                     )
+                  )}
+                  {errors.hepatitisClinicalParams !== "" ? (
+                    <span className={classes.error}>
+                      {errors.hepatitisClinicalParams}
+                    </span>
+                  ) : (
+                    ""
                   )}
                 </div>
                 <div className="row">
@@ -1528,13 +1543,13 @@ const ViralHepatitisForm2 = ({
                           <span style={{ color: "red" }}> *</span>{" "}
                         </Label>
                         <input
+                          disabled={action === "view"}
                           className="form-control"
                           type="text"
                           name="astValue"
                           id="astValue"
                           value={basicInfo.clinicalParameters.astValue}
                           onChange={handleInputChangeBasicForClinic}
-                          // onBlur={formik.handleBlur}
                           style={{
                             border: "1px solid #014D88",
                             borderRadius: "0.2rem",
@@ -1552,12 +1567,11 @@ const ViralHepatitisForm2 = ({
                         </Label>
                         <input
                           className="form-control"
-                          type="text"
+                          type="number"
                           name="altValue"
                           id="altValue"
                           value={basicInfo.clinicalParameters.altValue}
                           onChange={handleInputChangeBasicForClinic}
-                          // onBlur={formik.handleBlur}
                           style={{
                             border: "1px solid #014D88",
                             borderRadius: "0.2rem",
@@ -1570,17 +1584,17 @@ const ViralHepatitisForm2 = ({
                     <div className="form-group mb-3 col-md-4">
                       <FormGroup>
                         <Label for="pstValue">
-                          Input PST value{" "}
+                          Input PLT value{" "}
                           <span style={{ color: "red" }}> *</span>{" "}
                         </Label>
                         <input
+                          disabled={action === "view"}
                           className="form-control"
                           type="text"
                           name="pstValue"
                           id="pstValue"
                           value={basicInfo.clinicalParameters.pstValue}
                           onChange={handleInputChangeBasicForClinic}
-                          // onBlur={formik.handleBlur}
                           style={{
                             border: "1px solid #014D88",
                             borderRadius: "0.2rem",
@@ -1596,13 +1610,13 @@ const ViralHepatitisForm2 = ({
                         <span style={{ color: "red" }}> *</span>{" "}
                       </Label>
                       <input
+                        disabled={action === "view"}
                         className="form-control"
                         type="text"
                         name="totalBiliRubin"
                         id="totalBiliRubin"
                         value={basicInfo.clinicalParameters.totalBiliRubin}
                         onChange={handleInputChangeBasicForClinic}
-                        // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
@@ -1624,13 +1638,13 @@ const ViralHepatitisForm2 = ({
                       </Label>
                       <span style={{ color: "red" }}> *</span>{" "}
                       <input
+                        disabled={action === "view"}
                         className="form-control"
                         type="text"
                         name="directBiliribin"
                         id="directBiliribin"
                         value={basicInfo.clinicalParameters.directBiliribin}
                         onChange={handleInputChangeBasicForClinic}
-                        // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
@@ -1650,13 +1664,13 @@ const ViralHepatitisForm2 = ({
                       <Label for="albumin">Albumin (g/dl)</Label>
                       <span style={{ color: "red" }}> *</span>{" "}
                       <input
+                        disabled={action === "view"}
                         className="form-control"
-                        type="text"
+                        type="number"
                         name="albumin"
                         id="albumin"
                         value={basicInfo.hepatitisBTest.albumin}
                         onChange={handleInputChangeBasic}
-                        // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
@@ -1675,25 +1689,24 @@ const ViralHepatitisForm2 = ({
                       <Label for="apriScore">APRI score </Label>
                       <span style={{ color: "red" }}> *</span>{" "}
                       <input
+                        disabled={action === "view"}
                         className="form-control"
                         type="text"
                         name="apriScore"
                         id="apriScore"
-                        value={basicInfo.clinicalParameters.apriScore}
+                        value={
+                          isNaN(calulateApriScore()) ||
+                          Math.sign(calulateApriScore()) === -1
+                            ? ""
+                            : calulateApriScore()
+                        }
                         onChange={handleInputChangeBasicForClinic}
-                        // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
                         }}
+                        readOnly
                       />
-                      {errors.apriScore !== "" ? (
-                        <span className={classes.error}>
-                          {errors.apriScore}
-                        </span>
-                      ) : (
-                        ""
-                      )}
                     </FormGroup>
                   </div>
                   <div className="form-group mb-3 col-md-4">
@@ -1701,23 +1714,24 @@ const ViralHepatitisForm2 = ({
                       <Label for="fib4">FIB-4</Label>
                       <span style={{ color: "red" }}> *</span>{" "}
                       <input
+                        disabled={action === "view"}
                         className="form-control"
                         type="text"
                         name="fib4"
                         id="fib4"
-                        value={basicInfo.clinicalParameters.fib4}
+                        value={
+                          isNaN(calulateFib4()) ||
+                          Math.sign(calulateFib4()) === -1
+                            ? ""
+                            : calulateFib4()
+                        }
                         onChange={handleInputChangeBasicForClinic}
-                        // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
                         }}
+                        readOnly
                       />
-                      {errors.fib4 !== "" ? (
-                        <span className={classes.error}>{errors.fib4}</span>
-                      ) : (
-                        ""
-                      )}
                     </FormGroup>
                   </div>
                   <div className="form-group mb-3 col-md-4">
@@ -1727,8 +1741,9 @@ const ViralHepatitisForm2 = ({
                       </Label>
                       <span style={{ color: "red" }}> *</span>{" "}
                       <input
+                        disabled={action === "view"}
                         className="form-control"
-                        type="text"
+                        type="number"
                         name="prothrombinTimeNR"
                         id="prothrombinTimeNR"
                         value={basicInfo.clinicalParameters.prothrombinTimeNR}
@@ -1752,8 +1767,9 @@ const ViralHepatitisForm2 = ({
                       <Label for="urea">Urea (mg/dl)</Label>
                       <span style={{ color: "red" }}> *</span>{" "}
                       <input
+                        disabled={action === "view"}
                         className="form-control"
-                        type="text"
+                        type="number"
                         name="urea"
                         id="urea"
                         value={basicInfo.clinicalParameters.urea}
@@ -1776,8 +1792,9 @@ const ViralHepatitisForm2 = ({
                       <Label for="creatinine">Creatinine (μmol/L)</Label>
                       <span style={{ color: "red" }}> *</span>{" "}
                       <input
+                        disabled={action === "view"}
                         className="form-control"
-                        type="text"
+                        type="number"
                         name="creatinine"
                         id="creatinine"
                         value={basicInfo.clinicalParameters.creatinine}
@@ -1799,18 +1816,16 @@ const ViralHepatitisForm2 = ({
 
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
-                      <Label for="ultrasoundScan">
-                        Ultrasound scan (μmol/L)
-                      </Label>
+                      <Label for="ultrasoundScan">Ultrasound scan</Label>
                       <span style={{ color: "red" }}> *</span>{" "}
                       <input
+                        disabled={action === "view"}
                         className="form-control"
-                        type="text"
+                        type="number"
                         name="ultrasoundScan"
                         id="ultrasoundScan"
                         value={basicInfo.clinicalParameters.ultrasoundScan}
                         onChange={handleInputChangeBasicForClinic}
-                        // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
@@ -1831,8 +1846,9 @@ const ViralHepatitisForm2 = ({
                       <Label for="creatinine">AFP (ng/ml)</Label>
                       <span style={{ color: "red" }}> *</span>{" "}
                       <input
+                        disabled={action === "view"}
                         className="form-control"
-                        type="text"
+                        type="number"
                         name="afp"
                         id="afp"
                         value={basicInfo.clinicalParameters.afp}
@@ -1852,11 +1868,12 @@ const ViralHepatitisForm2 = ({
 
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
-                      <Label for="fibroscan">Fibroscan (ng/ml)</Label>
+                      <Label for="fibroscan">Fibroscan (Kpa)</Label>
                       <span style={{ color: "red" }}> *</span>{" "}
                       <input
+                        disabled={action === "view"}
                         className="form-control"
-                        type="text"
+                        type="number"
                         name="fibroscan"
                         id="fibroscan"
                         value={basicInfo.clinicalParameters.fibroscan}
@@ -1880,13 +1897,13 @@ const ViralHepatitisForm2 = ({
                       <Label for="ctScan">CT scan</Label>
                       <span style={{ color: "red" }}> *</span>{" "}
                       <input
+                        disabled={action === "view"}
                         className="form-control"
                         type="text"
                         name="ctScan"
                         id="ctScan"
                         value={basicInfo.hepatitisBTest.ctScan}
                         onChange={handleInputChangeBasic}
-                        // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
@@ -1905,6 +1922,7 @@ const ViralHepatitisForm2 = ({
                       <Label for="ascites">Ascites</Label>
                       <span style={{ color: "red" }}> *</span>{" "}
                       <select
+                        disabled={action === "view"}
                         className="form-control"
                         name="ascites"
                         id="ascites"
@@ -1935,6 +1953,7 @@ const ViralHepatitisForm2 = ({
                         </Label>
                         <span style={{ color: "red" }}> *</span>{" "}
                         <select
+                          disabled={action === "view"}
                           className="form-control"
                           name="severityOfAscites"
                           id="severityOfAscites"
@@ -1961,6 +1980,7 @@ const ViralHepatitisForm2 = ({
                       <Label for="ascitesLevel">Grade of Encephalopathy</Label>
                       <span style={{ color: "red" }}> *</span>{" "}
                       <select
+                        disabled={action === "view"}
                         className="form-control"
                         name="gradeOfEncephalopathy"
                         id="gradeOfEncephalopathy"
@@ -1979,7 +1999,6 @@ const ViralHepatitisForm2 = ({
                         <option value={2}>2</option>
                         <option value={3}>3</option>
                         <option value={4}>4</option>
-                        <option value={5}>5</option>
                       </select>
                       {errors.gradeOfEncephalopathy !== "" ? (
                         <span className={classes.error}>
@@ -1996,12 +2015,12 @@ const ViralHepatitisForm2 = ({
                       <Label for="childPughScore">Child pugh score</Label>
                       <span style={{ color: "red" }}> *</span>{" "}
                       <select
+                        disabled={action === "view"}
                         className="form-control"
                         name="childPughScore"
                         id="childPughScore"
                         value={basicInfo.clinicalParameters.childPughScore}
                         onChange={handleInputChangeBasicForClinic}
-                        // onBlur={formik.handleBlur}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
@@ -2030,6 +2049,7 @@ const ViralHepatitisForm2 = ({
                       <Label for="liverBiopsyStage">Liver biopsy stage</Label>
                       <ImportantString str="*" />{" "}
                       <select
+                        disabled={action === "view"}
                         className="form-control"
                         name="liverBiopsyStage"
                         id="liverBiopsyStage"
@@ -2088,6 +2108,7 @@ const ViralHepatitisForm2 = ({
                           </Label>
                           <span style={{ color: "red" }}> *</span>{" "}
                           <input
+                            disabled={action === "view"}
                             className="form-control"
                             type="date"
                             name="stagingDateOfLiverBiopsy"
@@ -2097,7 +2118,6 @@ const ViralHepatitisForm2 = ({
                               basicInfo.hepatitisBTest.stagingDateOfLiverBiopsy
                             }
                             onChange={handleInputChangeBasic}
-                            // onBlur={formik.handleBlur}
                             style={{
                               border: "1px solid #014D88",
                               borderRadius: "0.2rem",
@@ -2118,6 +2138,7 @@ const ViralHepatitisForm2 = ({
                           <Label for="diagnosis_result">Diagnosis</Label>
                           <span style={{ color: "red" }}> *</span>{" "}
                           <select
+                            disabled={action === "view"}
                             className="form-control"
                             name="diagnosis_result"
                             id="diagnosis_result"
@@ -2152,32 +2173,34 @@ const ViralHepatitisForm2 = ({
             </div>
             {false ? <Spinner /> : ""}
             <br />
-            <div className="d-flex justify-content-between">
-              <MatButton
-                type="button"
-                variant="contained"
-                color="primary"
-                onClick={moveBack}
-                className={classes.button}
-                startIcon={<ArrowBackIcon />}
-                style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}
-              >
-                <span style={{ textTransform: "capitalize" }}>Previous</span>
-              </MatButton>
-              <MatButton
-                type="submit"
-                variant="contained"
-                color="primary"
-                className={classes.button}
-                endIcon={<ArrowForward />}
-                onClick={handleSubmit}
-                style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}
-              >
-                <span style={{ textTransform: "capitalize" }}>
-                  {submit ? "Submit" : "Next"}
-                </span>
-              </MatButton>
-            </div>
+            {action === "view" ? null : (
+              <div className="d-flex justify-content-between">
+                <MatButton
+                  type="button"
+                  variant="contained"
+                  color="primary"
+                  onClick={moveBack}
+                  className={classes.button}
+                  startIcon={<ArrowBackIcon />}
+                  style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}
+                >
+                  <span style={{ textTransform: "capitalize" }}>Previous</span>
+                </MatButton>
+                <MatButton
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  className={classes.button}
+                  endIcon={<ArrowForward />}
+                  onClick={handleSubmit}
+                  style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}
+                >
+                  <span style={{ textTransform: "capitalize" }}>
+                    {submit ? "Submit" : "Next"}
+                  </span>
+                </MatButton>
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>

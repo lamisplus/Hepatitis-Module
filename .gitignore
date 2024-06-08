@@ -38,3 +38,4 @@ mvnw
 mvnw.cmd
 .mvn
 pharmacy.iml
+.eslintcache

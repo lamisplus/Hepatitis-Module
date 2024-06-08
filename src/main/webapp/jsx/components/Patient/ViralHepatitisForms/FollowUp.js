@@ -88,6 +88,32 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "11px",
   },
 }));
+export const getLiverBiopsyTestOptions = () => {
+  <GetOptions
+    options={[
+      { fldName: "Select", fldValue: "" },
+      {
+        fldName: "No Fibrosis",
+        fldValue: "NO_FIBROSIS",
+      },
+      {
+        fldName: "Mild Fibrosis",
+        fldValue: "MILD_FIBROSIS",
+      },
+      {
+        fldName: "Moderate Fibrosis",
+        fldValue: "MODERATE_FIBROSIS",
+      },
+      { fldName: "Fibrosis", fldValue: "FIBROSIS" },
+      {
+        fldName: "Severe Fibrosis",
+        fldValue: "SEVERE_FIBROSIS",
+      },
+      { fldName: "Cirrhosis", fldValue: "CIRRHOSIS" },
+      { fldName: "Not Done", fldValue: "NOT_DONE" },
+    ]}
+  />;
+};
 
 const FollowupForm = () => {
   const onSubmitHandler = (values) => {};
@@ -101,6 +127,7 @@ const FollowupForm = () => {
       },
     });
   };
+
   const classes = useStyles();
   const { formik } = useValidateFollowupFormValuesHook(onSubmitHandler);
   return (
@@ -363,7 +390,7 @@ const FollowupForm = () => {
                   }}
                 >
                   <h5 className="card-title" style={{ color: "#fff" }}>
-                    Clinical Parameters
+                    Ancillary testing/Clinical parameters
                   </h5>
                 </div>
 

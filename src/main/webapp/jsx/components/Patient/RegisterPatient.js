@@ -2514,10 +2514,12 @@ const UserRegistration = (props) => {
                             onChange={handleInputChange}
                             value={objValues.hepatitisCoinfection}
                           >
-                            <option value="HBV/HCV/">(HBV/HCV/)</option>
-                            <option value="HCV/HIV">(HCV/HIV)</option>
-                            <option value="HBV/HDV">(HBV/HDV)</option>
-                            <option value="HBV/HCD/HIV">(HBV/HCD/HIV)</option>
+                            <option value="HBV/HCV/">HBV/HCV (UI/ml)</option>
+                            <option value="HCV/HIV">HCV/HIV (UI/ml)</option>
+                            <option value="HBV/HDV">HBV/HDV (UI/ml)</option>
+                            <option value="HBV/HCD/HIV">
+                              HBV/HCD/HIV (UI/ml)
+                            </option>
                           </Input>
                         </InputGroup>
                         {errors.hepatitisCoinfection !== "" ? (
@@ -2950,7 +2952,7 @@ const UserRegistration = (props) => {
                     <div className="form-group mb-3 col-md-6">
                       <FormGroup>
                         <Label>
-                          FibroScan (ng/ml)
+                          FibroScan
                           <span style={{ color: "red" }}> *</span>
                         </Label>
                         <InputGroup>
@@ -3646,7 +3648,7 @@ const UserRegistration = (props) => {
                     <div className="form-group mb-3 col-md-6">
                       <FormGroup>
                         <Label>
-                          FibroScan (ng/ml)
+                          FibroScan (Kpa)
                           <span style={{ color: "red" }}> *</span>
                         </Label>
                         <InputGroup>

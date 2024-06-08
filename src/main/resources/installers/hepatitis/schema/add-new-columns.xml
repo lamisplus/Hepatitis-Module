@@ -57,6 +57,19 @@
 
         </sql>
     </changeSet>
+    <!--    hepatitis_diagnosis added field for ast, plt and alt-->
+
+    <changeSet failOnError="true" author="gamaliel-data-fi" id="20230209-0005">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="hepatitis_diagnosis" columnName="ast_plt_alt" />
+            </not>
+        </preConditions>
+        <sql>
+            ALTER TABLE hepatitis_diagnosis
+            ADD COLUMN ast_plt_alt JSONB;
+        </sql>
+    </changeSet>
 
     <changeSet failOnError="true" author="peter-data-fi" id="20230209-006">
         <preConditions onFail="MARK_RAN">

@@ -20,5 +20,5 @@ export const hepatitisScreeningResultPath =
 
 export const token =
   process.env.NODE_ENV === "development"
-    ? "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJndWVzdEBsYW1pc3BsdXMub3JnIiwiYXV0aCI6IlN1cGVyIEFkbWluIiwibmFtZSI6Ikd1ZXN0IEd1ZXN0IiwiZXhwIjoxNzE2MzEzODQ1fQ.VdTQsafNwY-_t-tDeskdHKHSUeofauwnyL2HgjGJJpe0KfMrg0r62mOjFk62YfElTHTIA9Mh3McD3vLx9uJ6MA"
+    ? "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJndWVzdEBsYW1pc3BsdXMub3JnIiwiYXV0aCI6IlN1cGVyIEFkbWluIiwibmFtZSI6Ikd1ZXN0IEd1ZXN0IiwiZXhwIjoxNzE3ODU2MTQ3fQ.AuAHpf8gQgnQDissdBeshEx7AczkCZLUIeviAcQZTCfk2qkHT8VfXIiDgDKEjJF12RbYFXxHzvJzUP_VwvCDPQ"
     : new URLSearchParams(window.location.search).get("jwt");

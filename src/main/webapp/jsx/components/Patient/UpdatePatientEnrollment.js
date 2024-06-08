@@ -165,7 +165,7 @@ const UserRegistration = (props) => {
             <ViralHepatitisForm2
               action={locationState.actionType}
               patientObj={locationState.patientObj}
-              // diagnosisInfo={diagnosisInfo}
+              diagnosisInfo={diagnosisInfo}
               enrollmentUuid={enrollmentUuid}
               id={locationState?.id}
             />

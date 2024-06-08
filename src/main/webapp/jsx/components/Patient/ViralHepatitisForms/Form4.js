@@ -1116,9 +1116,7 @@ const ViralHepatitisForm4 = () => {
 
                     <div className="form-group mb-3 col-md-4">
                       <FormGroup>
-                        <Label for="ultrasoundScan">
-                          Ultrasound scan (μmol/L)
-                        </Label>
+                        <Label for="ultrasoundScan">Ultrasound scan</Label>
                         <input
                           className="form-control"
                           type="text"

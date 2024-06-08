@@ -759,7 +759,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                                     borderRadius: "0.2rem",
                                   }}
                                 />{" "}
-                                Undetected <ImportantString str="*" />{" "}
+                                Undetected
                               </label>
                             </div>
                           </FormGroup>
@@ -1630,7 +1630,7 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
 
                   <div className="form-group mb-3 col-md-4">
                     <FormGroup>
-                      <Label for="fibroscan">Fibroscan (ng/ml)</Label>
+                      <Label for="fibroscan">Fibroscan (Kpa)</Label>
                       <ImportantString str="*" />{" "}
                       <input
                         className="form-control"

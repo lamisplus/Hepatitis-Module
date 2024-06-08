@@ -159,6 +159,15 @@ function PatientCard(props) {
               getRecentActivties={getRecentActivties}
             />
           )}
+          {activeContent.route === "home" && (
+            <Home
+              patientObj={patientObj}
+              setActiveContent={setActiveContent}
+              activeContent={activeContent}
+              recentActivities={recentActivities}
+              getRecentActivties={getRecentActivties}
+            />
+          )}
         </CardContent>
       </Card>
     </div>
