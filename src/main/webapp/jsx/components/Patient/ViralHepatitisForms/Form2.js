@@ -279,9 +279,13 @@ export const CheckOptionsParams = ({
                 checkName
               ] &&
               Math.sign(
-                basicInfo.hepatitisBTest.hepatitisCoinfection[checkName]
+                basicInfo.hepatitisCTest.selectedClinicalParamsOptions[
+                  checkName
+                ]
               ) === 1
-                ? basicInfo.hepatitisBTest.hepatitisCoinfection[checkName]
+                ? basicInfo.hepatitisCTest.selectedClinicalParamsOptions[
+                    checkName
+                  ]
                 : ""
             }
             id={checkName}
@@ -466,7 +470,31 @@ const ViralHepatitisForm2 = ({
       },
     }));
   };
+  const handleFib4 = () => {
+    setBasicInfo((prev) => ({
+      ...prev,
+      clinicalParameters: {
+        ...prev.clinicalParameters,
+        fib4:
+          isNaN(calulateFib4()) || Math.sign(calulateFib4()) === -1
+            ? ""
+            : calulateFib4(),
+      },
+    }));
+  };
 
+  const handleApriScore = () => {
+    setBasicInfo((prev) => ({
+      ...prev,
+      clinicalParameters: {
+        ...prev.clinicalParameters,
+        apriScore:
+          isNaN(calulateApriScore()) || Math.sign(calulateApriScore()) === -1
+            ? ""
+            : calulateApriScore(),
+      },
+    }));
+  };
   let temp = { ...errors };
   const validate = () => {
     temp.dateHbvDnaTestRequested =
@@ -647,6 +675,7 @@ const ViralHepatitisForm2 = ({
     return moment(isoDate).format("YYYY-MM-DD");
   };
   const onSubmitHandler = (values) => {
+    alert(1);
     window.scrollTo(0, 0);
     const restructuredDiagnosisPayload = {
       enrollmentUuid,
@@ -765,7 +794,10 @@ const ViralHepatitisForm2 = ({
   useEffect(() => {
     fetchChildPughScore();
   }, []);
-
+  useEffect(() => {
+    handleApriScore();
+    handleFib4();
+  }, [basicInfo.hepatitisCTest.selectedClinicalParamsOptions]);
   useEffect(() => {
     setBasicInfo({
       ...basicInfo,
@@ -1730,23 +1762,17 @@ const ViralHepatitisForm2 = ({
                       <Label for="apriScore">APRI score </Label>
                       <span style={{ color: "red" }}> *</span>{" "}
                       <input
-                        disabled={action === "view"}
+                        disabled
                         className="form-control"
                         type="text"
                         name="apriScore"
                         id="apriScore"
-                        value={
-                          isNaN(calulateApriScore()) ||
-                          Math.sign(calulateApriScore()) === -1
-                            ? ""
-                            : calulateApriScore()
-                        }
-                        onChange={handleInputChangeBasicForClinic}
+                        value={basicInfo.clinicalParameters.apriScore}
+                        onChange={handleApriScore}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
                         }}
-                        readOnly
                       />
                     </FormGroup>
                   </div>
@@ -1755,23 +1781,17 @@ const ViralHepatitisForm2 = ({
                       <Label for="fib4">FIB-4</Label>
                       <span style={{ color: "red" }}> *</span>{" "}
                       <input
-                        disabled={action === "view"}
+                        disabled
                         className="form-control"
                         type="text"
                         name="fib4"
                         id="fib4"
-                        value={
-                          isNaN(calulateFib4()) ||
-                          Math.sign(calulateFib4()) === -1
-                            ? ""
-                            : calulateFib4()
-                        }
-                        onChange={handleInputChangeBasicForClinic}
+                        value={basicInfo.clinicalParameters.fib4}
+                        onChange={handleFib4}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
                         }}
-                        readOnly
                       />
                     </FormGroup>
                   </div>
