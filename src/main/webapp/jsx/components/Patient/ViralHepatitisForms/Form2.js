@@ -846,6 +846,9 @@ const ViralHepatitisForm2 = ({
   useEffect(() => {
     viewHepatitisDiagnosis();
   }, []);
+  useEffect(() => {
+    console.log("gender", patientObj.sex);
+  });
   return (
     <>
       <Card className={classes.root}>
@@ -1227,7 +1230,7 @@ const ViralHepatitisForm2 = ({
                           </div>
                         )}
 
-                        {patientObj?.gender?.toLowerCase() === "female" && (
+                        {patientObj?.sex?.toLowerCase() === "female" && (
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
                               <Label for="pmtctEligible">PMTCT Eligible</Label>
