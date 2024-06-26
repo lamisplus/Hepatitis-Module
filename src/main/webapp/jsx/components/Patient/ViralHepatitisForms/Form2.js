@@ -279,9 +279,13 @@ export const CheckOptionsParams = ({
                 checkName
               ] &&
               Math.sign(
-                basicInfo.hepatitisBTest.hepatitisCoinfection[checkName]
+                basicInfo.hepatitisCTest.selectedClinicalParamsOptions[
+                  checkName
+                ]
               ) === 1
-                ? basicInfo.hepatitisBTest.hepatitisCoinfection[checkName]
+                ? basicInfo.hepatitisCTest.selectedClinicalParamsOptions[
+                  checkName
+                ]
                 : ""
             }
             id={checkName}
@@ -410,6 +414,9 @@ const ViralHepatitisForm2 = ({
       },
     });
   };
+  useEffect(()=>{
+    console.log("clinical params: ", basicInfo.hepatitisCTest.selectedClinicalParamsOptions)
+  })
   const handleCoinfectionsInputValue = (event) => {
     setBasicInfo({
       ...basicInfo,
