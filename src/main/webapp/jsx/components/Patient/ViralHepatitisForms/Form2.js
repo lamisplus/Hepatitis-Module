@@ -1195,7 +1195,7 @@ const ViralHepatitisForm2 = ({
                           </div>
                         )}
 
-                        {patientObj?.gender.toLowerCase() === "female" && (
+                        {patientObj?.sex?.toLowerCase() === "female" && (
                           <div className="form-group mb-3 col-md-4">
                             <FormGroup>
                               <Label for="pmtctEligible">PMTCT Eligible</Label>
