@@ -599,7 +599,7 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent, setStep }) => {
           ...basicInfo.hepatitisCTreatment,
           hcvRetreatment: {
             ...basicInfo.hepatitisCTreatment.hcvRetreatment,
-            history_of_AdverseEffect: e.target.value,
+            historyOfAdverseEffect: e.target.value,
           },
         },
       });
