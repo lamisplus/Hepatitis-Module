@@ -1,7 +1,17 @@
-export const url =
-  process.env.NODE_ENV === "development"
-    ? "http://localhost:8383/api/v1/"
-    : "/api/v1/";
+export const token = new URLSearchParams(window.location.search).get("jwt");
+export const url = "/api/v1/";
+
+
+// export const url =
+//   process.env.NODE_ENV === "development"
+//     ? "http://localhost:8383/api/v1/"
+//     : "/api/v1/";
+
+// export const token =
+//   process.env.NODE_ENV === "development"
+//       ? "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJndWVzdEBsYW1pc3BsdXMub3JnIiwiYXV0aCI6IlN1cGVyIEFkbWluIiwibmFtZSI6Ikd1ZXN0IEd1ZXN0IiwiZXhwIjoxNzE5OTUxNjE1fQ.4u0fLbRXn2PDEqhrozzCr9--B4bxPnXSXe30WLv5JUrsvk13wEXiEbKsGQSdPKWr-snNs9M2DIsx0RSxbpIbFA"
+//       : new URLSearchParams(window.location.search).get("jwt");
+
 export const careEntryPointPath = process.env.REACT_APP_CARE_ENTRY_POINT_PATH;
 export const srcRefPath = process.env.REACT_APP_SOURCE_REFERRAL_PATH;
 export const hivStatsEnrolPath = process.env.REACT_APP_HIV_STATUS_ENROL_PATH;
@@ -18,7 +28,4 @@ export const relationshipPath = process.env.REACT_APP_RELATIONSHIP_PATH;
 export const hepatitisScreeningResultPath =
   process.env.REACT_APP_HEPATITIS_SCREENING_RESULT_PATH;
 
-export const token =
-  process.env.NODE_ENV === "development"
-    ? "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJndWVzdEBsYW1pc3BsdXMub3JnIiwiYXV0aCI6IlN1cGVyIEFkbWluIiwibmFtZSI6Ikd1ZXN0IEd1ZXN0IiwiZXhwIjoxNzE5NDM0NDkwfQ.vL3OW10sBoOS124rsneBmHWZfWZcRCaJ0jUFIJFW_8-5GqXjHH3zDKDY2cuSEooA6C28E5vOZyx74XUUHuMISQ"
-    : new URLSearchParams(window.location.search).get("jwt");
+
