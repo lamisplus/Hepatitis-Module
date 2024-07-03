@@ -1,13 +1,13 @@
 basePackage: org.lamisplus.modules.hepatitis
 name: HepatitisModule
-dependencies: {PatientModule: 2.0.4}
+dependencies: { PatientModule: 2.0.4 }
 store: true
 menus:
   - icon: fa fa-bar-chart
     disabled: false
     name: Hepatitis
     state: Hepatitis
-    url: /across/resources/static/Hepatitis/index.html
+    url: /across/resources/static/hepatitis/index.html
 umdLocation: /across/resources/static/hepatitis/index.html
 webModules:
   - breadcrumb: Hepatitis
