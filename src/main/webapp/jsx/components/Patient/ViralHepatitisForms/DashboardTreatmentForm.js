@@ -114,6 +114,7 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent, setStep }) => {
     hepatitisBTreatment: {
       hbvDateStarted: "",
       hbvDateStopped: "",
+      hbvAdverseEffectReported: "",
       hbvPastTreatmentRegimen: "",
       newRegimenPrescribedDuration: "",
       hepatitisBRegimenSwitch: {
@@ -145,7 +146,7 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent, setStep }) => {
         hcvGenotype: "",
         dateStarted: "",
         dateStopped: "",
-        historyOfAdverseEffect: "",
+        hcvRetreatmentHistoryOfAdverseEffect: "",
         newRegimen: "",
         prescribedDuration: 0,
         retreatmentAdverseEffect: "",
@@ -253,7 +254,7 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent, setStep }) => {
         },
       });
     }
-    if (e.target.name === "hbvAdverseEffectReported") {
+    if (e.target.name === "hbvRegimenSwitchAdverseEffectReported") {
       setBasicInfo({
         ...basicInfo,
         hepatitisBTreatment: {
@@ -421,7 +422,7 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent, setStep }) => {
         ...basicInfo,
         hepatitisCTreatment: {
           ...basicInfo.hepatitisCTreatment,
-          hcvPastTreatmentRegimen: e.target.value,
+          pastTreatmentExperience: e.target.value,
         },
       });
     }
@@ -599,7 +600,7 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent, setStep }) => {
           ...basicInfo.hepatitisCTreatment,
           hcvRetreatment: {
             ...basicInfo.hepatitisCTreatment.hcvRetreatment,
-            historyOfAdverseEffect: e.target.value,
+            hcvRetreatmentHistoryOfAdverseEffect: e.target.value,
           },
         },
       });
@@ -644,19 +645,22 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent, setStep }) => {
       .treatmentExperience
       ? ""
       : " Treatment experience is required";
-    temp.hbvAdverseEffectReported = basicInfo.hepatitisBTreatment
+    // temp.hbvAdverseEffectReported = basicInfo.hepatitisBTreatment
+    //   .hbvAdverseEffectReported
+    //   ? ""
+    //   : "Adverse events is required";
+    temp.hbvRegimenSwitchAdverseEffectReported = basicInfo.hepatitisBTreatment
       .hepatitisBRegimenSwitch.adverseEffectReported
       ? ""
       : "Adverse events is required";
-    temp.hbvAdverseEffectReported =
+    temp.hbvRegimenSwitchNewRegimen =
       basicInfo.hepatitisBTreatment.hepatitisBRegimenSwitch.newRegimen === ""
         ? ""
-        : basicInfo.hepatitisBTreatment.hepatitisBRegimenSwitch
-            .adverseEffectReported
+        : basicInfo.hepatitisBTreatment.hepatitisBRegimenSwitch.newRegimen
         ? ""
         : "Adverse events is required";
-    temp.historyOfAdverseEffect = basicInfo.hepatitisBTreatment
-      .historyOfAdverseEffect
+    temp.historyOfAdverseEffect = basicInfo.hepatitisCTreatment
+      .adverseEffectReported
       ? ""
       : "History of Adverse events is required";
 
@@ -710,12 +714,12 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent, setStep }) => {
       .prescribedDuration
       ? ""
       : "Prescribed duration is required";
-    temp.hcvPrescribedDuration =
+    temp.hcvTreatmentExperience =
       basicInfo.hepatitisCTreatment.treatmentExperience !== "YES"
         ? ""
-        : basicInfo.hepatitisCTreatment.prescribedDuration
+        : basicInfo.hepatitisCTreatment.pastTreatmentExperience
         ? ""
-        : "Prescribed duration is required";
+        : "Past treatment experience is required";
 
     temp.svr12TestingDateStarted =
       basicInfo.hepatitisCTreatment.hepatitisSvr12Testing.dateTested &&
@@ -787,11 +791,6 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent, setStep }) => {
       ? ""
       : " Retreatment Adverse events is required";
 
-    temp.hcvRetreatmentHistoryOfAdverseEffect = basicInfo.hepatitisCTreatment
-      .hcvRetreatment.history_of_AdverseEffect
-      ? ""
-      : " History of adverse events is required";
-
     setErrors({ ...temp });
     return Object.values(temp).every((x) => x == "");
   };
@@ -857,7 +856,7 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent, setStep }) => {
           newRegimen: values.hbvRegimeSwitchNewRegimen,
           reasonForSwitch: values.hbvRegimeSwitchReason,
         },
-        historyOfAdverseEffect: values.hbvHistoryOfAdverseEffect,
+        historyOfAdverseEffect: values.historyOfAdverseEffect,
         newRegimen: values.hbvNewRegimen,
         newRegimenDateStarted: values.newRegimenDateStarted,
         newRegimenDateStopped: values.newRegimenDateStopped,
@@ -877,7 +876,7 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent, setStep }) => {
           dateStarted: formatDate(values.hcvRetreatmentDateStarted),
           dateStopped: formatDate(values.hcvRetreatmentDateStopped),
           hbvPastTreatmentRegimen: values.hbvPastTreatmentRegimenForHcv,
-          history_of_AdverseEffect: values.hcvRetreatmentHistoryOfAdverseEffect,
+          historyOfAdverseEffect: values.hcvRetreatmentHistoryOfAdverseEffect,
           newRegimen: values.hcvRetreatmentNewRegimen,
           prescribedDuration: values.hcvRetreatmentPrescribedDuration,
           retreatmentAdverseEffect: values.hcvRetreatmentAdverseEffect,
@@ -1039,7 +1038,8 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent, setStep }) => {
     hcvTreatmentSvr12Testing: true,
   });
   useEffect(() => {
-    console.log("past treament", basicInfo.hepatitisCTreatment);
+    console.log("past treament", basicInfo);
+    console.log("errors: ", temp, errors);
   }, [basicInfo]);
   return (
     <>
@@ -1383,7 +1383,7 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent, setStep }) => {
                       )}
                       <div className="form-group mb-3 col-md-4">
                         <FormGroup>
-                          <Label for="hbvHistoryOfAdverseEffect">
+                          <Label for="hbvAdverseEffectReported">
                             Adverse event reported
                           </Label>
                           <span style={{ color: "red" }}> *</span>{" "}
@@ -1392,7 +1392,7 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent, setStep }) => {
                             name="historyOfAdverseEffect"
                             id="historyOfAdverseEffect"
                             value={
-                              basicInfo.hepatitisCTreatment
+                              basicInfo.hepatitisBTreatment
                                 .historyOfAdverseEffect
                             }
                             onChange={handleInputChangeBasicHB}
@@ -1494,6 +1494,13 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent, setStep }) => {
                                 )
                               )}
                             </select>
+                            {errors.hbvRegimeSwitchNewRegimen ? (
+                              <span className={classes.error}>
+                                {errors.hbvRegimeSwitchNewRegimen}
+                              </span>
+                            ) : (
+                              ""
+                            )}
                           </FormGroup>
                         </div>
 
@@ -1501,10 +1508,7 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent, setStep }) => {
                           <FormGroup>
                             <Label for="hbvRegimeSwitchDateStarted">
                               Date Started{" "}
-                              {basicInfo.hepatitisBTreatment
-                                .hepatitisBRegimenSwitch.dateStarted && (
-                                <span style={{ color: "red" }}> *</span>
-                              )}
+                              <span style={{ color: "red" }}> *</span>
                             </Label>
                             <input
                               className="form-control"
@@ -1606,13 +1610,13 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent, setStep }) => {
                         </div>
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
-                            <Label for="hbvAdverseEffectReported">
+                            <Label for="hbvRegimenSwitchAdverseEffectReported">
                               Adverse event reported{" "}
                             </Label>{" "}
                             <select
                               className="form-control"
-                              name="hbvAdverseEffectReported"
-                              id="hbvAdverseEffectReported"
+                              name="hbvRegimenSwitchAdverseEffectReported"
+                              id="hbvRegimenSwitchAdverseEffectReported"
                               value={
                                 basicInfo.hepatitisBTreatment
                                   .hepatitisBRegimenSwitch.adverseEffectReported
@@ -1627,9 +1631,10 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent, setStep }) => {
                               <option value={"YES"}>Yes</option>
                               <option value={"NO"}>No</option>
                             </select>
-                            {errors.hbvAdverseEffectReported !== "" ? (
+                            {errors.hbvRegimenSwitchAdverseEffectReported !==
+                            "" ? (
                               <span className={classes.error}>
-                                {errors.hbvAdverseEffectReported}
+                                {errors.hbvRegimenSwitchAdverseEffectReported}
                               </span>
                             ) : (
                               ""
@@ -2099,7 +2104,7 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent, setStep }) => {
                         )}
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
-                            <Label for="hcvHistoryOfAdverseEffect">
+                            <Label for="hcvAdverseEventReported">
                               Adverse event reported
                             </Label>
                             <span style={{ color: "red" }}> *</span>{" "}
@@ -2520,7 +2525,7 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent, setStep }) => {
                               id="hcvRetreatmentHistoryOfAdverseEffect"
                               value={
                                 basicInfo.hepatitisCTreatment.hcvRetreatment
-                                  .historyOfAdverseEffect
+                                  .hcvRetreatmentHistoryOfAdverseEffect
                               }
                               onChange={handleInputChangeBasicHHCV}
                               style={{
