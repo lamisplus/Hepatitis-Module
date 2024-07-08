@@ -228,7 +228,7 @@ export const HepatitisCoinfection = ({
                   Math.sign(
                     basicInfo.hepatitisCTest.hepatitisCoinfection[checkName]
                   ) === 1
-                  ? basicInfo.hepatitisBTest.hepatitisCoinfection[checkName]
+                  ? basicInfo.hepatitisCTest.hepatitisCoinfection[checkName]
                   : ""
                 : basicInfo.hepatitisBTest.hepatitisCoinfection[checkName] &&
                   Math.sign(
