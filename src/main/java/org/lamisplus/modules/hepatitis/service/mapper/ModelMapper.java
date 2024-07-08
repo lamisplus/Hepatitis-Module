@@ -85,6 +85,7 @@ public class ModelMapper {
     }
 
     public HepatitisDiagnosis mapToDiagnosis(HepatitisDiagnosisDto diagnosisDto) {
+        System.out.println("Diagnosis Gamal from mapper: "+ diagnosisDto);
         ObjectMapper objectMapper = new ObjectMapper();
 
         HepatitisBTestDto hepatitisBTestDto = diagnosisDto.getHepatitisBTest();

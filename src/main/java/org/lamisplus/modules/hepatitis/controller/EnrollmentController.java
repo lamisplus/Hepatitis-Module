@@ -1,5 +1,6 @@
 package org.lamisplus.modules.hepatitis.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.lamisplus.modules.hepatitis.domain.dto.request.FollowupDto;
 import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisDiagnosisDto;
 import org.lamisplus.modules.hepatitis.domain.dto.request.HepatitisEnrollmentDto;
@@ -23,7 +24,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
-
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/hepatitis")
 @RequiredArgsConstructor
@@ -37,6 +38,8 @@ public class EnrollmentController {
 
     @PostMapping("/diagnosis")
     public ResponseEntity<String> hepatitisDiagnosis(@Valid @RequestBody HepatitisDiagnosisDto diagnosisDto) {
+        log.info("Diagnosis Gamal from controller: " + diagnosisDto);
+
         return enrollmentService.hepatitisDiagnosis(diagnosisDto);
     }
 

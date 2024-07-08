@@ -11,16 +11,19 @@ import javax.validation.constraints.Pattern;
 @AllArgsConstructor
 @NoArgsConstructor
 public class HepatitisCoinfectionDTO {
-    @NotEmpty(message = " hbvHcv can not be empty")
-    @Pattern(regexp = "[0-9]+", message = "Field must be a number")
+//    @NotEmpty(message = " hbvHcv can not be empty")
+//    @Pattern(regexp = "[0-9]+", message = "Field must be a number")
     private String hbvHcv;
-    @NotEmpty(message = " hbvHdv can not be empty")
-    @Pattern(regexp = "[0-9]+", message = "Field must be a number")
+//    @NotEmpty(message = " hbvHdv can not be empty")
+//    @Pattern(regexp = "[0-9]+", message = "Field must be a number")
     private String hbvHdv;
-    @NotEmpty(message = "hbvHiv can not be empty")
-    @Pattern(regexp = "[0-9]+", message = "Field must be a number")
+//    @NotEmpty(message = "hbvHiv can not be empty")
+//    @Pattern(regexp = "[0-9]+", message = "Field must be a number")
     private String hbvHiv;
-    @NotEmpty(message = "hbvHcdHiv can not be empty")
-    @Pattern(regexp = "[0-9]+", message = "Field must be a number")
+    //    @NotEmpty(message = "hbvHiv can not be empty")
+//    @Pattern(regexp = "[0-9]+", message = "Field must be a number")
+    private String hcvHiv;
+//    @NotEmpty(message = "hbvHcdHiv can not be empty")
+//    @Pattern(regexp = "[0-9]+", message = "Field must be a number")
     private String hbvHcdHiv;
 }

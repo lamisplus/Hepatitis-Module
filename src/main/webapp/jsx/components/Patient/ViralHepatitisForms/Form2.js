@@ -201,8 +201,11 @@ export const HepatitisCoinfection = ({
         disabled={action === "view"}
         name={checkName}
         checked={
-          basicInfo.hepatitisBTest.hepatitisCoinfection &&
-          !!basicInfo.hepatitisBTest.hepatitisCoinfection[checkName]
+          action === "view"
+            ? basicInfo.hepatitisCTest.hepatitisCoinfection &&
+              !!basicInfo.hepatitisCTest.hepatitisCoinfection[checkName]
+            : basicInfo.hepatitisBTest.hepatitisCoinfection &&
+              !!basicInfo.hepatitisBTest.hepatitisCoinfection[checkName]
         }
         onChange={handleCheckboxChange}
       />
@@ -220,10 +223,17 @@ export const HepatitisCoinfection = ({
             type="text"
             name={checkName}
             value={
-              basicInfo.hepatitisBTest.hepatitisCoinfection[checkName] &&
-              Math.sign(
-                basicInfo.hepatitisBTest.hepatitisCoinfection[checkName]
-              ) === 1
+              action === "view"
+                ? basicInfo.hepatitisCTest.hepatitisCoinfection[checkName] &&
+                  Math.sign(
+                    basicInfo.hepatitisCTest.hepatitisCoinfection[checkName]
+                  ) === 1
+                  ? basicInfo.hepatitisBTest.hepatitisCoinfection[checkName]
+                  : ""
+                : basicInfo.hepatitisBTest.hepatitisCoinfection[checkName] &&
+                  Math.sign(
+                    basicInfo.hepatitisBTest.hepatitisCoinfection[checkName]
+                  ) === 1
                 ? basicInfo.hepatitisBTest.hepatitisCoinfection[checkName]
                 : ""
             }
@@ -637,6 +647,7 @@ const ViralHepatitisForm2 = ({
   };
 
   const postDataWithToken = async (data, key) => {
+    console.log("payload: ", data);
     try {
       const response = await axios.post(`${baseUrl}${key}`, data, {
         headers: {
@@ -663,9 +674,16 @@ const ViralHepatitisForm2 = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
     window.scrollTo(0, 0);
-
+    console.log("basicInf: ", basicInfo);
+    const mutatedPayload = {
+      ...basicInfo,
+      hepatitisCTest: {
+        ...basicInfo?.hepatitisCTest,
+        hepatitisCoinfection: basicInfo.hepatitisBTest.hepatitisCoinfection,
+      },
+    };
     if (validate()) {
-      postDataWithToken(basicInfo, "hepatitis/diagnosis");
+      postDataWithToken(mutatedPayload, "hepatitis/diagnosis");
     }
   };
   const transformDate = (dateObj) => {
@@ -675,7 +693,6 @@ const ViralHepatitisForm2 = ({
     return moment(isoDate).format("YYYY-MM-DD");
   };
   const onSubmitHandler = (values) => {
-    alert(1);
     window.scrollTo(0, 0);
     const restructuredDiagnosisPayload = {
       enrollmentUuid,
@@ -762,12 +779,11 @@ const ViralHepatitisForm2 = ({
         dataCopy.hepatitisBTest.dateHbvSampleRequested = transformDate(
           dataCopy.hepatitisBTest.dateHbvSampleRequested
         );
-        dataCopy.hepatitisBTest.dateHbvTestRequested = transformDate(
-          dataCopy.hepatitisBTest.dateHbvTestRequested
-        );
         dataCopy.hepatitisBTest.stagingDateOfLiverBiopsy = transformDate(
           dataCopy.hepatitisBTest.stagingDateOfLiverBiopsy
         );
+        dataCopy.enrollmentUuid = dataCopy.hepatitisEnrollmentUuid;
+        console.log("real payload: ", dataCopy, patientObj);
         setBasicInfo(dataCopy);
       })
       .catch((error) => console.log(error));
@@ -846,9 +862,6 @@ const ViralHepatitisForm2 = ({
   useEffect(() => {
     viewHepatitisDiagnosis();
   }, []);
-  useEffect(() => {
-    console.log("gender", patientObj.sex);
-  });
   return (
     <>
       <Card className={classes.root}>

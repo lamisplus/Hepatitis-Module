@@ -93,6 +93,8 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 
     @Override
     public ResponseEntity<String> hepatitisDiagnosis(HepatitisDiagnosisDto diagnosisDto) {
+        log.info("Diagnosis Gamal: " + diagnosisDto);
+
         if(diagnosisDto == null) throw new IllegalTypeException(EnrollmentServiceImpl.class, "Please fill in the required fields");
         String enrollmentId = diagnosisDto.getEnrollmentUuid();
         log.info("EnrollmentId: " + enrollmentId);
