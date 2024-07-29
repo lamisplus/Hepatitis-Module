@@ -445,7 +445,7 @@ const FollowupCreate = (props) => {
                               }}
                             >
                               <option value="">Select</option>
-                              {hbsagResult?.map(({ display }) => (
+                              {hbsagResult?.map?.(({ display }) => (
                                 <option key={display} value={display}>
                                   {display}
                                 </option>
@@ -1016,7 +1016,7 @@ const FollowupCreate = (props) => {
                             {/* <span style={{ color: "red" }}> *</span>{" "} */}
                             <Input
                               className="form-control"
-                              type="text"
+                              type="select"
                               name="fuAscites"
                               id="fuAscites"
                               onBlur={formik.handleBlur}
@@ -1026,7 +1026,11 @@ const FollowupCreate = (props) => {
                                 border: "1px solid #014D88",
                                 borderRadius: "0.2rem",
                               }}
-                            />
+                            >
+                              <option>Select</option>
+                              <option value="YES">Yes</option>
+                              <option value="NO">No</option>
+                            </Input>
 
                             {formik.touched?.fuAscites &&
                               formik?.errors?.fuAscites !== "" && (
@@ -1036,37 +1040,43 @@ const FollowupCreate = (props) => {
                               )}
                           </FormGroup>
                         </div>
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="fuSeverityOfAscites">
-                              Severity of Ascites
-                            </Label>
-                            {/* <span style={{ color: "red" }}> *</span>{" "} */}
-                            <select
-                              className="form-control"
-                              name="fuSeverityOfAscites"
-                              id="fuSeverityOfAscites"
-                              onBlur={formik.handleBlur}
-                              onChange={formik.handleChange}
-                              value={formik?.values?.fuSeverityOfAscites}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            >
-                              <option value="">Select</option>
-                              <option value={"YES"}>Yes</option>
-                              <option value={"NO"}>No</option>
-                            </select>
+                        {formik?.values?.fuAscites === "YES" && (
+                          <div className="form-group mb-3 col-md-4">
+                            <FormGroup>
+                              <Label for="fuSeverityOfAscites">
+                                Severity of Ascites
+                              </Label>
+                              {/* <span style={{ color: "red" }}> *</span>{" "} */}
+                              <select
+                                className="form-control"
+                                name="fuSeverityOfAscites"
+                                id="fuSeverityOfAscites"
+                                onBlur={formik.handleBlur}
+                                onChange={formik.handleChange}
+                                value={formik?.values?.fuSeverityOfAscites}
+                                style={{
+                                  border: "1px solid #014D88",
+                                  borderRadius: "0.2rem",
+                                }}
+                              >
+                                <option value="">Select</option>
+                                <option value={"Mild"}>Mild</option>
+                                <option value={"Moderate"}>Moderate</option>
+                                <option value={"Massive/Gross"}>
+                                  Massive/Gross
+                                </option>
+                              </select>
 
-                            {formik.touched?.fuSeverityOfAscites &&
-                              formik?.errors?.fuSeverityOfAscites !== "" && (
-                                <span className={classes.error}>
-                                  {formik?.errors?.fuSeverityOfAscites}
-                                </span>
-                              )}
-                          </FormGroup>
-                        </div>
+                              {formik.touched?.fuSeverityOfAscites &&
+                                formik?.errors?.fuSeverityOfAscites !== "" && (
+                                  <span className={classes.error}>
+                                    {formik?.errors?.fuSeverityOfAscites}
+                                  </span>
+                                )}
+                            </FormGroup>
+                          </div>
+                        )}
+
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="fuGradeOfEncephalopathy">

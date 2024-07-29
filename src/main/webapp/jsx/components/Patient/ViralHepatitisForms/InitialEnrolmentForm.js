@@ -26,12 +26,8 @@ import { toast } from "react-toastify";
 import {
   token,
   url as baseUrl,
-  hivStatsEnrolPath,
   srcRefPath,
   erollmentSettingPath,
-  tbStatsPath,
-  targetGroupPath,
-  pregnancyStatsPath,
   sexPath,
   maritalStatsPath,
   educationPath,
@@ -115,7 +111,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
+const InitialEnrolmentForm = ({ setStep, userStatus, patientObj }) => {
   const [info, setInfo] = useState({
     countryId: 1,
     stateId: "",
@@ -911,23 +907,7 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
       });
     }
 
-    // }
-    // if (e.target.name === "firstName" && e.target.value !== "") {
-    //   const name = alphabetOnly(e.target.value);
-    //   setBasicInfo({ ...basicInfo, [e.target.name]: name });
-    // }
-    // if (e.target.name === "surname" && e.target.value !== "") {
-    //   const name = alphabetOnly(e.target.value);
-    //   setBasicInfo({ ...basicInfo, [e.target.name]: name });
-    // }
-    // if (e.target.name === "otherName" && e.target.value !== "") {
-    //   const name = alphabetOnly(e.target.value);
-    //   setBasicInfo({ ...basicInfo, [e.target.name]: name });
-    // }
-
-    // if (e.target.name === "stateId" && e.target.value !== "") {
-    //   getProvinces(e);
-    // }
+   
   };
 
   const handleSubmit = async (e) => {
@@ -983,7 +963,7 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
         },
       });
     }
-    // getHepatitisPoint();
+   
   }, []);
   // calculate bmi when weight and height changes
   useEffect(() => {
@@ -2113,4 +2093,4 @@ const ViralHepatitisForm1 = ({ setStep, userStatus, patientObj }) => {
   );
 };
 
-export default ViralHepatitisForm1;
+export default InitialEnrolmentForm;

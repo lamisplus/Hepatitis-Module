@@ -1,13 +1,11 @@
 import React, { useState, Fragment } from "react";
 import { Row, Col, Card, Tab, Tabs } from "react-bootstrap";
 import PatientList from "./Patient/PatientList";
-import PatientVaccinatedLIst from "./Patient/PatientVaccinatedLIst";
 import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import { FaUserPlus } from "react-icons/fa";
 import HepatitisPatients from "./Patient/HepatitisPatient";
-import ViralHepatitis from "./Patient/ViralHepatitisForms/Form1";
-import ViralHepatitisSummaryFormContainer from "./Patient/ViralHepatitisSummaryFormContainer";
+
 const divStyle = {
   borderRadius: "2px",
   fontSize: 14,
@@ -70,10 +68,7 @@ const Home = () => {
                     <HepatitisPatients />
                   </Tab>
 
-                  {/* <Tab eventKey="vaccinated" title="Summary"> */}
-                  {/* <PatientVaccinatedLIst /> */}
-                  {/* <ViralHepatitisSummaryFormContainer /> */}
-                  {/* </Tab> */}
+                 
                 </Tabs>
               </div>
             </Card.Body>

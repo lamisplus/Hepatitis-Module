@@ -184,6 +184,20 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
     setChildPughData(data);
   };
 
+  const calculate_age = (dob) => {
+    const today = new Date();
+    const dateParts = dob.split("-");
+    const birthDate = new Date(dob); // create a date object directlyfrom`dob1`argument
+    let age_now = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+
+    if (age_now <= 0 && m < 0 && today.getDate() < birthDate.getDate()) {
+      age_now--;
+    }
+
+    return age_now;
+  };
+
   const viewHepatitisEnrollment = () => {
     axios
       .get(
@@ -457,7 +471,19 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
         totalBiliRubin: values.totalBiliRubin,
         directBiliribin: values.directBiliribin,
         apriScore: values.apriScore,
-        fib4: values.fib4,
+        fib4:
+          (Number(
+            calculate_age(patientObj?.dateOfBirth || patientObj?.dob) || 0
+          ) *
+            Number(
+              basicInfo?.hepatitisCTest.selectedClinicalParamsOptions?.ast || 0
+            )) /
+            (Number(
+              basicInfo.hepatitisCTest.selectedClinicalParamsOptions?.plt || 0
+            ) *
+              Number(
+                basicInfo.hepatitisCTest.selectedClinicalParamsOptions?.alt || 0
+              )) || values?.fib4,
         prothrombinTimeNR: values.prothrombinTimeNR,
         urea: values.urea,
         creatinine: values.creatinine,
@@ -1497,7 +1523,28 @@ const DashboardForm2 = ({ patientObj, setActiveContent }) => {
                         type="text"
                         name="fib4"
                         id="fib4"
-                        value={basicInfo.clinicalParameters.fib4}
+                        value={
+                          basicInfo.hepatitisCTest.selectedClinicalParamsOptions
+                          ?.ast === -1
+                          ? 0
+                          : (Number(
+                              calculate_age(
+                                patientObj?.dateOfBirth || patientObj?.dob
+                              ) || 0
+                            ) *
+                              Number(
+                                basicInfo?.hepatitisCTest
+                                  .selectedClinicalParamsOptions?.ast || 0
+                              )) /
+                            (Number(
+                              basicInfo.hepatitisCTest
+                                .selectedClinicalParamsOptions?.plt || 0
+                            ) *
+                              Number(
+                                basicInfo.hepatitisCTest
+                                  .selectedClinicalParamsOptions?.alt || 0
+                              ))
+                        }
                         onChange={handleInputChangeBasicForClinic}
                         style={{
                           border: "1px solid #014D88",

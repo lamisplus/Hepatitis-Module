@@ -423,6 +423,7 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent, setStep }) => {
         hepatitisCTreatment: {
           ...basicInfo.hepatitisCTreatment,
           pastTreatmentExperience: e.target.value,
+          hcvPastTreatmentRegimen: e.target.value,
         },
       });
     }
@@ -1829,8 +1830,30 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent, setStep }) => {
                                 name="hcvPastTreatmentRegimen"
                                 id="hcvPastTreatmentRegimen"
                                 value={
-                                  basicInfo.hepatitisCTreatment
-                                    .hcvPastTreatmentRegimen
+                                  basicInfo.hepatitisCTest
+                                    .selectedClinicalParamsOptions?.ast === -1
+                                    ? 0
+                                    : (Number(
+                                        calculate_age(
+                                          patientObj?.dateOfBirth ||
+                                            patientObj?.dob
+                                        ) || 0
+                                      ) *
+                                        Number(
+                                          basicInfo?.hepatitisCTest
+                                            .selectedClinicalParamsOptions
+                                            ?.ast || 0
+                                        )) /
+                                      (Number(
+                                        basicInfo.hepatitisCTest
+                                          .selectedClinicalParamsOptions?.plt ||
+                                          0
+                                      ) *
+                                        Number(
+                                          basicInfo.hepatitisCTest
+                                            .selectedClinicalParamsOptions
+                                            ?.alt || 0
+                                        ))
                                 }
                                 onChange={handleInputChangeBasicHC}
                                 style={{

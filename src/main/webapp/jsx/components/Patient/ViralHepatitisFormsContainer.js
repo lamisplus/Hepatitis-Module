@@ -7,7 +7,7 @@ import { Link, useHistory, useLocation } from "react-router-dom";
 import { TiArrowBack } from "react-icons/ti";
 import { ToastContainer } from "react-toastify";
 import Steppers from "./Stepper/Stepper";
-import ViralHepatitisForm1 from "./ViralHepatitisForms/Form1";
+import InitialEnrolmentForm from "./ViralHepatitisForms/InitialEnrolmentForm";
 import ViralHepatitisForm2 from "./ViralHepatitisForms/Form2";
 import ViralHepatitisForm3 from "./ViralHepatitisForms/Form3";
 import { useLocalStorageState } from "../../hooks/useLocalStorageState";
@@ -27,7 +27,7 @@ const ViralHepatitisFormsContainer = (props) => {
   }, []);
   const formMap = {
     0: (
-      <ViralHepatitisForm1
+      <InitialEnrolmentForm
         step={step}
         setStep={setStep}
         userStatus={locationState.existingPatient}

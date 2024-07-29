@@ -1436,7 +1436,7 @@ const DashboardEnrollmentForm = ({
                 }}
               >
                 <h5 className="card-title" style={{ color: "#fff" }}>
-                  Enrolment
+                  Enrolment ZZZZ
                 </h5>
               </div>
 

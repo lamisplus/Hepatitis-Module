@@ -27,6 +27,8 @@ import { fetchFollowup } from "../../../services/fetchFollowup";
 import { useUpdateFollowup } from "../../../hooks/useUpdateFollowup";
 import axios from "axios";
 import { url as baseUrl, token } from "../../../../api";
+import { fetchHBsAG } from "./Form2";
+
 
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
@@ -477,8 +479,8 @@ const FollowupUpdate = (props) => {
                               }}
                             >
                               <options value="">Select</options>
-                              {hbsagResult.map(({ display }) => (
-                                <option key={diplay} value={display}>
+                              {hbsagResult?.map?.(({ display }) => (
+                                <option key={display} value={display}>
                                   {display}
                                 </option>
                               ))}
@@ -1058,6 +1060,7 @@ const FollowupUpdate = (props) => {
                               )}
                           </FormGroup>
                         </div>
+
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="fuAscites">Ascites</Label>
@@ -1065,7 +1068,7 @@ const FollowupUpdate = (props) => {
                             <Input
                               className="form-control"
                               disabled={disableInputs}
-                              type="text"
+                              type="select"
                               name="fuAscites"
                               id="fuAscites"
                               onBlur={formik.handleBlur}
@@ -1075,7 +1078,11 @@ const FollowupUpdate = (props) => {
                                 border: "1px solid #014D88",
                                 borderRadius: "0.2rem",
                               }}
-                            />
+                            >
+                              <option>Select</option>
+                              <option value="YES">Yes</option>
+                              <option value="NO">No</option>
+                            </Input>
 
                             {formik.touched?.fuAscites &&
                               formik?.errors?.fuAscites !== "" && (
@@ -1085,38 +1092,45 @@ const FollowupUpdate = (props) => {
                               )}
                           </FormGroup>
                         </div>
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="fuSeverityOfAscites">
-                              Severity of Ascites
-                            </Label>
-                            {/* <span style={{ color: "red" }}> *</span>{" "} */}
-                            <select
-                              className="form-control"
-                              disabled={disableInputs}
-                              name="fuSeverityOfAscites"
-                              id="fuSeverityOfAscites"
-                              onBlur={formik.handleBlur}
-                              onChange={formik.handleChange}
-                              value={formik?.values?.fuSeverityOfAscites}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            >
-                              <option value="">Select</option>
-                              <option value={"YES"}>Yes</option>
-                              <option value={"NO"}>No</option>
-                            </select>
 
-                            {formik.touched?.fuSeverityOfAscites &&
-                              formik?.errors?.fuSeverityOfAscites !== "" && (
-                                <span className={classes.error}>
-                                  {formik?.errors?.fuSeverityOfAscites}
-                                </span>
-                              )}
-                          </FormGroup>
-                        </div>
+                        {formik?.values?.fuAscites === "YES" && (
+                          <div className="form-group mb-3 col-md-4">
+                            <FormGroup>
+                              <Label for="fuSeverityOfAscites">
+                                Severity of Ascites
+                              </Label>
+                              {/* <span style={{ color: "red" }}> *</span>{" "} */}
+                              <select
+                                className="form-control"
+                                disabled={disableInputs}
+                                name="fuSeverityOfAscites"
+                                id="fuSeverityOfAscites"
+                                onBlur={formik.handleBlur}
+                                onChange={formik.handleChange}
+                                value={formik?.values?.fuSeverityOfAscites}
+                                style={{
+                                  border: "1px solid #014D88",
+                                  borderRadius: "0.2rem",
+                                }}
+                              >
+                                <option value="">Select</option>
+                                <option value={"Mild"}>Mild</option>
+                                <option value={"Moderate"}>Moderate</option>
+                                <option value={"Massive/Gross"}>
+                                  Massive/Gross
+                                </option>
+                              </select>
+
+                              {formik.touched?.fuSeverityOfAscites &&
+                                formik?.errors?.fuSeverityOfAscites !== "" && (
+                                  <span className={classes.error}>
+                                    {formik?.errors?.fuSeverityOfAscites}
+                                  </span>
+                                )}
+                            </FormGroup>
+                          </div>
+                        )}
+
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="fuGradeOfEncephalopathy">
