@@ -19,6 +19,8 @@ import java.io.Serializable;
 @ToString
 @Builder
 public class HepatitisCTestDto implements Serializable {
+    private astPltAltDto selectedClinicalParamsOption;
+    @NotEmpty(message = "selectedClinicalParamsOption can not be empty")
     private Detect hcvRNA;
     @NotEmpty(message = "hcRnaValue can not be empty")
     private String hcRnaValue;

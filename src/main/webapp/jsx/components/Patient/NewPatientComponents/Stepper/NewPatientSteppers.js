@@ -3,8 +3,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,23 +18,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
-  return ["Enrolment", "Diagnosis", "Treatment"];
+  return [ "Enrolment", "Diagnosis", "Treatment"];
 }
 
-function getStepContent(stepIndex) {
-  switch (stepIndex) {
-    case 0:
-      return "Enrolment";
-    case 1:
-      return "Diagnosis";
-    case 2:
-      return "Treatment";
-    default:
-      return "Unknown stepIndex";
-  }
-}
 
-export default function Steppers({ activeStep }) {
+export default function NewPatientSteppers({ activeStep }) {
   const steps = getSteps();
 
   return (

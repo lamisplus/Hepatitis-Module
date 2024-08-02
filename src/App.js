@@ -9,7 +9,7 @@ import Home from "./main/webapp/jsx/components/Home";
 import PatientDetail from "./main/webapp/jsx/components/Patient/PatientDetail";
 import EnrollPatientPage from "./main/webapp/jsx/components/Patient/EnrollPatient";
 import UpdatePatientEnrollment from "./main/webapp/jsx/components/Patient/UpdatePatientEnrollment";
-import ViralHepatitisFormsContainer from "./main/webapp/jsx/components/Patient/ViralHepatitisFormsContainer";
+import ViralHepatitisFormsContainer from "./main/webapp/jsx/components/Patient/NewPatientComponents/NewPatientViralHepatitisFormsContainer";
 import { QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { queryClient } from "./main/webapp/jsx/utils/queryClient";
@@ -25,15 +25,14 @@ export default function App() {
             <Route path="/patient-history">
               <PatientDetail />
             </Route>
-            <Route path="/register-patient">
+            <Route path="/register-new-patient">
               <ViralHepatitisFormsContainer />
             </Route>
-            <Route path="/enroll-patient">
-              <EnrollPatientPage />
+            <Route path="/register-existing-patient">
+              <div>register existing patient</div>
             </Route>
-            <Route path="/update-patient">
-              <UpdatePatientEnrollment />
-            </Route>
+           
+           
 
             <Route path="/">
               <Home />
