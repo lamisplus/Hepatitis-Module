@@ -33,25 +33,24 @@ public class ClinicalParametersDto implements Serializable {
     @NotEmpty(message = "fib4 can not be empty")
     private String fib4;
     @NotEmpty(message = " prothrombinTimeNR can not be empty")
-    private String prothrombinTimeNR;
+    private Long prothrombinTimeNR;
     @NotEmpty(message = " urea can not be empty")
-    private String urea;
+    private Long urea;
     @NotEmpty(message = " creatinine can not be empty")
-    private String creatinine;
+    private Long creatinine;
     @NotEmpty(message = " afp can not be empty")
-    private String afp;
+    private Long afp;
     @NotEmpty(message = " fibroscan not be empty")
-    private String fibroscan;
+    private Long fibroscan;
     @NotEmpty(message = " ultrasoundScan can not be empty")
-    private String ultrasoundScan;
+    private Long ultrasoundScan;
     private Status ascites;
-    private Moderation severityOfAscites;
-    @Size(max = 5)
+    private String severityOfAscites;
     @NotEmpty(message = " gradeOfEncephalopathy can not be empty")
-    private Integer gradeOfEncephalopathy;
+    private Long gradeOfEncephalopathy;
     @NotEmpty(message = " childPughScore can not be empty")
     private String childPughScore;
     private String liverBiopsyStage;
 //    @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private String diagnosis_result;
+    private String diagnosisResult;
 }

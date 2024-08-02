@@ -41,16 +41,16 @@ public class HepatitisBTestDto implements Serializable {
     private Detect hbvDna;
 
     @NotEmpty(message ="hvbDnaValue can not be empty")
-    private String hvbDnaValue;
+    private Long hvbDnaValue;
 
     @NotEmpty(message ="hbsAgQuantification can not be empty")
-    private String hbsAgQuantification;
+    private Long hbsAgQuantification;
 
     @NotEmpty(message ="ctScan can not be empty")
     private String ctScan;
 
     @NotEmpty(message ="albumin can not be empty")
-    private String albumin;
+    private Long albumin;
 
     @NotEmpty(message ="hbeAG can not be empty")
     @ValidatorInterface
@@ -61,14 +61,16 @@ public class HepatitisBTestDto implements Serializable {
     private String antiHDV;
 
     @NotEmpty(message ="treatmentEligible can not be empty")
-    private Status treatmentEligible;
+    private String treatmentEligible;
 
-//    @NotEmpty(message ="pmtctEligible can not be empty")
+
     private String pmtctEligible;
 
     @Size(min = 5, max = 10000)
     @NotEmpty(message ="comment can not be empty")
     private String comment;
+
+    private HepatitisCoinfectionDTO hepatitisCoinfection;
 
 
 

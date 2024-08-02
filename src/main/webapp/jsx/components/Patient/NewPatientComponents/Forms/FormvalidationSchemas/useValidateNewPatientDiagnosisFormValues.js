@@ -1,7 +1,6 @@
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { token, url } from "../../../../../../api";
-import axios from "axios";
+
 
 export const useValidateNewPatientDiagnosisFormValuesHook = (onSubmit) => {
   const requiredTextPrompt = "This field is required";
@@ -61,139 +60,139 @@ export const useValidateNewPatientDiagnosisFormValuesHook = (onSubmit) => {
 };
 
   const NewPatientDiagnosisValidationSchema = yup.object({
-    dateHbvDnaTestRequested: yup.date().required(requiredTextPrompt),
-    dateHbvSampleRequested: yup.date().required(requiredTextPrompt),
-    dateHbvDnaResultReported: yup.date().required(requiredTextPrompt),
+    dateHbvDnaTestRequested: yup.date().required(requiredTextPrompt),//done
+    dateHbvSampleRequested: yup.date().required(requiredTextPrompt),//done
+    dateHbvDnaResultReported: yup.date().required(requiredTextPrompt),//done
 
-    hbvDna: yup.string().required(requiredTextPrompt),
+    hbvDna: yup.string().required(requiredTextPrompt),//done
 
     hbvDnaValue: yup.number().when("hbvDna", {
         is: (hbvDna) => hbvDna === "DETECTED",
         then: yup.number().required(requiredTextPrompt),
         otherwise: yup.number(),
-      }),
+      }),//done
 
     hbsAgQuantification: yup.number().when("hbvDna", {
         is: (hbvDna) => hbvDna === "DETECTED",
         then: yup.number().required(requiredTextPrompt),
         otherwise: yup.number(),
-      }),
+      }),//done
     
     
-    hbeAG: yup.string().required(requiredTextPrompt),
-    antiHDV: yup.string().required(requiredTextPrompt),
+    hbeAG: yup.string().required(requiredTextPrompt),//done
+    antiHDV: yup.string().required(requiredTextPrompt),//done
     treatmentEligible: yup.string().required(requiredTextPrompt),
-    pmtctEligible: yup.string().required(requiredTextPrompt),
-    comment: yup.string().required(requiredTextPrompt),
-    hcvRNA: yup.string().required(requiredTextPrompt),
+    pmtctEligible: yup.string().required(requiredTextPrompt),//done
+    comment: yup.string().required(requiredTextPrompt),//done
+    hcvRNA: yup.string().required(requiredTextPrompt),//done
 
     hcvRnaValue: yup.number().when("hcvRNA", {
         is: (hcvRNA) => hcvRNA === "DETECTED",
         then: yup.number().required(requiredTextPrompt),
         otherwise: yup.number(),
-      }),
+      }),//done
 
     
-    hbvHcvCheckbox: yup.boolean().required(requiredTextPrompt),
-    hbvHivCheckbox: yup.boolean().required(requiredTextPrompt),
-    hcvHivCheckbox: yup.boolean().required(requiredTextPrompt),
-    hbvHcvCheckbox: yup.boolean().required(requiredTextPrompt),
-    hbvHdvCheckbox: yup.boolean().required(requiredTextPrompt),
-    hbvHcvHivCheckbox: yup.boolean().required(requiredTextPrompt),
+    hbvHcvCheckbox: yup.boolean().required(requiredTextPrompt),//done
+    hbvHivCheckbox: yup.boolean().required(requiredTextPrompt),//done
+    hcvHivCheckbox: yup.boolean().required(requiredTextPrompt),//done
+    hbvHcvCheckbox: yup.boolean().required(requiredTextPrompt),//done
+    hbvHdvCheckbox: yup.boolean().required(requiredTextPrompt),//done
+    hbvHcvHivCheckbox: yup.boolean().required(requiredTextPrompt),//done
 
     hbvHcvInputValue: yup.number().when("hbvHcvCheckbox", {
         is: (hbvHcvCheckbox) => hbvHcvCheckbox === true,
         then: yup.number().required(requiredTextPrompt),
         otherwise: yup.number(),
-      }),
+      }),//done
 
     hbvHivInputValue: yup.number().when("hbvHivCheckbox", {
         is: (hbvHivCheckbox) => hbvHivCheckbox === true,
         then: yup.number().required(requiredTextPrompt),
         otherwise: yup.number(),
-      }),
+      }),//done
     hcvHivInputValue: yup.number().when("hcvHivCheckbox", {
         is: (hcvHivCheckbox) => hcvHivCheckbox === true,
         then: yup.number().required(requiredTextPrompt),
         otherwise: yup.number(),
-      }),
+      }),//done
 
 
     hbvHdvInputValue: yup.number().when("hbvHdvCheckbox", {
         is: (hbvHdvCheckbox) => hbvHdvCheckbox === true,
         then: yup.number().required(requiredTextPrompt),
         otherwise: yup.number(),
-      }),
+      }),//done
 
 
     hbvHcvHivInputValue: yup.number().when("hbvHcvHivCheckbox", {
         is: (hbvHcvHivCheckbox) => hbvHcvHivCheckbox === true,
         then: yup.number().required(requiredTextPrompt),
         otherwise: yup.number(),
-      }),
+      }),//done
 
-    commobidities: yup.string().required(requiredTextPrompt),
+    commobidities: yup.string().required(requiredTextPrompt),//done
 
     multipleInfection: yup.string().when("commobidities", {
         is: (commobidities) => commobidities === "YES",
         then: yup.string().required(requiredTextPrompt),
         otherwise: yup.string(),
-      }),
+      }),//done
 
 
 
-    astCheckbox: yup.boolean().required(requiredTextPrompt),
-    altCheckbox: yup.boolean().required(requiredTextPrompt),
-    pltCheckbox: yup.boolean().required(requiredTextPrompt),
+    astCheckbox: yup.boolean().required(requiredTextPrompt),//done
+    altCheckbox: yup.boolean().required(requiredTextPrompt),//done
+    pltCheckbox: yup.boolean().required(requiredTextPrompt),//done
 
     astInputValue: yup.number().when("astCheckbox", {
         is: (astCheckbox) => astCheckbox === true,
         then: yup.number().required(requiredTextPrompt),
         otherwise: yup.number(),
-      }),
+      }),//done
 
 
     altInputValue: yup.number().when("altCheckbox", {
         is: (altCheckbox) => altCheckbox === true,
         then: yup.number().required(requiredTextPrompt),
         otherwise: yup.number(),
-      }),
+      }),//done
 
     pltInputValue: yup.number().when("pltCheckbox", {
         is: (pltCheckbox) => pltCheckbox === true,
         then: yup.number().required(requiredTextPrompt),
         otherwise: yup.number(),
-      }),
+      }),//done
 
-    totalBiliRubin: yup.string().required(requiredTextPrompt),
-    directBiliribin: yup.string().required(requiredTextPrompt),
+    totalBiliRubin: yup.string().required(requiredTextPrompt),//done
+    directBiliribin: yup.string().required(requiredTextPrompt),//done
 
-    albumin: yup.number().required(requiredTextPrompt),
-    apriScore: yup.number().required(requiredTextPrompt),
-    fib4: yup.number().required(requiredTextPrompt),
+    albumin: yup.number().required(requiredTextPrompt),//done
+    apriScore: yup.number().required(requiredTextPrompt),//done
+    fib4: yup.number().required(requiredTextPrompt),//done
 
-    prothrombinTimeNR: yup.number().required(requiredTextPrompt),
-    urea: yup.number().required(requiredTextPrompt),
-    creatinine: yup.number().required(requiredTextPrompt),
+    prothrombinTimeNR: yup.number().required(requiredTextPrompt),//done
+    urea: yup.number().required(requiredTextPrompt), //done
+    creatinine: yup.number().required(requiredTextPrompt),//done
     ultrasoundScan: yup.number().required(requiredTextPrompt),
-    afp: yup.number().required(requiredTextPrompt),
-    fibroscan: yup.number().required(requiredTextPrompt),
+    afp: yup.number().required(requiredTextPrompt),//done
+    fibroscan: yup.number().required(requiredTextPrompt),//done
 
-    ctScan: yup.string().required(requiredTextPrompt),
-    ascites: yup.string().required(requiredTextPrompt),
+    ctScan: yup.string().required(requiredTextPrompt),//done
+    ascites: yup.string().required(requiredTextPrompt),//done
 
     severityOfAscites: yup.string().when("ascites", {
         is: (ascites) => ascites === "YES",
         then: yup.string().required(requiredTextPrompt),
         otherwise: yup.string(),
-      }),
+      }),//done
 
     
-    gradeOfEncephalopathy: yup.string().required(requiredTextPrompt),
-    childPughScore: yup.string().required(requiredTextPrompt),
-    liverBiopsyStage: yup.string().required(requiredTextPrompt),
-    stagingDateOfLiverBiopsy: yup.date().required(requiredTextPrompt),
-    diagnosisResult: yup.string().required(requiredTextPrompt),
+    gradeOfEncephalopathy: yup.number().required(requiredTextPrompt),//done
+    childPughScore: yup.string().required(requiredTextPrompt),//done
+    liverBiopsyStage: yup.string().required(requiredTextPrompt), //done,
+    stagingDateOfLiverBiopsy: yup.date().required(requiredTextPrompt),//done
+    diagnosisResult: yup.string().required(requiredTextPrompt),//done
 
 });
 

@@ -14,11 +14,24 @@ public class astPltAltDto {
 
     @NotEmpty(message = "Ast can not be empty")
     @Pattern(regexp = "[0-9]+", message = "Field must be a number")
-    private String ast;
+    private Long astInputValue;
+
     @NotEmpty(message = " Plt can not be empty")
     @Pattern(regexp = "[0-9]+", message = "Field must be a number")
-    private String plt;
+    private Long pltInputValue;
+
     @NotEmpty(message = "hbvHiv can not be empty")
     @Pattern(regexp = "[0-9]+", message = "Field must be a number")
-    private String alt;
+    private Long altInputValue;
+
+    @NotEmpty(message = "astCheckbox can not be empty")
+    private Boolean astCheckbox;
+
+    @NotEmpty(message = "altCheckbox can not be empty")
+    private Boolean altCheckbox;
+
+    @NotEmpty(message = "pltCheckbox can not be empty")
+    private Boolean pltCheckbox;
+
+
 }

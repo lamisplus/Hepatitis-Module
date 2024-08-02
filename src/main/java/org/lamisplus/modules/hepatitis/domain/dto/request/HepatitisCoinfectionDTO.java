@@ -11,19 +11,37 @@ import javax.validation.constraints.Pattern;
 @AllArgsConstructor
 @NoArgsConstructor
 public class HepatitisCoinfectionDTO {
-//    @NotEmpty(message = " hbvHcv can not be empty")
-//    @Pattern(regexp = "[0-9]+", message = "Field must be a number")
-    private String hbvHcv;
-//    @NotEmpty(message = " hbvHdv can not be empty")
-//    @Pattern(regexp = "[0-9]+", message = "Field must be a number")
-    private String hbvHdv;
-//    @NotEmpty(message = "hbvHiv can not be empty")
-//    @Pattern(regexp = "[0-9]+", message = "Field must be a number")
-    private String hbvHiv;
-    //    @NotEmpty(message = "hbvHiv can not be empty")
-//    @Pattern(regexp = "[0-9]+", message = "Field must be a number")
-    private String hcvHiv;
-//    @NotEmpty(message = "hbvHcdHiv can not be empty")
-//    @Pattern(regexp = "[0-9]+", message = "Field must be a number")
-    private String hbvHcdHiv;
+    @NotEmpty(message = " hbvHcvInputValue can not be empty")
+    @Pattern(regexp = "[0-9]+", message = "Field must be a number")
+    private Long hbvHcvInputValue;
+    @NotEmpty(message = " hbvHdvInputValue can not be empty")
+    @Pattern(regexp = "[0-9]+", message = "Field must be a number")
+    private Long hbvHdvInputValue;
+    @NotEmpty(message = "hbvHivInputValue can not be empty")
+    @Pattern(regexp = "[0-9]+", message = "Field must be a number")
+    private Long hbvHivInputValue;
+    @NotEmpty(message = "hcvHivInputValue can not be empty")
+    @Pattern(regexp = "[0-9]+", message = "Field must be a number")
+    private Long hcvHivInputValue;
+    @NotEmpty(message = "hbvHcdHivInputValue can not be empty")
+    @Pattern(regexp = "[0-9]+", message = "Field must be a number")
+    private Long hbvHcdHivInputValue;
+
+    @NotEmpty(message = "hbvHcvCheckbox can not be empty")
+    private Boolean hbvHcvCheckbox;
+
+    @NotEmpty(message = "hbvHivCheckbox can not be empty")
+    private Boolean hbvHivCheckbox;
+
+    @NotEmpty(message = "hcvHivCheckbox can not be empty")
+    private Boolean hcvHivCheckbox;
+
+    @NotEmpty(message = "hbvHdvCheckbox can not be empty")
+    private Boolean hbvHdvCheckbox;
+
+    @NotEmpty(message = "hbvHcvHivCheckbox can not be empty")
+    private Boolean hbvHcvHivCheckbox;
+
+
+
 }

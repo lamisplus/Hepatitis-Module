@@ -2,6 +2,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { token, url } from "../../../../../../api";
 import axios from "axios";
+import { calculateAge, calculateBMI } from "../../../../../utils";
 
 export const useValidateNewPatientRegistrationFormValuesHook = (onSubmit) => {
   const requiredTextPrompt = "This field is required";
@@ -56,19 +57,7 @@ export const useValidateNewPatientRegistrationFormValuesHook = (onSubmit) => {
     return response.data;
   };
 
-  const calculateAge = (dob) => {
-    const today = new Date();
-    const birthDate = new Date(dob); // create a date object directlyfrom`dob1`argument
-    let age_now = today.getFullYear() - birthDate.getFullYear();
-    return age_now;
-  };
-
-  const calculateBMI = (height, weight) => {
-    let convertMeterToCM = Number(height) / 100;
-    let squareH = convertMeterToCM * convertMeterToCM;
-    let value = (Number(weight) / squareH).toFixed(2);
-    return value;
-  };
+ 
 
   const NewPatientReistrationValidationSchema = yup.object({
     dateOfRegistration: yup.string().required(requiredTextPrompt),
