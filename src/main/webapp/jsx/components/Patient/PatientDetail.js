@@ -15,6 +15,7 @@ import DasboardTreatmentForm from "./ViralHepatitisForms/DashboardTreatmentForm"
 import PatientHistory from "./PatientHistoryy";
 import FollowUpHome from "./ViralHepatitisForms/PatientCardFollowUpHome";
 import ViralHepatitisForm2 from "./ViralHepatitisForms/Form2";
+import PatientDashboardDiagnosis from "./PatientDasboardComponents/Forms/PatientDashboardDiagnosis";
 
 const styles = (theme) => ({
   root: {
@@ -130,7 +131,7 @@ function PatientCard(props) {
           )}
 
           {activeContent.route === "diagnosis" && (
-            <ViralHepatitisForm2
+            <PatientDashboardDiagnosis
               patientObj={patientObj}
               setActiveContent={setActiveContent}
               activeContent={activeContent}

@@ -1,64 +1,3 @@
-{
-  /*
-{
-    enrollmentUuid: getCookie("enrollmentIds")?.enrollmentUuid,
-    hepatitisBTreatment: {
-      hbvDateStarted: "",
-      hbvDateStopped: "",
-      hbvAdverseEffectReported: "",
-      hbvPastTreatmentRegimen: "",
-      newRegimenPrescribedDuration: "",
-      hepatitisBRegimenSwitch: {
-        adverseEffectReported: "",
-        dateStarted: "",
-        dateStopped: "",
-        newRegimen: "",
-        reasonForSwitch: "",
-      },
-      historyOfAdverseEffect: "",
-      hbvNewRegimen: "",
-      newRegimenDateStarted: "",
-      newRegimenDateStopped: "",
-      reasonForHepatitisBTreatment: {
-        comment: "",
-        reasonsForTreatment: "",
-      },
-      treatmentExperience: "",
-    },
-    hepatitisCTreatment: {
-      adverseEffectReported: "",
-      dateCompleted: "",
-      dateStarted: "",
-      hcvPastTreatmentRegimen: "",
-      hcvNewRegimen: "",
-      newRegimenDateStarted: "",
-      newRegimenDateStopped: "",
-      hcvRetreatment: {
-        hcvGenotype: "",
-        dateStarted: "",
-        dateStopped: "",
-        hcvRetreatmentHistoryOfAdverseEffect: "",
-        newRegimen: "",
-        prescribedDuration: 0,
-        retreatmentAdverseEffect: "",
-      },
-      hepatitisSvr12Testing: {
-        dateTested: "",
-        hcvRNA: "",
-        hcvRNAValue: "",
-        retreatmentDateTested: "",
-        retreatmentHcvRNA: "",
-        retreatmentHcvRNAValue: "",
-      },
-      pastTreatmentExperience: "",
-      prescribedDuration: "",
-      treatmentExperience: "",
-    },
-  };
-
-*/
-}
-
 import React, { useState } from "react";
 import { Form, Label, Spinner } from "reactstrap";
 import moment from "moment";
@@ -75,12 +14,11 @@ import { Card, CardContent } from "@material-ui/core";
 import "react-toastify/dist/ReactToastify.css";
 import "react-widgets/dist/css/react-widgets.css";
 import "react-phone-input-2/lib/style.css";
-import "../patient.css";
+import "./patient.css";
 import "react-widgets/dist/css/react-widgets.css";
 import { Collapse, IconButton } from "@material-ui/core";
 import { ArrowForward, ExpandMore as ExpandMoreIcon } from "@material-ui/icons";
 import { useHistory } from "react-router-dom";
-import { useValidateNewPatientDiagnosisFormValuesHook } from "./FormvalidationSchemas/useValidateNewPatientDiagnosisFormValues";
 import CustomFormGroup from "../../../CustomFormGroup/CustomFormGroup";
 import { useFetchCodesets } from "../../../../hooks/useFetchCodesets.hook";
 import {
@@ -88,10 +26,13 @@ import {
   calculateApriScore,
   calculateFib4,
 } from "../../../../utils";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { saveDiagnosis } from "../../../../services/saveDiagnosis";
 import { toast } from "react-toastify";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { FETCH_ENROLMENT_KEY } from "../../../../utils/queryKeys";
+import { fetchEnrolment } from "../../../../services/fetchEnrolment";
+import { useValidatePatientDashboardDiagnosisFormValuesHook } from "./FormvalidationSchemas/useValidatePatientDasboardDiagnosisFormValues";
 
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
@@ -165,11 +106,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NewPatientDiagnosis = ({ step, setStep }) => {
+const PatientDashboardDiagnosis = ({ 
+    patientObj,
+    setActiveContent,
+    activeContent,
+}) => {
   const history = useHistory();
-  const enrolmentData = history?.location?.state?.enrolmentData;
-  const [enrollmentUuid] = useState(enrolmentData?.enrollmentUuid);
-  const [userGender] = useState(enrolmentData?.person?.gender?.display);
+  
+  const [enrollmentUuid, setEnrollmentUuid] = useState("");
+  const [userGender] = useState(
+    patientObj?.gender?.display
+  );
+
 
   const classes = useStyles();
 
@@ -179,15 +127,26 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
     coInfectionDropdown: true,
   });
 
+  useQuery(
+    [FETCH_ENROLMENT_KEY, patientObj?.personUuid],
+    () => fetchEnrolment(patientObj?.personUuid),
+    {
+      onSuccess: ({ uuid }) => {
+        const actualUuid = uuid
+        setEnrollmentUuid(actualUuid);
+      },
+    }
+  );
+
   const { mutate, isLoading } = useMutation({
     mutationFn: saveDiagnosis,
     onSuccess: (data) => {
       toast.success("Diagnosis created successfully");
-      history.push("/register-new-patient", {
-        enrolmentData: enrolmentData,
-        diagnosisData: data,
-      });
-      setStep(step + 1);
+      setActiveContent((prev) => ({ ...prev, route: "recent-history" }));
+    //   history.push("/patient-history", {
+    //     patientId: patientObj?.id,
+    //     patientObj:patientObj
+    //   });
     },
     onError: () => {
       toast.error("Diagnosis creation failed");
@@ -327,9 +286,12 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
     mutate(payload);
   };
 
-  const { formik } = useValidateNewPatientDiagnosisFormValuesHook(handleSubmit, userGender);
+  const { formik } = useValidatePatientDashboardDiagnosisFormValuesHook(
+    handleSubmit,
+    userGender
+  );
   const { returnData: childPughScoreOptions } = useFetchCodesets("CHILD_PUGH");
-  console.log(formik.errors);
+
   React.useEffect(() => {
     const computedApriScore = calculateApriScore(
       formik?.values.astInputValue,
@@ -341,7 +303,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
       formik?.values.astInputValue,
       formik?.values.pltInputValue,
       formik?.values.altInputValue,
-      calculateAge(enrolmentData?.person?.dateOfBirth) //patient age here
+      calculateAge(patientObj?.dateOfBirth ||patientObj?.dob) //patient age here
     );
     formik.setFieldValue("fib4", computedFib4);
   }, [
@@ -350,7 +312,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
     formik?.values.altInputValue,
     formik.setFieldValue,
   ]);
-
+  
   return (
     <div>
       <Card className={classes.root}>
@@ -749,7 +711,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                             </div>
                           )}
 
-                          {userGender.toLowerCase() === "female" && (
+                          {userGender?.toLowerCase() === "female" && (
                             <div className="form-group mb-3 col-md-4">
                               <CustomFormGroup
                                 formik={formik}
@@ -1305,6 +1267,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                                         formik?.values?.hbvHcvHivInputValue
                                       }
                                       onChange={formik.handleChange}
+                                      onBlur={formik.handleBlur}
                                       style={{
                                         border: "1px solid #014D88",
                                         borderRadius: "0.2rem",
@@ -2178,29 +2141,16 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
               {false && <Spinner />}
               <br />
 
-              <div className="d-flex justify-content-between">
-                <MatButton
-                  type="button"
-                  variant="contained"
-                  color="primary"
-                  onClick={() => setStep(step - 1)}
-                  className={classes.button}
-                  startIcon={<ArrowBackIcon />}
-                  style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}
-                >
-                  <span style={{ textTransform: "capitalize" }}>Previous</span>
-                </MatButton>
-
+              <div className="d-flex justify-content-end">
                 <MatButton
                   type="submit"
                   variant="contained"
                   color="primary"
                   disabled={isLoading}
                   className={classes.button}
-                  endIcon={<ArrowForward />}
                   style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}
                 >
-                  <span style={{ textTransform: "capitalize" }}>Next</span>
+                  <span style={{ textTransform: "capitalize" }}>Submit</span>
                 </MatButton>
               </div>
             </Form>
@@ -2211,4 +2161,4 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
   );
 };
 
-export default NewPatientDiagnosis;
+export default PatientDashboardDiagnosis;

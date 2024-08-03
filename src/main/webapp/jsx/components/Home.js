@@ -29,9 +29,6 @@ const Home = () => {
       <Link
         to={{
           pathname: "/register-new-patient",
-          state: {
-            existingPatient: "new",
-          },
         }}
       >
         {" "}
