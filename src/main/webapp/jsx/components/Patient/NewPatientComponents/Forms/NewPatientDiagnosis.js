@@ -1,4 +1,5 @@
-{/*
+{
+  /*
 {
     enrollmentUuid: getCookie("enrollmentIds")?.enrollmentUuid,
     hepatitisBTreatment: {
@@ -55,7 +56,8 @@
     },
   };
 
-*/ }
+*/
+}
 
 import React, { useState } from "react";
 import { Form, Label, Spinner } from "reactstrap";
@@ -89,6 +91,8 @@ import {
 import { useMutation } from "react-query";
 import { saveDiagnosis } from "../../../../services/saveDiagnosis";
 import { toast } from "react-toastify";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+
 
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
@@ -165,11 +169,7 @@ const useStyles = makeStyles((theme) => ({
 const NewPatientDiagnosis = ({ step, setStep }) => {
   const history = useHistory();
   const enrolmentData = history?.location?.state?.enrolmentData;
-  const [enrolmentDataId] = useState(enrolmentData?.enrollmentId);
-  const [facilityId] = useState(enrolmentData?.facilityId);
   const [enrollmentUuid] = useState(enrolmentData?.enrollmentUuid);
-  const [userId] = useState(enrolmentData?.person?.id);
-  const [userUuid] = useState(enrolmentData?.person?.uuid);
   const [userGender] = useState(enrolmentData?.person?.gender?.display);
 
   const classes = useStyles();
@@ -2179,7 +2179,19 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
               {false && <Spinner />}
               <br />
 
-              <div className="d-flex justify-content-end">
+              <div className="d-flex justify-content-between">
+                <MatButton
+                  type="button"
+                  variant="contained"
+                  color="primary"
+                  onClick={() => setStep(step - 1)}
+                  className={classes.button}
+                  startIcon={<ArrowBackIcon />}
+                  style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}
+                >
+                  <span style={{ textTransform: "capitalize" }}>Previous</span>
+                </MatButton>
+
                 <MatButton
                   type="submit"
                   variant="contained"

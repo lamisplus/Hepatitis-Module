@@ -21,9 +21,9 @@ const NewPatientViralHepatitisFormsContainer = () => {
     setStep(0);
   }, []);
   const formMap = {
-    0: <NewPatientTreatment step={step} setStep={setStep} />
-    // 0: <NewPatientRegistrationForm step={step} setStep={setStep} />,
-    // 1: <NewPatientDiagnosis step={step} setStep={setStep} />
+    0: <NewPatientRegistrationForm step={step} setStep={setStep} />,
+    1: <NewPatientDiagnosis step={step} setStep={setStep} />,
+    2: <NewPatientTreatment step={step} setStep={setStep} />
   };
   return (
     <>

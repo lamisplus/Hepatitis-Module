@@ -41,7 +41,7 @@ export const useValidateNewPatientTreatmentFormValuesHook = (onSubmit) => {
 
     hepatitisCAdverseEventReported: "",
 
-    hepatitisCSvr12TestingDateStarted: "",
+    hepatitisCSvr12TestingDateTested: "",
     hepatitisCSvr12TestingHcvRna: "",
     hepatitisCSvr12TestingHcvRnaValue: "",
 
@@ -61,55 +61,158 @@ export const useValidateNewPatientTreatmentFormValuesHook = (onSubmit) => {
  
   const NewPatientTreatmentValidationSchema = yup.object({
     hepatitisBTreatmentExperience: yup.string().required(requiredTextPrompt),
-    hepatitisBPastTreatmentRegimen: yup.string().required(requiredTextPrompt),
 
-    hepatitisBPastTreatmentExperienceDateStarted: yup.string().required(requiredTextPrompt),
-    hepatitisBPastTreatmentExperienceDateCompleted: yup.string().required(requiredTextPrompt),
-    hepatitisBPastTreatmentExperiencePrescribedDuration: yup.string().required(requiredTextPrompt),
+    hepatitisBPastTreatmentRegimen: yup.string().when("hepatitisBTreatmentExperience", {
+        is: (hepatitisBTreatmentExperience) => hepatitisBTreatmentExperience === "YES",
+        then: yup.string().required(requiredTextPrompt),
+        otherwise: yup.string(),
+      }),
+
+    hepatitisBPastTreatmentExperienceDateStarted: yup.date().when("hepatitisBTreatmentExperience", {
+        is: (hepatitisBTreatmentExperience) => hepatitisBTreatmentExperience === "YES",
+        then: yup.date().required(requiredTextPrompt),
+        otherwise: yup.date(),
+      }),
+
+
+    hepatitisBPastTreatmentExperienceDateCompleted: yup.date().when("hepatitisBTreatmentExperience", {
+        is: (hepatitisBTreatmentExperience) => hepatitisBTreatmentExperience === "YES",
+        then: yup.date().required(requiredTextPrompt),
+        otherwise: yup.date(),
+      }),
+
+
+    hepatitisBPastTreatmentExperiencePrescribedDuration: yup.string().when("hepatitisBTreatmentExperience", {
+        is: (hepatitisBTreatmentExperience) => hepatitisBTreatmentExperience ==="YES",
+        then: yup.string().required(requiredTextPrompt),
+        otherwise: yup.string(),
+      }),
+
 
     hepatitisBNewTreatmentRegimen: yup.string().required(requiredTextPrompt),
-    hepatitisBNewTreatmentRegimenPrescribedDuration: yup.string().required(requiredTextPrompt),
-    hepatitisBNewTreatmentRegimenDateStarted: yup.string().required(requiredTextPrompt),
-    hepatitisBNewTreatmentRegimenDateCompleted: yup.string().required(requiredTextPrompt),
+
+    hepatitisBNewTreatmentRegimenPrescribedDuration: yup.string().when("hepatitisBNewTreatmentRegimen", {
+        is: (hepatitisBNewTreatmentRegimen) => hepatitisBNewTreatmentRegimen !== "",
+        then: yup.string().required(requiredTextPrompt),
+        otherwise: yup.string(),
+      }),
+
+
+    hepatitisBNewTreatmentRegimenDateStarted: yup.date().when("hepatitisBNewTreatmentRegimen", {
+        is: (hepatitisBNewTreatmentRegimen) => hepatitisBNewTreatmentRegimen !== "",
+        then: yup.date().required(requiredTextPrompt),
+        otherwise: yup.date(),
+      }),
+
+    hepatitisBNewTreatmentRegimenDateCompleted: yup.date().when("hepatitisBNewTreatmentRegimen", {
+        is: (hepatitisBNewTreatmentRegimen) => hepatitisBNewTreatmentRegimen !== "",
+        then: yup.date().required(requiredTextPrompt),
+        otherwise: yup.date(),
+      }),
+
 
     hepatitisBAdverseEventReported: yup.string().required(requiredTextPrompt),
 
     hepatitisBRegimenSwitchNewRegimen: yup.string().required(requiredTextPrompt),
-    hepatitisBRegimenSwitchDateStarted: yup.string().required(requiredTextPrompt),
-    hepatitisBRegimenSwitchDateCompleted: yup.string().required(requiredTextPrompt),
+
+    hepatitisBRegimenSwitchDateStarted: yup.date().required(requiredTextPrompt),
+
+    hepatitisBRegimenSwitchDateCompleted: yup.date().required(requiredTextPrompt),
+
     hepatitisBRegimenSwitchReasonForSwitch: yup.string().required(requiredTextPrompt),
+
     hepatitisBRegimenSwitchAdverseEffectReported: yup.string().required(requiredTextPrompt),
+//done all this
+
 
     hepatitisBReasonForTreatment: yup.string().required(requiredTextPrompt),
-    hepatitisBReasonsForTreatmentComment: yup.string().required(requiredTextPrompt),
+
+    hepatitisBReasonsForTreatmentComment: yup.string(),
 
     hepatitisCPastTreatmentExperience: yup.string().required(requiredTextPrompt),
-    hepatitisCPastTreatmentRegimen: yup.string().required(requiredTextPrompt),
-    hepatitisCPastTreatmentExperienceDateStarted: yup.string().required(requiredTextPrompt),
-    hepatitisCPastTreatmentExperienceDateCompleted: yup.string().required(requiredTextPrompt),
-    hepatitisCPastTreatmentExperiencePrescribedDuration: yup.string().required(requiredTextPrompt),
+
+    hepatitisCPastTreatmentRegimen: yup.string().when("hepatitisCPastTreatmentExperience", {
+        is: (hepatitisCPastTreatmentExperience) => hepatitisCPastTreatmentExperience === "YES",
+        then: yup.string().required(requiredTextPrompt),
+        otherwise: yup.string(),
+      }),
+
+    hepatitisCPastTreatmentExperienceDateStarted: yup.date().when("hepatitisCPastTreatmentExperience", {
+        is: (hepatitisCPastTreatmentExperience) => hepatitisCPastTreatmentExperience === "YES",
+        then: yup.date().required(requiredTextPrompt),
+        otherwise: yup.date(),
+      }),
+
+    hepatitisCPastTreatmentExperienceDateCompleted: yup.date().when("hepatitisCPastTreatmentExperience", {
+        is: (hepatitisCPastTreatmentExperience) => hepatitisCPastTreatmentExperience === "YES",
+        then: yup.date().required(requiredTextPrompt),
+        otherwise: yup.date(),
+      }),
+
+    hepatitisCPastTreatmentExperiencePrescribedDuration: yup.string().when("hepatitisCPastTreatmentExperience", {
+        is: (hepatitisCPastTreatmentExperience) => hepatitisCPastTreatmentExperience === "YES",
+        then: yup.string().required(requiredTextPrompt),
+        otherwise: yup.string(),
+      }),
 
     hepatitisCNewTreatmentRegimen: yup.string().required(requiredTextPrompt),
-    hepatitisCNewTreatmentRegimenPrescribedDuration: yup.string().required(requiredTextPrompt),
-    hepatitisCNewTreatmentRegimenDateStarted: yup.string().required(requiredTextPrompt),
-    hepatitisCNewTreatmentRegimenDateCompleted: yup.string().required(requiredTextPrompt),
+
+    hepatitisCNewTreatmentRegimenPrescribedDuration: yup.string().when("hepatitisCNewTreatmentRegimen", {
+        is: (hepatitisCNewTreatmentRegimen) => hepatitisCNewTreatmentRegimen !== "",
+        then: yup.string().required(requiredTextPrompt),
+        otherwise: yup.string(),
+      }),
+
+    hepatitisCNewTreatmentRegimenDateStarted: yup.date().when("hepatitisCNewTreatmentRegimen", {
+        is: (hepatitisCNewTreatmentRegimen) => hepatitisCNewTreatmentRegimen !== "",
+        then: yup.date().required(requiredTextPrompt),
+        otherwise: yup.date(),
+      }),
+
+
+    hepatitisCNewTreatmentRegimenDateCompleted: yup.date().when("hepatitisCNewTreatmentRegimen", {
+        is: (hepatitisCNewTreatmentRegimen) => hepatitisCNewTreatmentRegimen !== "",
+        then: yup.date().required(requiredTextPrompt),
+        otherwise: yup.date(),
+      }),
+
+
 
     hepatitisCAdverseEventReported: yup.string().required(requiredTextPrompt),
 
-    hepatitisCSvr12TestingDateStarted: yup.string().required(requiredTextPrompt),
+    hepatitisCSvr12TestingDateTested: yup.date().required(requiredTextPrompt),
+
     hepatitisCSvr12TestingHcvRna: yup.string().required(requiredTextPrompt),
-    hepatitisCSvr12TestingHcvRnaValue: yup.string().required(requiredTextPrompt),
+
+    hepatitisCSvr12TestingHcvRnaValue:  yup.number().when("hepatitisCSvr12TestingHcvRna", {
+        is: (hepatitisCSvr12TestingHcvRna) => hepatitisCSvr12TestingHcvRna === "DETECTED",
+        then: yup.number().required(requiredTextPrompt),
+        otherwise: yup.number(),
+      }),
+
 
     hepatitisCHcvRetreatmentHcvGenotype: yup.string().required(requiredTextPrompt),
+
     hepatitisCHcvRetreatmentNewRegimen: yup.string().required(requiredTextPrompt),
+
     hepatitisCHcvRetreatmentPrescribedDuration: yup.string().required(requiredTextPrompt),
-    hepatitisCHcvRetreatmentDateStarted: yup.string().required(requiredTextPrompt),
+
+    hepatitisCHcvRetreatmentDateStarted: yup.date().required(requiredTextPrompt),
+
     hepatitisCHcvRetreatmentAdverseEffect: yup.string().required(requiredTextPrompt),
+
     hepatitisCHcvRetreatmentHistoryOfAdverseEffect: yup.string().required(requiredTextPrompt),
 
-    hepatitisCRetreatmentSvr12TestingDateTested: yup.string().required(requiredTextPrompt),
+    hepatitisCRetreatmentSvr12TestingDateTested: yup.date().required(requiredTextPrompt),
+
     hepatitisCRetreatmentSvr12TestingRetreatmentHcvRna: yup.string().required(requiredTextPrompt),
-    hepatitisCRetreatmentSvr12TestingRetreatmentHcvRnaValue: yup.string().required(requiredTextPrompt),
+
+    hepatitisCRetreatmentSvr12TestingRetreatmentHcvRnaValue:  yup.number().when("hepatitisCRetreatmentSvr12TestingRetreatmentHcvRna", {
+        is: (hepatitisCRetreatmentSvr12TestingRetreatmentHcvRna) => hepatitisCRetreatmentSvr12TestingRetreatmentHcvRna === "DETECTED",
+        then: yup.number().required(requiredTextPrompt),
+        otherwise: yup.number(),
+      }),
+
   });
 
   const formik = useFormik({

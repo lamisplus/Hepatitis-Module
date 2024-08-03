@@ -25,33 +25,41 @@ import java.time.LocalDate;
 @Builder
 public class HepatitisBTreatmentDto implements Serializable {
 
-    private Status treatmentExperience;
-    @NotEmpty(message = "newRegimen can not be empty")
-    private String newRegimen;
+    private String hepatitisBTreatmentExperience;
+    private String hepatitisBPastTreatmentRegimen;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private LocalDate dateStarted;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private Status historyOfAdverseEffect;
-
-    @NotEmpty(message = "newRegimen can not be empty")
-    private String hbvPastTreatmentRegimen;
+    private LocalDate hepatitisBPastTreatmentExperienceDateStarted;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private LocalDate dateStopped;
+    private LocalDate hepatitisBPastTreatmentExperienceDateCompleted;
 
-    @NotNull(message = "hepatitisBRegimenSwitch cannot be null or empty")
-    private  HepatitisBRegimenSwitchDto hepatitisBRegimenSwitch;
-
-    @NotNull(message = "reasonForHepatitisBTreatment cannot be null or empty")
-    private  ReasonForHepatitisBTreatmentDto reasonForHepatitisBTreatment;
+    private String hepatitisBPastTreatmentExperiencePrescribedDuration;
+    private String hepatitisBNewTreatmentRegimen;
+    private String hepatitisBNewTreatmentRegimenPrescribedDuration;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private LocalDate newRegimenDateStarted;
+    private LocalDate hepatitisBNewTreatmentRegimenDateStarted;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private LocalDate newRegimenDateCompleted;
+    private LocalDate hepatitisBNewTreatmentRegimenDateCompleted;
+
+    private String hepatitisBAdverseEventReported;
+    private String hepatitisBRegimenSwitchNewRegimen;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate hepatitisBRegimenSwitchDateStarted;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate hepatitisBRegimenSwitchDateCompleted;
+
+    private String hepatitisBRegimenSwitchReasonForSwitch;
+    private String hepatitisBRegimenSwitchAdverseEffectReported;
+    private String hepatitisBReasonForTreatment;
+    private String hepatitisBReasonsForTreatmentComment;
+    private String hepatitisCPastTreatmentExperience;
+    private String hepatitisCPastTreatmentRegimen;
+
 
 }
 

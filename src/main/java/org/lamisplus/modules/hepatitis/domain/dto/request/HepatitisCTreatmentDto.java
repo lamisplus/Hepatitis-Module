@@ -22,31 +22,46 @@ import java.time.LocalDate;
 @ToString
 @Builder
 public class HepatitisCTreatmentDto {
-    private Status treatmentExperience;
-
-    @NotEmpty(message = "pastTreatmentExperience can not be empty")
-    private String pastTreatmentExperience;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate hepatitisCPastTreatmentExperienceDateStarted;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private LocalDate dateStarted;
+    private LocalDate hepatitisCPastTreatmentExperienceDateCompleted;
+
+    private String hepatitisCPastTreatmentExperiencePrescribedDuration;
+    private String hepatitisCNewTreatmentRegimen;
+    private String hepatitisCNewTreatmentRegimenPrescribedDuration;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private LocalDate dateCompleted;
-    @Size(min = 1)
-    @NotNull(message = "prescribedDuration can not be null")
-    private Integer prescribedDuration;
-
-    private Status adverseEffectReported;
-
-    @NotEmpty(message = "hbvPastTreatmentRegimen can not be empty")
-    private String hbvPastTreatmentRegimen;
+    private LocalDate hepatitisCNewTreatmentRegimenDateStarted;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private LocalDate dateStopped;
+    private LocalDate hepatitisCNewTreatmentRegimenDateCompleted;
 
-    @NotNull(message = "hepatitisSvr12TestingDto cannot be null or empty")
-    private HepatitisSVR12TestingDto hepatitisSvr12Testing;
-    @NotNull(message = "hcvRetreatmentDto cannot be null or empty")
-    private HCVRetreatmentDto hcvRetreatment;
+    private String hepatitisCAdverseEventReported;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate hepatitisCSvr12TestingDateTested;
+
+    private String hepatitisCSvr12TestingHcvRna;
+    private Long hepatitisCSvr12TestingHcvRnaValue;
+    private String hepatitisCHcvRetreatmentHcvGenotype;
+    private String hepatitisCHcvRetreatmentNewRegimen;
+    private String hepatitisCHcvRetreatmentPrescribedDuration;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate hepatitisCHcvRetreatmentDateStarted;
+
+    private String hepatitisCHcvRetreatmentAdverseEffect;
+    private String hepatitisCHcvRetreatmentHistoryOfAdverseEffect;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate hepatitisCRetreatmentSvr12TestingDateTested;
+
+    private String hepatitisCRetreatmentSvr12TestingRetreatmentHcvRna;
+
+    private Long hepatitisCRetreatmentSvr12TestingRetreatmentHcvRnaValue;
+
+
 }
 
