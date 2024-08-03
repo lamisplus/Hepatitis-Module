@@ -19,8 +19,9 @@ import java.io.Serializable;
 @Builder
 public class HepatitisTreatmentDto implements Serializable {
 
-    @NotEmpty(message = "HepatitisEnrollementUUID cannot be null or empty")
+    @NotEmpty(message = "Hepatitis Enrollement uuid cannot be null or empty")
     private String enrollmentUuid;
+
     @NotNull(message = "hepatitisBTreatmentDto cannot be null or empty")
     private HepatitisBTreatmentDto hepatitisBTreatment;
     @NotNull(message = "hepatitishepatitisCTreatmentDtoCTest cannot be null or empty")

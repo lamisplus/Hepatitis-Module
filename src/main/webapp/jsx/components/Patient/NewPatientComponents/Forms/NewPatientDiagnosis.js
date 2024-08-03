@@ -1,82 +1,61 @@
+{/*
 {
-  /*
-{
-    "enrollmentId": 2,
-    "facilityId": 1881,
-    "person": {
-        "id": 78,
-        "visitId": null,
-        "active": true,
-        "surname": "NNAJIOFOR",
-        "firstName": "EMMANUEL",
-        "otherName": "Emmaui",
-        "sex": "Female",
-        "gender": {
-            "id": 377,
-            "display": "Female"
-        },
-        "deceased": null,
-        "maritalStatus": {
-            "id": 6,
-            "display": "Married"
-        },
-        "employmentStatus": {
-            "id": 474,
-            "display": "Freelance"
-        },
-        "education": {
-            "id": 14,
-            "display": "Post Secondary"
-        },
-        "organization": null,
-        "biometricStatus": false,
-        "dateOfBirth": "1990-12-30",
-        "deceasedDateTime": null,
-        "identifier": {
-            "identifier": [
-                {
-                    "type": "HospitalNumber",
-                    "value": "4655830",
-                    "assignerId": 1
-                }
-            ]
-        },
-        "contact": null,
-        "contactPoint": {
-            "contactPoint": [
-                {
-                    "type": "phone",
-                    "value": "2349024589231"
-                }
-            ]
-        },
-        "address": {
-            "address": [
-                {
-                    "city": "44 Chuba Okadigbo Street Apo Legislative Quarters",
-                    "line": null,
-                    "stateId": 16,
-                    "district": "316",
-                    "countryId": 1,
-                    "postalCode": null,
-                    "organisationUnitId": null
-                }
-            ]
-        },
-        "dateOfRegistration": "2024-07-28",
-        "ninNumber": "32424354465",
-        "emrId": null,
-        "facilityId": null,
-        "archived": 0,
-        "uuid": "bad63690-92b6-4057-8848-28d5ac1210bb",
-        "dynamicHivStatus": null,
-        "isDateOfBirthEstimated": false
+    enrollmentUuid: getCookie("enrollmentIds")?.enrollmentUuid,
+    hepatitisBTreatment: {
+      hbvDateStarted: "",
+      hbvDateStopped: "",
+      hbvAdverseEffectReported: "",
+      hbvPastTreatmentRegimen: "",
+      newRegimenPrescribedDuration: "",
+      hepatitisBRegimenSwitch: {
+        adverseEffectReported: "",
+        dateStarted: "",
+        dateStopped: "",
+        newRegimen: "",
+        reasonForSwitch: "",
+      },
+      historyOfAdverseEffect: "",
+      hbvNewRegimen: "",
+      newRegimenDateStarted: "",
+      newRegimenDateStopped: "",
+      reasonForHepatitisBTreatment: {
+        comment: "",
+        reasonsForTreatment: "",
+      },
+      treatmentExperience: "",
     },
-    "enrollmentUuid": "dadb3095-541d-4bc7-9703-54043e83c94d"
-}
+    hepatitisCTreatment: {
+      adverseEffectReported: "",
+      dateCompleted: "",
+      dateStarted: "",
+      hcvPastTreatmentRegimen: "",
+      hcvNewRegimen: "",
+      newRegimenDateStarted: "",
+      newRegimenDateStopped: "",
+      hcvRetreatment: {
+        hcvGenotype: "",
+        dateStarted: "",
+        dateStopped: "",
+        hcvRetreatmentHistoryOfAdverseEffect: "",
+        newRegimen: "",
+        prescribedDuration: 0,
+        retreatmentAdverseEffect: "",
+      },
+      hepatitisSvr12Testing: {
+        dateTested: "",
+        hcvRNA: "",
+        hcvRNAValue: "",
+        retreatmentDateTested: "",
+        retreatmentHcvRNA: "",
+        retreatmentHcvRNAValue: "",
+      },
+      pastTreatmentExperience: "",
+      prescribedDuration: "",
+      treatmentExperience: "",
+    },
+  };
 
-*/
-}
+*/ }
 
 import React, { useState } from "react";
 import { Form, Label, Spinner } from "reactstrap";
@@ -109,6 +88,7 @@ import {
 } from "../../../../utils";
 import { useMutation } from "react-query";
 import { saveDiagnosis } from "../../../../services/saveDiagnosis";
+import { toast } from "react-toastify";
 
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
@@ -344,7 +324,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
         },
       },
     };
-    
+
     mutate(payload);
   };
 
@@ -2204,7 +2184,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                   type="submit"
                   variant="contained"
                   color="primary"
-                  // disabled={isLoading}
+                  disabled={isLoading}
                   className={classes.button}
                   endIcon={<ArrowForward />}
                   style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}

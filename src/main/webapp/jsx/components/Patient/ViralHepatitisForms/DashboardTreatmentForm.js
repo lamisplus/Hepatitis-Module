@@ -31,6 +31,7 @@ import { isNotInTheFutureOrBeforeBirth } from "../../../helpers/dateValidators";
 import { FETCH_ENROLMENT_KEY } from "../../../utils/queryKeys";
 import { useQuery } from "react-query";
 import { fetchEnrolment } from "../../../services/fetchEnrolment";
+import { calculateAge } from "../../../utils";
 
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
@@ -166,6 +167,7 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent, setStep }) => {
   });
 
   const [errors, setErrors] = useState({});
+
   const handleInputChangeBasicHB = (e) => {
     setErrors({ ...temp, [e.target.name]: "" });
 
@@ -1830,28 +1832,27 @@ const DasboardTreatmentForm = ({ patientObj, setActiveContent, setStep }) => {
                                 name="hcvPastTreatmentRegimen"
                                 id="hcvPastTreatmentRegimen"
                                 value={
-                                  basicInfo.hepatitisCTest
-                                    .selectedClinicalParamsOptions?.ast === -1
+                                  basicInfo.hepatitisCTest?.selectedClinicalParamsOptions?.ast === -1
                                     ? 0
                                     : (Number(
-                                        calculate_age(
+                                        calculateAge(
                                           patientObj?.dateOfBirth ||
                                             patientObj?.dob
                                         ) || 0
                                       ) *
                                         Number(
                                           basicInfo?.hepatitisCTest
-                                            .selectedClinicalParamsOptions
+                                            ?.selectedClinicalParamsOptions
                                             ?.ast || 0
                                         )) /
                                       (Number(
-                                        basicInfo.hepatitisCTest
-                                          .selectedClinicalParamsOptions?.plt ||
+                                        basicInfo?.hepatitisCTest
+                                          ?.selectedClinicalParamsOptions?.plt ||
                                           0
                                       ) *
                                         Number(
                                           basicInfo.hepatitisCTest
-                                            .selectedClinicalParamsOptions
+                                            ?.selectedClinicalParamsOptions
                                             ?.alt || 0
                                         ))
                                 }

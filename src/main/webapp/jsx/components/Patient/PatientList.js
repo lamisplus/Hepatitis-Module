@@ -35,7 +35,7 @@ import moment from "moment";
 import { FaUserPlus } from "react-icons/fa";
 import { TiArrowForward } from "react-icons/ti";
 
-//Dtate Picker package
+//Date Picker package
 Moment.locale("en");
 momentLocalizer();
 

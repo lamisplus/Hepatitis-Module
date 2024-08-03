@@ -9,6 +9,7 @@ import NewPatientSteppers from "./Stepper/NewPatientSteppers";
 import NewPatientRegistrationForm from "./Forms/NewPatientRegistrationForm";
 import { useLocalStorageState } from "../../../hooks/useLocalStorageState";
 import NewPatientDiagnosis from "./Forms/NewPatientDiagnosis";
+import NewPatientTreatment from "./Forms/NewPatientTreatment";
 
 const NewPatientViralHepatitisFormsContainer = () => {
   const [step, setStep] = useLocalStorageState(
@@ -20,8 +21,9 @@ const NewPatientViralHepatitisFormsContainer = () => {
     setStep(0);
   }, []);
   const formMap = {
-    0: <NewPatientRegistrationForm step={step} setStep={setStep} />,
-    1: <NewPatientDiagnosis step={step} setStep={setStep} />
+    0: <NewPatientTreatment step={step} setStep={setStep} />
+    // 0: <NewPatientRegistrationForm step={step} setStep={setStep} />,
+    // 1: <NewPatientDiagnosis step={step} setStep={setStep} />
   };
   return (
     <>

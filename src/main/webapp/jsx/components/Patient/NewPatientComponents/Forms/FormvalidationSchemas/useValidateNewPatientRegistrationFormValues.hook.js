@@ -7,9 +7,9 @@ import { calculateAge, calculateBMI } from "../../../../../utils";
 export const useValidateNewPatientRegistrationFormValuesHook = (onSubmit) => {
   const requiredTextPrompt = "This field is required";
 
-  const newPatientReistrationValues = {
+  const newPatientRegistrationValues = {
     dateOfRegistration: "",
-   
+
     hospitalNumber: "",
     city: "",
     surname: "",
@@ -52,14 +52,11 @@ export const useValidateNewPatientRegistrationFormValuesHook = (onSubmit) => {
         },
       }
     );
-   
 
     return response.data;
   };
 
- 
-
-  const NewPatientReistrationValidationSchema = yup.object({
+  const NewPatientRegistrationValidationSchema = yup.object({
     dateOfRegistration: yup.string().required(requiredTextPrompt),
     hospitalNumber: yup
       .string()
@@ -74,7 +71,7 @@ export const useValidateNewPatientRegistrationFormValuesHook = (onSubmit) => {
         }
       ),
     city: yup.string().required(requiredTextPrompt),
-   
+
     surname: yup
       .string()
       .matches(/^[a-zA-Z\s]*$/, "Only letters are allowed")
@@ -142,9 +139,9 @@ export const useValidateNewPatientRegistrationFormValuesHook = (onSubmit) => {
   });
 
   const formik = useFormik({
-    initialValues: newPatientReistrationValues,
+    initialValues: newPatientRegistrationValues,
     onSubmit,
-    validationSchema: NewPatientReistrationValidationSchema,
+    validationSchema: NewPatientRegistrationValidationSchema,
   });
   return { formik };
 };

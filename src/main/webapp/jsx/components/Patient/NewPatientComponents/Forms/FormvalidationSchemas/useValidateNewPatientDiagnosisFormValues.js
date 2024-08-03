@@ -83,7 +83,7 @@ export const useValidateNewPatientDiagnosisFormValuesHook = (onSubmit) => {
     antiHDV: yup.string().required(requiredTextPrompt),//done
     treatmentEligible: yup.string().required(requiredTextPrompt),
     pmtctEligible: yup.string().required(requiredTextPrompt),//done
-    comment: yup.string().required(requiredTextPrompt),//done
+    comment: yup.string(),//done
     hcvRNA: yup.string().required(requiredTextPrompt),//done
 
     hcvRnaValue: yup.number().when("hcvRNA", {
