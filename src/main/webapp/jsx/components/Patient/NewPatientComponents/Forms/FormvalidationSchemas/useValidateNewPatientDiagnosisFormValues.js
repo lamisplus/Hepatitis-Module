@@ -2,7 +2,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 
 
-export const useValidateNewPatientDiagnosisFormValuesHook = (onSubmit) => {
+export const useValidateNewPatientDiagnosisFormValuesHook = (onSubmit, userGender) => {
   const requiredTextPrompt = "This field is required";
 
   const newPatientDiagnosisValues = {
@@ -82,7 +82,7 @@ export const useValidateNewPatientDiagnosisFormValuesHook = (onSubmit) => {
     hbeAG: yup.string().required(requiredTextPrompt),//done
     antiHDV: yup.string().required(requiredTextPrompt),//done
     treatmentEligible: yup.string().required(requiredTextPrompt),
-    pmtctEligible: yup.string().required(requiredTextPrompt),//done
+    pmtctEligible: userGender?.toLowerCase() === "female" ? yup.string().required(requiredTextPrompt) : yup.string(),//done
     comment: yup.string(),//done
     hcvRNA: yup.string().required(requiredTextPrompt),//done
 

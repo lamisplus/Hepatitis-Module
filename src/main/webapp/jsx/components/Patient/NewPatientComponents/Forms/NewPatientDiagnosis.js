@@ -93,7 +93,6 @@ import { saveDiagnosis } from "../../../../services/saveDiagnosis";
 import { toast } from "react-toastify";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
 const useStyles = makeStyles((theme) => ({
@@ -328,9 +327,9 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
     mutate(payload);
   };
 
-  const { formik } = useValidateNewPatientDiagnosisFormValuesHook(handleSubmit);
+  const { formik } = useValidateNewPatientDiagnosisFormValuesHook(handleSubmit, userGender);
   const { returnData: childPughScoreOptions } = useFetchCodesets("CHILD_PUGH");
-
+  console.log(formik.errors);
   React.useEffect(() => {
     const computedApriScore = calculateApriScore(
       formik?.values.astInputValue,

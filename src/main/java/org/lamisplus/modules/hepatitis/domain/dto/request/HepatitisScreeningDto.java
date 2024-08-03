@@ -20,4 +20,6 @@ public class HepatitisScreeningDto {
 
     @NotEmpty(message = "hepatitisC cannot be empty")
     private String hepatitisC;
+
+    private String pregnancy;
 }

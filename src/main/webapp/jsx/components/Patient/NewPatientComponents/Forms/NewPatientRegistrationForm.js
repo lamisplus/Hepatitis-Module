@@ -173,6 +173,7 @@ const NewPatientEnrolmentForm = ({ step, setStep }) => {
       screening: {
         dateOfFirstHepatitisBPositiveScreening,
         hepatitisC,
+        pregnancy,
       },
       personDto: {
         active: true,

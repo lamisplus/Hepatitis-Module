@@ -128,6 +128,7 @@ function PatientCard(props) {
               allRecentActivities={recentActivities}
             />
           )}
+
           {activeContent.route === "diagnosis" && (
             <ViralHepatitisForm2
               patientObj={patientObj}
@@ -135,6 +136,7 @@ function PatientCard(props) {
               activeContent={activeContent}
             />
           )}
+          
           {activeContent.route === "treatment" && (
             <DasboardTreatmentForm
               patientObj={patientObj}
@@ -142,14 +144,7 @@ function PatientCard(props) {
               activeContent={activeContent}
             />
           )}
-          {activeContent.route === "patient-history" && (
-            <PatientHistory
-              patientObj={patientObj}
-              setActiveContent={setActiveContent}
-              activeContent={activeContent}
-              recentActivities={recentActivities}
-            />
-          )}
+
           {activeContent.route === "patient-followup" && (
             <FollowUpHome
               patientObj={patientObj}
@@ -159,15 +154,17 @@ function PatientCard(props) {
               getRecentActivties={getRecentActivties}
             />
           )}
-          {activeContent.route === "home" && (
-            <Home
+
+          {activeContent.route === "patient-history" && (
+            <PatientHistory
               patientObj={patientObj}
               setActiveContent={setActiveContent}
               activeContent={activeContent}
               recentActivities={recentActivities}
-              getRecentActivties={getRecentActivties}
             />
           )}
+          
+
         </CardContent>
       </Card>
     </div>

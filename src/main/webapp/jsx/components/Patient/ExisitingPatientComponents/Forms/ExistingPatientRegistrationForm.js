@@ -156,6 +156,7 @@ const ExistingPatientEnrolmentForm = ({ step, setStep }) => {
       screening: {
         dateOfFirstHepatitisBPositiveScreening,
         hepatitisC,
+        pregnancy,
       },
     };
     mutate(payloadData);

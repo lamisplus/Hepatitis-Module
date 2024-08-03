@@ -39,7 +39,7 @@ public class HepatitisEnrollment extends AbstractPersistableEntity {
     private Sex sex;
 
     @Column(name = "pregnancy")
-    private String pregnancy;
+    private Status pregnancy;
 
     @Column(name = "weight")
     private Double weight;
