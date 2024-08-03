@@ -25,6 +25,9 @@ public class HepatitisCTreatmentDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate hepatitisCPastTreatmentExperienceDateStarted;
 
+    private String hepatitisCPastTreatmentExperience;
+    private String hepatitisCPastTreatmentRegimen;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate hepatitisCPastTreatmentExperienceDateCompleted;
 

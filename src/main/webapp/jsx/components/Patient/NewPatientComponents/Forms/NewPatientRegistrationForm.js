@@ -1,85 +1,3 @@
-{
-  /*
-
-{
-  "enrollmentUuid": "346f8170-0f35-49a3-81f8-c3e1985d9cd2",
-    "clinicalParameters": {
-        "apriScore": apriScore,
-        "ascites": ascites,
-        "childPughScore": childPughScore,
-        "creatinine": creatinine,
-        "diagnosisResult": diagnosisResult,
-        "directBiliribin": directBiliribin,
-        "fib4": fib4,
-        "fibroscan": fibroscan,
-        "gradeOfEncephalopathy": Number(gradeOfEncephalopathy),
-        "liverBiopsyStage": liverBiopsyStage,
-        "prothrombinTimeNR": prothrombinTimeNR,
-        "severityOfAscites": severityOfAscites,
-        "totalBiliRubin": totalBiliRubin,
-        "ultrasoundScan": ultrasoundScan,
-        "urea": urea,
-        "afp": afp
-    },
-    "hepatitisBTest": {
-        "albumin": albumin,
-        "antiHDV": antiHDV,
-        "comment": comment,
-        "ctScan": ctScan,
-        "dateHbvDnaTestRequested": dateHbvDnaTestRequested,
-        "dateHbvSampleRequested": dateHbvSampleRequested,
-        "hbeAG": hbeAG,
-        "hepatitisCoinfection": {
-            "hbvHcvInputValue": hbvHcvInputValue,
-            "hbvHivInputValue": hbvHivInputValue,
-            "hcvHivInputValue": hcvHivInputValue,
-            "hbvHdvInputValue": hbvHdvInputValue,
-            "hbvHcvHivInputValue": hbvHcvHivInputValue
-            "hbvHcvCheckbox": hbvHcvCheckbox
-            "hbvHivCheckbox": hbvHivCheckbox
-            "hcvHivCheckbox": hcvHivCheckbox
-            "hbvHdvCheckbox": hbvHdvCheckbox
-            "hbvHcvHivCheckbox": hbvHcvHivCheckbox
-        },
-        "dateHbvDnaResultReported": dateHbvDnaResultReported,
-        "hbsAgQuantification": "48",
-        "hbvDna": hbvDna,
-        "hvbDnaValue": hbvDnaValue,
-        "pmtctEligible": pmtctEligible,
-        "stagingDateOfLiverBiopsy": stagingDateOfLiverBiopsy,
-        "treatmentEligible": treatmentEligible
-    },
-    "hepatitisCTest": {
-        "selectedClinicalParamsOptions": {
-          "astCheckbox": astCheckbox,
-          "altCheckbox": altCheckbox,
-          "pltCheckbox": pltCheckbox,
-          "astInputValue": astInputValue,
-          "altInputValue": altInputValue,
-          "pltInputValue": pltInputValue
-        },
-        "commobidities": commobidities,
-        "hcvRnaValue": hcvRnaValue,
-        "hcvRNA": hcvRNA,
-        "multipleInfection": multipleInfection,
-        "hepatitisCoinfection": {
-            "hbvHcvInputValue": hbvHcvInputValue,
-            "hbvHivInputValue": hbvHivInputValue,
-            "hcvHivInputValue": hcvHivInputValue,
-            "hbvHdvInputValue": hbvHdvInputValue,
-            "hbvHcvHivInputValue": hbvHcvHivInputValue
-            "hbvHcvCheckbox": hbvHcvCheckbox
-            "hbvHivCheckbox": hbvHivCheckbox
-            "hcvHivCheckbox": hcvHivCheckbox
-            "hbvHdvCheckbox": hbvHdvCheckbox
-            "hbvHcvHivCheckbox": hbvHcvHivCheckbox
-        }
-    }
-}
-
-*/
-}
-
 import React, { useState } from "react";
 import { Form, Label, Spinner } from "reactstrap";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -115,7 +33,6 @@ import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
 import CustomFormGroup from "../../../CustomFormGroup/CustomFormGroup";
 import { calculateAge, calculateBMI } from "../../../../utils";
-
 
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
@@ -189,7 +106,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const InitialEnrolmentForm = ({ step, setStep }) => {
+const NewPatientEnrolmentForm = ({ step, setStep }) => {
   const history = useHistory();
   const classes = useStyles();
   const [hepatitisStatus] = useState([
@@ -318,8 +235,6 @@ const InitialEnrolmentForm = ({ step, setStep }) => {
   const { returnData: provinces } = useFetchOranisationalUnit(
     formik?.values?.stateId
   );
-
- 
 
   // Regex pattern to match only letters and spaces
   const regexPattern = /^[a-zA-Z\s]*$/;
@@ -1367,4 +1282,4 @@ const InitialEnrolmentForm = ({ step, setStep }) => {
   );
 };
 
-export default InitialEnrolmentForm;
+export default NewPatientEnrolmentForm;

@@ -1,64 +1,3 @@
-{
-  /*
-{
-    enrollmentUuid: getCookie("enrollmentIds")?.enrollmentUuid,
-    hepatitisBTreatment: {
-      hbvDateStarted: "",
-      hbvDateStopped: "",
-      hbvAdverseEffectReported: "",
-      hbvPastTreatmentRegimen: "",
-      newRegimenPrescribedDuration: "",
-      hepatitisBRegimenSwitch: {
-        adverseEffectReported: "",
-        dateStarted: "",
-        dateStopped: "",
-        newRegimen: "",
-        reasonForSwitch: "",
-      },
-      historyOfAdverseEffect: "",
-      hbvNewRegimen: "",
-      newRegimenDateStarted: "",
-      newRegimenDateStopped: "",
-      reasonForHepatitisBTreatment: {
-        comment: "",
-        reasonsForTreatment: "",
-      },
-      treatmentExperience: "",
-    },
-    hepatitisCTreatment: {
-      adverseEffectReported: "",
-      dateCompleted: "",
-      dateStarted: "",
-      hcvPastTreatmentRegimen: "",
-      hcvNewRegimen: "",
-      newRegimenDateStarted: "",
-      newRegimenDateStopped: "",
-      hcvRetreatment: {
-        hcvGenotype: "",
-        dateStarted: "",
-        dateStopped: "",
-        hcvRetreatmentHistoryOfAdverseEffect: "",
-        newRegimen: "",
-        prescribedDuration: 0,
-        retreatmentAdverseEffect: "",
-      },
-      hepatitisSvr12Testing: {
-        dateTested: "",
-        hcvRNA: "",
-        hcvRNAValue: "",
-        retreatmentDateTested: "",
-        retreatmentHcvRNA: "",
-        retreatmentHcvRNAValue: "",
-      },
-      pastTreatmentExperience: "",
-      prescribedDuration: "",
-      treatmentExperience: "",
-    },
-  };
-
-*/
-}
-
 import React, { useState } from "react";
 import { Form, Label, Spinner } from "reactstrap";
 import moment from "moment";
@@ -80,7 +19,7 @@ import "react-widgets/dist/css/react-widgets.css";
 import { Collapse, IconButton } from "@material-ui/core";
 import { ArrowForward, ExpandMore as ExpandMoreIcon } from "@material-ui/icons";
 import { useHistory } from "react-router-dom";
-import { useValidateNewPatientDiagnosisFormValuesHook } from "./FormvalidationSchemas/useValidateNewPatientDiagnosisFormValues";
+import { useValidateExistingPatientDiagnosisFormValuesHook } from "./FormvalidationSchemas/useValidateExistingPatientDiagnosisFormValues";
 import CustomFormGroup from "../../../CustomFormGroup/CustomFormGroup";
 import { useFetchCodesets } from "../../../../hooks/useFetchCodesets.hook";
 import {
@@ -92,7 +31,6 @@ import { useMutation } from "react-query";
 import { saveDiagnosis } from "../../../../services/saveDiagnosis";
 import { toast } from "react-toastify";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-
 
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
@@ -166,11 +104,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NewPatientDiagnosis = ({ step, setStep }) => {
+const ExistingPatientDiagnosis = ({ step, setStep }) => {
   const history = useHistory();
   const enrolmentData = history?.location?.state?.enrolmentData;
   const [enrollmentUuid] = useState(enrolmentData?.enrollmentUuid);
-  const [userGender] = useState(enrolmentData?.person?.gender?.display);
+  const [userGender] = useState(
+    history?.location?.state?.patientObj?.gender?.display
+  );
+  const patientObj = history?.location?.state?.patientObj;
+  const patientId = patientObj?.id || history?.location?.state?.patientId;
+  const facilityId =
+    patientObj?.facilityId || history?.location?.state?.facilityId;
 
   const classes = useStyles();
 
@@ -184,9 +128,12 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
     mutationFn: saveDiagnosis,
     onSuccess: (data) => {
       toast.success("Diagnosis created successfully");
-      history.push("/register-new-patient", {
+      history.push("/register-existing-patient", {
         enrolmentData: enrolmentData,
         diagnosisData: data,
+        patientId: patientId,
+        patientObj: patientObj,
+        facilityId: facilityId,
       });
       setStep(step + 1);
     },
@@ -328,7 +275,10 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
     mutate(payload);
   };
 
-  const { formik } = useValidateNewPatientDiagnosisFormValuesHook(handleSubmit);
+  const { formik } = useValidateExistingPatientDiagnosisFormValuesHook(
+    handleSubmit,
+    userGender
+  );
   const { returnData: childPughScoreOptions } = useFetchCodesets("CHILD_PUGH");
 
   React.useEffect(() => {
@@ -351,7 +301,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
     formik?.values.altInputValue,
     formik.setFieldValue,
   ]);
-
+  console.log(formik.errors);
   return (
     <div>
       <Card className={classes.root}>
@@ -750,7 +700,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                             </div>
                           )}
 
-                          {userGender.toLowerCase() === "female" && (
+                          {userGender?.toLowerCase() === "female" && (
                             <div className="form-group mb-3 col-md-4">
                               <CustomFormGroup
                                 formik={formik}
@@ -1306,6 +1256,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                                         formik?.values?.hbvHcvHivInputValue
                                       }
                                       onChange={formik.handleChange}
+                                      onBlur={formik.handleBlur}
                                       style={{
                                         border: "1px solid #014D88",
                                         borderRadius: "0.2rem",
@@ -2212,4 +2163,4 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
   );
 };
 
-export default NewPatientDiagnosis;
+export default ExistingPatientDiagnosis;

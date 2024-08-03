@@ -5,20 +5,19 @@ import "react-widgets/dist/css/react-widgets.css";
 import { Link } from "react-router-dom";
 import { TiArrowBack } from "react-icons/ti";
 import { ToastContainer } from "react-toastify";
-import NewPatientSteppers from "./Stepper/NewPatientSteppers";
-import NewPatientRegistrationForm from "./Forms/NewPatientRegistrationForm";
+import ExistingPatientRegistrationForm from "./Forms/ExistingPatientRegistrationForm";
 import { useLocalStorageState } from "../../../hooks/useLocalStorageState";
-import NewPatientDiagnosis from "./Forms/NewPatientDiagnosis";
-import NewPatientTreatment from "./Forms/NewPatientTreatment";
+import ExistingPatientDiagnosis from "./Forms/ExistingPatientDiagnosis";
+import ExistingPatientTreatment from "./Forms/ExistingPatientTreatment";
+import ExistingPatientSteppers from "./Stepper/ExisitingPatientSteppers";
 
-const NewPatientViralHepatitisFormsContainer = () => {
+const ExistingViralHepatitisFormsContainer = () => {
   const [step, setStep] = useState(0);
 
- 
   const formMap = {
-    0: <NewPatientRegistrationForm step={step} setStep={setStep} />,
-    1: <NewPatientDiagnosis step={step} setStep={setStep} />,
-    2: <NewPatientTreatment step={step} setStep={setStep} />,
+    0: <ExistingPatientRegistrationForm step={step} setStep={setStep} />,
+    1: <ExistingPatientDiagnosis step={step} setStep={setStep} />,
+    2: <ExistingPatientTreatment step={step} setStep={setStep} />
   };
   return (
     <>
@@ -32,7 +31,7 @@ const NewPatientViralHepatitisFormsContainer = () => {
             <li className="breadcrumb-item active">
               <h4>
                 {" "}
-                <Link to={"/"}>Viral Hepatitis /</Link>Enroll New Client
+                <Link to={"/"}>Viral Hepatitis /</Link>Enroll Existing Client
               </h4>
             </li>
           </ol>
@@ -40,7 +39,6 @@ const NewPatientViralHepatitisFormsContainer = () => {
         <Link
           to={{
             pathname: "/",
-            state: "users",
           }}
         >
           <Button
@@ -61,7 +59,7 @@ const NewPatientViralHepatitisFormsContainer = () => {
         </Link>
         <br />
         <br />
-        <NewPatientSteppers activeStep={step} />
+        <ExistingPatientSteppers activeStep={step} />
       </div>
 
       {formMap[step]}
@@ -69,4 +67,4 @@ const NewPatientViralHepatitisFormsContainer = () => {
   );
 };
 
-export default NewPatientViralHepatitisFormsContainer;
+export default ExistingViralHepatitisFormsContainer;

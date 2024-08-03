@@ -57,8 +57,7 @@ public class HepatitisBTreatmentDto implements Serializable {
     private String hepatitisBRegimenSwitchAdverseEffectReported;
     private String hepatitisBReasonForTreatment;
     private String hepatitisBReasonsForTreatmentComment;
-    private String hepatitisCPastTreatmentExperience;
-    private String hepatitisCPastTreatmentRegimen;
+
 
 
 }

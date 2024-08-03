@@ -25,7 +25,7 @@ public class HepatitisCoinfectionDTO {
     private Long hcvHivInputValue;
     @NotEmpty(message = "hbvHcdHivInputValue can not be empty")
     @Pattern(regexp = "[0-9]+", message = "Field must be a number")
-    private Long hbvHcdHivInputValue;
+    private Long hbvHcvHivInputValue;
 
     @NotEmpty(message = "hbvHcvCheckbox can not be empty")
     private Boolean hbvHcvCheckbox;

@@ -42,8 +42,10 @@ public class HepatitisEnrollmentDto implements Serializable {
 
     @Positive(message = "BMI value cannot be zero or negative")
     private Double bmi;
+
     @NotEmpty(message = "HepatitisB cannot be empty")
     private String hepatitisB;
+
     private String Breastfeeding;
 
     @NotNull(message = "historyOfUsingAbusedSubstance must not be null")

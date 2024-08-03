@@ -21,7 +21,7 @@ function getSteps() {
   return ["Enrolment", "Diagnosis", "Treatment"];
 }
 
-export default function ExisitingPatientSteppers({ activeStep }) {
+export default function ExistingPatientSteppers({ activeStep }) {
   const steps = getSteps();
 
   return (

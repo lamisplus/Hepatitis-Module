@@ -175,9 +175,9 @@ const Patients = (props) => {
                       to={{
                         pathname: "/register-existing-patient",
                         state: {
-                          patientId: row.id,
+                          patientId: row?.id,
                           patientObj: row,
-                          existingPatient: "existing",
+                          facilityId: row?.facilityId,
                         },
                       }}
                     >

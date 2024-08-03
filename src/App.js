@@ -13,6 +13,7 @@ import ViralHepatitisFormsContainer from "./main/webapp/jsx/components/Patient/N
 import { QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { queryClient } from "./main/webapp/jsx/utils/queryClient";
+import ExistingViralHepatitisFormsContainer from "./main/webapp/jsx/components/Patient/ExisitingPatientComponents/ExistingPatientViralHepatitisFormsContainer";
 
 export default function App() {
   return (
@@ -29,7 +30,7 @@ export default function App() {
               <ViralHepatitisFormsContainer />
             </Route>
             <Route path="/register-existing-patient">
-              <div>register existing patient</div>
+              <ExistingViralHepatitisFormsContainer/>
             </Route>
            
            
