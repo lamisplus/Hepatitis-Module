@@ -21,31 +21,11 @@ import { fetchEnrolment } from "../../services/fetchEnrolment";
 import { fetchFollowup } from "../../services/fetchFollowup";
 import { queryClient } from "../../utils/queryClient";
 import { da } from "date-fns/locale";
+import { getRecentActivties } from "../../services/getRecentActivities";
 
 const RecentHistory = (props) => {
   let history = useHistory();
-  const [recentActivities, setRecentActivities] = useState([
-    {
-      activityName: "Hepatitis Enrollment",
-      path: "hepatitis_enrollment",
-      activityDate: props.patientObj.dateOfRegistration,
-    },
-    {
-      activityName: "Hepatitis Diagnosis",
-      path: "hepatitis_diagnosis",
-      activityDate: props.patientObj.dateOfRegistration,
-    },
-    {
-      activityName: "Hepatitis Treatment",
-      path: "hepatitis_treatment",
-      activityDate: props.patientObj.dateOfRegistration,
-    },
-    {
-      activityName: "Hepatitis Followups",
-      path: "hepatitis_followup",
-      activityDate: props.patientObj.dateOfRegistration,
-    },
-  ]);
+  
   const [open, setOpen] = React.useState(false);
   const [saving, setSaving] = useState(false);
   const [record, setRecord] = useState(null);
@@ -53,16 +33,15 @@ const RecentHistory = (props) => {
   let notToBeUpdated = ["pmtct_infant_information"];
   const [activeAccordionHeaderShadow, setActiveAccordionHeaderShadow] =
     useState(0);
-  const [enrolmentData, setEnrolmentData] = useState(null);
+  const [, setEnrolmentData] = useState(null);
+  const [recentActivities, setRecentActivities] = useState([]);
 
-  useEffect(() => {
-    setRecentActivities(props.allRecentActivities);
-  }, [props.patientObj.id, props.allRecentActivities]);
+  
 
   const prefetchAllFollowUp = () => {
-    const array = recentActivities;
-    for (let index = 0; index < array.length; index++) {
-      const activityRecord = array[index];
+    
+    for (let index = 0; index < recentActivities.length; index++) {
+      const activityRecord = recentActivities[index];
       if (activityRecord?.path === "hepatitis_followup") {
         queryClient.prefetchQuery(
           [FETCH_FOLLOWUP_KEY, activityRecord?.recordId],
@@ -79,6 +58,15 @@ const RecentHistory = (props) => {
       onSuccess: ({ uuid }) => {
         setEnrolmentData(uuid);
         prefetchAllFollowUp();
+      },
+    }
+  );
+  const {refetch} = useQuery(
+    ["FECTH_RECENT_ACTIVITIES", props?.patientObj?.personUuid],
+    () => getRecentActivties(props?.patientObj?.personUuid),
+    {
+      onSuccess: (data) => {
+        setRecentActivities(data)
       },
     }
   );
@@ -100,47 +88,20 @@ const RecentHistory = (props) => {
   const LoadViewPage = (row, action) => {
     prefetchAllFollowUp();
     if (row.path === "hepatitis_enrollment") {
-      history.push({
-        pathname: "/update-patient",
-        state: {
-          id: row.recordId,
-          patientObj: props.patientObj,
-          actionType: action,
-          showForm: {
-            enrollment: true,
-            diagnosis: false,
-            treatment: false,
-          },
-        },
-      });
+      props.setActiveContent({ ...props.activeContent, route: "enrolment",
+      actionType: action, 
+      record: row
+    });
     } else if (row.path === "hepatitis_diagnosis") {
-      history.push({
-        pathname: "/update-patient",
-        state: {
-          id: row.recordId,
-          patientObj: props.patientObj,
-          actionType: action,
-          showForm: {
-            enrollment: false,
-            diagnosis: true,
-            treatment: false,
-          },
-        },
-      });
+      props.setActiveContent({ ...props.activeContent, route: "diagnosis",
+      actionType: action,
+      record: row
+    });
     } else if (row.path === "hepatitis_treatment") {
-      history.push({
-        pathname: "/update-patient",
-        state: {
-          id: row.recordId,
-          patientObj: props.patientObj,
-          actionType: action,
-          showForm: {
-            enrollment: false,
-            diagnosis: false,
-            treatment: true,
-          },
-        },
-      });
+      props.setActiveContent({ ...props.activeContent, route: "treatment",
+      actionType: action,
+      record: row
+    });
     } else if (row.path === "hepatitis_followup") {
       if (action === "update") {
         props.setActiveContent({
@@ -174,7 +135,7 @@ const RecentHistory = (props) => {
           toast.success("Record Deleted Successfully");
           toggle();
           setSaving(false);
-          props.getRecentActivties();
+          refetch()
         })
         .catch((error) => {
           setSaving(false);
@@ -184,9 +145,9 @@ const RecentHistory = (props) => {
               error.response.data.apierror.message !== ""
                 ? error.response.data.apierror.message
                 : "Something went wrong, please try again";
-            toast.error(errorMessage);
+            // toast.error(errorMessage);
           } else {
-            toast.error("Something went wrong. Please try again...");
+            // toast.error("Something went wrong. Please try again...");
           }
         });
     } else if (row.path === "hepatitis_treatment") {
@@ -203,7 +164,7 @@ const RecentHistory = (props) => {
           toast.success("Record Deleted Successfully");
           toggle();
           setSaving(false);
-          props.getRecentActivties();
+          refetch()
         })
         .catch((error) => {
           setSaving(false);
@@ -213,16 +174,14 @@ const RecentHistory = (props) => {
               error.response.data.apierror.message !== ""
                 ? error.response.data.apierror.message
                 : "Something went wrong, please try again";
-            toast.error(errorMessage);
+            // toast.error(errorMessage);
           } else if (row.path === "hepatitis_followup") {
-          } else {
-            toast.error("Something went wrong. Please try again...");
-          }
+          } 
         });
     } else if (row.path === "hepatitis_followup") {
       setSaving(true);
-
       mutate(row?.recordId);
+      refetch()
     }
   };
 
@@ -253,7 +212,7 @@ const RecentHistory = (props) => {
                 >
                   <>
                     {recentActivities &&
-                      recentActivities.map((data, i) => (
+                      recentActivities?.map?.((data, i) => (
                         <div className="accordion-item" key={i}>
                           <Accordion.Toggle
                             as={Card.Text}

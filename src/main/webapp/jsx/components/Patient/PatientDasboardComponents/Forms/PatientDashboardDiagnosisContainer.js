@@ -6,6 +6,8 @@ const PatientDashboardDiagnosisContainer = (props) => {
 
   const componentMap = {
     create: <PatientDashboardDiagnosisCreate {...props} />,
+    view: <div>view of diagnosis</div>,
+    update: <div>Update of diagnosis</div>
   };
   return <>{componentMap[actionType]}</>;
 };

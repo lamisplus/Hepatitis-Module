@@ -27,7 +27,6 @@ import { useFetchCodesets } from "../../../../hooks/useFetchCodesets.hook";
 import { useHistory } from "react-router-dom";
 import CustomFormGroup from "../../../CustomFormGroup/CustomFormGroup";
 import { useMutation, useQuery } from "react-query";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { FETCH_ENROLMENT_KEY } from "../../../../utils/queryKeys";
 import { fetchEnrolment } from "../../../../services/fetchEnrolment";
 import { saveTreatment } from "../../../../services/saveTreatment";
@@ -111,12 +110,10 @@ const PatientDashboardTreatment = ({
   setActiveContent,
   activeContent,
 }) => {
-  const history = useHistory();
   const [patientDateOfBirth] = useState(
     patientObj.dateOfBirth || patientObj?.dob
   );
   const [enrollmentUuid, setEnrollmentUuid] = useState("");
-  const [userGender] = useState(patientObj?.gender?.display);
 
   useQuery(
     [FETCH_ENROLMENT_KEY, patientObj?.personUuid],
@@ -150,7 +147,6 @@ const PatientDashboardTreatment = ({
     onSuccess: (data) => {
       toast.success("Treatment created successfully");
       setActiveContent((prev) => ({ ...prev, route: "recent-history" }));
-    
     },
     onError: () => {
       toast.error("Treatment creation failed");
