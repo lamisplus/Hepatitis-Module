@@ -113,10 +113,10 @@ const PatientDashboardDiagnosisViewUpdate = ({
   activeContent,
   disableInputs = false
 }) => {
-  const [enrollmentUuid, setEnrollmentUuid] = useState("");
-  const [userGender] = useState(patientObj?.gender?.display);
-  const [, setDiagnosisData] = useState(null);
-  const [formInitialValue, setFormInitialValue] = useState(null);
+    const [userGender] = useState(patientObj?.gender?.display);
+    const [, setDiagnosisData] = useState(null);
+    const [enrollmentUuid, setEnrollmentUuid] = useState("");
+    const [formInitialValue, setFormInitialValue] = useState(null);
  
 
   const [recordId] = useState(activeContent?.record?.recordId);
@@ -165,7 +165,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
       
       delete initialValues?.selectedClinicalParamsOptions
       delete initialValues?.hepatitisCoinfection
-      console.log(initialValues);
+     
 
 
       if (formInitialValue === null) {

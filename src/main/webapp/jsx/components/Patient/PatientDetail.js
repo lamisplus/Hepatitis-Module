@@ -18,6 +18,7 @@ import ViralHepatitisForm2 from "./ViralHepatitisForms/Form2";
 import PatientDashboardDiagnosis from "./PatientDasboardComponents/Forms/PatientDashboardDiagnosisCreate";
 import PatientDashboardDiagnosisContainer from "./PatientDasboardComponents/Forms/PatientDashboardDiagnosisContainer";
 import PatientDashboardTreatmentContainer from "./PatientDasboardComponents/Forms/PatientDashboardTreatmentContainer";
+import PatientDashboardEnrolmentContainer from "./PatientDasboardComponents/Forms/PatientDashboardEnrolementContainer";
 
 const styles = (theme) => ({
   root: {
@@ -134,6 +135,13 @@ function PatientCard(props) {
 
           {activeContent.route === "diagnosis" && (
             <PatientDashboardDiagnosisContainer
+              patientObj={patientObj}
+              setActiveContent={setActiveContent}
+              activeContent={activeContent}
+            />
+          )}
+          {activeContent.route === "enrolment" && (
+            <PatientDashboardEnrolmentContainer
               patientObj={patientObj}
               setActiveContent={setActiveContent}
               activeContent={activeContent}
