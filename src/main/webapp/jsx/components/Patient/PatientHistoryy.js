@@ -37,6 +37,7 @@ import { FETCH_ENROLMENT_KEY, FETCH_FOLLOWUP_KEY } from "../../utils/queryKeys";
 import { useArchiveFollowup } from "../../hooks/useArchiveFollowup";
 import { fetchEnrolment } from "../../services/fetchEnrolment";
 import { queryClient } from "../../utils/queryClient";
+import { getRecentActivties } from "../../services/getRecentActivities";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -63,7 +64,9 @@ const tableIcons = {
 };
 
 const PatientHistory = (props) => {
-  const [recentActivities, setRecentActivities] = useState([]);
+  const [recentActivities, setRecentActivities] = useState(
+    props.recentActivities || []
+  );
   const [loading, setLoading] = useState(false);
   let history = useHistory();
   const [open, setOpen] = React.useState(false);
@@ -73,10 +76,6 @@ const PatientHistory = (props) => {
 
   const toggle = () => setOpen(!open);
   let notToBeUpdated = ["pmtct_infant_information"];
-
-  useEffect(() => {
-    setRecentActivities(props.recentActivities);
-  }, [props.recentActivities]);
 
   const prefetchAllFollowUp = () => {
     const array = recentActivities;
@@ -102,48 +101,37 @@ const PatientHistory = (props) => {
     }
   );
 
+  const { refetch } = useQuery(
+    ["FECTH_RECENT_ACTIVITIES", props?.patientObj?.personUuid],
+    () => getRecentActivties(props?.patientObj?.personUuid),
+    {
+      onSuccess: (data) => {
+        setRecentActivities(data);
+      },
+    }
+  );
+
   const LoadViewPage = (row, action) => {
     if (row.path === "hepatitis_enrollment") {
-      history.push({
-        pathname: "/update-patient",
-        state: {
-          id: row.recordId,
-          patientObj: props.patientObj,
-          actionType: action,
-          showForm: {
-            enrollment: true,
-            diagnosis: false,
-            treatment: false,
-          },
-        },
+      props.setActiveContent({
+        ...props.activeContent,
+        route: "enrolment",
+        actionType: action,
+        record: row,
       });
     } else if (row.path === "hepatitis_diagnosis") {
-      history.push({
-        pathname: "/update-patient",
-        state: {
-          id: row.recordId,
-          patientObj: props.patientObj,
-          actionType: action,
-          showForm: {
-            enrollment: false,
-            diagnosis: true,
-            treatment: false,
-          },
-        },
+      props.setActiveContent({
+        ...props.activeContent,
+        route: "diagnosis",
+        actionType: action,
+        record: row,
       });
     } else if (row.path === "hepatitis_treatment") {
-      history.push({
-        pathname: "/update-patient",
-        state: {
-          id: row.recordId,
-          patientObj: props.patientObj,
-          actionType: action,
-          showForm: {
-            enrollment: false,
-            diagnosis: false,
-            treatment: true,
-          },
-        },
+      props.setActiveContent({
+        ...props.activeContent,
+        route: "treatment",
+        actionType: action,
+        record: row,
       });
     } else if (row.path === "hepatitis_followup") {
       if (action === "update") {
@@ -161,33 +149,9 @@ const PatientHistory = (props) => {
           followupRecord: row,
         });
       }
-    } else if (row.path === "anc-mother-visit") {
-      props.setActiveContent({
-        ...props.activeContent,
-        route: "consultation",
-        id: row.recordId,
-        activeTab: "home",
-        actionType: action,
-      });
-    } else if (row.path === "pmtct_infant_visit") {
-      props.setActiveContent({
-        ...props.activeContent,
-        route: "consultation",
-        id: row.recordId,
-        activeTab: "child",
-        actionType: action,
-      });
-    } else if (row.path === "pmtct_infant_information") {
-      props.setActiveContent({
-        ...props.activeContent,
-        route: "add-infant",
-        id: row.recordId,
-        activeTab: "home",
-        actionType: action,
-      });
-    } else {
     }
   };
+
   const LoadDeletePage = (row) => {
     if (row.path === "hepatitis_diagnosis") {
       setSaving(true);
@@ -203,7 +167,7 @@ const PatientHistory = (props) => {
           toast.success("Record Deleted Successfully");
           toggle();
           setSaving(false);
-          props.getRecentActivties();
+          refetch();
         })
         .catch((error) => {
           setSaving(false);
@@ -232,7 +196,7 @@ const PatientHistory = (props) => {
           toast.success("Record Deleted Successfully");
           toggle();
           setSaving(false);
-          props.getRecentActivties();
+          refetch();
         })
         .catch((error) => {
           setSaving(false);
@@ -249,10 +213,10 @@ const PatientHistory = (props) => {
         });
     } else if (row.path === "hepatitis_followup") {
       setSaving(true);
-
       mutate(row?.recordId);
     }
   };
+
   const LoadModal = (row) => {
     toggle();
     setRecord(row);
