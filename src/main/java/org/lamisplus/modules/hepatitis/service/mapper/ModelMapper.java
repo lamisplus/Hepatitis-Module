@@ -85,7 +85,7 @@ public class ModelMapper {
     }
 
     public HepatitisDiagnosis mapToDiagnosis(HepatitisDiagnosisDto diagnosisDto) {
-        System.out.println("Diagnosis Gamal from mapper: "+ diagnosisDto);
+
         ObjectMapper objectMapper = new ObjectMapper();
 
         HepatitisBTestDto hepatitisBTestDto = diagnosisDto.getHepatitisBTest();
@@ -106,7 +106,7 @@ public class ModelMapper {
         if(clinicalParametersDto != null) {
             clinicalParametersNode = objectMapper.convertValue(clinicalParametersDto, JsonNode.class);
         }
-        System.out.println("got here chief");
+
         System.out.println(diagnosisDto.getEnrollmentUuid());
         HepatitisDiagnosis hepatitisDiagnosis = HepatitisDiagnosis.builder()
                 .hepatitisBTest(hepatitisBNode)

@@ -93,15 +93,15 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 
     @Override
     public ResponseEntity<String> hepatitisDiagnosis(HepatitisDiagnosisDto diagnosisDto) {
-        log.info("Diagnosis Gamal: " + diagnosisDto);
+
 
         if(diagnosisDto == null) throw new IllegalTypeException(EnrollmentServiceImpl.class, "Please fill in the required fields");
         String enrollmentId = diagnosisDto.getEnrollmentUuid();
-        log.info("EnrollmentId: " + enrollmentId);
+
         if(StringUtils.isBlank(enrollmentId)) throw new IllegalTypeException(EnrollmentServiceImpl.class,"Please enrollmentId can not be null");
         HepatitisEnrollment enrollment = getHepatitisEnrollment(enrollmentId);
         HepatitisDiagnosis hepatitisDiagnosis = mapper.mapToDiagnosis(diagnosisDto);
-        log.info("I am here 1");
+
         hepatitisDiagnosis.setHepatitisEnrollment(enrollment);
         hepatitisDiagnosis.setFacilityId(enrollment.getFacilityId());
         hepatitisDiagnosis.setArchived(0);

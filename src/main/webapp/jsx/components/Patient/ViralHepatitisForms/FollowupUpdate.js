@@ -29,7 +29,6 @@ import axios from "axios";
 import { url as baseUrl, token } from "../../../../api";
 import { fetchHBsAG } from "./Form2";
 
-
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
 const useStyles = makeStyles((theme) => ({
@@ -263,6 +262,7 @@ const FollowupUpdate = (props) => {
             data?.followupClinicalParametersDto?.fuStagingDateLiverBiopsy
           ),
         };
+
 
         if (formInitialValue === null) {
           setFormInitialValue(initialValues);

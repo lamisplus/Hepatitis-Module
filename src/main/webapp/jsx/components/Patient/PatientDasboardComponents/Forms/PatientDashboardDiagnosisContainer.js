@@ -1,13 +1,14 @@
 import React from "react";
 import PatientDashboardDiagnosisCreate from "./PatientDashboardDiagnosisCreate";
+import PatientDashboardDiagnosisViewUpdate from "./PatientDashboardDiagnosisViewUpdate";
 
 const PatientDashboardDiagnosisContainer = (props) => {
   const actionType = props?.activeContent?.actionType || "create";
 
   const componentMap = {
     create: <PatientDashboardDiagnosisCreate {...props} />,
-    view: <div>view of diagnosis</div>,
-    update: <div>Update of diagnosis</div>
+    view: <PatientDashboardDiagnosisViewUpdate {...props} disableInputs={true}/>,
+    update: <PatientDashboardDiagnosisViewUpdate {...props} disableInputs={false}/>
   };
   return <>{componentMap[actionType]}</>;
 };

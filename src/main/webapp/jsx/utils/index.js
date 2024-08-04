@@ -20,25 +20,17 @@ export const calculateApriScore = (ast, plt) =>
   ast === -1 ? 0 : parseInt((ast / plt) * 100);
 
 
-export function formatDate(inputDate) {
-  // Split the input date string into an array
-  var dateArray = inputDate.split("-");
-
-  // Check if the input date is in the correct format (yyyy-mm-dd)
-  if (dateArray.length !== 3) {
-    return "Invalid date format";
-  }
-
-  // Extract the year, month, and day from the array
-  var year = dateArray[0];
-  var month = dateArray[1];
-  var day = dateArray[2];
-
-  // Create a new date string in the "dd-mm-yyyy" format
-  var newDateFormat = day + "-" + month + "-" + year;
-
-  return newDateFormat;
-}
+  export const formatDate = (dateObj) => {
+    if (!dateObj) {
+      return "";
+    }
+    const formattedDate = `${dateObj?.year}-${dateObj?.monthValue
+      ?.toString?.()
+      .padStart?.(2, "0")}-${dateObj?.dayOfMonth
+      ?.toString?.()
+      .padStart?.(2, "0")}`;
+    return formattedDate;
+  };
 
 export const isNotInTheFutureOrBeforeBirth = (date, birthday) => {
   return (
