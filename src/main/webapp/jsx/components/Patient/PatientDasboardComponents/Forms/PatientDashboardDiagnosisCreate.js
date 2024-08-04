@@ -106,13 +106,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PatientDashboardDiagnosis = ({ 
+const PatientDashboardDiagnosisCreate = ({ 
     patientObj,
     setActiveContent,
     activeContent,
 }) => {
-  const history = useHistory();
-  
   const [enrollmentUuid, setEnrollmentUuid] = useState("");
   const [userGender] = useState(
     patientObj?.gender?.display
@@ -143,10 +141,7 @@ const PatientDashboardDiagnosis = ({
     onSuccess: (data) => {
       toast.success("Diagnosis created successfully");
       setActiveContent((prev) => ({ ...prev, route: "recent-history" }));
-    //   history.push("/patient-history", {
-    //     patientId: patientObj?.id,
-    //     patientObj:patientObj
-    //   });
+    
     },
     onError: () => {
       toast.error("Diagnosis creation failed");
@@ -2161,4 +2156,4 @@ const PatientDashboardDiagnosis = ({
   );
 };
 
-export default PatientDashboardDiagnosis;
+export default PatientDashboardDiagnosisCreate;

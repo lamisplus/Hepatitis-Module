@@ -33,10 +33,14 @@ function SubMenu(props) {
   };
 
   const loadVaccination = (row) => {
-    props.setActiveContent({ ...props.activeContent, route: "diagnosis" });
+    props.setActiveContent({ ...props.activeContent, route: "diagnosis",
+    actionType: "create",
+  });
   };
   const loadTreatment = (row) => {
-    props.setActiveContent({ ...props.activeContent, route: "treatment" });
+    props.setActiveContent({ ...props.activeContent, route: "treatment",
+    actionType: "create",
+  });
   };
 
   const onClickHome = (row) => {
