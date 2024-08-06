@@ -23,7 +23,7 @@ import { useFetchCodesets } from "../../../../hooks/useFetchCodesets.hook";
 import {
   calculateAge,
   calculateApriScore,
-  calculateFib4
+  calculateFib4,
 } from "../../../../utils";
 import { useMutation, useQuery } from "react-query";
 import { saveDiagnosis } from "../../../../services/saveDiagnosis";
@@ -104,15 +104,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PatientDashboardDiagnosisCreate = ({ 
-    patientObj,
-    setActiveContent,
-}) => {
+const PatientDashboardDiagnosisCreate = ({ patientObj, setActiveContent }) => {
   const [enrollmentUuid, setEnrollmentUuid] = useState("");
-  const [userGender] = useState(
-    patientObj?.gender?.display
-  );
-
+  const [userGender] = useState(patientObj?.gender?.display);
 
   const classes = useStyles();
 
@@ -127,7 +121,7 @@ const PatientDashboardDiagnosisCreate = ({
     () => fetchEnrolment(patientObj?.personUuid),
     {
       onSuccess: ({ uuid }) => {
-        const actualUuid = uuid
+        const actualUuid = uuid;
         setEnrollmentUuid(actualUuid);
       },
     }
@@ -138,7 +132,6 @@ const PatientDashboardDiagnosisCreate = ({
     onSuccess: (data) => {
       toast.success("Diagnosis created successfully");
       setActiveContent((prev) => ({ ...prev, route: "recent-history" }));
-    
     },
     onError: () => {
       toast.error("Diagnosis creation failed");
@@ -285,26 +278,41 @@ const PatientDashboardDiagnosisCreate = ({
   const { returnData: childPughScoreOptions } = useFetchCodesets("CHILD_PUGH");
 
   React.useEffect(() => {
-    const computedApriScore = calculateApriScore(
-      formik?.values.astInputValue,
-      formik?.values.pltInputValue
-    );
-    formik.setFieldValue("apriScore", computedApriScore);
+    if (
+      typeof formik?.values?.astInputValue === "number" &&
+      typeof formik?.values?.pltInputValue === "number"
+    ) {
+      const computedApriScore = calculateApriScore(
+        Number(formik?.values?.astInputValue) || 0,
+        Number(formik?.values?.pltInputValue) || 0
+      );
+      formik.setFieldValue("apriScore", computedApriScore);
+    } else {
+      formik.setFieldValue("apriScore", null);
+    }
 
-    const computedFib4 = calculateFib4(
-      formik?.values.astInputValue,
-      formik?.values.pltInputValue,
-      formik?.values.altInputValue,
-      calculateAge(patientObj?.dateOfBirth ||patientObj?.dob) //patient age here
-    );
-    formik.setFieldValue("fib4", computedFib4);
+    if (
+      typeof formik?.values?.astInputValue === "number" &&
+      typeof formik?.values?.pltInputValue === "number" &&
+      typeof formik?.values?.altInputValue === "number"
+    ) {
+      const computedFib4 = calculateFib4(
+        Number(formik?.values?.astInputValue) || 0,
+        Number(formik?.values?.pltInputValue) || 0,
+        Number(formik?.values.altInputValue) || 0,
+        calculateAge(patientObj?.dateOfBirth || patientObj?.dob) //patient age here
+      );
+      formik.setFieldValue("fib4", computedFib4);
+    } else {
+      formik.setFieldValue("fib4", null);
+    }
   }, [
     formik?.values?.astInputValue,
     formik?.values.pltInputValue,
     formik?.values.altInputValue,
     formik.setFieldValue,
   ]);
-  
+
   return (
     <div>
       <Card className={classes.root}>

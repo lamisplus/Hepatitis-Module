@@ -4,6 +4,7 @@ import * as yup from "yup";
 
 export const useValidateExistingPatientDiagnosisFormValuesHook = (onSubmit, userGender) => {
   const requiredTextPrompt = "This field is required";
+  const numberTypeError = "Value must be a number";
 
   const existingPatientDiagnosisValues = {
     dateHbvDnaTestRequested: "",
@@ -168,8 +169,8 @@ export const useValidateExistingPatientDiagnosisFormValuesHook = (onSubmit, user
     directBiliribin: yup.string().required(requiredTextPrompt),//done
 
     albumin: yup.number().required(requiredTextPrompt),//done
-    apriScore: yup.number().required(requiredTextPrompt),//done
-    fib4: yup.number().required(requiredTextPrompt),//done
+    apriScore: yup.number().typeError(`${numberTypeError}. Ensure there are numeric values for AST and PLT`).required(requiredTextPrompt),//done
+    fib4: yup.number().typeError(`${numberTypeError}. Ensure there are numeric values for AST, ALT and PLT`).required(requiredTextPrompt),//done
 
     prothrombinTimeNR: yup.number().required(requiredTextPrompt),//done
     urea: yup.number().required(requiredTextPrompt), //done

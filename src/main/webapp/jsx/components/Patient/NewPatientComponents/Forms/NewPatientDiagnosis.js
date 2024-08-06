@@ -329,21 +329,36 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
 
   const { formik } = useValidateNewPatientDiagnosisFormValuesHook(handleSubmit, userGender);
   const { returnData: childPughScoreOptions } = useFetchCodesets("CHILD_PUGH");
-  console.log(formik.errors);
+  
   React.useEffect(() => {
-    const computedApriScore = calculateApriScore(
-      formik?.values.astInputValue,
-      formik?.values.pltInputValue
-    );
-    formik.setFieldValue("apriScore", computedApriScore);
+    if (
+      typeof formik?.values?.astInputValue === "number" &&
+      typeof formik?.values?.pltInputValue === "number"
+    ) {
+      const computedApriScore = calculateApriScore(
+        Number(formik?.values?.astInputValue) || 0,
+        Number(formik?.values?.pltInputValue) || 0
+      );
+      formik.setFieldValue("apriScore", computedApriScore);
+    } else {
+      formik.setFieldValue("apriScore", null);
+    }
 
-    const computedFib4 = calculateFib4(
-      formik?.values.astInputValue,
-      formik?.values.pltInputValue,
-      formik?.values.altInputValue,
-      calculateAge(enrolmentData?.person?.dateOfBirth) //patient age here
-    );
-    formik.setFieldValue("fib4", computedFib4);
+    if (
+      typeof formik?.values?.astInputValue === "number" &&
+      typeof formik?.values?.pltInputValue === "number" &&
+      typeof formik?.values?.altInputValue === "number"
+    ) {
+      const computedFib4 = calculateFib4(
+        Number(formik?.values?.astInputValue) || 0,
+        Number(formik?.values?.pltInputValue) || 0,
+        Number(formik?.values.altInputValue) || 0,
+        calculateAge(enrolmentData?.person?.dateOfBirth) //patient age here
+      );
+      formik.setFieldValue("fib4", computedFib4);
+    } else {
+      formik.setFieldValue("fib4", null);
+    }
   }, [
     formik?.values?.astInputValue,
     formik?.values.pltInputValue,
@@ -749,7 +764,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                             </div>
                           )}
 
-                          {userGender.toLowerCase() === "female" && (
+                          {userGender?.toLowerCase() === "female" && (
                             <div className="form-group mb-3 col-md-4">
                               <CustomFormGroup
                                 formik={formik}

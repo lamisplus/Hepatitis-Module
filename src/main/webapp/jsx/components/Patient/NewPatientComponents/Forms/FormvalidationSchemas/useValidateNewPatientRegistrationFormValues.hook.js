@@ -6,6 +6,7 @@ import { calculateAge, calculateBMI } from "../../../../../utils";
 
 export const useValidateNewPatientRegistrationFormValuesHook = (onSubmit) => {
   const requiredTextPrompt = "This field is required";
+  const numberTypeError = "Value must be a number";
 
   const newPatientRegistrationValues = {
     dateOfRegistration: "",
@@ -82,8 +83,8 @@ export const useValidateNewPatientRegistrationFormValuesHook = (onSubmit) => {
       .required(requiredTextPrompt),
     otherName: yup
       .string()
-      .matches(/^[a-zA-Z\s]*$/, "Only letters are allowed")
-      .required(requiredTextPrompt),
+      .matches(/^[a-zA-Z\s]*$/, "Only letters are allowed"),
+
     phoneNumber: yup.string().required(requiredTextPrompt),
     stateId: yup.string().required(requiredTextPrompt),
     countryId: yup.string().required(requiredTextPrompt),
@@ -93,10 +94,11 @@ export const useValidateNewPatientRegistrationFormValuesHook = (onSubmit) => {
     dateOfBirthEstimatedActual: yup.string().required(requiredTextPrompt),
     maritalStatusId: yup.string().required(requiredTextPrompt),
     educationId: yup.string().required(requiredTextPrompt),
-    // relationship: yup.string().required(requiredTextPrompt),
+    
     landmark: yup.string(),
     age: yup
-      .number("Age must be a number, select date of birth to compute")
+      .number()
+      .typeError(numberTypeError)
       .required(`${requiredTextPrompt} select date of birth to compute`)
       .test("calculateAge", "Age is invalid", function (value) {
         const { dateOfBirth } = this.parent;
@@ -122,6 +124,7 @@ export const useValidateNewPatientRegistrationFormValuesHook = (onSubmit) => {
     height: yup.string().required(requiredTextPrompt),
     bmi: yup
       .number()
+      .typeError(numberTypeError)
       .required(`${requiredTextPrompt}. Input weight and height to compute`)
       .test("calculateBMI", "BMI is invalid", function (value) {
         const { height, weight } = this.parent;

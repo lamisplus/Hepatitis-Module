@@ -4,6 +4,7 @@ import * as yup from "yup";
 
 export const useValidatePatientDashboardDiagnosisFormValuesHook = (onSubmit, userGender) => {
   const requiredTextPrompt = "This field is required";
+  const numberTypeError = "Value must be a number";
 
   const patientDashboardDiagnosisValues = {
     dateHbvDnaTestRequested: "",
@@ -68,14 +69,14 @@ export const useValidatePatientDashboardDiagnosisFormValuesHook = (onSubmit, use
 
     hbvDnaValue: yup.number().when("hbvDna", {
         is: (hbvDna) => hbvDna === "DETECTED",
-        then: yup.number().required(requiredTextPrompt),
-        otherwise: yup.number(),
+        then: yup.number().typeError(numberTypeError).required(requiredTextPrompt),
+        otherwise: yup.number().typeError(numberTypeError),
       }),//done
 
     hbsAgQuantification: yup.number().when("hbvDna", {
         is: (hbvDna) => hbvDna === "DETECTED",
-        then: yup.number().required(requiredTextPrompt),
-        otherwise: yup.number(),
+        then: yup.number().typeError(numberTypeError).required(requiredTextPrompt),
+        otherwise: yup.number().typeError(numberTypeError),
       }),//done
     
     
@@ -88,8 +89,8 @@ export const useValidatePatientDashboardDiagnosisFormValuesHook = (onSubmit, use
 
     hcvRnaValue: yup.number().when("hcvRNA", {
         is: (hcvRNA) => hcvRNA === "DETECTED",
-        then: yup.number().required(requiredTextPrompt),
-        otherwise: yup.number(),
+        then: yup.number().typeError(numberTypeError).required(requiredTextPrompt),
+        otherwise: yup.number().typeError(numberTypeError),
       }),//done
 
     
@@ -102,33 +103,33 @@ export const useValidatePatientDashboardDiagnosisFormValuesHook = (onSubmit, use
 
     hbvHcvInputValue: yup.number().when("hbvHcvCheckbox", {
         is: (hbvHcvCheckbox) => hbvHcvCheckbox === true,
-        then: yup.number().required(requiredTextPrompt),
-        otherwise: yup.number(),
+        then: yup.number().typeError(numberTypeError).required(requiredTextPrompt),
+        otherwise: yup.number().typeError(numberTypeError),
       }),//done
 
     hbvHivInputValue: yup.number().when("hbvHivCheckbox", {
         is: (hbvHivCheckbox) => hbvHivCheckbox === true,
-        then: yup.number().required(requiredTextPrompt),
-        otherwise: yup.number(),
+        then: yup.number().typeError(numberTypeError).required(requiredTextPrompt),
+        otherwise: yup.number().typeError(numberTypeError),
       }),//done
     hcvHivInputValue: yup.number().when("hcvHivCheckbox", {
         is: (hcvHivCheckbox) => hcvHivCheckbox === true,
-        then: yup.number().required(requiredTextPrompt),
-        otherwise: yup.number(),
+        then: yup.number().typeError(numberTypeError).required(requiredTextPrompt),
+        otherwise: yup.number().typeError(numberTypeError),
       }),//done
 
 
     hbvHdvInputValue: yup.number().when("hbvHdvCheckbox", {
         is: (hbvHdvCheckbox) => hbvHdvCheckbox === true,
-        then: yup.number().required(requiredTextPrompt),
-        otherwise: yup.number(),
+        then: yup.number().typeError(numberTypeError).required(requiredTextPrompt),
+        otherwise: yup.number().typeError(numberTypeError),
       }),//done
 
 
     hbvHcvHivInputValue: yup.number().when("hbvHcvHivCheckbox", {
         is: (hbvHcvHivCheckbox) => hbvHcvHivCheckbox === true,
-        then: yup.number().required(requiredTextPrompt),
-        otherwise: yup.number(),
+        then: yup.number().typeError(numberTypeError).required(requiredTextPrompt),
+        otherwise: yup.number().typeError(numberTypeError),
       }),//done
 
     commobidities: yup.string().required(requiredTextPrompt),//done
@@ -147,36 +148,36 @@ export const useValidatePatientDashboardDiagnosisFormValuesHook = (onSubmit, use
 
     astInputValue: yup.number().when("astCheckbox", {
         is: (astCheckbox) => astCheckbox === true,
-        then: yup.number().required(requiredTextPrompt),
-        otherwise: yup.number(),
+        then: yup.number().typeError(numberTypeError).required(requiredTextPrompt),
+        otherwise: yup.number().typeError(numberTypeError),
       }),//done
 
 
     altInputValue: yup.number().when("altCheckbox", {
         is: (altCheckbox) => altCheckbox === true,
-        then: yup.number().required(requiredTextPrompt),
-        otherwise: yup.number(),
+        then: yup.number().typeError(numberTypeError).required(requiredTextPrompt),
+        otherwise: yup.number().typeError(numberTypeError),
       }),//done
 
     pltInputValue: yup.number().when("pltCheckbox", {
         is: (pltCheckbox) => pltCheckbox === true,
-        then: yup.number().required(requiredTextPrompt),
-        otherwise: yup.number(),
+        then: yup.number().typeError(numberTypeError).required(requiredTextPrompt),
+        otherwise: yup.number().typeError(numberTypeError),
       }),//done
 
     totalBiliRubin: yup.string().required(requiredTextPrompt),//done
     directBiliribin: yup.string().required(requiredTextPrompt),//done
 
-    albumin: yup.number().required(requiredTextPrompt),//done
-    apriScore: yup.number().required(requiredTextPrompt),//done
-    fib4: yup.number().required(requiredTextPrompt),//done
+    albumin: yup.number().typeError(numberTypeError).required(requiredTextPrompt),//done
+    apriScore: yup.number().typeError(`${numberTypeError}. Ensure there are numeric values for AST and PLT`).required(requiredTextPrompt),//done
+    fib4: yup.number().typeError(`${numberTypeError}. Ensure there are numeric values for AST, ALT and PLT`).required(requiredTextPrompt),//done
 
-    prothrombinTimeNR: yup.number().required(requiredTextPrompt),//done
-    urea: yup.number().required(requiredTextPrompt), //done
-    creatinine: yup.number().required(requiredTextPrompt),//done
-    ultrasoundScan: yup.number().required(requiredTextPrompt),
-    afp: yup.number().required(requiredTextPrompt),//done
-    fibroscan: yup.number().required(requiredTextPrompt),//done
+    prothrombinTimeNR: yup.number().typeError(numberTypeError).required(requiredTextPrompt),//done
+    urea: yup.number().typeError(numberTypeError).required(requiredTextPrompt), //done
+    creatinine: yup.number().typeError(numberTypeError).required(requiredTextPrompt),//done
+    ultrasoundScan: yup.number().typeError(numberTypeError).required(requiredTextPrompt),
+    afp: yup.number().typeError(numberTypeError).required(requiredTextPrompt),//done
+    fibroscan: yup.number().typeError(numberTypeError).required(requiredTextPrompt),//done
 
     ctScan: yup.string().required(requiredTextPrompt),//done
     ascites: yup.string().required(requiredTextPrompt),//done
@@ -188,7 +189,7 @@ export const useValidatePatientDashboardDiagnosisFormValuesHook = (onSubmit, use
       }),//done
 
     
-    gradeOfEncephalopathy: yup.number().required(requiredTextPrompt),//done
+    gradeOfEncephalopathy: yup.number().typeError(numberTypeError).required(requiredTextPrompt),//done
     childPughScore: yup.string().required(requiredTextPrompt),//done
     liverBiopsyStage: yup.string().required(requiredTextPrompt), //done,
     stagingDateOfLiverBiopsy: yup.date().required(requiredTextPrompt),//done
