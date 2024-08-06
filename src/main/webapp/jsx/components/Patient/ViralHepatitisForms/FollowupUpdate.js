@@ -28,6 +28,7 @@ import { useUpdateFollowup } from "../../../hooks/useUpdateFollowup";
 import axios from "axios";
 import { url as baseUrl, token } from "../../../../api";
 import { fetchHBsAG } from "./Form2";
+import { calculateAge, calculateApriScore, calculateFib4 } from "../../../utils";
 
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
@@ -272,6 +273,7 @@ const FollowupUpdate = (props) => {
       refetchOnMount: "always",
     }
   );
+
   const [hbsagResult, setHbsagResult] = useState(null);
   useEffect(() => {
     fetchHBsAG().then(({ data }) => {
@@ -279,6 +281,42 @@ const FollowupUpdate = (props) => {
     });
     fetchChildPughScore();
   }, []);
+
+  React.useEffect(() => {
+    if (
+      typeof formik?.values?.fuAst === "number" &&
+      typeof formik?.values?.fuPlt === "number"
+    ) {
+      const computedApriScore = calculateApriScore(
+        Number(formik?.values?.fuAst) || 0,
+        Number(formik?.values?.fuPlt) || 0
+      );
+      formik.setFieldValue("fuApriScore", computedApriScore);
+    } else {
+      formik.setFieldValue("fuApriScore", null);
+    }
+
+    if (
+      typeof formik?.values?.fuAst === "number" &&
+      typeof formik?.values?.fuPlt === "number" &&
+      typeof formik?.values?.fuAlt === "number"
+    ) {
+      const computedFib4 = calculateFib4(
+        Number(formik?.values?.fuAst) || 0,
+        Number(formik?.values?.fuPlt) || 0,
+        Number(formik?.values.fuAlt) || 0,
+        calculateAge(props?.patientObj?.dateOfBirth || props?.patientObj?.dob) //patient age here
+      );
+      formik.setFieldValue("fuFib4", computedFib4);
+    } else {
+      formik.setFieldValue("fuFib4", null);
+    }
+  }, [
+    formik?.values?.fuAst,
+    formik?.values.fuPlt,
+    formik?.values.fuAlt,
+    formik.setFieldValue,
+  ]);
 
   return (
     <>
@@ -816,7 +854,7 @@ const FollowupUpdate = (props) => {
                             {/* <span style={{ color: "red" }}> *</span>{" "} */}
                             <Input
                               className="form-control"
-                              disabled={disableInputs}
+                              disabled
                               type="number"
                               name="fuApriScore"
                               id="fuApriScore"
@@ -844,7 +882,7 @@ const FollowupUpdate = (props) => {
                             {/* <span style={{ color: "red" }}> *</span>{" "} */}
                             <Input
                               className="form-control"
-                              disabled={disableInputs}
+                              disabled
                               type="number"
                               name="fuFib4"
                               id="fuFib4"
@@ -1249,6 +1287,7 @@ const FollowupUpdate = (props) => {
                               name="fuStagingDateLiverBiopsy"
                               id="fuStagingDateLiverBiopsy"
                               onBlur={formik.handleBlur}
+                              max={moment(new Date()).format("YYYY-MM-DD")}
                               onChange={formik.handleChange}
                               value={formik?.values?.fuStagingDateLiverBiopsy}
                               style={{
@@ -1331,7 +1370,7 @@ const FollowupUpdate = (props) => {
                               Treatment Regimen
                             </Label>
                             <span style={{ color: "red" }}> *</span>{" "}
-                            <Input
+                            <select
                               className="form-control"
                               disabled={disableInputs}
                               type="text"
@@ -1344,7 +1383,12 @@ const FollowupUpdate = (props) => {
                                 border: "1px solid #014D88",
                                 borderRadius: "0.2rem",
                               }}
-                            />
+                            >
+                              <option value="">Select</option>
+
+<option value="YES">Yes</option>
+<option value="NO">No</option>
+                              </select>
                             {formik.touched?.fuTreatmentRegimen &&
                               formik?.errors?.fuTreatmentRegimen !== "" && (
                                 <span className={classes.error}>
@@ -1480,20 +1524,24 @@ const FollowupUpdate = (props) => {
 
               {isLoading ? <Spinner /> : ""}
               <br />
+             {
+             !disableInputs && (
               <div className="d-flex justify-content-end">
-                <MatButton
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  className={classes.button}
-                  // onClick={handleSubmit}
-                  style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}
-                >
-                  <span style={{ textTransform: "capitalize" }}>
-                    {isLoading ? "Please wait" : "Submit"}
-                  </span>
-                </MatButton>
+              <MatButton
+                type="submit"
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                // onClick={handleSubmit}
+                style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}
+              >
+                <span style={{ textTransform: "capitalize" }}>
+                  {isLoading ? "Please wait" : "Submit"}
+                </span>
+              </MatButton>
               </div>
+              )
+             }
             </form>
           </div>
         </CardContent>

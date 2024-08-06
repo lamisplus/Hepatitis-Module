@@ -644,7 +644,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                                   <input
                                   disabled={disableInputs}
                                     className="form-control"
-                                    type="number"
+                                    type="text"
                                     name="hbsAgQuantification"
                                     id="hbsAgQuantification"
                                     value={formik.values.hbsAgQuantification}
@@ -892,7 +892,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                           <div className="form-group mb-2 col-md-4">
                             <CustomFormGroup formik={formik} name="hcvRNA">
                               <Label for="hcvRNA">
-                                HCV RNA(UI/ml){" "}
+                                HCV RNA{" "}
                                 <span style={{ color: "red" }}> *</span>
                               </Label>
                               <div className="radio">
@@ -952,7 +952,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                                 name="hcvRnaValue"
                               >
                                 <Label for="hcvRnaValue">
-                                  Input HCV RNA Value (IU/ml){" "}
+                                  Input HCV RNA Value{" "}
                                   <span style={{ color: "red" }}> *</span>{" "}
                                 </Label>
                                 <input

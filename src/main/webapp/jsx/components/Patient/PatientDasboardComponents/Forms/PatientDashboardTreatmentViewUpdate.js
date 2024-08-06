@@ -1673,7 +1673,7 @@ const PatientDashboardTreatmentViewUpdate = ({
                             name="hepatitisCSvr12TestingHcvRna"
                           >
                             <Label for="hepatitisCSvr12TestingHcvRna">
-                              HCV RNA (IU/ML){" "}
+                              HCV RNA
                               <span style={{ color: "red" }}> *</span>{" "}
                             </Label>
                             <select
@@ -1713,7 +1713,7 @@ const PatientDashboardTreatmentViewUpdate = ({
                               name="hepatitisCSvr12TestingHcvRnaValue"
                             >
                               <Label for="hepatitisCSvr12TestingHcvRnaValue">
-                                Input HCV RNA value (IU/ml)
+                                Input HCV RNA value
                                 <span style={{ color: "red" }}> *</span>{" "}
                               </Label>
                               <input
@@ -1814,7 +1814,7 @@ const PatientDashboardTreatmentViewUpdate = ({
                               HCV Genotype
                             </Label>
                             <span style={{ color: "red" }}> *</span>
-                            <input
+                            <select
                               disabled={disableInputs}
                               className="form-control"
                               name="hepatitisCHcvRetreatmentHcvGenotype"
@@ -1830,7 +1830,9 @@ const PatientDashboardTreatmentViewUpdate = ({
                                 border: "1px solid #014D88",
                                 borderRadius: "0.2rem",
                               }}
-                            />
+                            >
+                              -- Select --<option value="">-- Select --</option>
+                            </select>
                             {formik?.touched
                               ?.hepatitisCHcvRetreatmentHcvGenotype &&
                               formik?.errors
@@ -2178,7 +2180,7 @@ const PatientDashboardTreatmentViewUpdate = ({
                           name="hepatitisCRetreatmentSvr12TestingRetreatmentHcvRna"
                         >
                           <Label for="hepatitisCRetreatmentSvr12TestingRetreatmentHcvRna">
-                            Retreatment HCV RNA(IU/ml)
+                            Retreatment HCV RNA
                             <span style={{ color: "red" }}> *</span>{" "}
                           </Label>
                           <select
@@ -2225,7 +2227,7 @@ const PatientDashboardTreatmentViewUpdate = ({
                             name="hepatitisCRetreatmentSvr12TestingRetreatmentHcvRnaValue"
                           >
                             <Label for="hepatitisCRetreatmentSvr12TestingRetreatmentHcvRnaValue">
-                              Input Retreatment HCV RNA value(IU/ml)
+                              Input Retreatment HCV RNA value
                               <span style={{ color: "red" }}> *</span>{" "}
                             </Label>
                             <input

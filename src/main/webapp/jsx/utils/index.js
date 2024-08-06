@@ -39,3 +39,15 @@ export const isNotInTheFutureOrBeforeBirth = (date, birthday) => {
   );
 };
 
+export const  calculateDOB = (age) => {
+  const currentYear = new Date().getFullYear();
+  const birthYear = currentYear - age;
+  const dob = new Date(birthYear, 0, 1); // Assuming DOB is January 1st of the birth year
+
+  // Format date as yyyy-mm-dd
+  const yyyy = dob.getFullYear();
+  const mm = String(dob.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+  const dd = String(dob.getDate()).padStart(2, '0');
+
+  return `${yyyy}-${mm}-${dd}`;
+}

@@ -1589,7 +1589,7 @@ for (const key in values) {
                             name="hepatitisCSvr12TestingHcvRna"
                           >
                             <Label for="hepatitisCSvr12TestingHcvRna">
-                              HCV RNA (IU/ML){" "}
+                              HCV RNA{" "}
                               <span style={{ color: "red" }}> *</span>{" "}
                             </Label>
                             <select
@@ -1728,11 +1728,11 @@ for (const key in values) {
                               HCV Genotype
                             </Label>
                             <span style={{ color: "red" }}> *</span>
-                            <input
+                            <select
                               className="form-control"
                               name="hepatitisCHcvRetreatmentHcvGenotype"
                               id="hepatitisCHcvRetreatmentHcvGenotype"
-                              type="text"
+                              
                               value={
                                 formik.values
                                   ?.hepatitisCHcvRetreatmentHcvGenotype
@@ -1743,7 +1743,9 @@ for (const key in values) {
                                 border: "1px solid #014D88",
                                 borderRadius: "0.2rem",
                               }}
-                            />
+                            >
+                              -- Select --<option value="">-- Select --</option>
+                            </select>
                             {formik?.touched
                               ?.hepatitisCHcvRetreatmentHcvGenotype &&
                               formik?.errors
@@ -2085,7 +2087,7 @@ for (const key in values) {
                           name="hepatitisCRetreatmentSvr12TestingRetreatmentHcvRna"
                         >
                           <Label for="hepatitisCRetreatmentSvr12TestingRetreatmentHcvRna">
-                            Retreatment HCV RNA(IU/ml)
+                            Retreatment HCV RNA
                             <span style={{ color: "red" }}> *</span>{" "}
                           </Label>
                           <select
@@ -2131,7 +2133,7 @@ for (const key in values) {
                             name="hepatitisCRetreatmentSvr12TestingRetreatmentHcvRnaValue"
                           >
                             <Label for="hepatitisCRetreatmentSvr12TestingRetreatmentHcvRnaValue">
-                              Input Retreatment HCV RNA value(IU/ml)
+                              Input Retreatment HCV RNA value
                               <span style={{ color: "red" }}> *</span>{" "}
                             </Label>
                             <input

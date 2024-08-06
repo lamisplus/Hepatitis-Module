@@ -24,6 +24,11 @@ import { useSaveFollowup } from "../../../hooks/useSaveFollowup";
 import axios from "axios";
 import { url as baseUrl, token } from "../../../../api";
 import { fetchHBsAG } from "./Form2";
+import {
+  calculateAge,
+  calculateApriScore,
+  calculateFib4,
+} from "../../../utils";
 
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
@@ -228,6 +233,42 @@ const FollowupCreate = (props) => {
     });
     fetchChildPughScore();
   }, []);
+
+  React.useEffect(() => {
+    if (
+      typeof formik?.values?.fuAst === "number" &&
+      typeof formik?.values?.fuPlt === "number"
+    ) {
+      const computedApriScore = calculateApriScore(
+        Number(formik?.values?.fuAst) || 0,
+        Number(formik?.values?.fuPlt) || 0
+      );
+      formik.setFieldValue("fuApriScore", computedApriScore);
+    } else {
+      formik.setFieldValue("fuApriScore", null);
+    }
+
+    if (
+      typeof formik?.values?.fuAst === "number" &&
+      typeof formik?.values?.fuPlt === "number" &&
+      typeof formik?.values?.fuAlt === "number"
+    ) {
+      const computedFib4 = calculateFib4(
+        Number(formik?.values?.fuAst) || 0,
+        Number(formik?.values?.fuPlt) || 0,
+        Number(formik?.values.fuAlt) || 0,
+        calculateAge(props?.patientObj?.dateOfBirth || props?.patientObj?.dob) //patient age here
+      );
+      formik.setFieldValue("fuFib4", computedFib4);
+    } else {
+      formik.setFieldValue("fuFib4", null);
+    }
+  }, [
+    formik?.values?.fuAst,
+    formik?.values.fuPlt,
+    formik?.values.fuAlt,
+    formik.setFieldValue,
+  ]);
 
   return (
     <>
@@ -777,6 +818,7 @@ const FollowupCreate = (props) => {
                               className="form-control"
                               type="number"
                               name="fuApriScore"
+                              disabled
                               id="fuApriScore"
                               onBlur={formik.handleBlur}
                               onChange={formik.handleChange}
@@ -804,6 +846,7 @@ const FollowupCreate = (props) => {
                               className="form-control"
                               type="number"
                               name="fuFib4"
+                              disabled
                               id="fuFib4"
                               onBlur={formik.handleBlur}
                               onChange={formik.handleChange}
@@ -1189,6 +1232,7 @@ const FollowupCreate = (props) => {
                             <Input
                               className="form-control"
                               type="date"
+                              max={moment(new Date()).format("YYYY-MM-DD")}
                               name="fuStagingDateLiverBiopsy"
                               id="fuStagingDateLiverBiopsy"
                               onBlur={formik.handleBlur}
@@ -1273,7 +1317,7 @@ const FollowupCreate = (props) => {
                               Treatment Regimen
                             </Label>
                             <span style={{ color: "red" }}> *</span>{" "}
-                            <Input
+                            <select
                               className="form-control"
                               type="text"
                               name="fuTreatmentRegimen"
@@ -1285,7 +1329,12 @@ const FollowupCreate = (props) => {
                                 border: "1px solid #014D88",
                                 borderRadius: "0.2rem",
                               }}
-                            />
+                            >
+                              <option value="">Select</option>
+
+                              <option value="YES">Yes</option>
+                              <option value="NO">No</option>
+                            </select>
                             {formik.touched?.fuTreatmentRegimen &&
                               formik?.errors?.fuTreatmentRegimen !== "" && (
                                 <span className={classes.error}>

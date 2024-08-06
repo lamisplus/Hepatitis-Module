@@ -44,7 +44,7 @@ public class HepatitisBTestDto implements Serializable {
     private Long hvbDnaValue;
 
     @NotEmpty(message ="hbsAgQuantification can not be empty")
-    private Long hbsAgQuantification;
+    private String hbsAgQuantification;
 
     @NotEmpty(message ="ctScan can not be empty")
     private String ctScan;

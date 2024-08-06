@@ -98,8 +98,7 @@ export const useValidateNewPatientRegistrationFormValuesHook = (onSubmit) => {
     landmark: yup.string(),
     age: yup
       .number()
-      .typeError(numberTypeError)
-      .required(`${requiredTextPrompt} select date of birth to compute`)
+      .typeError(`${numberTypeError}. Enter an estimated age or choose date of birth`)
       .test("calculateAge", "Age is invalid", function (value) {
         const { dateOfBirth } = this.parent;
         if (!dateOfBirth) return true; // Skip validation if no price

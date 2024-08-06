@@ -2449,7 +2449,7 @@ const UserRegistration = (props) => {
                     <div className="form-group mb-3 col-md-6">
                       <FormGroup>
                         <Label>
-                          HCV RNA(IU/ml)<span style={{ color: "red" }}> *</span>
+                          HCV RNA<span style={{ color: "red" }}> *</span>
                         </Label>
                         <InputGroup>
                           <Input
@@ -2476,7 +2476,7 @@ const UserRegistration = (props) => {
                       <div className="form-group mb-3 col-md-6">
                         <FormGroup>
                           <Label>
-                            HCV RNA result (IU/ml)
+                            HCV RNA result
                             <span style={{ color: "red" }}> *</span>
                           </Label>
                           <InputGroup>

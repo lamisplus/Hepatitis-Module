@@ -640,7 +640,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                                   </Label>
                                   <input
                                     className="form-control"
-                                    type="number"
+                                    type="text"
                                     name="hbsAgQuantification"
                                     id="hbsAgQuantification"
                                     value={formik.values.hbsAgQuantification}
@@ -883,7 +883,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                           <div className="form-group mb-2 col-md-4">
                             <CustomFormGroup formik={formik} name="hcvRNA">
                               <Label for="hcvRNA">
-                                HCV RNA(UI/ml){" "}
+                                HCV RNA{" "}
                                 <span style={{ color: "red" }}> *</span>
                               </Label>
                               <div className="radio">
@@ -941,7 +941,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                                 name="hcvRnaValue"
                               >
                                 <Label for="hcvRnaValue">
-                                  Input HCV RNA Value (IU/ml){" "}
+                                  Input HCV RNA Value{" "}
                                   <span style={{ color: "red" }}> *</span>{" "}
                                 </Label>
                                 <input
@@ -2138,7 +2138,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                             name="stagingDateOfLiverBiopsy"
                             max={moment(new Date()).format("YYYY-MM-DD")}
                             id="stagingDateOfLiverBiopsy"
-                            value={formik.values.stagingDateOfLiverBiopsy}
+                            value={formik?.values?.stagingDateOfLiverBiopsy}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             style={{

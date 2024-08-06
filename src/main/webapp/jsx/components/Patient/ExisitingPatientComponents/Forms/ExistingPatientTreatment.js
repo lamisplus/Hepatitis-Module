@@ -31,7 +31,6 @@ import { useMutation } from "react-query";
 import { saveTreatment } from "../../../../services/saveTreatment";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
 const useStyles = makeStyles((theme) => ({
@@ -110,7 +109,6 @@ const ExistingPatientTreatment = ({ step, setStep }) => {
   const [patientDateOfBirth] = useState(enrolmentData?.person?.dateOfBirth);
   const [enrollmentUuid] = useState(enrolmentData?.enrollmentUuid);
 
-
   const classes = useStyles();
   const { returnData: hcvTreatmentRegimenOptions } = useFetchCodesets(
     "HCV_TREATMENT_REGIMEN"
@@ -142,26 +140,27 @@ const ExistingPatientTreatment = ({ step, setStep }) => {
     const hepatitisBTreatment = {};
     const hepatitisCTreatment = {};
 
-for (const key in values) {
-  //extract all key-value pair that starts wuth "hepatitisB"
-    if (key.startsWith('hepatitisB')) {
-      hepatitisBTreatment[key] = values[key];
+    for (const key in values) {
+      //extract all key-value pair that starts wuth "hepatitisB"
+      if (key.startsWith("hepatitisB")) {
+        hepatitisBTreatment[key] = values[key];
+      }
+      //extract all key-value pair that starts wuth "hepatitisC"
+      if (key.startsWith("hepatitisC")) {
+        hepatitisCTreatment[key] = values[key];
+      }
     }
- //extract all key-value pair that starts wuth "hepatitisC"
-    if (key.startsWith('hepatitisC')) {
-      hepatitisCTreatment[key] = values[key];
-    }
-}
 
-    const payload ={
+    const payload = {
       enrollmentUuid: enrollmentUuid,
       hepatitisBTreatment,
-      hepatitisCTreatment
-    }
+      hepatitisCTreatment,
+    };
     mutate(payload);
   };
 
-  const { formik } = useValidateExistingPatientTreatmentFormValuesHook(handleSubmit);
+  const { formik } =
+    useValidateExistingPatientTreatmentFormValuesHook(handleSubmit);
 
   return (
     <Card className={classes.root}>
@@ -1589,7 +1588,7 @@ for (const key in values) {
                             name="hepatitisCSvr12TestingHcvRna"
                           >
                             <Label for="hepatitisCSvr12TestingHcvRna">
-                              HCV RNA (IU/ML){" "}
+                              HCV RNA{" "}
                               <span style={{ color: "red" }}> *</span>{" "}
                             </Label>
                             <select
@@ -1628,7 +1627,7 @@ for (const key in values) {
                               name="hepatitisCSvr12TestingHcvRnaValue"
                             >
                               <Label for="hepatitisCSvr12TestingHcvRnaValue">
-                                Input HCV RNA value (IU/ml)
+                                Input HCV RNA value
                                 <span style={{ color: "red" }}> *</span>{" "}
                               </Label>
                               <input
@@ -1728,13 +1727,12 @@ for (const key in values) {
                               HCV Genotype
                             </Label>
                             <span style={{ color: "red" }}> *</span>
-                            <input
+                            <select
                               className="form-control"
                               name="hepatitisCHcvRetreatmentHcvGenotype"
                               id="hepatitisCHcvRetreatmentHcvGenotype"
-                              type="text"
                               value={
-                                formik.values
+                                formik?.values
                                   ?.hepatitisCHcvRetreatmentHcvGenotype
                               }
                               onChange={formik.handleChange}
@@ -1743,7 +1741,9 @@ for (const key in values) {
                                 border: "1px solid #014D88",
                                 borderRadius: "0.2rem",
                               }}
-                            />
+                            >
+                              -- Select --<option value="">-- Select --</option>
+                            </select>
                             {formik?.touched
                               ?.hepatitisCHcvRetreatmentHcvGenotype &&
                               formik?.errors
@@ -2085,7 +2085,7 @@ for (const key in values) {
                           name="hepatitisCRetreatmentSvr12TestingRetreatmentHcvRna"
                         >
                           <Label for="hepatitisCRetreatmentSvr12TestingRetreatmentHcvRna">
-                            Retreatment HCV RNA(IU/ml)
+                            Retreatment HCV RNA
                             <span style={{ color: "red" }}> *</span>{" "}
                           </Label>
                           <select
@@ -2131,7 +2131,7 @@ for (const key in values) {
                             name="hepatitisCRetreatmentSvr12TestingRetreatmentHcvRnaValue"
                           >
                             <Label for="hepatitisCRetreatmentSvr12TestingRetreatmentHcvRnaValue">
-                              Input Retreatment HCV RNA value(IU/ml)
+                              Input Retreatment HCV RNA value
                               <span style={{ color: "red" }}> *</span>{" "}
                             </Label>
                             <input

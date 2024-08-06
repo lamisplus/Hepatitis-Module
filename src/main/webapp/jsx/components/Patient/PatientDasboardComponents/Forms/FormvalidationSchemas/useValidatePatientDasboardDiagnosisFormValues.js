@@ -73,10 +73,10 @@ export const useValidatePatientDashboardDiagnosisFormValuesHook = (onSubmit, use
         otherwise: yup.number().typeError(numberTypeError),
       }),//done
 
-    hbsAgQuantification: yup.number().when("hbvDna", {
+    hbsAgQuantification: yup.string().when("hbvDna", {
         is: (hbvDna) => hbvDna === "DETECTED",
-        then: yup.number().typeError(numberTypeError).required(requiredTextPrompt),
-        otherwise: yup.number().typeError(numberTypeError),
+        then: yup.string().required(requiredTextPrompt),
+        otherwise: yup.string(),
       }),//done
     
     

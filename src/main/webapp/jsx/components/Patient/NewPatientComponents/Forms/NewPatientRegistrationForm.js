@@ -32,7 +32,7 @@ import { saveEnrolment } from "../../../../services/saveEnrolment";
 import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
 import CustomFormGroup from "../../../CustomFormGroup/CustomFormGroup";
-import { calculateAge, calculateBMI } from "../../../../utils";
+import { calculateAge, calculateBMI, calculateDOB } from "../../../../utils";
 
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
@@ -508,7 +508,12 @@ const NewPatientEnrolmentForm = ({ step, setStep }) => {
                           name="stateId"
                           id="stateId"
                           value={formik?.values?.stateId}
-                          onChange={formik.handleChange}
+                          onChange={
+                            (e) =>{
+                            formik.handleChange(e)
+                            formik.setFieldValue("district", "")
+                            }
+                          }
                           onBlur={formik?.handleBlur}
                           style={{
                             border: "1px solid #014D88",
@@ -704,7 +709,7 @@ const NewPatientEnrolmentForm = ({ step, setStep }) => {
                       <CustomFormGroup formik={formik} name="age">
                         <Label for="age">
                           Age
-                          <span style={{ color: "red" }}> *</span>{" "}
+                          
                         </Label>
                         <input
                           type="number"
@@ -714,8 +719,15 @@ const NewPatientEnrolmentForm = ({ step, setStep }) => {
                           min="10"
                           max="150"
                           value={formik?.values?.age}
-                          disabled
-                          onChange={formik.handleChange}
+                          disabled={
+                          formik?.values?.dateOfBirthEstimatedActual === "Actual"
+                          }
+                          onChange={
+                            (e) => {
+                              formik.handleChange(e)
+                            formik.setFieldValue("dateOfBirth", calculateDOB(e.target.value))
+                          }
+                          }
                           onBlur={formik.handleBlur}
                           style={{
                             border: "1px solid #014D88",
