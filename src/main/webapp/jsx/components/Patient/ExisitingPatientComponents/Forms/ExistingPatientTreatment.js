@@ -110,11 +110,97 @@ const ExistingPatientTreatment = ({ step, setStep }) => {
   const [enrollmentUuid] = useState(enrolmentData?.enrollmentUuid);
 
   const classes = useStyles();
+
+  const _hcvGenotypeData = [
+    {
+      "id": 1724,
+      "code": "HCV_GENOTYPE_1",
+      "version": "1.0",
+      "codeset_group": "HCV_GENOTYPE",
+      "display": "1",
+      "language": "en",
+      "archived": 0,
+      "date_created": "2024-08-15T10:36:53.118",
+      "created_by": "Nonye",
+      "date_modified": "2024-08-15T10:36:53.118",
+      "modified_by": "Nonye"
+    },
+    {
+      "id": 1725,
+      "code": "HCV_GENOTYPE_2",
+      "version": "1.0",
+      "codeset_group": "HCV_GENOTYPE",
+      "display": "2",
+      "language": "en",
+      "archived": 0,
+      "date_created": "2024-08-15T10:37:07.060",
+      "created_by": "Nonye",
+      "date_modified": "2024-08-15T10:37:07.060",
+      "modified_by": "Nonye"
+    },
+    {
+      "id": 1726,
+      "code": "HCV_GENOTYPE_3",
+      "version": "1.0",
+      "codeset_group": "HCV_GENOTYPE",
+      "display": "3",
+      "language": "en",
+      "archived": 0,
+      "date_created": "2024-08-15T10:37:23.822",
+      "created_by": "Nonye",
+      "date_modified": "2024-08-15T10:37:23.822",
+      "modified_by": "Nonye"
+    },
+    {
+      "id": 1727,
+      "code": "HCV_GENOTYPE_4",
+      "version": "1.0",
+      "codeset_group": "HCV_GENOTYPE",
+      "display": "4",
+      "language": "en",
+      "archived": 0,
+      "date_created": "2024-08-15T10:37:44.155",
+      "created_by": "Nonye",
+      "date_modified": "2024-08-15T10:37:44.155",
+      "modified_by": "Nonye"
+    },
+    {
+      "id": 1728,
+      "code": "HCV_GENOTYPE_5",
+      "version": "1.0",
+      "codeset_group": "HCV_GENOTYPE",
+      "display": "5",
+      "language": "en",
+      "archived": 0,
+      "date_created": "2024-08-15T10:37:57.054",
+      "created_by": "Nonye",
+      "date_modified": "2024-08-15T10:37:57.054",
+      "modified_by": "Nonye"
+    },
+    {
+      "id": 1729,
+      "code": "HCV_GENOTYPE_6",
+      "version": "1.0",
+      "codeset_group": "HCV_GENOTYPE",
+      "display": "6",
+      "language": "en",
+      "archived": 0,
+      "date_created": "2024-08-15T10:38:10.841",
+      "created_by": "Nonye",
+      "date_modified": "2024-08-15T10:38:10.841",
+      "modified_by": "Nonye"
+    }
+  ]
+
   const { returnData: hcvTreatmentRegimenOptions } = useFetchCodesets(
     "HCV_TREATMENT_REGIMEN"
   );
   const { returnData: hbvTreatmentRegimenOptions } = useFetchCodesets(
     "HBV_TREATMENT_REGIMEN"
+  );
+
+  const { returnData: hcvGenotypeData } = useFetchCodesets(
+    "HCV_GENOTYPE"
   );
 
   const [isDropdownsOpen, setIsDropdownsOpen] = useState({
@@ -1742,8 +1828,17 @@ const ExistingPatientTreatment = ({ step, setStep }) => {
                                 borderRadius: "0.2rem",
                               }}
                             >
-                              -- Select --<option value="">-- Select --</option>
-                            </select>
+                              <option value="">Select</option>
+                              {_hcvGenotypeData?.map(
+                                ({ display }) => (
+                                  <option key={display} value={display}>
+                                    {display}
+                                  </option>
+                                )
+                              )}
+
+                              </select>
+                              
                             {formik?.touched
                               ?.hepatitisCHcvRetreatmentHcvGenotype &&
                               formik?.errors

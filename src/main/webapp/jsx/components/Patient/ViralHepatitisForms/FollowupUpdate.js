@@ -29,6 +29,7 @@ import axios from "axios";
 import { url as baseUrl, token } from "../../../../api";
 import { fetchHBsAG } from "./Form2";
 import { calculateAge, calculateApriScore, calculateFib4 } from "../../../utils";
+import { useFetchCodesets } from "../../../hooks/useFetchCodesets.hook";
 
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
@@ -122,6 +123,10 @@ const FollowupUpdate = (props) => {
     const data = response.data;
     setChildPughData(data);
   };
+
+  const { returnData: hcvTreatmentRegimenOptions } = useFetchCodesets(
+    "HCV_TREATMENT_REGIMEN"
+  );
 
   const onSubmit = (values) => {
     const {
@@ -238,8 +243,8 @@ const FollowupUpdate = (props) => {
     const formattedDate = `${dateObj?.year}-${dateObj?.monthValue
       ?.toString?.()
       .padStart?.(2, "0")}-${dateObj?.dayOfMonth
-      ?.toString?.()
-      .padStart?.(2, "0")}`;
+        ?.toString?.()
+        .padStart?.(2, "0")}`;
     return formattedDate;
   };
 
@@ -334,8 +339,8 @@ const FollowupUpdate = (props) => {
                     borderRadius: "0.2rem",
                   }}
                 >
-                  <h5 className="card-title" style={{ color: "#fff" }}>
-                    Preliminary {`(${actionType})`}
+                  <h5 className="card-title" style={{ color: "#fff", height:20 }}>
+                    
                   </h5>
                 </div>
                 <div>
@@ -450,10 +455,10 @@ const FollowupUpdate = (props) => {
                               // onChange={formik.handleChange}
                               value={Math.round(
                                 Number(formik?.values?.fuHeight) /
-                                  Math.pow(
-                                    Number(formik?.values?.fuHeight) / 100,
-                                    2
-                                  )
+                                Math.pow(
+                                  Number(formik?.values?.fuHeight) / 100,
+                                  2
+                                )
                               )}
                               style={{
                                 border: "1px solid #014D88",
@@ -541,7 +546,7 @@ const FollowupUpdate = (props) => {
                             <Input
                               className="form-control"
                               disabled={disableInputs}
-                              type="number"
+                              type="text"
                               name="fuHbsagQuantification"
                               id="fuHbsagQuantification"
                               onBlur={formik.handleBlur}
@@ -667,8 +672,8 @@ const FollowupUpdate = (props) => {
                     borderRadius: "0.2rem",
                   }}
                 >
-                  <h5 className="card-title" style={{ color: "#fff" }}>
-                    Clinical Parameters
+                  <h5 className="card-title" style={{ color: "#fff", height:20 }}>
+                    {/* Clinical Parameters */}
                   </h5>
                 </div>
                 <div>
@@ -1198,7 +1203,7 @@ const FollowupUpdate = (props) => {
 
                             {formik.touched?.fuGradeOfEncephalopathy &&
                               formik?.errors?.fuGradeOfEncephalopathy !==
-                                "" && (
+                              "" && (
                                 <span className={classes.error}>
                                   {formik?.errors?.fuGradeOfEncephalopathy}
                                 </span>
@@ -1298,7 +1303,7 @@ const FollowupUpdate = (props) => {
 
                             {formik.touched?.fuStagingDateLiverBiopsy &&
                               formik?.errors?.fuStagingDateLiverBiopsy !==
-                                "" && (
+                              "" && (
                                 <span className={classes.error}>
                                   {formik?.errors?.fuStagingDateLiverBiopsy}
                                 </span>
@@ -1384,11 +1389,17 @@ const FollowupUpdate = (props) => {
                                 borderRadius: "0.2rem",
                               }}
                             >
-                              <option value="">Select</option>
-
-<option value="YES">Yes</option>
-<option value="NO">No</option>
-                              </select>
+                              <option value="">
+                                Select
+                              </option>
+                              {hcvTreatmentRegimenOptions?.map(
+                                ({ display }) => (
+                                  <option key={display} value={display}>
+                                    {display}
+                                  </option>
+                                )
+                              )}
+                            </select>
                             {formik.touched?.fuTreatmentRegimen &&
                               formik?.errors?.fuTreatmentRegimen !== "" && (
                                 <span className={classes.error}>
@@ -1524,24 +1535,24 @@ const FollowupUpdate = (props) => {
 
               {isLoading ? <Spinner /> : ""}
               <br />
-             {
-             !disableInputs && (
-              <div className="d-flex justify-content-end">
-              <MatButton
-                type="submit"
-                variant="contained"
-                color="primary"
-                className={classes.button}
-                // onClick={handleSubmit}
-                style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}
-              >
-                <span style={{ textTransform: "capitalize" }}>
-                  {isLoading ? "Please wait" : "Submit"}
-                </span>
-              </MatButton>
-              </div>
-              )
-             }
+              {
+                !disableInputs && (
+                  <div className="d-flex justify-content-end">
+                    <MatButton
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                      className={classes.button}
+                      // onClick={handleSubmit}
+                      style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}
+                    >
+                      <span style={{ textTransform: "capitalize" }}>
+                        {isLoading ? "Please wait" : "Submit"}
+                      </span>
+                    </MatButton>
+                  </div>
+                )
+              }
             </form>
           </div>
         </CardContent>

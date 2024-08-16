@@ -29,6 +29,7 @@ import {
   calculateApriScore,
   calculateFib4,
 } from "../../../utils";
+import { useFetchCodesets } from "../../../hooks/useFetchCodesets.hook";
 
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
@@ -118,6 +119,10 @@ const FollowupCreate = (props) => {
     const data = response.data;
     setChildPughData(data);
   };
+
+  const { returnData: hcvTreatmentRegimenOptions } = useFetchCodesets(
+    "HCV_TREATMENT_REGIMEN"
+  );
 
   const onSubmit = (values) => {
     const {
@@ -284,10 +289,11 @@ const FollowupCreate = (props) => {
                     color: "#fff",
                     fontWeight: "bolder",
                     borderRadius: "0.2rem",
+                    
                   }}
                 >
-                  <h5 className="card-title" style={{ color: "#fff" }}>
-                    Preliminary {`(${actionType})`}
+                  <h5 className="card-title" style={{ color: "#fff", height:20 }}>
+                    
                   </h5>
                 </div>
                 <div>
@@ -419,10 +425,10 @@ const FollowupCreate = (props) => {
                               id="fuBmi"
                               value={Math.round(
                                 Number(formik?.values?.fuHeight) /
-                                  Math.pow(
-                                    Number(formik?.values?.fuHeight) / 100,
-                                    2
-                                  )
+                                Math.pow(
+                                  Number(formik?.values?.fuHeight) / 100,
+                                  2
+                                )
                               )}
                               style={{
                                 border: "1px solid #014D88",
@@ -508,7 +514,7 @@ const FollowupCreate = (props) => {
                             </Label>
                             <Input
                               className="form-control"
-                              type="number"
+                              type="text"
                               name="fuHbsagQuantification"
                               id="fuHbsagQuantification"
                               onBlur={formik.handleBlur}
@@ -637,8 +643,8 @@ const FollowupCreate = (props) => {
                     borderRadius: "0.2rem",
                   }}
                 >
-                  <h5 className="card-title" style={{ color: "#fff" }}>
-                    Ancillary testing/Clinical parameters
+                  <h5 className="card-title" style={{ color: "#fff", height:20 }}>
+                    {/* Ancillary testing/Clinical parameters */}
                   </h5>
                 </div>
                 <div>
@@ -1148,7 +1154,7 @@ const FollowupCreate = (props) => {
 
                             {formik.touched?.fuGradeOfEncephalopathy &&
                               formik?.errors?.fuGradeOfEncephalopathy !==
-                                "" && (
+                              "" && (
                                 <span className={classes.error}>
                                   {formik?.errors?.fuGradeOfEncephalopathy}
                                 </span>
@@ -1246,7 +1252,7 @@ const FollowupCreate = (props) => {
 
                             {formik.touched?.fuStagingDateLiverBiopsy &&
                               formik?.errors?.fuStagingDateLiverBiopsy !==
-                                "" && (
+                              "" && (
                                 <span className={classes.error}>
                                   {formik?.errors?.fuStagingDateLiverBiopsy}
                                 </span>
@@ -1330,10 +1336,16 @@ const FollowupCreate = (props) => {
                                 borderRadius: "0.2rem",
                               }}
                             >
-                              <option value="">Select</option>
-
-                              <option value="YES">Yes</option>
-                              <option value="NO">No</option>
+                              <option value="">
+                                Select
+                              </option>
+                              {hcvTreatmentRegimenOptions?.map(
+                                ({ display }) => (
+                                  <option key={display} value={display}>
+                                    {display}
+                                  </option>
+                                )
+                              )}
                             </select>
                             {formik.touched?.fuTreatmentRegimen &&
                               formik?.errors?.fuTreatmentRegimen !== "" && (

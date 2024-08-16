@@ -113,6 +113,88 @@ const PatientDashboardTreatment = ({
   const [patientDateOfBirth] = useState(
     patientObj.dateOfBirth || patientObj?.dob
   );
+
+  const _hcvGenotypeData = [
+    {
+      "id": 1724,
+      "code": "HCV_GENOTYPE_1",
+      "version": "1.0",
+      "codeset_group": "HCV_GENOTYPE",
+      "display": "1",
+      "language": "en",
+      "archived": 0,
+      "date_created": "2024-08-15T10:36:53.118",
+      "created_by": "Nonye",
+      "date_modified": "2024-08-15T10:36:53.118",
+      "modified_by": "Nonye"
+    },
+    {
+      "id": 1725,
+      "code": "HCV_GENOTYPE_2",
+      "version": "1.0",
+      "codeset_group": "HCV_GENOTYPE",
+      "display": "2",
+      "language": "en",
+      "archived": 0,
+      "date_created": "2024-08-15T10:37:07.060",
+      "created_by": "Nonye",
+      "date_modified": "2024-08-15T10:37:07.060",
+      "modified_by": "Nonye"
+    },
+    {
+      "id": 1726,
+      "code": "HCV_GENOTYPE_3",
+      "version": "1.0",
+      "codeset_group": "HCV_GENOTYPE",
+      "display": "3",
+      "language": "en",
+      "archived": 0,
+      "date_created": "2024-08-15T10:37:23.822",
+      "created_by": "Nonye",
+      "date_modified": "2024-08-15T10:37:23.822",
+      "modified_by": "Nonye"
+    },
+    {
+      "id": 1727,
+      "code": "HCV_GENOTYPE_4",
+      "version": "1.0",
+      "codeset_group": "HCV_GENOTYPE",
+      "display": "4",
+      "language": "en",
+      "archived": 0,
+      "date_created": "2024-08-15T10:37:44.155",
+      "created_by": "Nonye",
+      "date_modified": "2024-08-15T10:37:44.155",
+      "modified_by": "Nonye"
+    },
+    {
+      "id": 1728,
+      "code": "HCV_GENOTYPE_5",
+      "version": "1.0",
+      "codeset_group": "HCV_GENOTYPE",
+      "display": "5",
+      "language": "en",
+      "archived": 0,
+      "date_created": "2024-08-15T10:37:57.054",
+      "created_by": "Nonye",
+      "date_modified": "2024-08-15T10:37:57.054",
+      "modified_by": "Nonye"
+    },
+    {
+      "id": 1729,
+      "code": "HCV_GENOTYPE_6",
+      "version": "1.0",
+      "codeset_group": "HCV_GENOTYPE",
+      "display": "6",
+      "language": "en",
+      "archived": 0,
+      "date_created": "2024-08-15T10:38:10.841",
+      "created_by": "Nonye",
+      "date_modified": "2024-08-15T10:38:10.841",
+      "modified_by": "Nonye"
+    }
+  ]
+
   const [enrollmentUuid, setEnrollmentUuid] = useState("");
 
   useQuery(
@@ -132,6 +214,10 @@ const PatientDashboardTreatment = ({
   );
   const { returnData: hbvTreatmentRegimenOptions } = useFetchCodesets(
     "HBV_TREATMENT_REGIMEN"
+  );
+
+  const { returnData: hcvGenotypeData } = useFetchCodesets(
+    "HCV_GENOTYPE"
   );
 
   const [isDropdownsOpen, setIsDropdownsOpen] = useState({
@@ -176,7 +262,7 @@ const PatientDashboardTreatment = ({
     mutate(payload);
   };
 
-const {formik} = useValidatePatientDashboardTreatmentFormValuesHook(handleSubmit)
+  const { formik } = useValidatePatientDashboardTreatmentFormValuesHook(handleSubmit)
 
   return (
     <Card className={classes.root}>
@@ -242,185 +328,185 @@ const {formik} = useValidatePatientDashboardTreatmentFormValuesHook(handleSubmit
 
                       {formik?.values?.hepatitisBTreatmentExperience?.toLowerCase() ===
                         "yes" && (
-                        <div className="form-group mb-3 col-md-4">
-                          <CustomFormGroup
-                            formik={formik}
-                            name="hepatitisBPastTreatmentRegimen"
-                          >
-                            <Label for="hepatitisBPastTreatmentRegimen">
-                              HBV Past treatment regimen
-                              <span style={{ color: "red" }}> *</span>{" "}
-                            </Label>
-                            <select
-                              className="form-control"
+                          <div className="form-group mb-3 col-md-4">
+                            <CustomFormGroup
+                              formik={formik}
                               name="hepatitisBPastTreatmentRegimen"
-                              id="hepatitisBPastTreatmentRegimen"
-                              value={
-                                formik?.values?.hepatitisBPastTreatmentRegimen
-                              }
-                              onChange={formik?.handleChange}
-                              onBlur={formik?.handleBlur}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
                             >
-                              <option value="">Select</option>
-                              {hbvTreatmentRegimenOptions?.map?.(
-                                ({ display }) => (
-                                  <option key={display} value={display}>
-                                    {display}
-                                  </option>
-                                )
-                              )}
-                            </select>
-                            {formik?.touched?.hepatitisBPastTreatmentRegimen &&
-                              formik?.errors.hepatitisBPastTreatmentRegimen && (
-                                <span className={classes.error}>
-                                  {
-                                    formik?.errors
-                                      .hepatitisBPastTreatmentRegimen
-                                  }
-                                </span>
-                              )}
-                          </CustomFormGroup>
-                        </div>
-                      )}
-
-                      {formik?.values?.hepatitisBTreatmentExperience?.toLowerCase() ===
-                        "yes" && (
-                        <>
-                          <div className="form-group mb-3 col-md-4">
-                            <CustomFormGroup
-                              formik={formik}
-                              name="hepatitisBPastTreatmentExperienceDateStarted"
-                            >
-                              <Label for="hepatitisBPastTreatmentExperienceDateStarted">
-                                Date started
+                              <Label for="hepatitisBPastTreatmentRegimen">
+                                HBV Past treatment regimen
+                                <span style={{ color: "red" }}> *</span>{" "}
                               </Label>
-                              <span style={{ color: "red" }}> *</span>{" "}
-                              <input
-                                className="form-control"
-                                type="date"
-                                name="hepatitisBPastTreatmentExperienceDateStarted"
-                                id="hepatitisBPastTreatmentExperienceDateStarted"
-                                max={moment(new Date()).format("YYYY-MM-DD")}
-                                min={moment(
-                                  new Date(patientDateOfBirth)
-                                ).format("YYYY-MM-DD")}
-                                value={
-                                  formik.values
-                                    ?.hepatitisBPastTreatmentExperienceDateStarted
-                                }
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                style={{
-                                  border: "1px solid #014D88",
-                                  borderRadius: "0.2rem",
-                                }}
-                              />
-                              {formik?.touched
-                                ?.hepatitisBPastTreatmentExperienceDateStarted &&
-                                formik?.errors
-                                  .hepatitisBPastTreatmentExperienceDateStarted && (
-                                  <span className={classes.error}>
-                                    {
-                                      formik?.errors
-                                        .hepatitisBPastTreatmentExperienceDateStarted
-                                    }
-                                  </span>
-                                )}
-                            </CustomFormGroup>
-                          </div>
-
-                          <div className="form-group mb-3 col-md-4">
-                            <CustomFormGroup
-                              formik={formik}
-                              name="hepatitisBPastTreatmentExperienceDateCompleted"
-                            >
-                              <Label for="hepatitisBPastTreatmentExperienceDateCompleted">
-                                Date Completed{" "}
-                                <span style={{ color: "red" }}> *</span>
-                              </Label>
-                              <input
-                                className="form-control"
-                                type="date"
-                                name="hepatitisBPastTreatmentExperienceDateCompleted"
-                                id="hepatitisBPastTreatmentExperienceDateCompleted"
-                                max={moment(new Date()).format("YYYY-MM-DD")}
-                                min={
-                                  formik.values
-                                    .hepatitisBPastTreatmentExperienceDateStarted
-                                }
-                                value={
-                                  formik.values
-                                    ?.hepatitisBPastTreatmentExperienceDateCompleted
-                                }
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                style={{
-                                  border: "1px solid #014D88",
-                                  borderRadius: "0.2rem",
-                                }}
-                              />
-                              {formik?.touched
-                                ?.hepatitisBPastTreatmentExperienceDateCompleted &&
-                                formik?.errors
-                                  ?.hepatitisBPastTreatmentExperienceDateCompleted && (
-                                  <span className={classes.error}>
-                                    {
-                                      formik?.errors
-                                        ?.hepatitisBPastTreatmentExperienceDateCompleted
-                                    }
-                                  </span>
-                                )}
-                            </CustomFormGroup>
-                          </div>
-
-                          <div className="form-group mb-3 col-md-4">
-                            <CustomFormGroup
-                              formik={formik}
-                              name="hepatitisBPastTreatmentExperiencePrescribedDuration"
-                            >
-                              <Label for="hepatitisBPastTreatmentExperiencePrescribedDuration">
-                                Prescribed duration
-                              </Label>
-                              <span style={{ color: "red" }}> *</span>
                               <select
                                 className="form-control"
-                                name="hepatitisBPastTreatmentExperiencePrescribedDuration"
-                                id="hepatitisBPastTreatmentExperiencePrescribedDuration"
+                                name="hepatitisBPastTreatmentRegimen"
+                                id="hepatitisBPastTreatmentRegimen"
                                 value={
-                                  formik?.values
-                                    ?.hepatitisBPastTreatmentExperiencePrescribedDuration
+                                  formik?.values?.hepatitisBPastTreatmentRegimen
                                 }
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
+                                onChange={formik?.handleChange}
+                                onBlur={formik?.handleBlur}
                                 style={{
                                   border: "1px solid #014D88",
                                   borderRadius: "0.2rem",
                                 }}
                               >
-                                <option>Select</option>
-                                <option value={"8"}>8 weeks</option>
-                                <option value={"12"}>12 weeks</option>
-                                <option value={"24"}>24 weeks</option>
+                                <option value="">Select</option>
+                                {hbvTreatmentRegimenOptions?.map?.(
+                                  ({ display }) => (
+                                    <option key={display} value={display}>
+                                      {display}
+                                    </option>
+                                  )
+                                )}
                               </select>
-                              {formik?.touched
-                                ?.hepatitisBPastTreatmentExperiencePrescribedDuration &&
-                                formik?.errors
-                                  .hepatitisBPastTreatmentExperiencePrescribedDuration && (
+                              {formik?.touched?.hepatitisBPastTreatmentRegimen &&
+                                formik?.errors.hepatitisBPastTreatmentRegimen && (
                                   <span className={classes.error}>
                                     {
                                       formik?.errors
-                                        .hepatitisBPastTreatmentExperiencePrescribedDuration
+                                        .hepatitisBPastTreatmentRegimen
                                     }
                                   </span>
                                 )}
                             </CustomFormGroup>
                           </div>
-                        </>
-                      )}
+                        )}
+
+                      {formik?.values?.hepatitisBTreatmentExperience?.toLowerCase() ===
+                        "yes" && (
+                          <>
+                            <div className="form-group mb-3 col-md-4">
+                              <CustomFormGroup
+                                formik={formik}
+                                name="hepatitisBPastTreatmentExperienceDateStarted"
+                              >
+                                <Label for="hepatitisBPastTreatmentExperienceDateStarted">
+                                  Date started
+                                </Label>
+                                <span style={{ color: "red" }}> *</span>{" "}
+                                <input
+                                  className="form-control"
+                                  type="date"
+                                  name="hepatitisBPastTreatmentExperienceDateStarted"
+                                  id="hepatitisBPastTreatmentExperienceDateStarted"
+                                  max={moment(new Date()).format("YYYY-MM-DD")}
+                                  min={moment(
+                                    new Date(patientDateOfBirth)
+                                  ).format("YYYY-MM-DD")}
+                                  value={
+                                    formik.values
+                                      ?.hepatitisBPastTreatmentExperienceDateStarted
+                                  }
+                                  onChange={formik.handleChange}
+                                  onBlur={formik.handleBlur}
+                                  style={{
+                                    border: "1px solid #014D88",
+                                    borderRadius: "0.2rem",
+                                  }}
+                                />
+                                {formik?.touched
+                                  ?.hepatitisBPastTreatmentExperienceDateStarted &&
+                                  formik?.errors
+                                    .hepatitisBPastTreatmentExperienceDateStarted && (
+                                    <span className={classes.error}>
+                                      {
+                                        formik?.errors
+                                          .hepatitisBPastTreatmentExperienceDateStarted
+                                      }
+                                    </span>
+                                  )}
+                              </CustomFormGroup>
+                            </div>
+
+                            <div className="form-group mb-3 col-md-4">
+                              <CustomFormGroup
+                                formik={formik}
+                                name="hepatitisBPastTreatmentExperienceDateCompleted"
+                              >
+                                <Label for="hepatitisBPastTreatmentExperienceDateCompleted">
+                                  Date Completed{" "}
+                                  <span style={{ color: "red" }}> *</span>
+                                </Label>
+                                <input
+                                  className="form-control"
+                                  type="date"
+                                  name="hepatitisBPastTreatmentExperienceDateCompleted"
+                                  id="hepatitisBPastTreatmentExperienceDateCompleted"
+                                  max={moment(new Date()).format("YYYY-MM-DD")}
+                                  min={
+                                    formik.values
+                                      .hepatitisBPastTreatmentExperienceDateStarted
+                                  }
+                                  value={
+                                    formik.values
+                                      ?.hepatitisBPastTreatmentExperienceDateCompleted
+                                  }
+                                  onChange={formik.handleChange}
+                                  onBlur={formik.handleBlur}
+                                  style={{
+                                    border: "1px solid #014D88",
+                                    borderRadius: "0.2rem",
+                                  }}
+                                />
+                                {formik?.touched
+                                  ?.hepatitisBPastTreatmentExperienceDateCompleted &&
+                                  formik?.errors
+                                    ?.hepatitisBPastTreatmentExperienceDateCompleted && (
+                                    <span className={classes.error}>
+                                      {
+                                        formik?.errors
+                                          ?.hepatitisBPastTreatmentExperienceDateCompleted
+                                      }
+                                    </span>
+                                  )}
+                              </CustomFormGroup>
+                            </div>
+
+                            <div className="form-group mb-3 col-md-4">
+                              <CustomFormGroup
+                                formik={formik}
+                                name="hepatitisBPastTreatmentExperiencePrescribedDuration"
+                              >
+                                <Label for="hepatitisBPastTreatmentExperiencePrescribedDuration">
+                                  Prescribed duration
+                                </Label>
+                                <span style={{ color: "red" }}> *</span>
+                                <select
+                                  className="form-control"
+                                  name="hepatitisBPastTreatmentExperiencePrescribedDuration"
+                                  id="hepatitisBPastTreatmentExperiencePrescribedDuration"
+                                  value={
+                                    formik?.values
+                                      ?.hepatitisBPastTreatmentExperiencePrescribedDuration
+                                  }
+                                  onChange={formik.handleChange}
+                                  onBlur={formik.handleBlur}
+                                  style={{
+                                    border: "1px solid #014D88",
+                                    borderRadius: "0.2rem",
+                                  }}
+                                >
+                                  <option>Select</option>
+                                  <option value={"8"}>8 weeks</option>
+                                  <option value={"12"}>12 weeks</option>
+                                  <option value={"24"}>24 weeks</option>
+                                </select>
+                                {formik?.touched
+                                  ?.hepatitisBPastTreatmentExperiencePrescribedDuration &&
+                                  formik?.errors
+                                    .hepatitisBPastTreatmentExperiencePrescribedDuration && (
+                                    <span className={classes.error}>
+                                      {
+                                        formik?.errors
+                                          .hepatitisBPastTreatmentExperiencePrescribedDuration
+                                      }
+                                    </span>
+                                  )}
+                              </CustomFormGroup>
+                            </div>
+                          </>
+                        )}
 
                       <div className="form-group mb-3 col-md-4">
                         <CustomFormGroup
@@ -804,7 +890,7 @@ const {formik} = useValidatePatientDashboardTreatmentFormValuesHook(handleSubmit
                               ?.hepatitisBRegimenSwitchDateCompleted &&
                               formik?.errors
                                 .hepatitisBRegimenSwitchDateCompleted !==
-                                "" && (
+                              "" && (
                                 <span className={classes.error}>
                                   {
                                     formik?.errors
@@ -844,7 +930,7 @@ const {formik} = useValidatePatientDashboardTreatmentFormValuesHook(handleSubmit
                               ?.hepatitisBRegimenSwitchReasonForSwitch &&
                               formik?.errors
                                 .hepatitisBRegimenSwitchReasonForSwitch !==
-                                "" && (
+                              "" && (
                                 <span className={classes.error}>
                                   {
                                     formik?.errors
@@ -887,7 +973,7 @@ const {formik} = useValidatePatientDashboardTreatmentFormValuesHook(handleSubmit
                               ?.hepatitisBRegimenSwitchAdverseEffectReported &&
                               formik?.errors
                                 .hepatitisBRegimenSwitchAdverseEffectReported !==
-                                "" && (
+                              "" && (
                                 <span className={classes.error}>
                                   {
                                     formik?.errors
@@ -980,7 +1066,7 @@ const {formik} = useValidatePatientDashboardTreatmentFormValuesHook(handleSubmit
                             </select>
                             {formik?.touched?.hepatitisBReasonForTreatment &&
                               formik.errors.hepatitisBReasonForTreatment !==
-                                "" && (
+                              "" && (
                                 <span className={classes.error}>
                                   {formik?.errors.hepatitisBReasonForTreatment}
                                 </span>
@@ -1017,7 +1103,7 @@ const {formik} = useValidatePatientDashboardTreatmentFormValuesHook(handleSubmit
                               ?.hepatitisBReasonsForTreatmentComment &&
                               formik.errors
                                 .hepatitisBReasonsForTreatmentComment !==
-                                "" && (
+                              "" && (
                                 <span className={classes.error}>
                                   {
                                     formik?.errors
@@ -1100,159 +1186,21 @@ const {formik} = useValidatePatientDashboardTreatmentFormValuesHook(handleSubmit
                         </div>
                         {formik.values?.hepatitisCPastTreatmentExperience?.toLowerCase() ===
                           "yes" && (
-                          <div className="form-group mb-3 col-md-4">
-                            <CustomFormGroup
-                              formik={formik}
-                              name="hepatitisCPastTreatmentRegimen"
-                            >
-                              <Label for="hepatitisCPastTreatmentRegimen">
-                                HCV Past treatment regimen
-                              </Label>
-                              <span style={{ color: "red" }}> *</span>{" "}
-                              <select
-                                className="form-control"
-                                name="hepatitisCPastTreatmentRegimen"
-                                id="hepatitisCPastTreatmentRegimen"
-                                value={
-                                  formik?.values?.hepatitisCPastTreatmentRegimen
-                                }
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                style={{
-                                  border: "1px solid #014D88",
-                                  borderRadius: "0.2rem",
-                                }}
-                              >
-                                <option value="">Select</option>
-                                {hcvTreatmentRegimenOptions?.map(
-                                  ({ display }) => (
-                                    <option key={display} value={display}>
-                                      {display}
-                                    </option>
-                                  )
-                                )}
-                              </select>
-                              {formik?.touched
-                                ?.hepatitisCPastTreatmentRegimen &&
-                                formik?.errors
-                                  .hepatitisCPastTreatmentRegimen && (
-                                  <span className={classes.error}>
-                                    {
-                                      formik?.errors
-                                        ?.hepatitisCPastTreatmentRegimen
-                                    }
-                                  </span>
-                                )}
-                            </CustomFormGroup>
-                          </div>
-                        )}
-
-                        {formik?.values?.hepatitisCPastTreatmentExperience?.toLowerCase() ===
-                          "yes" && (
-                          <>
                             <div className="form-group mb-3 col-md-4">
                               <CustomFormGroup
                                 formik={formik}
-                                name="hepatitisCPastTreatmentExperienceDateStarted"
+                                name="hepatitisCPastTreatmentRegimen"
                               >
-                                <Label for="hepatitisCPastTreatmentExperienceDateStarted">
-                                  Date started
+                                <Label for="hepatitisCPastTreatmentRegimen">
+                                  HCV Past treatment regimen
                                 </Label>
                                 <span style={{ color: "red" }}> *</span>{" "}
-                                <input
-                                  className="form-control"
-                                  type="date"
-                                  name="hepatitisCPastTreatmentExperienceDateStarted"
-                                  id="hepatitisCPastTreatmentExperienceDateStarted"
-                                  max={moment(new Date()).format("YYYY-MM-DD")}
-                                  min={moment(
-                                    new Date(patientDateOfBirth)
-                                  ).format("YYYY-MM-DD")}
-                                  value={
-                                    formik.values
-                                      ?.hepatitisCPastTreatmentExperienceDateStarted
-                                  }
-                                  onChange={formik.handleChange}
-                                  onBlur={formik.handleBlur}
-                                  style={{
-                                    border: "1px solid #014D88",
-                                    borderRadius: "0.2rem",
-                                  }}
-                                />
-                                {formik?.touched
-                                  ?.hepatitisCPastTreatmentExperienceDateStarted &&
-                                  formik?.errors
-                                    .hepatitisCPastTreatmentExperienceDateStarted && (
-                                    <span className={classes.error}>
-                                      {
-                                        formik?.errors
-                                          ?.hepatitisCPastTreatmentExperienceDateStarted
-                                      }
-                                    </span>
-                                  )}
-                              </CustomFormGroup>
-                            </div>
-
-                            <div className="form-group mb-3 col-md-4">
-                              <CustomFormGroup
-                                formik={formik}
-                                name="hepatitisCPastTreatmentExperienceDateCompleted"
-                              >
-                                <Label for="hepatitisCPastTreatmentExperienceDateCompleted">
-                                  Date Completed{" "}
-                                  <span style={{ color: "red" }}> *</span>
-                                </Label>
-                                <input
-                                  className="form-control"
-                                  type="date"
-                                  name="hepatitisCPastTreatmentExperienceDateCompleted"
-                                  id="hepatitisCPastTreatmentExperienceDateCompleted"
-                                  max={moment(new Date()).format("YYYY-MM-DD")}
-                                  min={
-                                    formik?.values
-                                      ?.hepatitisCPastTreatmentExperienceDateStarted
-                                  }
-                                  value={
-                                    formik?.values
-                                      ?.hepatitisCPastTreatmentExperienceDateCompleted
-                                  }
-                                  onChange={formik.handleChange}
-                                  onBlur={formik.handleBlur}
-                                  style={{
-                                    border: "1px solid #014D88",
-                                    borderRadius: "0.2rem",
-                                  }}
-                                />
-                                {formik?.touched
-                                  ?.hepatitisCPastTreatmentExperienceDateCompleted &&
-                                  formik?.errors
-                                    ?.hepatitisCPastTreatmentExperienceDateCompleted && (
-                                    <span className={classes.error}>
-                                      {
-                                        formik?.errors
-                                          ?.hepatitisCPastTreatmentExperienceDateCompleted
-                                      }
-                                    </span>
-                                  )}
-                              </CustomFormGroup>
-                            </div>
-
-                            <div className="form-group mb-3 col-md-4">
-                              <CustomFormGroup
-                                formik={formik}
-                                name="hepatitisCPastTreatmentExperiencePrescribedDuration"
-                              >
-                                <Label for="hepatitisCPastTreatmentExperiencePrescribedDuration">
-                                  Prescribed duration
-                                </Label>
-                                <span style={{ color: "red" }}> *</span>
                                 <select
                                   className="form-control"
-                                  name="hepatitisCPastTreatmentExperiencePrescribedDuration"
-                                  id="hepatitisCPastTreatmentExperiencePrescribedDuration"
+                                  name="hepatitisCPastTreatmentRegimen"
+                                  id="hepatitisCPastTreatmentRegimen"
                                   value={
-                                    formik?.values
-                                      ?.hepatitisCPastTreatmentExperiencePrescribedDuration
+                                    formik?.values?.hepatitisCPastTreatmentRegimen
                                   }
                                   onChange={formik.handleChange}
                                   onBlur={formik.handleBlur}
@@ -1261,26 +1209,164 @@ const {formik} = useValidatePatientDashboardTreatmentFormValuesHook(handleSubmit
                                     borderRadius: "0.2rem",
                                   }}
                                 >
-                                  <option>Select</option>
-                                  <option value={"8"}>8 weeks</option>
-                                  <option value={"12"}>12 weeks</option>
-                                  <option value={"24"}>24 weeks</option>
+                                  <option value="">Select</option>
+                                  {hcvTreatmentRegimenOptions?.map(
+                                    ({ display }) => (
+                                      <option key={display} value={display}>
+                                        {display}
+                                      </option>
+                                    )
+                                  )}
                                 </select>
                                 {formik?.touched
-                                  ?.hepatitisCPastTreatmentExperiencePrescribedDuration &&
+                                  ?.hepatitisCPastTreatmentRegimen &&
                                   formik?.errors
-                                    .hepatitisCPastTreatmentExperiencePrescribedDuration && (
+                                    .hepatitisCPastTreatmentRegimen && (
                                     <span className={classes.error}>
                                       {
                                         formik?.errors
-                                          ?.hepatitisCPastTreatmentExperiencePrescribedDuration
+                                          ?.hepatitisCPastTreatmentRegimen
                                       }
                                     </span>
                                   )}
                               </CustomFormGroup>
                             </div>
-                          </>
-                        )}
+                          )}
+
+                        {formik?.values?.hepatitisCPastTreatmentExperience?.toLowerCase() ===
+                          "yes" && (
+                            <>
+                              <div className="form-group mb-3 col-md-4">
+                                <CustomFormGroup
+                                  formik={formik}
+                                  name="hepatitisCPastTreatmentExperienceDateStarted"
+                                >
+                                  <Label for="hepatitisCPastTreatmentExperienceDateStarted">
+                                    Date started
+                                  </Label>
+                                  <span style={{ color: "red" }}> *</span>{" "}
+                                  <input
+                                    className="form-control"
+                                    type="date"
+                                    name="hepatitisCPastTreatmentExperienceDateStarted"
+                                    id="hepatitisCPastTreatmentExperienceDateStarted"
+                                    max={moment(new Date()).format("YYYY-MM-DD")}
+                                    min={moment(
+                                      new Date(patientDateOfBirth)
+                                    ).format("YYYY-MM-DD")}
+                                    value={
+                                      formik.values
+                                        ?.hepatitisCPastTreatmentExperienceDateStarted
+                                    }
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    style={{
+                                      border: "1px solid #014D88",
+                                      borderRadius: "0.2rem",
+                                    }}
+                                  />
+                                  {formik?.touched
+                                    ?.hepatitisCPastTreatmentExperienceDateStarted &&
+                                    formik?.errors
+                                      .hepatitisCPastTreatmentExperienceDateStarted && (
+                                      <span className={classes.error}>
+                                        {
+                                          formik?.errors
+                                            ?.hepatitisCPastTreatmentExperienceDateStarted
+                                        }
+                                      </span>
+                                    )}
+                                </CustomFormGroup>
+                              </div>
+
+                              <div className="form-group mb-3 col-md-4">
+                                <CustomFormGroup
+                                  formik={formik}
+                                  name="hepatitisCPastTreatmentExperienceDateCompleted"
+                                >
+                                  <Label for="hepatitisCPastTreatmentExperienceDateCompleted">
+                                    Date Completed{" "}
+                                    <span style={{ color: "red" }}> *</span>
+                                  </Label>
+                                  <input
+                                    className="form-control"
+                                    type="date"
+                                    name="hepatitisCPastTreatmentExperienceDateCompleted"
+                                    id="hepatitisCPastTreatmentExperienceDateCompleted"
+                                    max={moment(new Date()).format("YYYY-MM-DD")}
+                                    min={
+                                      formik?.values
+                                        ?.hepatitisCPastTreatmentExperienceDateStarted
+                                    }
+                                    value={
+                                      formik?.values
+                                        ?.hepatitisCPastTreatmentExperienceDateCompleted
+                                    }
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    style={{
+                                      border: "1px solid #014D88",
+                                      borderRadius: "0.2rem",
+                                    }}
+                                  />
+                                  {formik?.touched
+                                    ?.hepatitisCPastTreatmentExperienceDateCompleted &&
+                                    formik?.errors
+                                      ?.hepatitisCPastTreatmentExperienceDateCompleted && (
+                                      <span className={classes.error}>
+                                        {
+                                          formik?.errors
+                                            ?.hepatitisCPastTreatmentExperienceDateCompleted
+                                        }
+                                      </span>
+                                    )}
+                                </CustomFormGroup>
+                              </div>
+
+                              <div className="form-group mb-3 col-md-4">
+                                <CustomFormGroup
+                                  formik={formik}
+                                  name="hepatitisCPastTreatmentExperiencePrescribedDuration"
+                                >
+                                  <Label for="hepatitisCPastTreatmentExperiencePrescribedDuration">
+                                    Prescribed duration
+                                  </Label>
+                                  <span style={{ color: "red" }}> *</span>
+                                  <select
+                                    className="form-control"
+                                    name="hepatitisCPastTreatmentExperiencePrescribedDuration"
+                                    id="hepatitisCPastTreatmentExperiencePrescribedDuration"
+                                    value={
+                                      formik?.values
+                                        ?.hepatitisCPastTreatmentExperiencePrescribedDuration
+                                    }
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    style={{
+                                      border: "1px solid #014D88",
+                                      borderRadius: "0.2rem",
+                                    }}
+                                  >
+                                    <option>Select</option>
+                                    <option value={"8"}>8 weeks</option>
+                                    <option value={"12"}>12 weeks</option>
+                                    <option value={"24"}>24 weeks</option>
+                                  </select>
+                                  {formik?.touched
+                                    ?.hepatitisCPastTreatmentExperiencePrescribedDuration &&
+                                    formik?.errors
+                                      .hepatitisCPastTreatmentExperiencePrescribedDuration && (
+                                      <span className={classes.error}>
+                                        {
+                                          formik?.errors
+                                            ?.hepatitisCPastTreatmentExperiencePrescribedDuration
+                                        }
+                                      </span>
+                                    )}
+                                </CustomFormGroup>
+                              </div>
+                            </>
+                          )}
 
                         {/* Hepatitis C Treatment Regimen */}
                         <div className="form-group mb-3 col-md-4">
@@ -1627,7 +1713,7 @@ const {formik} = useValidatePatientDashboardTreatmentFormValuesHook(handleSubmit
                             </select>
                             {formik?.touched?.hepatitisCSvr12TestingHcvRna &&
                               formik?.errors.hepatitisCSvr12TestingHcvRna !==
-                                "" && (
+                              "" && (
                                 <span className={classes.error}>
                                   {formik?.errors.hepatitisCSvr12TestingHcvRna}
                                 </span>
@@ -1637,46 +1723,46 @@ const {formik} = useValidatePatientDashboardTreatmentFormValuesHook(handleSubmit
 
                         {formik.values?.hepatitisCSvr12TestingHcvRna?.toLowerCase() ===
                           "detected" && (
-                          <div className="form-group mb-3 col-md-4">
-                            <CustomFormGroup
-                              formik={formik}
-                              name="hepatitisCSvr12TestingHcvRnaValue"
-                            >
-                              <Label for="hepatitisCSvr12TestingHcvRnaValue">
-                                Input HCV RNA value (IU/ml)
-                                <span style={{ color: "red" }}> *</span>{" "}
-                              </Label>
-                              <input
-                                className="form-control"
+                            <div className="form-group mb-3 col-md-4">
+                              <CustomFormGroup
+                                formik={formik}
                                 name="hepatitisCSvr12TestingHcvRnaValue"
-                                id="hepatitisCSvr12TestingHcvRnaValue"
-                                type="number"
-                                value={
-                                  formik.values
-                                    ?.hepatitisCSvr12TestingHcvRnaValue
-                                }
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                style={{
-                                  border: "1px solid #014D88",
-                                  borderRadius: "0.2rem",
-                                }}
-                              />
+                              >
+                                <Label for="hepatitisCSvr12TestingHcvRnaValue">
+                                  Input HCV RNA value (IU/ml)
+                                  <span style={{ color: "red" }}> *</span>{" "}
+                                </Label>
+                                <input
+                                  className="form-control"
+                                  name="hepatitisCSvr12TestingHcvRnaValue"
+                                  id="hepatitisCSvr12TestingHcvRnaValue"
+                                  type="number"
+                                  value={
+                                    formik.values
+                                      ?.hepatitisCSvr12TestingHcvRnaValue
+                                  }
+                                  onChange={formik.handleChange}
+                                  onBlur={formik.handleBlur}
+                                  style={{
+                                    border: "1px solid #014D88",
+                                    borderRadius: "0.2rem",
+                                  }}
+                                />
 
-                              {formik?.touched
-                                ?.hepatitisCSvr12TestingHcvRnaValue &&
-                                formik?.errors
-                                  .hepatitisCSvr12TestingHcvRnaValue !== "" && (
-                                  <span className={classes.error}>
-                                    {
-                                      formik?.errors
-                                        .hepatitisCSvr12TestingHcvRnaValue
-                                    }
-                                  </span>
-                                )}
-                            </CustomFormGroup>
-                          </div>
-                        )}
+                                {formik?.touched
+                                  ?.hepatitisCSvr12TestingHcvRnaValue &&
+                                  formik?.errors
+                                    .hepatitisCSvr12TestingHcvRnaValue !== "" && (
+                                    <span className={classes.error}>
+                                      {
+                                        formik?.errors
+                                          .hepatitisCSvr12TestingHcvRnaValue
+                                      }
+                                    </span>
+                                  )}
+                              </CustomFormGroup>
+                            </div>
+                          )}
                       </div>
                     </div>
                   </Collapse>
@@ -1759,8 +1845,16 @@ const {formik} = useValidatePatientDashboardTreatmentFormValuesHook(handleSubmit
                                 borderRadius: "0.2rem",
                               }}
                             >
-                              -- Select --<option value="">-- Select --</option>
+                              <option value="">Select</option>
+                              {_hcvGenotypeData?.map(
+                                ({ display }) => (
+                                  <option key={display} value={display}>
+                                    {display}
+                                  </option>
+                                )
+                              )}
                             </select>
+
                             {formik?.touched
                               ?.hepatitisCHcvRetreatmentHcvGenotype &&
                               formik?.errors
@@ -1856,7 +1950,7 @@ const {formik} = useValidatePatientDashboardTreatmentFormValuesHook(handleSubmit
                               ?.hepatitisCHcvRetreatmentPrescribedDuration &&
                               formik?.errors
                                 .hepatitisCHcvRetreatmentPrescribedDuration !==
-                                "" && (
+                              "" && (
                                 <span className={classes.error}>
                                   {
                                     formik?.errors
@@ -1944,7 +2038,7 @@ const {formik} = useValidatePatientDashboardTreatmentFormValuesHook(handleSubmit
                               ?.hepatitisCHcvRetreatmentAdverseEffect &&
                               formik?.errors
                                 .hepatitisCHcvRetreatmentAdverseEffect !==
-                                "" && (
+                              "" && (
                                 <span className={classes.error}>
                                   {
                                     formik?.errors
@@ -1987,7 +2081,7 @@ const {formik} = useValidatePatientDashboardTreatmentFormValuesHook(handleSubmit
                               ?.hepatitisCHcvRetreatmentHistoryOfAdverseEffect &&
                               formik?.errors
                                 .hepatitisCHcvRetreatmentHistoryOfAdverseEffect !==
-                                "" && (
+                              "" && (
                                 <span className={classes.error}>
                                   {
                                     formik?.errors
@@ -2085,7 +2179,7 @@ const {formik} = useValidatePatientDashboardTreatmentFormValuesHook(handleSubmit
                             ?.hepatitisCRetreatmentSvr12TestingDateTested &&
                             formik?.errors
                               ?.hepatitisCRetreatmentSvr12TestingDateTested !==
-                              "" && (
+                            "" && (
                               <span className={classes.error}>
                                 {
                                   formik?.errors
@@ -2129,7 +2223,7 @@ const {formik} = useValidatePatientDashboardTreatmentFormValuesHook(handleSubmit
                             ?.hepatitisCRetreatmentSvr12TestingRetreatmentHcvRna &&
                             formik?.errors
                               .hepatitisCRetreatmentSvr12TestingRetreatmentHcvRna !==
-                              "" && (
+                            "" && (
                               <span className={classes.error}>
                                 {
                                   formik?.errors
@@ -2142,47 +2236,47 @@ const {formik} = useValidatePatientDashboardTreatmentFormValuesHook(handleSubmit
 
                       {formik.values?.hepatitisCRetreatmentSvr12TestingRetreatmentHcvRna.toLowerCase() ===
                         "detected" && (
-                        <div className="form-group mb-3 col-md-4">
-                          <CustomFormGroup
-                            formik={formik}
-                            name="hepatitisCRetreatmentSvr12TestingRetreatmentHcvRnaValue"
-                          >
-                            <Label for="hepatitisCRetreatmentSvr12TestingRetreatmentHcvRnaValue">
-                              Input Retreatment HCV RNA value
-                              <span style={{ color: "red" }}> *</span>{" "}
-                            </Label>
-                            <input
-                              className="form-control"
-                              type="number"
+                          <div className="form-group mb-3 col-md-4">
+                            <CustomFormGroup
+                              formik={formik}
                               name="hepatitisCRetreatmentSvr12TestingRetreatmentHcvRnaValue"
-                              id="hepatitisCRetreatmentSvr12TestingRetreatmentHcvRnaValue"
-                              value={
-                                formik.values
-                                  ?.hepatitisCRetreatmentSvr12TestingRetreatmentHcvRnaValue
-                              }
-                              onChange={formik.handleChange}
-                              onBlur={formik.handleBlur}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            />
+                            >
+                              <Label for="hepatitisCRetreatmentSvr12TestingRetreatmentHcvRnaValue">
+                                Input Retreatment HCV RNA value
+                                <span style={{ color: "red" }}> *</span>{" "}
+                              </Label>
+                              <input
+                                className="form-control"
+                                type="number"
+                                name="hepatitisCRetreatmentSvr12TestingRetreatmentHcvRnaValue"
+                                id="hepatitisCRetreatmentSvr12TestingRetreatmentHcvRnaValue"
+                                value={
+                                  formik.values
+                                    ?.hepatitisCRetreatmentSvr12TestingRetreatmentHcvRnaValue
+                                }
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                style={{
+                                  border: "1px solid #014D88",
+                                  borderRadius: "0.2rem",
+                                }}
+                              />
 
-                            {formik.touched
-                              ?.hepatitisCRetreatmentSvr12TestingRetreatmentHcvRnaValue &&
-                              formik?.errors
-                                .hepatitisCRetreatmentSvr12TestingRetreatmentHcvRnaValue !==
+                              {formik.touched
+                                ?.hepatitisCRetreatmentSvr12TestingRetreatmentHcvRnaValue &&
+                                formik?.errors
+                                  .hepatitisCRetreatmentSvr12TestingRetreatmentHcvRnaValue !==
                                 "" && (
-                                <span className={classes.error}>
-                                  {
-                                    formik?.errors
-                                      .hepatitisCRetreatmentSvr12TestingRetreatmentHcvRnaValue
-                                  }
-                                </span>
-                              )}
-                          </CustomFormGroup>
-                        </div>
-                      )}
+                                  <span className={classes.error}>
+                                    {
+                                      formik?.errors
+                                        .hepatitisCRetreatmentSvr12TestingRetreatmentHcvRnaValue
+                                    }
+                                  </span>
+                                )}
+                            </CustomFormGroup>
+                          </div>
+                        )}
                     </div>
                   </div>
                 </Collapse>
@@ -2191,7 +2285,7 @@ const {formik} = useValidatePatientDashboardTreatmentFormValuesHook(handleSubmit
             <br />
             {isLoading && <Spinner />}
             <div className="d-flex justify-content-end">
-              
+
 
               <MatButton
                 type="submit"
