@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import MatButton from "@material-ui/core/Button";
-import { FormGroup, Label, Spinner, Input, Form, InputGroup } from "reactstrap";
+import { FormGroup, Label, Spinner, Input } from "reactstrap";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faCheckSquare,
@@ -9,7 +9,8 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { makeStyles } from "@material-ui/core/styles";
-import { Card, CardContent } from "@material-ui/core";
+import { Card, CardContent, Collapse, IconButton } from "@material-ui/core";
+import { ExpandMore as ExpandMoreIcon } from "@material-ui/icons";
 import "react-toastify/dist/ReactToastify.css";
 import "react-widgets/dist/css/react-widgets.css";
 import "react-phone-input-2/lib/style.css";
@@ -218,6 +219,7 @@ const FollowupUpdate = (props) => {
     };
     mutate({ data: formattedData, id: followupData?.id });
   };
+
   const { formik } = useValidateFollowupFormValuesHook(onSubmit, "update");
   const clientDateOfBirth =
     props?.patientObj?.dateOfBirth || props?.patientObj?.dob;
@@ -279,7 +281,14 @@ const FollowupUpdate = (props) => {
     }
   );
 
+
   const [hbsagResult, setHbsagResult] = useState(null);
+
+  const [isDropdownsOpen, setIsDropdownsOpen] = useState({
+    vitalSigns: true,
+    hbvTest: true,
+    liverFunctionTests: true,
+  });
   useEffect(() => {
     fetchHBsAG().then(({ data }) => {
       setHbsagResult(data);
@@ -339,8 +348,8 @@ const FollowupUpdate = (props) => {
                     borderRadius: "0.2rem",
                   }}
                 >
-                  <h5 className="card-title" style={{ color: "#fff", height:20 }}>
-                    
+                  <h5 className="card-title" style={{ color: "#fff", height: 20 }}>
+                  Follow Up
                   </h5>
                 </div>
                 <div>
@@ -350,7 +359,8 @@ const FollowupUpdate = (props) => {
                       style={{ padding: "0 50px 0 50px" }}
                     >
                       <div className="row">
-                        <div className="form-group mb-3 col-md-4">
+
+                        <div className="form-group mb-3 col-md-12">
                           <FormGroup>
                             <Label for="fuDateOfVisit">Date of Visit</Label>
                             <span style={{ color: "red" }}> *</span>{" "}
@@ -385,990 +395,1082 @@ const FollowupUpdate = (props) => {
                           </FormGroup>
                         </div>
 
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="fuWeight">Weight</Label>
-                            {/* <span style={{ color: "red" }}> *</span>{" "} */}
-                            <Input
-                              className="form-control"
-                              disabled={disableInputs}
-                              type="number"
-                              name="fuWeight"
-                              id="fuWeight"
+                        <div>
+
+                          <div
+                            style={{
+                              backgroundColor: "#d8f6ff",
+                              width: "95%",
+                              margin: "auto",
+                              marginTop: "5rem",
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                            }}
+                          >
+                            <p
                               style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                              onBlur={formik.handleBlur}
-                              onChange={formik.handleChange}
-                              value={formik?.values?.fuWeight}
-                            />
-
-                            {formik.touched?.fuWeight &&
-                              formik?.errors?.fuWeight && (
-                                <span className={classes.error}>
-                                  {formik?.errors?.fuWeight}
-                                </span>
-                              )}
-                          </FormGroup>
-                        </div>
-
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="fuHeight">Height</Label>
-
-                            <Input
-                              className="form-control"
-                              disabled={disableInputs}
-                              type="number"
-                              name="fuHeight"
-                              id="fuHeight"
-                              onBlur={formik.handleBlur}
-                              onChange={formik.handleChange}
-                              value={formik?.values?.fuHeight}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            />
-
-                            {formik.touched?.fuHeight &&
-                              formik?.errors?.fuHeight && (
-                                <span className={classes.error}>
-                                  {formik?.errors?.fuHeight}
-                                </span>
-                              )}
-                          </FormGroup>
-                        </div>
-
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="fuBmi">BMI</Label>
-                            {/* <span style={{ color: "red" }}> *</span>{" "} */}
-                            <Input
-                              className="form-control"
-                              disabled={disableInputs}
-                              type="number"
-                              name="fuBmi"
-                              id="fuBmi"
-                              // onBlur={formik.handleBlur}
-                              // onChange={formik.handleChange}
-                              value={Math.round(
-                                Number(formik?.values?.fuHeight) /
-                                Math.pow(
-                                  Number(formik?.values?.fuHeight) / 100,
-                                  2
-                                )
-                              )}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            />
-
-                            {formik.touched?.fuBmi && formik?.errors?.fuBmi && (
-                              <span className={classes.error}>
-                                {formik?.errors?.fuBmi}
-                              </span>
-                            )}
-                          </FormGroup>
-                        </div>
-
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="fuBloodPressure">
-                              Blood Pressure (mmHg)
-                            </Label>
-
-                            <Input
-                              className="form-control"
-                              disabled={disableInputs}
-                              type="number"
-                              name="fuBloodPressure"
-                              id="fuBloodPressure"
-                              onBlur={formik.handleBlur}
-                              onChange={formik.handleChange}
-                              value={formik?.values?.fuBloodPressure}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            />
-
-                            {formik.touched?.fuBloodPressure &&
-                              formik?.errors?.fuBloodPressure && (
-                                <span className={classes.error}>
-                                  {formik?.errors?.fuBloodPressure}
-                                </span>
-                              )}
-                          </FormGroup>
-                        </div>
-
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="fuHbsag">HBsAg</Label>
-                            {/* <span style={{ color: "red" }}> *</span>{" "} */}
-                            <select
-                              className="form-control"
-                              disabled={disableInputs}
-                              name="fuHbsag"
-                              id="fuHbsag"
-                              onBlur={formik.handleBlur}
-                              onChange={formik.handleChange}
-                              value={formik?.values?.fuHbsag}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
+                                color: "black",
+                                fontSize: "15px",
+                                fontWeight: "600",
+                                marginLeft: "10px",
+                                marginTop: "10px",
                               }}
                             >
-                              <options value="">Select</options>
-                              {hbsagResult?.map?.(({ display }) => (
-                                <option key={display} value={display}>
-                                  {display}
-                                </option>
-                              ))}
-                            </select>
-                            {formik.touched?.fuHbsag &&
-                              formik?.errors?.fuHbsag && (
-                                <span className={classes.error}>
-                                  {formik?.errors?.fuHbsag}
-                                </span>
-                              )}
-                          </FormGroup>
-                        </div>
-
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="fuHbsagQuantification">
-                              HBsAg quantification
-                            </Label>
-                            {/* <span style={{ color: "red" }}> *</span>{" "} */}
-                            <Input
-                              className="form-control"
-                              disabled={disableInputs}
-                              type="text"
-                              name="fuHbsagQuantification"
-                              id="fuHbsagQuantification"
-                              onBlur={formik.handleBlur}
-                              onChange={formik.handleChange}
-                              value={formik?.values?.fuHbsagQuantification}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            />
-                            {formik.touched?.fuHbsagQuantification &&
-                              formik?.errors?.fuHbsagQuantification !== "" && (
-                                <span className={classes.error}>
-                                  {formik?.errors?.fuHbsagQuantification}
-                                </span>
-                              )}
-                          </FormGroup>
-                        </div>
-
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="fuHbeag">HBeAg</Label>
-                            {/* <span style={{ color: "red" }}> *</span>{" "} */}
-                            <Input
-                              className="form-control"
-                              disabled={disableInputs}
-                              type="number"
-                              name="fuHbeag"
-                              id="fuHbeag"
-                              onBlur={formik.handleBlur}
-                              onChange={formik.handleChange}
-                              value={formik?.values?.fuHbeag}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            />
-
-                            {formik.touched?.fuHbeag &&
-                              formik?.errors?.fuHbeag !== "" && (
-                                <span className={classes.error}>
-                                  {formik?.errors?.fuHbeag}
-                                </span>
-                              )}
-                          </FormGroup>
-                        </div>
-
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="fuHbvDna">HBV DNA (IU/ml)</Label>
-                            {/* <span style={{ color: "red" }}> *</span>{" "} */}
-                            <Input
-                              className="form-control"
-                              disabled={disableInputs}
-                              type="number"
-                              name="fuHbvDna"
-                              id="fuHbvDna"
-                              onBlur={formik.handleBlur}
-                              onChange={formik.handleChange}
-                              value={formik?.values?.fuHbvDna}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            />
-
-                            {formik.touched?.fuHbvDna &&
-                              formik?.errors?.fuHbvDna !== "" && (
-                                <span className={classes.error}>
-                                  {formik?.errors?.fuHbvDna}
-                                </span>
-                              )}
-                          </FormGroup>
-                        </div>
-
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="fuHbvDnaStatus">HBV DNA Status</Label>
-                            {/* <span style={{ color: "red" }}> *</span>{" "} */}
-                            <select
-                              className="form-control"
-                              disabled={disableInputs}
-                              name="fuHbvDnaStatus"
-                              id="fuHbvDnaStatus"
-                              onBlur={formik.handleBlur}
-                              onChange={formik.handleChange}
-                              value={formik?.values?.fuHbvDnaStatus}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
+                              Vital Signs
+                            </p>
+                            <IconButton
+                              onClick={() =>
+                                setIsDropdownsOpen((prevState) => {
+                                  return {
+                                    ...prevState,
+                                    vitalSigns: !prevState.vitalSigns,
+                                  };
+                                })
+                              }
+                              aria-expanded={isDropdownsOpen.vitalSigns}
+                              aria-label="Expand"
                             >
-                              <option value="">Select</option>
-                              <option value={"UNDETECTED"}>UNDETECTED</option>
-                              <option value={"SUPPRESSED"}>SUPPRESSED</option>
-                              <option value={"NOT SUPPRESSED"}>
-                                NOT SUPPRESSED
-                              </option>
-                              <option value={"NOT DONE"}>NOT DONE</option>
-                            </select>
-
-                            {formik.touched?.fuHbvDnaStatus &&
-                              formik?.errors?.fuHbvDnaStatus !== "" && (
-                                <span className={classes.error}>
-                                  {formik?.errors?.fuHbvDnaStatus}
-                                </span>
-                              )}
-                          </FormGroup>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="card">
-                <div
-                  className="card-header"
-                  style={{
-                    backgroundColor: "#014d88",
-                    color: "#fff",
-                    fontWeight: "bolder",
-                    borderRadius: "0.2rem",
-                  }}
-                >
-                  <h5 className="card-title" style={{ color: "#fff", height:20 }}>
-                    {/* Clinical Parameters */}
-                  </h5>
-                </div>
-                <div>
-                  <div className="card-body">
-                    <div
-                      className="basic-form"
-                      style={{ padding: "0 50px 0 50px" }}
-                    >
-                      <div className="row">
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="fuAlt">ALT (IU/mL)</Label>
-                            {/* <span style={{ color: "red" }}> *</span>{" "} */}
-                            <Input
-                              className="form-control"
-                              disabled={disableInputs}
-                              type="number"
-                              name="fuAlt"
-                              id="fuAlt"
-                              onBlur={formik.handleBlur}
-                              onChange={formik.handleChange}
-                              value={formik?.values?.fuAlt}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            />
-                            {formik.touched?.fuAlt &&
-                              formik?.errors?.fuAlt !== "" && (
-                                <span className={classes.error}>
-                                  {formik?.errors?.fuAlt}
-                                </span>
-                              )}
-                          </FormGroup>
-                        </div>
-
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="fuAst">AST (IU/mL)</Label>
-                            {/* <span style={{ color: "red" }}> *</span>{" "} */}
-                            <Input
-                              className="form-control"
-                              disabled={disableInputs}
-                              type="number"
-                              name="fuAst"
-                              id="fuAst"
-                              onBlur={formik.handleBlur}
-                              onChange={formik.handleChange}
-                              value={formik?.values?.fuAst}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            />
-                            {formik.touched?.fuAst &&
-                              formik?.errors?.fuAst !== "" && (
-                                <span className={classes.error}>
-                                  {formik?.errors?.fuAst}
-                                </span>
-                              )}
-                          </FormGroup>
-                        </div>
-
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="fuPlt">
-                              Platelet (mm<sup>3</sup>)
-                            </Label>
-                            <Input
-                              className="form-control"
-                              disabled={disableInputs}
-                              type="number"
-                              name="fuPlt"
-                              id="fuPlt"
-                              onBlur={formik.handleBlur}
-                              onChange={formik.handleChange}
-                              value={formik?.values?.fuPlt}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            />
-
-                            {formik.touched?.fuPlt &&
-                              formik?.errors?.fuPlt !== "" && (
-                                <span className={classes.error}>
-                                  {formik?.errors?.fuPlt}
-                                </span>
-                              )}
-                          </FormGroup>
-                        </div>
-
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="fuTotalBilirubin">
-                              Total Bilirubin (µmol/L)
-                            </Label>
-                            {/* <span style={{ color: "red" }}> *</span>{" "} */}
-                            <Input
-                              className="form-control"
-                              disabled={disableInputs}
-                              type="number"
-                              name="fuTotalBilirubin"
-                              id="fuTotalBilirubin"
-                              onBlur={formik.handleBlur}
-                              onChange={formik.handleChange}
-                              value={formik?.values?.fuTotalBilirubin}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            />
-
-                            {formik.touched?.fuTotalBilirubin &&
-                              formik?.errors?.fuTotalBilirubin !== "" && (
-                                <span className={classes.error}>
-                                  {formik?.errors?.fuTotalBilirubin}
-                                </span>
-                              )}
-                          </FormGroup>
-                        </div>
-
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="fuDirectBilirubin">
-                              Direct Bilirubin (mm<sup>3</sup>)
-                            </Label>
-                            {/* <span style={{ color: "red" }}> *</span>{" "} */}
-                            <Input
-                              className="form-control"
-                              disabled={disableInputs}
-                              type="number"
-                              name="fuDirectBilirubin"
-                              id="fuDirectBilirubin"
-                              onBlur={formik.handleBlur}
-                              onChange={formik.handleChange}
-                              value={formik?.values?.fuDirectBilirubin}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            />
-
-                            {formik.touched?.fuDirectBilirubin &&
-                              formik?.errors?.fuDirectBilirubin !== "" && (
-                                <span className={classes.error}>
-                                  {formik?.errors?.fuDirectBilirubin}
-                                </span>
-                              )}
-                          </FormGroup>
-                        </div>
-
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="fuAlbumin">Albumin (g/dl)</Label>
-                            {/* <span style={{ color: "red" }}> *</span>{" "} */}
-                            <Input
-                              className="form-control"
-                              disabled={disableInputs}
-                              type="number"
-                              name="fuAlbumin"
-                              id="fuAlbumin"
-                              onBlur={formik.handleBlur}
-                              onChange={formik.handleChange}
-                              value={formik?.values?.fuAlbumin}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            />
-                            {formik.touched?.fuAlbumin &&
-                              formik?.errors?.fuAlbumin !== "" && (
-                                <span className={classes.error}>
-                                  {formik?.errors?.fuAlbumin}
-                                </span>
-                              )}
-                          </FormGroup>
-                        </div>
-
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="fuApriScore">APRI Score</Label>
-                            {/* <span style={{ color: "red" }}> *</span>{" "} */}
-                            <Input
-                              className="form-control"
-                              disabled
-                              type="number"
-                              name="fuApriScore"
-                              id="fuApriScore"
-                              onBlur={formik.handleBlur}
-                              onChange={formik.handleChange}
-                              value={formik?.values?.fuApriScore}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            />
-
-                            {formik.touched?.fuApriScore &&
-                              formik?.errors?.fuApriScore !== "" && (
-                                <span className={classes.error}>
-                                  {formik?.errors?.fuApriScore}
-                                </span>
-                              )}
-                          </FormGroup>
-                        </div>
-
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="fuFib4">FIB-4</Label>
-                            {/* <span style={{ color: "red" }}> *</span>{" "} */}
-                            <Input
-                              className="form-control"
-                              disabled
-                              type="number"
-                              name="fuFib4"
-                              id="fuFib4"
-                              onBlur={formik.handleBlur}
-                              onChange={formik.handleChange}
-                              value={formik?.values?.fuFib4}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            />
-
-                            {formik.touched?.fuFib4 &&
-                              formik?.errors?.fuFib4 !== "" && (
-                                <span className={classes.error}>
-                                  {formik?.errors?.fuFib4}
-                                </span>
-                              )}
-                          </FormGroup>
-                        </div>
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="fuProthrombinTime">
-                              Prothrombin time/INR
-                            </Label>
-                            {/* <span style={{ color: "red" }}> *</span>{" "} */}
-                            <Input
-                              className="form-control"
-                              disabled={disableInputs}
-                              type="number"
-                              name="fuProthrombinTime"
-                              id="fuProthrombinTime"
-                              onBlur={formik.handleBlur}
-                              onChange={formik.handleChange}
-                              value={formik?.values?.fuProthrombinTime}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            />
-
-                            {formik.touched?.fuProthrombinTime &&
-                              formik?.errors?.fuProthrombinTime !== "" && (
-                                <span className={classes.error}>
-                                  {formik?.errors?.fuProthrombinTime}
-                                </span>
-                              )}
-                          </FormGroup>
-                        </div>
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="fuUrea">Urea (mg/dl)</Label>
-                            {/* <span style={{ color: "red" }}> *</span>{" "} */}
-                            <Input
-                              className="form-control"
-                              disabled={disableInputs}
-                              type="number"
-                              name="fuUrea"
-                              id="fuUrea"
-                              onBlur={formik.handleBlur}
-                              onChange={formik.handleChange}
-                              value={formik?.values?.fuUrea}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            />
-
-                            {formik.touched?.fuUrea &&
-                              formik?.errors?.fuUrea !== "" && (
-                                <span className={classes.error}>
-                                  {formik?.errors?.fuUrea}
-                                </span>
-                              )}
-                          </FormGroup>
-                        </div>
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="fuCreatinine">
-                              Creatinine (µmol/L)
-                            </Label>
-
-                            <Input
-                              className="form-control"
-                              disabled={disableInputs}
-                              type="number"
-                              name="fuCreatinine"
-                              id="fuCreatinine"
-                              onBlur={formik.handleBlur}
-                              onChange={formik.handleChange}
-                              value={formik?.values?.fuCreatinine}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            />
-
-                            {formik.touched?.fuCreatinine &&
-                              formik?.errors?.fuCreatinine !== "" && (
-                                <span className={classes.error}>
-                                  {formik?.errors?.fuCreatinine}
-                                </span>
-                              )}
-                          </FormGroup>
-                        </div>
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="fuUltrasoundScan">
-                              Ultrasound Scan
-                            </Label>
-                            {/* <span style={{ color: "red" }}> *</span>{" "} */}
-                            <Input
-                              className="form-control"
-                              disabled={disableInputs}
-                              type="text"
-                              name="fuUltrasoundScan"
-                              id="fuUltrasoundScan"
-                              onBlur={formik.handleBlur}
-                              onChange={formik.handleChange}
-                              value={formik?.values?.fuUltrasoundScan}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            />
-
-                            {formik.touched?.fuUltrasoundScan &&
-                              formik?.errors?.fuUltrasoundScan !== "" && (
-                                <span className={classes.error}>
-                                  {formik?.errors?.fuUltrasoundScan}
-                                </span>
-                              )}
-                          </FormGroup>
-                        </div>
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="fuAfp">AFP (ng/ml)</Label>
-                            {/* <span style={{ color: "red" }}> *</span>{" "} */}
-                            <Input
-                              className="form-control"
-                              disabled={disableInputs}
-                              type="number"
-                              name="fuAfp"
-                              id="fuAfp"
-                              onBlur={formik.handleBlur}
-                              onChange={formik.handleChange}
-                              value={formik?.values?.fuAfp}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            />
-
-                            {formik.touched?.fuAfp &&
-                              formik?.errors?.fuAfp !== "" && (
-                                <span className={classes.error}>
-                                  {formik?.errors?.fuAfp}
-                                </span>
-                              )}
-                          </FormGroup>
-                        </div>
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="fuFibroscan">Fibroscan (kPa)</Label>
-                            {/* <span style={{ color: "red" }}> *</span>{" "} */}
-                            <Input
-                              className="form-control"
-                              disabled={disableInputs}
-                              type="number"
-                              name="fuFibroscan"
-                              id="fuFibroscan"
-                              onBlur={formik.handleBlur}
-                              onChange={formik.handleChange}
-                              value={formik?.values?.fuFibroscan}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            />
-
-                            {formik.touched?.fuFibroscan &&
-                              formik?.errors?.fuFibroscan !== "" && (
-                                <span className={classes.error}>
-                                  {formik?.errors?.fuFibroscan}
-                                </span>
-                              )}
-                          </FormGroup>
-                        </div>
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="fuCtScan">CT Scan</Label>
-                            {/* <span style={{ color: "red" }}> *</span>{" "} */}
-                            <Input
-                              className="form-control"
-                              disabled={disableInputs}
-                              type="text"
-                              name="fuCtScan"
-                              id="fuCtScan"
-                              onBlur={formik.handleBlur}
-                              onChange={formik.handleChange}
-                              value={formik?.values?.fuCtScan}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            />
-
-                            {formik.touched?.fuCtScan &&
-                              formik?.errors?.fuCtScan !== "" && (
-                                <span className={classes.error}>
-                                  {formik?.errors?.fuCtScan}
-                                </span>
-                              )}
-                          </FormGroup>
-                        </div>
-
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="fuAscites">Ascites</Label>
-                            {/* <span style={{ color: "red" }}> *</span>{" "} */}
-                            <Input
-                              className="form-control"
-                              disabled={disableInputs}
-                              type="select"
-                              name="fuAscites"
-                              id="fuAscites"
-                              onBlur={formik.handleBlur}
-                              onChange={formik.handleChange}
-                              value={formik?.values?.fuAscites}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            >
-                              <option>Select</option>
-                              <option value="YES">Yes</option>
-                              <option value="NO">No</option>
-                            </Input>
-
-                            {formik.touched?.fuAscites &&
-                              formik?.errors?.fuAscites !== "" && (
-                                <span className={classes.error}>
-                                  {formik?.errors?.fuAscites}
-                                </span>
-                              )}
-                          </FormGroup>
-                        </div>
-
-                        {formik?.values?.fuAscites === "YES" && (
-                          <div className="form-group mb-3 col-md-4">
-                            <FormGroup>
-                              <Label for="fuSeverityOfAscites">
-                                Severity of Ascites
-                              </Label>
-                              {/* <span style={{ color: "red" }}> *</span>{" "} */}
-                              <select
-                                className="form-control"
-                                disabled={disableInputs}
-                                name="fuSeverityOfAscites"
-                                id="fuSeverityOfAscites"
-                                onBlur={formik.handleBlur}
-                                onChange={formik.handleChange}
-                                value={formik?.values?.fuSeverityOfAscites}
-                                style={{
-                                  border: "1px solid #014D88",
-                                  borderRadius: "0.2rem",
-                                }}
-                              >
-                                <option value="">Select</option>
-                                <option value={"Mild"}>Mild</option>
-                                <option value={"Moderate"}>Moderate</option>
-                                <option value={"Massive/Gross"}>
-                                  Massive/Gross
-                                </option>
-                              </select>
-
-                              {formik.touched?.fuSeverityOfAscites &&
-                                formik?.errors?.fuSeverityOfAscites !== "" && (
-                                  <span className={classes.error}>
-                                    {formik?.errors?.fuSeverityOfAscites}
-                                  </span>
-                                )}
-                            </FormGroup>
+                              <ExpandMoreIcon />
+                            </IconButton>
                           </div>
-                        )}
 
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="fuGradeOfEncephalopathy">
-                              Grade of encephalopathy
-                            </Label>
-                            {/* <span style={{ color: "red" }}> *</span>{" "} */}
-                            <select
-                              className="form-control"
-                              disabled={disableInputs}
-                              name="fuGradeOfEncephalopathy"
-                              id="fuGradeOfEncephalopathy"
-                              onBlur={formik.handleBlur}
-                              onChange={formik.handleChange}
-                              value={formik?.values?.fuGradeOfEncephalopathy}
+                          <div className="card-body">
+                            <Collapse in={isDropdownsOpen.vitalSigns}>
+
+                              <div
+                                className="basic-form"
+                                style={{ padding: "0 50px 0 50px" }}
+                              >
+                                <div className="row">
+                                  <div className="form-group mb-3 col-md-4">
+                                    <FormGroup>
+                                      <Label for="fuWeight">Weight</Label>
+                                      {/* <span style={{ color: "red" }}> *</span>{" "} */}
+                                      <Input
+                                        className="form-control"
+                                        disabled={disableInputs}
+                                        type="number"
+                                        name="fuWeight"
+                                        id="fuWeight"
+                                        style={{
+                                          border: "1px solid #014D88",
+                                          borderRadius: "0.2rem",
+                                        }}
+                                        onBlur={formik.handleBlur}
+                                        onChange={formik.handleChange}
+                                        value={formik?.values?.fuWeight}
+                                      />
+
+                                      {formik.touched?.fuWeight &&
+                                        formik?.errors?.fuWeight && (
+                                          <span className={classes.error}>
+                                            {formik?.errors?.fuWeight}
+                                          </span>
+                                        )}
+                                    </FormGroup>
+                                  </div>
+
+                                  <div className="form-group mb-3 col-md-4">
+                                    <FormGroup>
+                                      <Label for="fuHeight">Height</Label>
+
+                                      <Input
+                                        className="form-control"
+                                        disabled={disableInputs}
+                                        type="number"
+                                        name="fuHeight"
+                                        id="fuHeight"
+                                        onBlur={formik.handleBlur}
+                                        onChange={formik.handleChange}
+                                        value={formik?.values?.fuHeight}
+                                        style={{
+                                          border: "1px solid #014D88",
+                                          borderRadius: "0.2rem",
+                                        }}
+                                      />
+
+                                      {formik.touched?.fuHeight &&
+                                        formik?.errors?.fuHeight && (
+                                          <span className={classes.error}>
+                                            {formik?.errors?.fuHeight}
+                                          </span>
+                                        )}
+                                    </FormGroup>
+                                  </div>
+
+                                  <div className="form-group mb-3 col-md-4">
+                                    <FormGroup>
+                                      <Label for="fuBmi">BMI</Label>
+                                      {/* <span style={{ color: "red" }}> *</span>{" "} */}
+                                      <Input
+                                        className="form-control"
+                                        disabled={disableInputs}
+                                        type="number"
+                                        name="fuBmi"
+                                        id="fuBmi"
+                                        // onBlur={formik.handleBlur}
+                                        // onChange={formik.handleChange}
+                                        value={Math.round(
+                                          Number(formik?.values?.fuHeight) /
+                                          Math.pow(
+                                            Number(formik?.values?.fuHeight) / 100,
+                                            2
+                                          )
+                                        )}
+                                        style={{
+                                          border: "1px solid #014D88",
+                                          borderRadius: "0.2rem",
+                                        }}
+                                      />
+
+                                      {formik.touched?.fuBmi && formik?.errors?.fuBmi && (
+                                        <span className={classes.error}>
+                                          {formik?.errors?.fuBmi}
+                                        </span>
+                                      )}
+                                    </FormGroup>
+                                  </div>
+
+                                  <div className="form-group mb-3 col-md-4">
+                                    <FormGroup>
+                                      <Label for="fuBloodPressure">
+                                        Blood Pressure (mmHg)
+                                      </Label>
+
+                                      <Input
+                                        className="form-control"
+                                        disabled={disableInputs}
+                                        type="number"
+                                        name="fuBloodPressure"
+                                        id="fuBloodPressure"
+                                        onBlur={formik.handleBlur}
+                                        onChange={formik.handleChange}
+                                        value={formik?.values?.fuBloodPressure}
+                                        style={{
+                                          border: "1px solid #014D88",
+                                          borderRadius: "0.2rem",
+                                        }}
+                                      />
+
+                                      {formik.touched?.fuBloodPressure &&
+                                        formik?.errors?.fuBloodPressure && (
+                                          <span className={classes.error}>
+                                            {formik?.errors?.fuBloodPressure}
+                                          </span>
+                                        )}
+                                    </FormGroup>
+                                  </div>
+                                </div>
+                              </div>
+
+                            </Collapse>
+                          </div>
+                        </div>
+
+
+                        {/* HBV TEST */}
+
+                        <div>
+                          <div
+                            style={{
+                              backgroundColor: "#d8f6ff",
+                              width: "95%",
+                              margin: "auto",
+                              marginTop: "5rem",
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                            }}
+                          >
+                            <p
                               style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
+                                color: "black",
+                                fontSize: "15px",
+                                fontWeight: "600",
+                                marginLeft: "10px",
+                                marginTop: "10px",
                               }}
                             >
-                              <option value="">Select</option>
-                              <option value={"0"}>0</option>
-                              <option value={"1"}>1</option>
-                              <option value={"2"}>2</option>
-                              <option value={"3"}>3</option>
-                              <option value={"4"}>4</option>
-                            </select>
-
-                            {formik.touched?.fuGradeOfEncephalopathy &&
-                              formik?.errors?.fuGradeOfEncephalopathy !==
-                              "" && (
-                                <span className={classes.error}>
-                                  {formik?.errors?.fuGradeOfEncephalopathy}
-                                </span>
-                              )}
-                          </FormGroup>
-                        </div>
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="fuChildPughScore">
-                              Child pugh score
-                            </Label>
-                            {/* <span style={{ color: "red" }}> *</span>{" "} */}
-                            <select
-                              className="form-control"
-                              disabled={disableInputs}
-                              name="fuChildPughScore"
-                              id="fuChildPughScore"
-                              onBlur={formik.handleBlur}
-                              onChange={formik.handleChange}
-                              value={formik?.values?.fuChildPughScore}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
+                              HBV Tests
+                            </p>
+                            <IconButton
+                              onClick={() =>
+                                setIsDropdownsOpen((prevState) => {
+                                  return {
+                                    ...prevState,
+                                    hbvTest: !prevState.hbvTest,
+                                  };
+                                })
+                              }
+                              aria-expanded={isDropdownsOpen.hbvTest}
+                              aria-label="Expand"
                             >
-                              <option>Select</option>
+                              <ExpandMoreIcon />
+                            </IconButton>
+                          </div>
 
-                              {childPughData?.map((item) => (
-                                <option key={item?.code} value={item?.code}>
-                                  {item?.display}
-                                </option>
-                              ))}
-                            </select>
+                          <div className="card-body">
 
-                            {formik.touched?.fuChildPughScore &&
-                              formik?.errors?.fuChildPughScore !== "" && (
-                                <span className={classes.error}>
-                                  {formik?.errors?.fuChildPughScore}
-                                </span>
-                              )}
-                          </FormGroup>
-                        </div>
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="fuLiverBiopsyStage">
-                              Liver Biopsy stage
-                            </Label>
-                            {/* <span style={{ color: "red" }}> *</span>{" "} */}
-                            <select
-                              className="form-control"
-                              disabled={disableInputs}
-                              type="number"
-                              name="fuLiverBiopsyStage"
-                              id="fuLiverBiopsyStage"
-                              onBlur={formik.handleBlur}
-                              onChange={formik.handleChange}
-                              value={formik?.values?.fuLiverBiopsyStage}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
+                          </div>
+                          <Collapse in={isDropdownsOpen.hbvTest}>
+                            <div
+                              className="basic-form"
+                              style={{ padding: "0 50px 0 50px" }}
                             >
-                              <option value="">Select</option>
-                              <option value={"YES"}>Yes</option>
-                              <option value={"NO"}>No</option>
-                            </select>
+                              <div className="row">
 
-                            {formik.touched?.fuLiverBiopsyStage &&
-                              formik?.errors?.fuLiverBiopsyStage !== "" && (
-                                <span className={classes.error}>
-                                  {formik?.errors?.fuLiverBiopsyStage}
-                                </span>
-                              )}
-                          </FormGroup>
-                        </div>
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="fuStagingDateLiverBiopsy">
-                              Staging date for liver biopsy
-                            </Label>
-                            {/* <span style={{ color: "red" }}> *</span>{" "} */}
-                            <Input
-                              className="form-control"
-                              disabled={disableInputs}
-                              type="date"
-                              name="fuStagingDateLiverBiopsy"
-                              id="fuStagingDateLiverBiopsy"
-                              onBlur={formik.handleBlur}
-                              max={moment(new Date()).format("YYYY-MM-DD")}
-                              onChange={formik.handleChange}
-                              value={formik?.values?.fuStagingDateLiverBiopsy}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            />
+                                <div className="form-group mb-3 col-md-4">
+                                  <FormGroup>
+                                    <Label for="fuHbsag">HBsAg</Label>
+                                    {/* <span style={{ color: "red" }}> *</span>{" "} */}
+                                    <select
+                                      className="form-control"
+                                      disabled={disableInputs}
+                                      name="fuHbsag"
+                                      id="fuHbsag"
+                                      onBlur={formik.handleBlur}
+                                      onChange={formik.handleChange}
+                                      value={formik?.values?.fuHbsag}
+                                      style={{
+                                        border: "1px solid #014D88",
+                                        borderRadius: "0.2rem",
+                                      }}
+                                    >
+                                      <option value="">Select</option>
+                                      {hbsagResult?.map?.(({ display }) => (
+                                        <option key={display} value={display}>
+                                          {display}
+                                        </option>
+                                      ))}
+                                    </select>
+                                    {formik.touched?.fuHbsag &&
+                                      formik?.errors?.fuHbsag && (
+                                        <span className={classes.error}>
+                                          {formik?.errors?.fuHbsag}
+                                        </span>
+                                      )}
+                                  </FormGroup>
+                                </div>
 
-                            {formik.touched?.fuStagingDateLiverBiopsy &&
-                              formik?.errors?.fuStagingDateLiverBiopsy !==
-                              "" && (
-                                <span className={classes.error}>
-                                  {formik?.errors?.fuStagingDateLiverBiopsy}
-                                </span>
-                              )}
-                          </FormGroup>
-                        </div>
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="fuDiagnosis">Diagnosis</Label>
-                            {/* <span style={{ color: "red" }}> *</span>{" "} */}
-                            <select
-                              className="form-control"
-                              disabled={disableInputs}
-                              type="date"
-                              name="fuDiagnosis"
-                              id="fuDiagnosis"
-                              onBlur={formik.handleBlur}
-                              onChange={formik.handleChange}
-                              value={formik?.values?.fuDiagnosis}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            >
-                              <option value="">Select</option>
-                              <option value={"FIBROSIS"}>FIBROSIS</option>
-                              <option value={"CIRRHOSIS"}>CIRRHOSIS</option>
-                              <option value={"HCC"}>HCC</option>
-                            </select>
+                                <div className="form-group mb-3 col-md-4">
+                                  <FormGroup>
+                                    <Label for="fuHbsagQuantification">
+                                      HBsAg quantification
+                                    </Label>
+                                    {/* <span style={{ color: "red" }}> *</span>{" "} */}
+                                    <Input
+                                      className="form-control"
+                                      disabled={disableInputs}
+                                      type="text"
+                                      name="fuHbsagQuantification"
+                                      id="fuHbsagQuantification"
+                                      onBlur={formik.handleBlur}
+                                      onChange={formik.handleChange}
+                                      value={formik?.values?.fuHbsagQuantification}
+                                      style={{
+                                        border: "1px solid #014D88",
+                                        borderRadius: "0.2rem",
+                                      }}
+                                    />
+                                    {formik.touched?.fuHbsagQuantification &&
+                                      formik?.errors?.fuHbsagQuantification !== "" && (
+                                        <span className={classes.error}>
+                                          {formik?.errors?.fuHbsagQuantification}
+                                        </span>
+                                      )}
+                                  </FormGroup>
+                                </div>
 
-                            {formik.touched?.fuDiagnosis &&
-                              formik?.errors?.fuDiagnosis !== "" && (
-                                <span className={classes.error}>
-                                  {formik?.errors?.fuDiagnosis}
-                                </span>
-                              )}
-                          </FormGroup>
+                                <div className="form-group mb-3 col-md-4">
+                                  <FormGroup>
+                                    <Label for="fuHbeag">HBeAg</Label>
+                                    {/* <span style={{ color: "red" }}> *</span>{" "} */}
+                                    <Input
+                                      className="form-control"
+                                      disabled={disableInputs}
+                                      type="number"
+                                      name="fuHbeag"
+                                      id="fuHbeag"
+                                      onBlur={formik.handleBlur}
+                                      onChange={formik.handleChange}
+                                      value={formik?.values?.fuHbeag}
+                                      style={{
+                                        border: "1px solid #014D88",
+                                        borderRadius: "0.2rem",
+                                      }}
+                                    />
+
+                                    {formik.touched?.fuHbeag &&
+                                      formik?.errors?.fuHbeag !== "" && (
+                                        <span className={classes.error}>
+                                          {formik?.errors?.fuHbeag}
+                                        </span>
+                                      )}
+                                  </FormGroup>
+                                </div>
+
+                                <div className="form-group mb-3 col-md-4">
+                                  <FormGroup>
+                                    <Label for="fuHbvDna">HBV DNA (IU/ml)</Label>
+                                    {/* <span style={{ color: "red" }}> *</span>{" "} */}
+                                    <Input
+                                      className="form-control"
+                                      disabled={disableInputs}
+                                      type="number"
+                                      name="fuHbvDna"
+                                      id="fuHbvDna"
+                                      onBlur={formik.handleBlur}
+                                      onChange={formik.handleChange}
+                                      value={formik?.values?.fuHbvDna}
+                                      style={{
+                                        border: "1px solid #014D88",
+                                        borderRadius: "0.2rem",
+                                      }}
+                                    />
+
+                                    {formik.touched?.fuHbvDna &&
+                                      formik?.errors?.fuHbvDna !== "" && (
+                                        <span className={classes.error}>
+                                          {formik?.errors?.fuHbvDna}
+                                        </span>
+                                      )}
+                                  </FormGroup>
+                                </div>
+
+                                <div className="form-group mb-3 col-md-4">
+                                  <FormGroup>
+                                    <Label for="fuHbvDnaStatus">HBV DNA Status</Label>
+                                    {/* <span style={{ color: "red" }}> *</span>{" "} */}
+                                    <select
+                                      className="form-control"
+                                      disabled={disableInputs}
+                                      name="fuHbvDnaStatus"
+                                      id="fuHbvDnaStatus"
+                                      onBlur={formik.handleBlur}
+                                      onChange={formik.handleChange}
+                                      value={formik?.values?.fuHbvDnaStatus}
+                                      style={{
+                                        border: "1px solid #014D88",
+                                        borderRadius: "0.2rem",
+                                      }}
+                                    >
+                                      <option value="">Select</option>
+                                      <option value={"UNDETECTED"}>UNDETECTED</option>
+                                      <option value={"SUPPRESSED"}>SUPPRESSED</option>
+                                      <option value={"NOT SUPPRESSED"}>
+                                        NOT SUPPRESSED
+                                      </option>
+                                      <option value={"NOT DONE"}>NOT DONE</option>
+                                    </select>
+
+                                    {formik.touched?.fuHbvDnaStatus &&
+                                      formik?.errors?.fuHbvDnaStatus !== "" && (
+                                        <span className={classes.error}>
+                                          {formik?.errors?.fuHbvDnaStatus}
+                                        </span>
+                                      )}
+                                  </FormGroup>
+                                </div>
+
+
+                                <div className="form-group mb-3 col-md-4">
+                                  <FormGroup>
+                                    <Label for="fuAlt">ALT (IU/mL)</Label>
+                                    {/* <span style={{ color: "red" }}> *</span>{" "} */}
+                                    <Input
+                                      className="form-control"
+                                      disabled={disableInputs}
+                                      type="number"
+                                      name="fuAlt"
+                                      id="fuAlt"
+                                      onBlur={formik.handleBlur}
+                                      onChange={formik.handleChange}
+                                      value={formik?.values?.fuAlt}
+                                      style={{
+                                        border: "1px solid #014D88",
+                                        borderRadius: "0.2rem",
+                                      }}
+                                    />
+                                    {formik.touched?.fuAlt &&
+                                      formik?.errors?.fuAlt !== "" && (
+                                        <span className={classes.error}>
+                                          {formik?.errors?.fuAlt}
+                                        </span>
+                                      )}
+                                  </FormGroup>
+                                </div>
+
+                                <div className="form-group mb-3 col-md-4">
+                                  <FormGroup>
+                                    <Label for="fuAst">AST (IU/mL)</Label>
+                                    {/* <span style={{ color: "red" }}> *</span>{" "} */}
+                                    <Input
+                                      className="form-control"
+                                      disabled={disableInputs}
+                                      type="number"
+                                      name="fuAst"
+                                      id="fuAst"
+                                      onBlur={formik.handleBlur}
+                                      onChange={formik.handleChange}
+                                      value={formik?.values?.fuAst}
+                                      style={{
+                                        border: "1px solid #014D88",
+                                        borderRadius: "0.2rem",
+                                      }}
+                                    />
+                                    {formik.touched?.fuAst &&
+                                      formik?.errors?.fuAst !== "" && (
+                                        <span className={classes.error}>
+                                          {formik?.errors?.fuAst}
+                                        </span>
+                                      )}
+                                  </FormGroup>
+                                </div>
+
+                                <div className="form-group mb-3 col-md-4">
+                                  <FormGroup>
+                                    <Label for="fuPlt">
+                                      Platelet (mm<sup>3</sup>)
+                                    </Label>
+                                    <Input
+                                      className="form-control"
+                                      disabled={disableInputs}
+                                      type="number"
+                                      name="fuPlt"
+                                      id="fuPlt"
+                                      onBlur={formik.handleBlur}
+                                      onChange={formik.handleChange}
+                                      value={formik?.values?.fuPlt}
+                                      style={{
+                                        border: "1px solid #014D88",
+                                        borderRadius: "0.2rem",
+                                      }}
+                                    />
+
+                                    {formik.touched?.fuPlt &&
+                                      formik?.errors?.fuPlt !== "" && (
+                                        <span className={classes.error}>
+                                          {formik?.errors?.fuPlt}
+                                        </span>
+                                      )}
+                                  </FormGroup>
+                                </div>
+
+                                <div className="form-group mb-3 col-md-4">
+                                  <FormGroup>
+                                    <Label for="fuTotalBilirubin">
+                                      Total Bilirubin (µmol/L)
+                                    </Label>
+                                    {/* <span style={{ color: "red" }}> *</span>{" "} */}
+                                    <Input
+                                      className="form-control"
+                                      disabled={disableInputs}
+                                      type="number"
+                                      name="fuTotalBilirubin"
+                                      id="fuTotalBilirubin"
+                                      onBlur={formik.handleBlur}
+                                      onChange={formik.handleChange}
+                                      value={formik?.values?.fuTotalBilirubin}
+                                      style={{
+                                        border: "1px solid #014D88",
+                                        borderRadius: "0.2rem",
+                                      }}
+                                    />
+
+                                    {formik.touched?.fuTotalBilirubin &&
+                                      formik?.errors?.fuTotalBilirubin !== "" && (
+                                        <span className={classes.error}>
+                                          {formik?.errors?.fuTotalBilirubin}
+                                        </span>
+                                      )}
+                                  </FormGroup>
+                                </div>
+
+                                <div className="form-group mb-3 col-md-4">
+                                  <FormGroup>
+                                    <Label for="fuDirectBilirubin">
+                                      Direct Bilirubin (mm<sup>3</sup>)
+                                    </Label>
+                                    {/* <span style={{ color: "red" }}> *</span>{" "} */}
+                                    <Input
+                                      className="form-control"
+                                      disabled={disableInputs}
+                                      type="number"
+                                      name="fuDirectBilirubin"
+                                      id="fuDirectBilirubin"
+                                      onBlur={formik.handleBlur}
+                                      onChange={formik.handleChange}
+                                      value={formik?.values?.fuDirectBilirubin}
+                                      style={{
+                                        border: "1px solid #014D88",
+                                        borderRadius: "0.2rem",
+                                      }}
+                                    />
+
+                                    {formik.touched?.fuDirectBilirubin &&
+                                      formik?.errors?.fuDirectBilirubin !== "" && (
+                                        <span className={classes.error}>
+                                          {formik?.errors?.fuDirectBilirubin}
+                                        </span>
+                                      )}
+                                  </FormGroup>
+                                </div>
+
+                                <div className="form-group mb-3 col-md-4">
+                                  <FormGroup>
+                                    <Label for="fuAlbumin">Albumin (g/dl)</Label>
+                                    {/* <span style={{ color: "red" }}> *</span>{" "} */}
+                                    <Input
+                                      className="form-control"
+                                      disabled={disableInputs}
+                                      type="number"
+                                      name="fuAlbumin"
+                                      id="fuAlbumin"
+                                      onBlur={formik.handleBlur}
+                                      onChange={formik.handleChange}
+                                      value={formik?.values?.fuAlbumin}
+                                      style={{
+                                        border: "1px solid #014D88",
+                                        borderRadius: "0.2rem",
+                                      }}
+                                    />
+                                    {formik.touched?.fuAlbumin &&
+                                      formik?.errors?.fuAlbumin !== "" && (
+                                        <span className={classes.error}>
+                                          {formik?.errors?.fuAlbumin}
+                                        </span>
+                                      )}
+                                  </FormGroup>
+                                </div>
+
+                                <div className="form-group mb-3 col-md-4">
+                                  <FormGroup>
+                                    <Label for="fuApriScore">APRI Score</Label>
+                                    {/* <span style={{ color: "red" }}> *</span>{" "} */}
+                                    <Input
+                                      className="form-control"
+                                      disabled
+                                      type="number"
+                                      name="fuApriScore"
+                                      id="fuApriScore"
+                                      onBlur={formik.handleBlur}
+                                      onChange={formik.handleChange}
+                                      value={formik?.values?.fuApriScore}
+                                      style={{
+                                        border: "1px solid #014D88",
+                                        borderRadius: "0.2rem",
+                                      }}
+                                    />
+
+                                    {formik.touched?.fuApriScore &&
+                                      formik?.errors?.fuApriScore !== "" && (
+                                        <span className={classes.error}>
+                                          {formik?.errors?.fuApriScore}
+                                        </span>
+                                      )}
+                                  </FormGroup>
+                                </div>
+
+                                <div className="form-group mb-3 col-md-4">
+                                  <FormGroup>
+                                    <Label for="fuFib4">FIB-4</Label>
+                                    {/* <span style={{ color: "red" }}> *</span>{" "} */}
+                                    <Input
+                                      className="form-control"
+                                      disabled
+                                      type="number"
+                                      name="fuFib4"
+                                      id="fuFib4"
+                                      onBlur={formik.handleBlur}
+                                      onChange={formik.handleChange}
+                                      value={formik?.values?.fuFib4}
+                                      style={{
+                                        border: "1px solid #014D88",
+                                        borderRadius: "0.2rem",
+                                      }}
+                                    />
+
+                                    {formik.touched?.fuFib4 &&
+                                      formik?.errors?.fuFib4 !== "" && (
+                                        <span className={classes.error}>
+                                          {formik?.errors?.fuFib4}
+                                        </span>
+                                      )}
+                                  </FormGroup>
+                                </div>
+
+                                <div className="form-group mb-3 col-md-4">
+                                  <FormGroup>
+                                    <Label for="fuProthrombinTime">
+                                      Prothrombin time/INR
+                                    </Label>
+                                    {/* <span style={{ color: "red" }}> *</span>{" "} */}
+                                    <Input
+                                      className="form-control"
+                                      disabled={disableInputs}
+                                      type="number"
+                                      name="fuProthrombinTime"
+                                      id="fuProthrombinTime"
+                                      onBlur={formik.handleBlur}
+                                      onChange={formik.handleChange}
+                                      value={formik?.values?.fuProthrombinTime}
+                                      style={{
+                                        border: "1px solid #014D88",
+                                        borderRadius: "0.2rem",
+                                      }}
+                                    />
+
+                                    {formik.touched?.fuProthrombinTime &&
+                                      formik?.errors?.fuProthrombinTime !== "" && (
+                                        <span className={classes.error}>
+                                          {formik?.errors?.fuProthrombinTime}
+                                        </span>
+                                      )}
+                                  </FormGroup>
+                                </div>
+
+                                <div className="form-group mb-3 col-md-4">
+                                  <FormGroup>
+                                    <Label for="fuUrea">Urea (mg/dl)</Label>
+                                    {/* <span style={{ color: "red" }}> *</span>{" "} */}
+                                    <Input
+                                      className="form-control"
+                                      disabled={disableInputs}
+                                      type="number"
+                                      name="fuUrea"
+                                      id="fuUrea"
+                                      onBlur={formik.handleBlur}
+                                      onChange={formik.handleChange}
+                                      value={formik?.values?.fuUrea}
+                                      style={{
+                                        border: "1px solid #014D88",
+                                        borderRadius: "0.2rem",
+                                      }}
+                                    />
+
+                                    {formik.touched?.fuUrea &&
+                                      formik?.errors?.fuUrea !== "" && (
+                                        <span className={classes.error}>
+                                          {formik?.errors?.fuUrea}
+                                        </span>
+                                      )}
+                                  </FormGroup>
+                                </div>
+
+                                <div className="form-group mb-3 col-md-4">
+                                  <FormGroup>
+                                    <Label for="fuCreatinine">
+                                      Creatinine (µmol/L)
+                                    </Label>
+
+                                    <Input
+                                      className="form-control"
+                                      disabled={disableInputs}
+                                      type="number"
+                                      name="fuCreatinine"
+                                      id="fuCreatinine"
+                                      onBlur={formik.handleBlur}
+                                      onChange={formik.handleChange}
+                                      value={formik?.values?.fuCreatinine}
+                                      style={{
+                                        border: "1px solid #014D88",
+                                        borderRadius: "0.2rem",
+                                      }}
+                                    />
+
+                                    {formik.touched?.fuCreatinine &&
+                                      formik?.errors?.fuCreatinine !== "" && (
+                                        <span className={classes.error}>
+                                          {formik?.errors?.fuCreatinine}
+                                        </span>
+                                      )}
+                                  </FormGroup>
+                                </div>
+
+                                <div className="form-group mb-3 col-md-4">
+                                  <FormGroup>
+                                    <Label for="fuUltrasoundScan">
+                                      Ultrasound Scan
+                                    </Label>
+                                    {/* <span style={{ color: "red" }}> *</span>{" "} */}
+                                    <Input
+                                      className="form-control"
+                                      disabled={disableInputs}
+                                      type="text"
+                                      name="fuUltrasoundScan"
+                                      id="fuUltrasoundScan"
+                                      onBlur={formik.handleBlur}
+                                      onChange={formik.handleChange}
+                                      value={formik?.values?.fuUltrasoundScan}
+                                      style={{
+                                        border: "1px solid #014D88",
+                                        borderRadius: "0.2rem",
+                                      }}
+                                    />
+
+                                    {formik.touched?.fuUltrasoundScan &&
+                                      formik?.errors?.fuUltrasoundScan !== "" && (
+                                        <span className={classes.error}>
+                                          {formik?.errors?.fuUltrasoundScan}
+                                        </span>
+                                      )}
+                                  </FormGroup>
+                                </div>
+
+                                <div className="form-group mb-3 col-md-4">
+                                  <FormGroup>
+                                    <Label for="fuAfp">AFP (ng/ml)</Label>
+                                    {/* <span style={{ color: "red" }}> *</span>{" "} */}
+                                    <Input
+                                      className="form-control"
+                                      disabled={disableInputs}
+                                      type="number"
+                                      name="fuAfp"
+                                      id="fuAfp"
+                                      onBlur={formik.handleBlur}
+                                      onChange={formik.handleChange}
+                                      value={formik?.values?.fuAfp}
+                                      style={{
+                                        border: "1px solid #014D88",
+                                        borderRadius: "0.2rem",
+                                      }}
+                                    />
+
+                                    {formik.touched?.fuAfp &&
+                                      formik?.errors?.fuAfp !== "" && (
+                                        <span className={classes.error}>
+                                          {formik?.errors?.fuAfp}
+                                        </span>
+                                      )}
+                                  </FormGroup>
+                                </div>
+
+                                <div className="form-group mb-3 col-md-4">
+                                  <FormGroup>
+                                    <Label for="fuFibroscan">Fibroscan (kPa)</Label>
+                                    {/* <span style={{ color: "red" }}> *</span>{" "} */}
+                                    <Input
+                                      className="form-control"
+                                      disabled={disableInputs}
+                                      type="number"
+                                      name="fuFibroscan"
+                                      id="fuFibroscan"
+                                      onBlur={formik.handleBlur}
+                                      onChange={formik.handleChange}
+                                      value={formik?.values?.fuFibroscan}
+                                      style={{
+                                        border: "1px solid #014D88",
+                                        borderRadius: "0.2rem",
+                                      }}
+                                    />
+
+                                    {formik.touched?.fuFibroscan &&
+                                      formik?.errors?.fuFibroscan !== "" && (
+                                        <span className={classes.error}>
+                                          {formik?.errors?.fuFibroscan}
+                                        </span>
+                                      )}
+                                  </FormGroup>
+                                </div>
+
+                                <div className="form-group mb-3 col-md-4">
+                                  <FormGroup>
+                                    <Label for="fuCtScan">CT Scan</Label>
+                                    {/* <span style={{ color: "red" }}> *</span>{" "} */}
+                                    <Input
+                                      className="form-control"
+                                      disabled={disableInputs}
+                                      type="text"
+                                      name="fuCtScan"
+                                      id="fuCtScan"
+                                      onBlur={formik.handleBlur}
+                                      onChange={formik.handleChange}
+                                      value={formik?.values?.fuCtScan}
+                                      style={{
+                                        border: "1px solid #014D88",
+                                        borderRadius: "0.2rem",
+                                      }}
+                                    />
+
+                                    {formik.touched?.fuCtScan &&
+                                      formik?.errors?.fuCtScan !== "" && (
+                                        <span className={classes.error}>
+                                          {formik?.errors?.fuCtScan}
+                                        </span>
+                                      )}
+                                  </FormGroup>
+                                </div>
+
+                                <div className="form-group mb-3 col-md-4">
+                                  <FormGroup>
+                                    <Label for="fuAscites">Ascites</Label>
+                                    {/* <span style={{ color: "red" }}> *</span>{" "} */}
+                                    <Input
+                                      className="form-control"
+                                      disabled={disableInputs}
+                                      type="select"
+                                      name="fuAscites"
+                                      id="fuAscites"
+                                      onBlur={formik.handleBlur}
+                                      onChange={formik.handleChange}
+                                      value={formik?.values?.fuAscites}
+                                      style={{
+                                        border: "1px solid #014D88",
+                                        borderRadius: "0.2rem",
+                                      }}
+                                    >
+                                      <option>Select</option>
+                                      <option value="YES">Yes</option>
+                                      <option value="NO">No</option>
+                                    </Input>
+
+                                    {formik.touched?.fuAscites &&
+                                      formik?.errors?.fuAscites !== "" && (
+                                        <span className={classes.error}>
+                                          {formik?.errors?.fuAscites}
+                                        </span>
+                                      )}
+                                  </FormGroup>
+                                </div>
+
+                                {formik?.values?.fuAscites === "YES" && (
+                                  <div className="form-group mb-3 col-md-4">
+                                    <FormGroup>
+                                      <Label for="fuSeverityOfAscites">
+                                        Severity of Ascites
+                                      </Label>
+                                      {/* <span style={{ color: "red" }}> *</span>{" "} */}
+                                      <select
+                                        className="form-control"
+                                        disabled={disableInputs}
+                                        name="fuSeverityOfAscites"
+                                        id="fuSeverityOfAscites"
+                                        onBlur={formik.handleBlur}
+                                        onChange={formik.handleChange}
+                                        value={formik?.values?.fuSeverityOfAscites}
+                                        style={{
+                                          border: "1px solid #014D88",
+                                          borderRadius: "0.2rem",
+                                        }}
+                                      >
+                                        <option value="">Select</option>
+                                        <option value={"Mild"}>Mild</option>
+                                        <option value={"Moderate"}>Moderate</option>
+                                        <option value={"Massive/Gross"}>
+                                          Massive/Gross
+                                        </option>
+                                      </select>
+
+                                      {formik.touched?.fuSeverityOfAscites &&
+                                        formik?.errors?.fuSeverityOfAscites !== "" && (
+                                          <span className={classes.error}>
+                                            {formik?.errors?.fuSeverityOfAscites}
+                                          </span>
+                                        )}
+                                    </FormGroup>
+                                  </div>
+                                )}
+
+                                <div className="form-group mb-3 col-md-4">
+                                  <FormGroup>
+                                    <Label for="fuGradeOfEncephalopathy">
+                                      Grade of encephalopathy
+                                    </Label>
+                                    {/* <span style={{ color: "red" }}> *</span>{" "} */}
+                                    <select
+                                      className="form-control"
+                                      disabled={disableInputs}
+                                      name="fuGradeOfEncephalopathy"
+                                      id="fuGradeOfEncephalopathy"
+                                      onBlur={formik.handleBlur}
+                                      onChange={formik.handleChange}
+                                      value={formik?.values?.fuGradeOfEncephalopathy}
+                                      style={{
+                                        border: "1px solid #014D88",
+                                        borderRadius: "0.2rem",
+                                      }}
+                                    >
+                                      <option value="">Select</option>
+                                      <option value={"0"}>0</option>
+                                      <option value={"1"}>1</option>
+                                      <option value={"2"}>2</option>
+                                      <option value={"3"}>3</option>
+                                      <option value={"4"}>4</option>
+                                    </select>
+
+                                    {formik.touched?.fuGradeOfEncephalopathy &&
+                                      formik?.errors?.fuGradeOfEncephalopathy !==
+                                      "" && (
+                                        <span className={classes.error}>
+                                          {formik?.errors?.fuGradeOfEncephalopathy}
+                                        </span>
+                                      )}
+                                  </FormGroup>
+                                </div>
+
+                                <div className="form-group mb-3 col-md-4">
+                                  <FormGroup>
+                                    <Label for="fuChildPughScore">
+                                      Child pugh score
+                                    </Label>
+                                    {/* <span style={{ color: "red" }}> *</span>{" "} */}
+                                    <select
+                                      className="form-control"
+                                      disabled={disableInputs}
+                                      name="fuChildPughScore"
+                                      id="fuChildPughScore"
+                                      onBlur={formik.handleBlur}
+                                      onChange={formik.handleChange}
+                                      value={formik?.values?.fuChildPughScore}
+                                      style={{
+                                        border: "1px solid #014D88",
+                                        borderRadius: "0.2rem",
+                                      }}
+                                    >
+                                      <option>Select</option>
+
+                                      {childPughData?.map((item) => (
+                                        <option key={item?.code} value={item?.code}>
+                                          {item?.display}
+                                        </option>
+                                      ))}
+                                    </select>
+
+                                    {formik.touched?.fuChildPughScore &&
+                                      formik?.errors?.fuChildPughScore !== "" && (
+                                        <span className={classes.error}>
+                                          {formik?.errors?.fuChildPughScore}
+                                        </span>
+                                      )}
+                                  </FormGroup>
+                                </div>
+
+                                <div className="form-group mb-3 col-md-4">
+                                  <FormGroup>
+                                    <Label for="fuLiverBiopsyStage">
+                                      Liver Biopsy stage
+                                    </Label>
+                                    {/* <span style={{ color: "red" }}> *</span>{" "} */}
+                                    <select
+                                      className="form-control"
+                                      disabled={disableInputs}
+                                      type="number"
+                                      name="fuLiverBiopsyStage"
+                                      id="fuLiverBiopsyStage"
+                                      onBlur={formik.handleBlur}
+                                      onChange={formik.handleChange}
+                                      value={formik?.values?.fuLiverBiopsyStage}
+                                      style={{
+                                        border: "1px solid #014D88",
+                                        borderRadius: "0.2rem",
+                                      }}
+                                    >
+                                      <option value="">Select</option>
+                                      <option value={"YES"}>Yes</option>
+                                      <option value={"NO"}>No</option>
+                                    </select>
+
+                                    {formik.touched?.fuLiverBiopsyStage &&
+                                      formik?.errors?.fuLiverBiopsyStage !== "" && (
+                                        <span className={classes.error}>
+                                          {formik?.errors?.fuLiverBiopsyStage}
+                                        </span>
+                                      )}
+                                  </FormGroup>
+                                </div>
+
+                                <div className="form-group mb-3 col-md-4">
+                                  <FormGroup>
+                                    <Label for="fuStagingDateLiverBiopsy">
+                                      Staging date for liver biopsy
+                                    </Label>
+                                    {/* <span style={{ color: "red" }}> *</span>{" "} */}
+                                    <Input
+                                      className="form-control"
+                                      disabled={disableInputs}
+                                      type="date"
+                                      name="fuStagingDateLiverBiopsy"
+                                      id="fuStagingDateLiverBiopsy"
+                                      onBlur={formik.handleBlur}
+                                      max={moment(new Date()).format("YYYY-MM-DD")}
+                                      onChange={formik.handleChange}
+                                      value={formik?.values?.fuStagingDateLiverBiopsy}
+                                      style={{
+                                        border: "1px solid #014D88",
+                                        borderRadius: "0.2rem",
+                                      }}
+                                    />
+
+                                    {formik.touched?.fuStagingDateLiverBiopsy &&
+                                      formik?.errors?.fuStagingDateLiverBiopsy !==
+                                      "" && (
+                                        <span className={classes.error}>
+                                          {formik?.errors?.fuStagingDateLiverBiopsy}
+                                        </span>
+                                      )}
+                                  </FormGroup>
+                                </div>
+
+                                <div className="form-group mb-3 col-md-4">
+                                  <FormGroup>
+                                    <Label for="fuDiagnosis">Diagnosis</Label>
+                                    {/* <span style={{ color: "red" }}> *</span>{" "} */}
+                                    <select
+                                      className="form-control"
+                                      disabled={disableInputs}
+                                      type="date"
+                                      name="fuDiagnosis"
+                                      id="fuDiagnosis"
+                                      onBlur={formik.handleBlur}
+                                      onChange={formik.handleChange}
+                                      value={formik?.values?.fuDiagnosis}
+                                      style={{
+                                        border: "1px solid #014D88",
+                                        borderRadius: "0.2rem",
+                                      }}
+                                    >
+                                      <option value="">Select</option>
+                                      <option value={"FIBROSIS"}>FIBROSIS</option>
+                                      <option value={"CIRRHOSIS"}>CIRRHOSIS</option>
+                                      <option value={"HCC"}>HCC</option>
+                                    </select>
+
+                                    {formik.touched?.fuDiagnosis &&
+                                      formik?.errors?.fuDiagnosis !== "" && (
+                                        <span className={classes.error}>
+                                          {formik?.errors?.fuDiagnosis}
+                                        </span>
+                                      )}
+                                  </FormGroup>
+                                </div>
+                              </div>
+                            </div>
+                          </Collapse>
                         </div>
+
+
+
+
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
 
+            
+
               <div className="card">
-                <div
-                  className="card-header"
-                  style={{
-                    backgroundColor: "#014d88",
-                    color: "#fff",
-                    fontWeight: "bolder",
-                    borderRadius: "0.2rem",
-                  }}
-                >
-                  <h5 className="card-title" style={{ color: "#fff" }}>
-                    Appointment
-                  </h5>
-                </div>
+               
+
                 <div>
                   <div className="card-body">
                     <div
                       className="basic-form"
                       style={{ padding: "0 50px 0 50px" }}
                     >
-                      <div className="row">
+                    <div className="card-body">
+                    <div className="row">
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="fuTreatmentRegimen">
@@ -1528,6 +1630,7 @@ const FollowupUpdate = (props) => {
                           </FormGroup>
                         </div>
                       </div>
+                    </div>
                     </div>
                   </div>
                 </div>
