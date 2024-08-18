@@ -644,7 +644,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                                   <input
                                   disabled={disableInputs}
                                     className="form-control"
-                                    type="text"
+                                    type="number"
                                     name="hbsAgQuantification"
                                     id="hbsAgQuantification"
                                     value={formik.values.hbsAgQuantification}

@@ -661,7 +661,7 @@ const FollowupUpdate = (props) => {
                                       <Input
                                         className="form-control"
                                         disabled={disableInputs}
-                                        type="text"
+                                        type="number"
                                         name="fuHbsagQuantification"
                                         id="fuHbsagQuantification"
                                         onBlur={formik.handleBlur}
@@ -685,7 +685,7 @@ const FollowupUpdate = (props) => {
                                     <FormGroup>
                                       <Label for="fuHbeag">HBeAg</Label>
                                       {/* <span style={{ color: "red" }}> *</span>{" "} */}
-                                      <Input
+                                      <select
                                         className="form-control"
                                         disabled={disableInputs}
                                         type="number"
@@ -698,7 +698,15 @@ const FollowupUpdate = (props) => {
                                           border: "1px solid #014D88",
                                           borderRadius: "0.2rem",
                                         }}
-                                      />
+                                      >
+
+                                        <option value={""}>Select</option>
+                                        <option value={"REACTIVE"}>Reactive</option>
+                                        <option value={"NON_REACTIVE"}>
+                                          Non Reactive
+                                        </option>
+
+                                      </select>
 
                                       {formik.touched?.fuHbeag &&
                                         formik?.errors?.fuHbeag !== "" && (

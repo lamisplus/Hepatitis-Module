@@ -609,8 +609,7 @@ const FollowupCreate = (props) => {
                                       {/* <span style={{ color: "red" }}> *</span>{" "} */}
                                       <Input
                                         className="form-control"
-
-                                        type="text"
+                                        type="number"
                                         name="fuHbsagQuantification"
                                         id="fuHbsagQuantification"
                                         onBlur={formik.handleBlur}
@@ -634,10 +633,10 @@ const FollowupCreate = (props) => {
                                     <FormGroup>
                                       <Label for="fuHbeag">HBeAg</Label>
                                       {/* <span style={{ color: "red" }}> *</span>{" "} */}
-                                      <Input
+                                      <select
                                         className="form-control"
 
-                                        type="number"
+                                        type="select"
                                         name="fuHbeag"
                                         id="fuHbeag"
                                         onBlur={formik.handleBlur}
@@ -647,7 +646,14 @@ const FollowupCreate = (props) => {
                                           border: "1px solid #014D88",
                                           borderRadius: "0.2rem",
                                         }}
-                                      />
+                                      >
+                                        <option value={""}>Select</option>
+                                        <option value={"REACTIVE"}>Reactive</option>
+                                        <option value={"NON_REACTIVE"}>
+                                          Non Reactive
+                                        </option>
+
+                                      </select>
 
                                       {formik.touched?.fuHbeag &&
                                         formik?.errors?.fuHbeag !== "" && (
@@ -778,8 +784,8 @@ const FollowupCreate = (props) => {
                                 style={{ padding: "0 50px 0 50px" }}
                               >
                                 <div className="row">
-                                
-                                <div className="form-group mb-3 col-md-4">
+
+                                  <div className="form-group mb-3 col-md-4">
                                     <FormGroup>
                                       <Label for="fuAlt">ALT (IU/mL)</Label>
                                       {/* <span style={{ color: "red" }}> *</span>{" "} */}

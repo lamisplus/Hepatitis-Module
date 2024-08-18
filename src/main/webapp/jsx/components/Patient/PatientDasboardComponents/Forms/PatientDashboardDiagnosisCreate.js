@@ -587,7 +587,7 @@ const PatientDashboardDiagnosisCreate = ({ patientObj, setActiveContent }) => {
                                   </Label>
                                   <input
                                     className="form-control"
-                                    type="text"
+                                    type="number"
                                     name="hbsAgQuantification"
                                     id="hbsAgQuantification"
                                     value={formik.values.hbsAgQuantification}
