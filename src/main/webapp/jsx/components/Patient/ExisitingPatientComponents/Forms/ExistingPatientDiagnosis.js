@@ -1355,7 +1355,7 @@ const ExistingPatientDiagnosis = ({ step, setStep }) => {
                                       }}
                                     />
                                     {formik?.touched?.multipleInfection &&
-                                      formik?.values?.multipleInfection !==
+                                      formik?.errors?.multipleInfection !==
                                         "" && (
                                         <span className={classes.error}>
                                           {formik?.errors?.multipleInfection}
