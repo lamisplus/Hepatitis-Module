@@ -304,6 +304,8 @@ const PatientDashboardTreatmentViewUpdate = ({
   const { formik } =
     useValidatePatientDashboardTreatmentFormValuesHook(handleSubmit);
 
+    console.log(formik.errors)
+
   return (
     <Card className={classes.root}>
       <CardContent>

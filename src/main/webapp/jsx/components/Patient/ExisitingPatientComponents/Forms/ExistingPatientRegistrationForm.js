@@ -176,6 +176,9 @@ const ExistingPatientEnrolmentForm = ({ step, setStep }) => {
     formik.setFieldValue("bmi", computedBMI);
   }, [formik?.values.height, formik?.values.weight, formik.setFieldValue]);
 
+  console.log(formik.errors)
+
+
   return (
     <div>
       <Card className={classes.root}>

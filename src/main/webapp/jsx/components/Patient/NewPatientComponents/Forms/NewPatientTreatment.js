@@ -249,6 +249,8 @@ for (const key in values) {
 
   const { formik } = useValidateNewPatientTreatmentFormValuesHook(handleSubmit);
 
+  console.log(formik.errors)
+
   return (
     <Card className={classes.root}>
       <CardContent>

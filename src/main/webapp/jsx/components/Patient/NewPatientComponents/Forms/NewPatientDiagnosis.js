@@ -366,6 +366,8 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
     formik.setFieldValue,
   ]);
 
+  console.log(formik.errors)
+
   return (
     <div>
       <Card className={classes.root}>
@@ -2103,7 +2105,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                         <option value={"SEVERE_FIBROSIS"}>
                           Severe Fibrosis
                         </option>
-                        <option value={"Cirrhosis"}>Cirrhosis</option>
+                        <option value={"CIRRHOSIS"}>Cirrhosis</option>
                       </select>
                       {formik?.touched?.liverBiopsyStage &&
                         formik?.errors.liverBiopsyStage && (

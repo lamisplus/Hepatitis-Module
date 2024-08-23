@@ -132,7 +132,7 @@ export const useValidateExistingPatientDiagnosisFormValuesHook = (onSubmit, user
         otherwise: yup.number(),
       }),//done
 
-    commobidities: yup.string().required(requiredTextPrompt),//done
+    commobidities: yup.string(),
 
     multipleInfection: yup.string().when("commobidities", {
         is: (commobidities) => commobidities === "YES",

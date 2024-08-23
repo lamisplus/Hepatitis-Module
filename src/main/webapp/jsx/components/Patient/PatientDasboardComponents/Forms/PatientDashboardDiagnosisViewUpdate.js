@@ -361,6 +361,8 @@ const PatientDashboardDiagnosisViewUpdate = ({
     formik?.values.altInputValue,
     formik.setFieldValue,
   ]);
+
+  console.log(formik.errors)
   
 
   return (
@@ -2158,7 +2160,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                         <option value={"SEVERE_FIBROSIS"}>
                           Severe Fibrosis
                         </option>
-                        <option value={"Cirrhosis"}>Cirrhosis</option>
+                        <option value={"CIRRHOSIS"}>Cirrhosis</option>
                       </select>
                       {formik?.touched?.liverBiopsyStage &&
                         formik?.errors.liverBiopsyStage && (

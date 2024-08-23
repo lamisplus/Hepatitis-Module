@@ -313,6 +313,9 @@ const PatientDashboardDiagnosisCreate = ({ patientObj, setActiveContent }) => {
     formik.setFieldValue,
   ]);
 
+  console.log(formik.errors)
+
+
   return (
     <div>
       <Card className={classes.root}>
@@ -559,7 +562,7 @@ const PatientDashboardDiagnosisCreate = ({ patientObj, setActiveContent }) => {
                                     type="number"
                                     name="hbvDnaValue"
                                     id="hbvDnaValue"
-                                    value={formik.values.hbvDnaValue}
+                                    value={formik?.values.hbvDnaValue}
                                     onChange={formik.handleChange}
                                     onBlur={formik?.handleBlur}
                                     style={{
@@ -590,7 +593,7 @@ const PatientDashboardDiagnosisCreate = ({ patientObj, setActiveContent }) => {
                                     type="number"
                                     name="hbsAgQuantification"
                                     id="hbsAgQuantification"
-                                    value={formik.values.hbsAgQuantification}
+                                    value={formik?.values.hbsAgQuantification}
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     style={{
@@ -691,7 +694,7 @@ const PatientDashboardDiagnosisCreate = ({ patientObj, setActiveContent }) => {
                                   id="treatmentEligible"
                                   onChange={formik.handleChange}
                                   onBlur={formik?.handleBlur}
-                                  value={formik.values.treatmentEligible}
+                                  value={formik?.values.treatmentEligible}
                                   style={{
                                     border: "1px solid #014D88",
                                     borderRadius: "0.2rem",
@@ -756,7 +759,7 @@ const PatientDashboardDiagnosisCreate = ({ patientObj, setActiveContent }) => {
                                 id="comment"
                                 onChange={formik.handleChange}
                                 onBlur={formik?.handleBlur}
-                                value={formik.values.comment}
+                                value={formik?.values.comment}
                                 cols="50"
                                 rows="30"
                                 style={{
@@ -861,7 +864,7 @@ const PatientDashboardDiagnosisCreate = ({ patientObj, setActiveContent }) => {
                                     onChange={formik?.handleChange}
                                     onBlur={formik?.handleBlur}
                                     checked={
-                                      formik.values.hcvRNA === "UNDETECTED"
+                                      formik?.values.hcvRNA === "UNDETECTED"
                                     }
                                     style={{
                                       border: "1px solid #014D88",
@@ -1320,7 +1323,7 @@ const PatientDashboardDiagnosisCreate = ({ patientObj, setActiveContent }) => {
                                 </CustomFormGroup>
                               </div>
 
-                              {formik.values.commobidities === "YES" && (
+                              {formik?.values.commobidities === "YES" && (
                                 <div className="form-group mb-3 col-md-4">
                                   <CustomFormGroup
                                     formik={formik}
@@ -1719,7 +1722,7 @@ const PatientDashboardDiagnosisCreate = ({ patientObj, setActiveContent }) => {
                         type="number"
                         name="prothrombinTimeNR"
                         id="prothrombinTimeNR"
-                        value={formik.values.prothrombinTimeNR}
+                        value={formik?.values.prothrombinTimeNR}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         style={{
@@ -1770,7 +1773,7 @@ const PatientDashboardDiagnosisCreate = ({ patientObj, setActiveContent }) => {
                         type="number"
                         name="creatinine"
                         id="creatinine"
-                        value={formik.values.creatinine}
+                        value={formik?.values.creatinine}
                         onChange={formik.handleChange}
                         onBlur={formik?.handleBlur}
                         style={{
@@ -1796,7 +1799,7 @@ const PatientDashboardDiagnosisCreate = ({ patientObj, setActiveContent }) => {
                         type="number"
                         name="ultrasoundScan"
                         id="ultrasoundScan"
-                        value={formik.values.ultrasoundScan}
+                        value={formik?.values.ultrasoundScan}
                         onChange={formik.handleChange}
                         onBlur={formik?.handleBlur}
                         style={{
@@ -1873,7 +1876,7 @@ const PatientDashboardDiagnosisCreate = ({ patientObj, setActiveContent }) => {
                         type="text"
                         name="ctScan"
                         id="ctScan"
-                        value={formik.values.ctScan}
+                        value={formik?.values.ctScan}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         style={{
@@ -1900,7 +1903,7 @@ const PatientDashboardDiagnosisCreate = ({ patientObj, setActiveContent }) => {
                         id="ascites"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        value={formik.values.ascites}
+                        value={formik?.values.ascites}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
@@ -1932,7 +1935,7 @@ const PatientDashboardDiagnosisCreate = ({ patientObj, setActiveContent }) => {
                           id="severityOfAscites"
                           onChange={formik.handleChange}
                           onBlur={formik?.handleBlur}
-                          value={formik.values.severityOfAscites}
+                          value={formik?.values.severityOfAscites}
                           style={{
                             border: "1px solid #014D88",
                             borderRadius: "0.2rem",
@@ -1970,7 +1973,7 @@ const PatientDashboardDiagnosisCreate = ({ patientObj, setActiveContent }) => {
                         id="gradeOfEncephalopathy"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        value={formik.values.gradeOfEncephalopathy}
+                        value={formik?.values.gradeOfEncephalopathy}
                         style={{
                           border: "1px solid #014D88",
                           borderRadius: "0.2rem",
@@ -2051,7 +2054,7 @@ const PatientDashboardDiagnosisCreate = ({ patientObj, setActiveContent }) => {
                         <option value={"SEVERE_FIBROSIS"}>
                           Severe Fibrosis
                         </option>
-                        <option value={"Cirrhosis"}>Cirrhosis</option>
+                        <option value={"CIRRHOSIS"}>Cirrhosis</option>
                       </select>
                       {formik?.touched?.liverBiopsyStage &&
                         formik?.errors.liverBiopsyStage && (

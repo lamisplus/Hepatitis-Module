@@ -321,6 +321,8 @@ const ExistingPatientDiagnosis = ({ step, setStep }) => {
     formik?.values.altInputValue,
     formik.setFieldValue,
   ]);
+
+  console.log(formik.errors)
  
   return (
     <div>
@@ -2060,7 +2062,7 @@ const ExistingPatientDiagnosis = ({ step, setStep }) => {
                         <option value={"SEVERE_FIBROSIS"}>
                           Severe Fibrosis
                         </option>
-                        <option value={"Cirrhosis"}>Cirrhosis</option>
+                        <option value={"CIRRHOSIS"}>Cirrhosis</option>
                       </select>
                       {formik?.touched?.liverBiopsyStage &&
                         formik?.errors.liverBiopsyStage && (

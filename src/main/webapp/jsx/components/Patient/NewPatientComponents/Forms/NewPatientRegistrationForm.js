@@ -265,6 +265,8 @@ const NewPatientEnrolmentForm = ({ step, setStep }) => {
     formik.setFieldValue,
   ]);
 
+  console.log(formik.errors)
+
   return (
     <div>
       <Card className={classes.root}>

@@ -248,6 +248,8 @@ const ExistingPatientTreatment = ({ step, setStep }) => {
   const { formik } =
     useValidateExistingPatientTreatmentFormValuesHook(handleSubmit);
 
+    console.log(formik.errors)
+
   return (
     <Card className={classes.root}>
       <CardContent>
