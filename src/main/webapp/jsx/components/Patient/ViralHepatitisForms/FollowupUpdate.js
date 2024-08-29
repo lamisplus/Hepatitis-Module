@@ -29,7 +29,7 @@ import { useUpdateFollowup } from "../../../hooks/useUpdateFollowup";
 import axios from "axios";
 import { url as baseUrl, token } from "../../../../api";
 import { fetchHBsAG } from "./Form2";
-import { calculateAge, calculateApriScore, calculateFib4 } from "../../../utils";
+import { calculateAge, calculateApriScore, calculateBMI, calculateFib4 } from "../../../utils";
 import { useFetchCodesets } from "../../../hooks/useFetchCodesets.hook";
 
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
@@ -509,15 +509,12 @@ const FollowupUpdate = (props) => {
                                         type="number"
                                         name="fuBmi"
                                         id="fuBmi"
-                                        // onBlur={formik.handleBlur}
-                                        // onChange={formik.handleChange}
-                                        value={Math.round(
-                                          Number(formik?.values?.fuHeight) /
-                                          Math.pow(
-                                            Number(formik?.values?.fuHeight) / 100,
-                                            2
+                                        value={
+                                          calculateBMI(
+                                            formik?.values?.fuHeight,
+                                            formik?.values?.fuWeight
                                           )
-                                        )}
+                                         }
                                         style={{
                                           border: "1px solid #014D88",
                                           borderRadius: "0.2rem",
