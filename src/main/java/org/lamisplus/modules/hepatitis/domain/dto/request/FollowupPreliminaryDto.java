@@ -23,7 +23,8 @@ public class FollowupPreliminaryDto implements Serializable {
     private Long fuWeight ;
     private Long fuHeight ;
     private Long fuBmi ;
-    private Long fuBloodPressure ;
+    private Long fuBloodPressureSystolic ;
+    private Long fuBloodPressureDiastolic ;
     private String fuHbsagQuantification ;
     private String fuHbeag ;
     private Long fuHbvDna ;

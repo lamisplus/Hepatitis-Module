@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import MatButton from "@material-ui/core/Button";
-import { FormGroup, Label, Spinner, Input, Form, InputGroup } from "reactstrap";
+import { FormGroup, Label, Spinner, Input, InputGroupText, InputGroup } from "reactstrap";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faCheckSquare,
@@ -160,7 +160,8 @@ const FollowupCreate = (props) => {
       fuWeight,
       fuHeight,
       fuBmi,
-      fuBloodPressure,
+      fuBloodPressureSystolic,
+      fuBloodPressureDiastolic,
       fuHbsagQuantification,
       fuHbeag,
       fuHbvDna,
@@ -181,8 +182,8 @@ const FollowupCreate = (props) => {
         fuDateOfVisit,
         fuWeight,
         fuHeight,
-        fuBmi,
-        fuBloodPressure,
+        fuBloodPressureSystolic,
+        fuBloodPressureDiastolic,
         fuHbsagQuantification,
         fuHbeag,
         fuHbvDna,
@@ -216,6 +217,8 @@ const FollowupCreate = (props) => {
         fuOutcome,
       },
     };
+
+    console.log(formattedData)
     mutate(formattedData);
   };
   const { formik } = useValidateFollowupFormValuesHook(onSubmit, "create");
@@ -467,7 +470,7 @@ const FollowupCreate = (props) => {
                                             formik?.values?.fuHeight,
                                             formik?.values?.fuWeight
                                           )
-                                         }
+                                        }
                                         style={{
                                           border: "1px solid #014D88",
                                           borderRadius: "0.2rem",
@@ -482,31 +485,83 @@ const FollowupCreate = (props) => {
                                     </FormGroup>
                                   </div>
 
-                                  <div className="form-group mb-3 col-md-4">
+                                  <div className="form-group mb-3 col-md-12">
                                     <FormGroup>
-                                      <Label for="fuBloodPressure">
-                                        Blood Pressure (mmHg)
-                                      </Label>
+                                      <Label>Blood Pressure </Label>
+                                      <InputGroup>
+                                        <InputGroupText
+                                          addonType="append"
+                                          style={{
+                                            backgroundColor: "#014D88",
+                                            color: "#fff",
+                                            border: "1px solid #014D88",
+                                            borderRadius: "0rem",
+                                          }}
+                                        >
+                                          Systolic(mmHg)
+                                        </InputGroupText>
+                                        <Input
+                                          type="number"
+                                          name="fuBloodPressureSystolic"
+                                          id="fuBloodPressureSystolic"
 
-                                      <Input
-                                        className="form-control"
+                                          min="90"
+                                          max="240"
+                                          onChange={formik.handleChange}
+                                          onBlur={formik.handleBlur}
+                                          value={formik?.values?.fuBloodPressureSystolic}
+                                          style={{
+                                            border: "1px solid #014D88",
+                                            borderRadius: "0rem",
+                                          }}
+                                        />
 
-                                        type="number"
-                                        name="fuBloodPressure"
-                                        id="fuBloodPressure"
-                                        onBlur={formik.handleBlur}
-                                        onChange={formik.handleChange}
-                                        value={formik?.values?.fuBloodPressure}
-                                        style={{
-                                          border: "1px solid #014D88",
-                                          borderRadius: "0.2rem",
-                                        }}
-                                      />
 
-                                      {formik.touched?.fuBloodPressure &&
-                                        formik?.errors?.fuBloodPressure && (
-                                          <span className={classes.error}>
-                                            {formik?.errors?.fuBloodPressure}
+                                        <InputGroupText
+                                          addonType="append"
+                                          style={{
+                                            backgroundColor: "#014D88",
+                                            color: "#fff",
+                                            border: "1px solid #014D88",
+                                            borderRadius: "0rem",
+                                          }}
+                                        >
+                                          Diastolic(mmHg)
+                                        </InputGroupText>
+
+                                        <Input
+                                          type="number"
+                                          name="fuBloodPressureDiastolic"
+                                          id="fuBloodPressureDiastolic"
+
+                                          min={60}
+                                          max={140}
+                                          onChange={formik.handleChange}
+                                          onBlur={formik.handleBlur}
+                                          value={formik.values?.fuBloodPressureDiastolic}
+
+                                          style={{
+                                            border: "1px solid #014D88",
+                                            borderRadius: "0rem",
+                                          }}
+                                        />
+
+                                      </InputGroup>
+
+
+                                      {(formik.touched?.fuBloodPressureSystolic &&
+                                        formik?.errors?.fuBloodPressureSystolic) &&
+                                        (
+                                          <span className={classes.error} style={{ color: "red" }}>
+                                            {` ${formik?.errors?.fuBloodPressureSystolic}.`}
+                                          </span>
+                                        )}
+
+                                      {(formik.touched?.fuBloodPressureDiastolic &&
+                                        formik?.errors?.fuBloodPressureDiastolic) &&
+                                        (
+                                          <span className={classes.error} style={{ color: "red" }}>
+                                            {` ${formik?.errors?.fuBloodPressureDiastolic}.`}
                                           </span>
                                         )}
                                     </FormGroup>
