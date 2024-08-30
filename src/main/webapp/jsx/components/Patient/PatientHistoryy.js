@@ -224,6 +224,33 @@ const PatientHistory = (props) => {
 
   const { mutate } = useArchiveFollowup(props, setSaving, toggle);
 
+
+  function hashStringToNumber(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = (hash << 5) - hash + str.charCodeAt(i);
+      hash |= 0; // Convert to 32bit integer
+    }
+    return hash >>> 0; // Ensure the hash is positive
+  }
+  
+  function generateUUIDFromString(str) {
+    const base = 36;
+    
+    // Generate a hash number from the string
+    const hashNumber = hashStringToNumber(str);
+    
+    // Convert the hash number to a base36 string
+    let uuid = hashNumber.toString(base);
+    
+    // Pad the string to a fixed length if needed
+    const uuidLength = 8;
+    uuid = uuid.padStart(uuidLength, '0');  // Padding with leading zeros
+    
+    return uuid;
+  }
+
+
   return (
     <div>
       <br />
@@ -237,6 +264,10 @@ const PatientHistory = (props) => {
             title: "Encounter Date",
             field: "date",
           },
+          {
+            title: "ID",
+            field: "id",
+          },
           // { title: "Status", field: "status", filtering: false },
           { title: "Actions", field: "actions", filtering: false },
         ]}
@@ -246,6 +277,7 @@ const PatientHistory = (props) => {
           recentActivities.map((row) => ({
             name: row.activityName,
             date: row.activityDate,
+            id: generateUUIDFromString(row?.activityName + row?.recordId),
             actions: !notToBeUpdated.includes(row.path) ? (
               <div>
                 <Menu.Menu position="right">
