@@ -27,6 +27,7 @@ import { fetchEnrolment } from "../../../services/fetchEnrolment";
 import { fetchFollowup } from "../../../services/fetchFollowup";
 import { useUpdateFollowup } from "../../../hooks/useUpdateFollowup";
 import axios from "axios";
+import { toast } from "react-toastify";
 import { url as baseUrl, token } from "../../../../api";
 import { fetchHBsAG } from "./Form2";
 import { calculateAge, calculateApriScore, calculateBMI, calculateFib4 } from "../../../utils";
@@ -130,6 +131,10 @@ const FollowupUpdate = (props) => {
   );
 
   const onSubmit = (values) => {
+
+
+
+
     const {
       fuTreatmentRegimen,
       fuNextAppointment,
@@ -327,12 +332,19 @@ const FollowupUpdate = (props) => {
     } else {
       formik.setFieldValue("fuFib4", null);
     }
+
+
   }, [
     formik?.values?.fuAst,
     formik?.values.fuPlt,
     formik?.values.fuAlt,
     formik.setFieldValue,
+
   ]);
+
+  
+
+  console.log(formik.errors)
 
   return (
     <>
@@ -1760,7 +1772,19 @@ const FollowupUpdate = (props) => {
                       variant="contained"
                       color="primary"
                       className={classes.button}
-                      // onClick={handleSubmit}
+                      onClick={() => {
+                        if (!isNaN(Number(formik.values?.fuBloodPressureSystolic)) && (formik.values?.fuBloodPressureSystolic < 90 || formik.values?.fuBloodPressureSystolic > 240)) {
+                          formik.setFieldError("fuBloodPressureSystolic", "Blood Pressure systolic must not be greater than 240 or less than 90")
+                          toast.error("Blood Pressure systolic must not be greater than 240 or less than 90")
+                          return
+                        }
+                        if (!isNaN(Number(formik.values?.fuBloodPressureDiastolic)) && (formik.values?.fuBloodPressureDiastolic < 60 || formik.values?.fuBloodPressureDiastolic > 140)) {
+                          formik.setFieldError("fuBloodPressureDiastolic", "Blood Pressure diastolic must not be greater than 140 or less than 60")
+                          toast.error("Blood Pressure diastolic must not be greater than 140 or less than 60")
+                          return
+                        }
+                      
+                      }}
                       style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}
                     >
                       <span style={{ textTransform: "capitalize" }}>

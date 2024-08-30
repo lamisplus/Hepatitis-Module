@@ -192,6 +192,31 @@ const RecentHistory = (props) => {
 
   const { mutate } = useArchiveFollowup(props, setSaving, toggle);
 
+  function hashStringToNumber(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = (hash << 5) - hash + str.charCodeAt(i);
+      hash |= 0; // Convert to 32bit integer
+    }
+    return hash >>> 0; // Ensure the hash is positive
+  }
+  
+  function generateUUIDFromString(str) {
+    const base = 36;
+    
+    // Generate a hash number from the string
+    const hashNumber = hashStringToNumber(str);
+    
+    // Convert the hash number to a base36 string
+    let uuid = hashNumber.toString(base);
+    
+    // Pad the string to a fixed length if needed
+    const uuidLength = 8;
+    uuid = uuid.padStart(uuidLength, '0');  // Padding with leading zeros
+    
+    return uuid;
+  }
+
   return (
     <Fragment>
       <div className="row">
@@ -230,8 +255,13 @@ const RecentHistory = (props) => {
                           >
                             <span className="accordion-header-icon"></span>
                             <span className="accordion-header-text">
-                              Visit Date :{" "}
+                              Activity :{" "}
                               <span className="">{data?.activityName}</span>{" "}
+                            </span>
+                            <br/>
+                            <span className="accordion-header-text">
+                              id : {" "}
+                              <span className="">{generateUUIDFromString(data?.activityName + data?.recordId)}</span>{" "}
                             </span>
                             <span className="accordion-header-indicator"></span>
                           </Accordion.Toggle>
