@@ -969,7 +969,7 @@ const PatientDashboardDiagnosisCreate = ({ patientObj, setActiveContent }) => {
                               </Label>
                               <br />
 
-                              <div className="form-group mb-3 col-md-4">
+                              <div className="form-group mb-3 col-md-2">
                                 <CustomFormGroup
                                   formik={formik}
                                   name="hbvHcvCheckbox"
@@ -1005,7 +1005,7 @@ const PatientDashboardDiagnosisCreate = ({ patientObj, setActiveContent }) => {
                                   )}
                               </div>
 
-                              <div className="form-group mb-3 col-md-4">
+                              <div className="form-group mb-3 col-md-2">
                                 <CustomFormGroup
                                   formik={formik}
                                   name="hbvHivCheckbox"
@@ -1041,7 +1041,7 @@ const PatientDashboardDiagnosisCreate = ({ patientObj, setActiveContent }) => {
                                   )}
                               </div>
 
-                              <div className="form-group mb-3 col-md-4">
+                              <div className="form-group mb-3 col-md-2">
                                 <CustomFormGroup
                                   formik={formik}
                                   name="hcvHivCheckbox"
@@ -1076,107 +1076,8 @@ const PatientDashboardDiagnosisCreate = ({ patientObj, setActiveContent }) => {
                                     </span>
                                   )}
                               </div>
-
-                              <div className="form-group col-md-12"></div>
-                              {formik?.values?.hbvHcvCheckbox && (
-                                <div className="form-group mb-3 col-md-4">
-                                  <CustomFormGroup
-                                    formik={formik}
-                                    name="hbvHcvInputValue"
-                                  >
-                                    <Label for="hbvHcvInputValue">
-                                      Input HBV/HCV (IU/ml){" "}
-                                      <span style={{ color: "red" }}> *</span>{" "}
-                                    </Label>
-                                    <input
-                                      className="form-control"
-                                      type="number"
-                                      name="hbvHcvInputValue"
-                                      id="hbvHcvInputValue"
-                                      value={formik?.values?.hbvHcvInputValue}
-                                      onChange={formik.handleChange}
-                                      style={{
-                                        border: "1px solid #014D88",
-                                        borderRadius: "0.2rem",
-                                      }}
-                                    />
-                                  </CustomFormGroup>
-                                  {formik?.touched?.hbvHcvInputValue &&
-                                    formik?.errors.hbvHcvInputValue !== "" && (
-                                      <span className={classes.error}>
-                                        {formik?.errors.hbvHcvInputValue}
-                                      </span>
-                                    )}
-                                </div>
-                              )}
-
-                              {formik?.values?.hbvHivCheckbox && (
-                                <div className="form-group mb-3 col-md-4">
-                                  <CustomFormGroup
-                                    formik={formik}
-                                    name="hbvHivInputValue"
-                                  >
-                                    <Label for="hbvHivInputValue">
-                                      Input HBV/HIV (IU/ml){" "}
-                                      <span style={{ color: "red" }}> *</span>{" "}
-                                    </Label>
-                                    <input
-                                      className="form-control"
-                                      type="number"
-                                      name="hbvHivInputValue"
-                                      id="hbvHivInputValue"
-                                      value={formik?.values?.hbvHivInputValue}
-                                      onChange={formik.handleChange}
-                                      style={{
-                                        border: "1px solid #014D88",
-                                        borderRadius: "0.2rem",
-                                      }}
-                                    />
-                                  </CustomFormGroup>
-                                  {formik?.touched?.hbvHivInputValue &&
-                                    formik?.errors.hbvHivInputValue !== "" && (
-                                      <span className={classes.error}>
-                                        {formik?.errors.hbvHivInputValue}
-                                      </span>
-                                    )}
-                                </div>
-                              )}
-
-                              {formik?.values?.hcvHivCheckbox && (
-                                <div className="form-group mb-3 col-md-4">
-                                  <CustomFormGroup
-                                    formik={formik}
-                                    name="hcvHivInputValue"
-                                  >
-                                    <Label for="hcvHivInputValue">
-                                      Input HCV/HIV (IU/ml){" "}
-                                      <span style={{ color: "red" }}> *</span>{" "}
-                                    </Label>
-                                    <input
-                                      className="form-control"
-                                      type="number"
-                                      name="hcvHivInputValue"
-                                      id="hcvHivInputValue"
-                                      value={formik?.values?.hcvHivInputValue}
-                                      onChange={formik.handleChange}
-                                      style={{
-                                        border: "1px solid #014D88",
-                                        borderRadius: "0.2rem",
-                                      }}
-                                    />
-                                  </CustomFormGroup>
-                                  {formik?.touched?.hcvHivInputValue &&
-                                    formik?.errors.hcvHivInputValue !== "" && (
-                                      <span className={classes.error}>
-                                        {formik?.errors.hcvHivInputValue}
-                                      </span>
-                                    )}
-                                </div>
-                              )}
-
-                              <div className="form-group col-md-12"></div>
-
-                              <div className="form-group mb-3 col-md-4">
+                             
+                              <div className="form-group mb-3 col-md-2">
                                 <CustomFormGroup
                                   formik={formik}
                                   name="hbvHdvCheckbox"
@@ -1211,7 +1112,7 @@ const PatientDashboardDiagnosisCreate = ({ patientObj, setActiveContent }) => {
                                   )}
                               </div>
 
-                              <div className="form-group mb-3 col-md-4">
+                              <div className="form-group mb-3 col-md-2">
                                 <CustomFormGroup
                                   formik={formik}
                                   name="hbvHcvHivCheckbox"
@@ -1246,11 +1147,108 @@ const PatientDashboardDiagnosisCreate = ({ patientObj, setActiveContent }) => {
                                     </span>
                                   )}
                               </div>
+                              
 
-                              <div className="form-group col-md-12"></div>
+                              <div className="form-group mb-3 col-md-12"/>
+
+                              {formik?.values?.hbvHcvCheckbox && (
+                                <div className="form-group mb-3 col-md-2">
+                                  <CustomFormGroup
+                                    formik={formik}
+                                    name="hbvHcvInputValue"
+                                  >
+                                    <Label for="hbvHcvInputValue">
+                                      Input HBV/HCV (IU/ml){" "}
+                                      <span style={{ color: "red" }}> *</span>{" "}
+                                    </Label>
+                                    <input
+                                      className="form-control"
+                                      type="number"
+                                      name="hbvHcvInputValue"
+                                      id="hbvHcvInputValue"
+                                      value={formik?.values?.hbvHcvInputValue}
+                                      onChange={formik.handleChange}
+                                      style={{
+                                        border: "1px solid #014D88",
+                                        borderRadius: "0.2rem",
+                                      }}
+                                    />
+                                  </CustomFormGroup>
+                                  {formik?.touched?.hbvHcvInputValue &&
+                                    formik?.errors.hbvHcvInputValue !== "" && (
+                                      <span className={classes.error}>
+                                        {formik?.errors.hbvHcvInputValue}
+                                      </span>
+                                    )}
+                                </div>
+                              )}
+
+                              {formik?.values?.hbvHivCheckbox && (
+                                <div className="form-group mb-3 col-md-2">
+                                  <CustomFormGroup
+                                    formik={formik}
+                                    name="hbvHivInputValue"
+                                  >
+                                    <Label for="hbvHivInputValue">
+                                      Input HBV/HIV (IU/ml){" "}
+                                      <span style={{ color: "red" }}> *</span>{" "}
+                                    </Label>
+                                    <input
+                                      className="form-control"
+                                      type="number"
+                                      name="hbvHivInputValue"
+                                      id="hbvHivInputValue"
+                                      value={formik?.values?.hbvHivInputValue}
+                                      onChange={formik.handleChange}
+                                      style={{
+                                        border: "1px solid #014D88",
+                                        borderRadius: "0.2rem",
+                                      }}
+                                    />
+                                  </CustomFormGroup>
+                                  {formik?.touched?.hbvHivInputValue &&
+                                    formik?.errors.hbvHivInputValue !== "" && (
+                                      <span className={classes.error}>
+                                        {formik?.errors.hbvHivInputValue}
+                                      </span>
+                                    )}
+                                </div>
+                              )}
+
+                              {formik?.values?.hcvHivCheckbox && (
+                                <div className="form-group mb-3 col-md-2">
+                                  <CustomFormGroup
+                                    formik={formik}
+                                    name="hcvHivInputValue"
+                                  >
+                                    <Label for="hcvHivInputValue">
+                                      Input HCV/HIV (IU/ml){" "}
+                                      <span style={{ color: "red" }}> *</span>{" "}
+                                    </Label>
+                                    <input
+                                      className="form-control"
+                                      type="number"
+                                      name="hcvHivInputValue"
+                                      id="hcvHivInputValue"
+                                      value={formik?.values?.hcvHivInputValue}
+                                      onChange={formik.handleChange}
+                                      style={{
+                                        border: "1px solid #014D88",
+                                        borderRadius: "0.2rem",
+                                      }}
+                                    />
+                                  </CustomFormGroup>
+                                  {formik?.touched?.hcvHivInputValue &&
+                                    formik?.errors.hcvHivInputValue !== "" && (
+                                      <span className={classes.error}>
+                                        {formik?.errors.hcvHivInputValue}
+                                      </span>
+                                    )}
+                                </div>
+                              )}
 
                               {formik?.values?.hbvHdvCheckbox && (
-                                <div className="form-group mb-3 col-md-4">
+                                <div className="form-group mb-3 col-md-2">
                                   <CustomFormGroup
                                     formik={formik}
                                     name="hbvHdvInputValue"
@@ -1282,7 +1280,7 @@ const PatientDashboardDiagnosisCreate = ({ patientObj, setActiveContent }) => {
                               )}
 
                               {formik?.values?.hbvHcvHivCheckbox && (
-                                <div className="form-group mb-3 col-md-4">
+                                <div className="form-group mb-3 col-md-2">
                                   <CustomFormGroup
                                     formik={formik}
                                     name="hbvHcvHivInputValue"
@@ -1316,8 +1314,6 @@ const PatientDashboardDiagnosisCreate = ({ patientObj, setActiveContent }) => {
                                     )}
                                 </div>
                               )}
-
-                              <div className="form-group col-md-12"></div>
 
                               <div className="form-group mb-3 col-md-4">
                                 <CustomFormGroup

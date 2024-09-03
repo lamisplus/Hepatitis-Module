@@ -329,7 +329,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
 
   const { formik } = useValidateNewPatientDiagnosisFormValuesHook(handleSubmit, userGender);
   const { returnData: childPughScoreOptions } = useFetchCodesets("CHILD_PUGH");
-  
+
   React.useEffect(() => {
     if (
       typeof formik?.values?.astInputValue === "number" &&
@@ -460,7 +460,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                               />
                               {formik?.touched?.dateHbvDnaTestRequested &&
                                 formik?.errors.dateHbvDnaTestRequested !==
-                                  "" && (
+                                "" && (
                                   <span className={classes.error}>
                                     {formik?.errors.dateHbvDnaTestRequested}
                                   </span>
@@ -498,7 +498,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                               />
                               {formik?.touched.dateHbvSampleRequested &&
                                 formik?.errors.dateHbvSampleRequested !==
-                                  "" && (
+                                "" && (
                                   <span className={classes.error}>
                                     {formik?.errors?.dateHbvSampleRequested}
                                   </span>
@@ -536,7 +536,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                               />
                               {formik?.touched?.dateHbvDnaResultReported &&
                                 formik?.errors.dateHbvDnaResultReported !==
-                                  "" && (
+                                "" && (
                                   <span className={classes.error}>
                                     {formik?.errors.dateHbvDnaResultReported}
                                   </span>
@@ -548,7 +548,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                             <CustomFormGroup formik={formik} name="hbvDna">
                               <Label for="hbvDna">
                                 HBV DNA(UI/ml){" "}
-                               
+
                               </Label>
                               <div className="radio">
                                 <label>
@@ -655,7 +655,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                                   />
                                   {formik?.touched?.hbsAgQuantification &&
                                     formik?.errors.hbsAgQuantification !==
-                                      "" && (
+                                    "" && (
                                       <span className={classes.error}>
                                         {formik?.errors.hbsAgQuantification}
                                       </span>
@@ -668,7 +668,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                           <div className="form-group mb-3 col-md-4">
                             <CustomFormGroup formik={formik} name="hbeAG">
                               <Label for="hbeAG">HbeAG</Label>{" "}
-                              
+
                               <select
                                 className="form-control"
                                 name="hbeAG"
@@ -729,8 +729,8 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                           </div>
 
                           {formik?.values.hbvDna === "UNDETECTED" &&
-                          formik?.values.hbeAG === "NON_REACTIVE" &&
-                          formik?.values?.antiHDV === "NON_REACTIVE" ? null : (
+                            formik?.values.hbeAG === "NON_REACTIVE" &&
+                            formik?.values?.antiHDV === "NON_REACTIVE" ? null : (
                             <div className="form-group mb-3 col-md-4">
                               <CustomFormGroup
                                 formik={formik}
@@ -975,7 +975,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                               </Label>
                               <br />
 
-                              <div className="form-group mb-3 col-md-4">
+                              <div className="form-group mb-3 col-md-2">
                                 <CustomFormGroup
                                   formik={formik}
                                   name="hbvHcvCheckbox"
@@ -1000,7 +1000,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                                   />
                                   <Label for="hbvHcvCheckbox">
                                     HBV/HCV (IU/ml)
-                                   
+
                                   </Label>
                                 </CustomFormGroup>
                                 {formik?.touched?.hbvHcvCheckbox &&
@@ -1011,7 +1011,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                                   )}
                               </div>
 
-                              <div className="form-group mb-3 col-md-4">
+                              <div className="form-group mb-3 col-md-2">
                                 <CustomFormGroup
                                   formik={formik}
                                   name="hbvHivCheckbox"
@@ -1036,7 +1036,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                                   />
                                   <Label for="hbvHivCheckbox">
                                     HBV/HIV (IU/ml)
-                                   
+
                                   </Label>
                                 </CustomFormGroup>
                                 {formik?.touched?.hbvHivCheckbox &&
@@ -1047,7 +1047,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                                   )}
                               </div>
 
-                              <div className="form-group mb-3 col-md-4">
+                              <div className="form-group mb-3 col-md-2">
                                 <CustomFormGroup
                                   formik={formik}
                                   name="hcvHivCheckbox"
@@ -1082,9 +1082,82 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                                   )}
                               </div>
 
+                              <div className="form-group mb-3 col-md-2">
+                                <CustomFormGroup
+                                  formik={formik}
+                                  name="hbvHdvCheckbox"
+                                >
+                                  <input
+                                    className="form-control"
+                                    type="checkbox"
+                                    name="hbvHdvCheckbox"
+                                    id="hbvHdvCheckbox"
+                                    value={formik?.values?.hbvHdvCheckbox}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    style={{
+                                      border: "1px solid #014D88",
+                                      borderRadius: "0.2rem",
+                                      width: 15,
+                                      height: 15,
+                                      display: "inline-flex",
+                                      marginTop: 5,
+                                      marginRight: 5,
+                                    }}
+                                  />
+                                  <Label for="hbvHdvCheckbox">
+                                    HBV/HDV (IU/ml)
+
+                                  </Label>
+                                </CustomFormGroup>
+                                {formik?.touched?.hbvHdvCheckbox &&
+                                  formik?.errors.hbvHdvCheckbox !== "" && (
+                                    <span className={classes.error}>
+                                      {formik?.errors.hbvHdvCheckbox}
+                                    </span>
+                                  )}
+                              </div>
+
+                              <div className="form-group mb-3 col-md-2">
+                                <CustomFormGroup
+                                  formik={formik}
+                                  name="hbvHcvHivCheckbox"
+                                >
+                                  <input
+                                    className="form-control"
+                                    type="checkbox"
+                                    name="hbvHcvHivCheckbox"
+                                    id="hbvHcvHivCheckbox"
+                                    value={formik?.values?.hbvHcvHivCheckbox}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    style={{
+                                      border: "1px solid #014D88",
+                                      borderRadius: "0.2rem",
+                                      width: 15,
+                                      height: 15,
+                                      display: "inline-flex",
+                                      marginTop: 5,
+                                      marginRight: 5,
+                                    }}
+                                  />
+                                  <Label for="hbvHcvHivCheckbox">
+                                    HBV/HCV/HIV (IU/ml)
+
+                                  </Label>
+                                </CustomFormGroup>
+                                {formik?.touched?.hbvHcvHivCheckbox &&
+                                  formik?.errors.hbvHcvHivCheckbox !== "" && (
+                                    <span className={classes.error}>
+                                      {formik?.errors.hbvHcvHivCheckbox}
+                                    </span>
+                                  )}
+                              </div>
+
                               <div className="form-group col-md-12"></div>
+
                               {formik?.values?.hbvHcvCheckbox && (
-                                <div className="form-group mb-3 col-md-4">
+                                <div className="form-group mb-3 col-md-2">
                                   <CustomFormGroup
                                     formik={formik}
                                     name="hbvHcvInputValue"
@@ -1116,7 +1189,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                               )}
 
                               {formik?.values?.hbvHivCheckbox && (
-                                <div className="form-group mb-3 col-md-4">
+                                <div className="form-group mb-3 col-md-2">
                                   <CustomFormGroup
                                     formik={formik}
                                     name="hbvHivInputValue"
@@ -1148,7 +1221,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                               )}
 
                               {formik?.values?.hcvHivCheckbox && (
-                                <div className="form-group mb-3 col-md-4">
+                                <div className="form-group mb-3 col-md-2">
                                   <CustomFormGroup
                                     formik={formik}
                                     name="hcvHivInputValue"
@@ -1179,84 +1252,8 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                                 </div>
                               )}
 
-                              <div className="form-group col-md-12"></div>
-
-                              <div className="form-group mb-3 col-md-4">
-                                <CustomFormGroup
-                                  formik={formik}
-                                  name="hbvHdvCheckbox"
-                                >
-                                  <input
-                                    className="form-control"
-                                    type="checkbox"
-                                    name="hbvHdvCheckbox"
-                                    id="hbvHdvCheckbox"
-                                    value={formik?.values?.hbvHdvCheckbox}
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    style={{
-                                      border: "1px solid #014D88",
-                                      borderRadius: "0.2rem",
-                                      width: 15,
-                                      height: 15,
-                                      display: "inline-flex",
-                                      marginTop: 5,
-                                      marginRight: 5,
-                                    }}
-                                  />
-                                  <Label for="hbvHdvCheckbox">
-                                    HBV/HDV (IU/ml)
-                                    
-                                  </Label>
-                                </CustomFormGroup>
-                                {formik?.touched?.hbvHdvCheckbox &&
-                                  formik?.errors.hbvHdvCheckbox !== "" && (
-                                    <span className={classes.error}>
-                                      {formik?.errors.hbvHdvCheckbox}
-                                    </span>
-                                  )}
-                              </div>
-
-                              <div className="form-group mb-3 col-md-4">
-                                <CustomFormGroup
-                                  formik={formik}
-                                  name="hbvHcvHivCheckbox"
-                                >
-                                  <input
-                                    className="form-control"
-                                    type="checkbox"
-                                    name="hbvHcvHivCheckbox"
-                                    id="hbvHcvHivCheckbox"
-                                    value={formik?.values?.hbvHcvHivCheckbox}
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    style={{
-                                      border: "1px solid #014D88",
-                                      borderRadius: "0.2rem",
-                                      width: 15,
-                                      height: 15,
-                                      display: "inline-flex",
-                                      marginTop: 5,
-                                      marginRight: 5,
-                                    }}
-                                  />
-                                  <Label for="hbvHcvHivCheckbox">
-                                    HBV/HCV/HIV (IU/ml)
-                                   
-                                  </Label>
-                                </CustomFormGroup>
-                                {formik?.touched?.hbvHcvHivCheckbox &&
-                                  formik?.errors.hbvHcvHivCheckbox !== "" && (
-                                    <span className={classes.error}>
-                                      {formik?.errors.hbvHcvHivCheckbox}
-                                    </span>
-                                  )}
-                              </div>
-
-                              <div className="form-group col-md-12"></div>
-
                               {formik?.values?.hbvHdvCheckbox && (
-                                <div className="form-group mb-3 col-md-4">
+                                <div className="form-group mb-3 col-md-2">
                                   <CustomFormGroup
                                     formik={formik}
                                     name="hbvHdvInputValue"
@@ -1288,7 +1285,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                               )}
 
                               {formik?.values?.hbvHcvHivCheckbox && (
-                                <div className="form-group mb-3 col-md-4">
+                                <div className="form-group mb-3 col-md-2">
                                   <CustomFormGroup
                                     formik={formik}
                                     name="hbvHcvHivInputValue"
@@ -1314,13 +1311,14 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                                   </CustomFormGroup>
                                   {formik?.touched?.hbvHcvHivInputValue &&
                                     formik?.errors.hbvHcvHivInputValue !==
-                                      "" && (
+                                    "" && (
                                       <span className={classes.error}>
                                         {formik?.errors.hbvHcvHivInputValue}
                                       </span>
                                     )}
                                 </div>
                               )}
+
 
                               <div className="form-group col-md-12"></div>
 
@@ -1383,7 +1381,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                                     />
                                     {formik?.touched?.multipleInfection &&
                                       formik?.errors?.multipleInfection !==
-                                        "" && (
+                                      "" && (
                                         <span className={classes.error}>
                                           {formik?.errors?.multipleInfection}
                                         </span>
@@ -1615,7 +1613,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                     <CustomFormGroup formik={formik} name="totalBiliRubin">
                       <Label for="totalBiliRubin">
                         Total Bilirubin (μmol/L){" "}
-                        
+
                       </Label>
                       <input
                         className="form-control"
@@ -1644,7 +1642,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                       <Label for="directBiliribin">
                         Direct Bilirubin (μmol/L)
                       </Label>
-                     
+
                       <input
                         className="form-control"
                         type="text"
@@ -1670,7 +1668,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                   <div className="form-group mb-3 col-md-4">
                     <CustomFormGroup formik={formik} name="albumin">
                       <Label for="albumin">Albumin (g/dl)</Label>
-                      
+
                       <input
                         className="form-control"
                         type="number"
@@ -1751,7 +1749,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                       <Label for="prothrombinTimeNR">
                         Prothrombin time/INR
                       </Label>
-                     
+
                       <input
                         className="form-control"
                         type="number"
@@ -1777,7 +1775,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                   <div className="form-group mb-3 col-md-4">
                     <CustomFormGroup formik={formik} name="urea">
                       <Label for="urea">Urea (mg/dl)</Label>
-                    
+
                       <input
                         className="form-control"
                         type="number"
@@ -1802,7 +1800,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                   <div className="form-group mb-3 col-md-4">
                     <CustomFormGroup formik={formik} name="creatinine">
                       <Label for="creatinine">Creatinine (μmol/L)</Label>
-                      
+
                       <input
                         className="form-control"
                         type="number"
@@ -1828,7 +1826,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                   <div className="form-group mb-3 col-md-4">
                     <CustomFormGroup formik={formik} name="ultrasoundScan">
                       <Label for="ultrasoundScan">Ultrasound scan</Label>
-                     
+
                       <input
                         className="form-control"
                         type="number"
@@ -1854,7 +1852,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                   <div className="form-group mb-3 col-md-4">
                     <CustomFormGroup formik={formik} name="afp">
                       <Label for="afp">AFP (ng/ml)</Label>
-                     
+
                       <input
                         className="form-control"
                         type="number"
@@ -1904,7 +1902,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                   <div className="form-group mb-3 col-md-4">
                     <CustomFormGroup formik={formik} name="ctScan">
                       <Label for="ctScan">CT scan</Label>
-                      
+
                       <input
                         className="form-control"
                         type="text"
@@ -1930,7 +1928,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                   <div className="form-group mb-3 col-md-4">
                     <CustomFormGroup formik={formik} name="ascites">
                       <Label for="ascites">Ascites</Label>
-                      
+
                       <select
                         className="form-control"
                         name="ascites"
@@ -2000,7 +1998,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                       <Label for="gradeOfEncephalopathy">
                         Grade of Encephalopathy
                       </Label>
-                      
+
                       <select
                         className="form-control"
                         name="gradeOfEncephalopathy"
@@ -2032,7 +2030,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                   <div className="form-group mb-3 col-md-4">
                     <CustomFormGroup formik={formik} name="childPughScore">
                       <Label for="childPughScore">Child pugh score</Label>
-                     
+
                       <select
                         className="form-control"
                         name="childPughScore"
@@ -2065,7 +2063,7 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                   <div className="form-group mb-3 col-md-4">
                     <CustomFormGroup formik={formik} name="liverBiopsyStage">
                       <Label for="liverBiopsyStage">Liver biopsy stage</Label>
-                      
+
                       <select
                         className="form-control"
                         name="liverBiopsyStage"
@@ -2107,69 +2105,69 @@ const NewPatientDiagnosis = ({ step, setStep }) => {
                     "SEVERE_FIBROSIS",
                     "CIRRHOSIS",
                   ]?.includes(formik?.values?.liverBiopsyStage) && (
-                    <>
-                      <div className="form-group mb-3 col-md-4">
-                        <CustomFormGroup
-                          formik={formik}
-                          name="stagingDateOfLiverBiopsy"
-                        >
-                          <Label for="stagingDateOfLiverBiopsy">
-                            Staging date of liver biopsy{" "}
-                          </Label>
-                          <input
-                            className="form-control"
-                            type="date"
+                      <>
+                        <div className="form-group mb-3 col-md-4">
+                          <CustomFormGroup
+                            formik={formik}
                             name="stagingDateOfLiverBiopsy"
-                            max={moment(new Date()).format("YYYY-MM-DD")}
-                            id="stagingDateOfLiverBiopsy"
-                            value={formik?.values?.stagingDateOfLiverBiopsy}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            style={{
-                              border: "1px solid #014D88",
-                              borderRadius: "0.2rem",
-                            }}
-                          />
-                          {formik?.touched?.stagingDateOfLiverBiopsy &&
-                            formik?.errors.stagingDateOfLiverBiopsy !== "" && (
-                              <span className={classes.error}>
-                                {formik?.errors.stagingDateOfLiverBiopsy}
-                              </span>
-                            )}
-                        </CustomFormGroup>
-                      </div>
-
-                      <div className="form-group mb-3 col-md-4">
-                        <CustomFormGroup formik={formik} name="diagnosisResult">
-                          <Label for="diagnosisResult">Diagnosis</Label>
-                          <select
-                            className="form-control"
-                            name="diagnosisResult"
-                            id="diagnosisResult"
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            value={formik?.values.diagnosisResult}
-                            style={{
-                              border: "1px solid #014D88",
-                              borderRadius: "0.2rem",
-                            }}
                           >
-                            <option value={""}>Select</option>
-                            <option value={"NO_FIBROSIS"}> No Fibrosis</option>
-                            <option value={"FIBROSIS"}>Fibrosis</option>
-                            <option value={"CIRRHOSIS"}>Cirrhosis</option>
-                            <option value={"HIGH_CC"}>HCC</option>
-                          </select>
-                          {formik?.touched?.diagnosisResult &&
-                            formik?.errors?.diagnosisResult !== "" && (
-                              <span className={classes.error}>
-                                {formik?.errors.diagnosisResult}
-                              </span>
-                            )}
-                        </CustomFormGroup>
-                      </div>
-                    </>
-                  )}
+                            <Label for="stagingDateOfLiverBiopsy">
+                              Staging date of liver biopsy{" "}
+                            </Label>
+                            <input
+                              className="form-control"
+                              type="date"
+                              name="stagingDateOfLiverBiopsy"
+                              max={moment(new Date()).format("YYYY-MM-DD")}
+                              id="stagingDateOfLiverBiopsy"
+                              value={formik?.values?.stagingDateOfLiverBiopsy}
+                              onChange={formik.handleChange}
+                              onBlur={formik.handleBlur}
+                              style={{
+                                border: "1px solid #014D88",
+                                borderRadius: "0.2rem",
+                              }}
+                            />
+                            {formik?.touched?.stagingDateOfLiverBiopsy &&
+                              formik?.errors.stagingDateOfLiverBiopsy !== "" && (
+                                <span className={classes.error}>
+                                  {formik?.errors.stagingDateOfLiverBiopsy}
+                                </span>
+                              )}
+                          </CustomFormGroup>
+                        </div>
+
+                        <div className="form-group mb-3 col-md-4">
+                          <CustomFormGroup formik={formik} name="diagnosisResult">
+                            <Label for="diagnosisResult">Diagnosis</Label>
+                            <select
+                              className="form-control"
+                              name="diagnosisResult"
+                              id="diagnosisResult"
+                              onChange={formik.handleChange}
+                              onBlur={formik.handleBlur}
+                              value={formik?.values.diagnosisResult}
+                              style={{
+                                border: "1px solid #014D88",
+                                borderRadius: "0.2rem",
+                              }}
+                            >
+                              <option value={""}>Select</option>
+                              <option value={"NO_FIBROSIS"}> No Fibrosis</option>
+                              <option value={"FIBROSIS"}>Fibrosis</option>
+                              <option value={"CIRRHOSIS"}>Cirrhosis</option>
+                              <option value={"HIGH_CC"}>HCC</option>
+                            </select>
+                            {formik?.touched?.diagnosisResult &&
+                              formik?.errors?.diagnosisResult !== "" && (
+                                <span className={classes.error}>
+                                  {formik?.errors.diagnosisResult}
+                                </span>
+                              )}
+                          </CustomFormGroup>
+                        </div>
+                      </>
+                    )}
                 </div>
               </div>
 
