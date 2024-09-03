@@ -325,7 +325,8 @@ const PatientDashboardDiagnosisViewUpdate = ({
 
   const { formik } = useValidatePatientDashboardDiagnosisFormValuesHook(
     handleSubmit,
-    userGender
+    userGender,
+    disableInputs
   );
   const { returnData: childPughScoreOptions } = useFetchCodesets("CHILD_PUGH");
 
@@ -551,7 +552,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                             <CustomFormGroup formik={formik} name="hbvDna">
                               <Label for="hbvDna">
                                 HBV DNA(UI/ml){" "}
-                                <span style={{ color: "red" }}> *</span>
+                                
                               </Label>
                               <div className="radio">
                                 <label>
@@ -675,7 +676,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                           <div className="form-group mb-3 col-md-4">
                             <CustomFormGroup formik={formik} name="hbeAG">
                               <Label for="hbeAG">HbeAG</Label>{" "}
-                              <span style={{ color: "red" }}> *</span>{" "}
+                              
                               <select
                                 disabled={disableInputs}
                                 className="form-control"
@@ -1017,10 +1018,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                                   />
                                   <Label for="hbvHcvCheckbox">
                                     HBV/HCV (IU/ml)
-                                    <span style={{ color: "red" }}>
-                                      {" "}
-                                      *
-                                    </span>{" "}
+                                   
                                   </Label>
                                 </CustomFormGroup>
                                 {formik?.touched?.hbvHcvCheckbox &&
@@ -1058,10 +1056,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                                   />
                                   <Label for="hbvHivCheckbox">
                                     HBV/HIV (IU/ml)
-                                    <span style={{ color: "red" }}>
-                                      {" "}
-                                      *
-                                    </span>{" "}
+                                   
                                   </Label>
                                 </CustomFormGroup>
                                 {formik?.touched?.hbvHivCheckbox &&
@@ -1099,10 +1094,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                                   />
                                   <Label for="hcvHivCheckbox">
                                     HCV/HIV (IU/ml)
-                                    <span style={{ color: "red" }}>
-                                      {" "}
-                                      *
-                                    </span>{" "}
+                                    
                                   </Label>
                                 </CustomFormGroup>
                                 {formik?.touched?.hcvHivCheckbox &&
@@ -1242,10 +1234,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                                   />
                                   <Label for="hbvHdvCheckbox">
                                     HBV/HDV (IU/ml)
-                                    <span style={{ color: "red" }}>
-                                      {" "}
-                                      *
-                                    </span>{" "}
+                                 
                                   </Label>
                                 </CustomFormGroup>
                                 {formik?.touched?.hbvHdvCheckbox &&
@@ -1283,10 +1272,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                                   />
                                   <Label for="hbvHcvHivCheckbox">
                                     HBV/HCV/HIV (IU/ml)
-                                    <span style={{ color: "red" }}>
-                                      {" "}
-                                      *
-                                    </span>{" "}
+                                  
                                   </Label>
                                 </CustomFormGroup>
                                 {formik?.touched?.hbvHcvHivCheckbox &&
@@ -1673,7 +1659,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                     <CustomFormGroup formik={formik} name="totalBiliRubin">
                       <Label for="totalBiliRubin">
                         Total Bilirubin (μmol/L){" "}
-                        <span style={{ color: "red" }}> *</span>{" "}
+                        
                       </Label>
                       <input
                         disabled={disableInputs}
@@ -1703,7 +1689,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                       <Label for="directBiliribin">
                         Direct Bilirubin (μmol/L)
                       </Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                    
                       <input
                         disabled={disableInputs}
                         className="form-control"
@@ -1730,7 +1716,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                   <div className="form-group mb-3 col-md-4">
                     <CustomFormGroup formik={formik} name="albumin">
                       <Label for="albumin">Albumin (g/dl)</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                     
                       <input
                         disabled={disableInputs}
                         className="form-control"
@@ -1813,7 +1799,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                       <Label for="prothrombinTimeNR">
                         Prothrombin time/INR
                       </Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                    
                       <input
                         disabled={disableInputs}
                         className="form-control"
@@ -1840,7 +1826,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                   <div className="form-group mb-3 col-md-4">
                     <CustomFormGroup formik={formik} name="urea">
                       <Label for="urea">Urea (mg/dl)</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                     
                       <input
                         disabled={disableInputs}
                         className="form-control"
@@ -1866,7 +1852,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                   <div className="form-group mb-3 col-md-4">
                     <CustomFormGroup formik={formik} name="creatinine">
                       <Label for="creatinine">Creatinine (μmol/L)</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                      
                       <input
                         disabled={disableInputs}
                         className="form-control"
@@ -1893,7 +1879,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                   <div className="form-group mb-3 col-md-4">
                     <CustomFormGroup formik={formik} name="ultrasoundScan">
                       <Label for="ultrasoundScan">Ultrasound scan</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                      
                       <input
                         disabled={disableInputs}
                         className="form-control"
@@ -1920,7 +1906,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                   <div className="form-group mb-3 col-md-4">
                     <CustomFormGroup formik={formik} name="afp">
                       <Label for="afp">AFP (ng/ml)</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                      
                       <input
                         disabled={disableInputs}
                         className="form-control"
@@ -1946,7 +1932,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                   <div className="form-group mb-3 col-md-4">
                     <CustomFormGroup formik={formik} name="fibroscan">
                       <Label for="fibroscan">Fibroscan (Kpa)</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                     
                       <input
                         disabled={disableInputs}
                         className="form-control"
@@ -1973,7 +1959,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                   <div className="form-group mb-3 col-md-4">
                     <CustomFormGroup formik={formik} name="ctScan">
                       <Label for="ctScan">CT scan</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                     
                       <input
                         disabled={disableInputs}
                         className="form-control"
@@ -2000,7 +1986,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                   <div className="form-group mb-3 col-md-4">
                     <CustomFormGroup formik={formik} name="ascites">
                       <Label for="ascites">Ascites</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                      
                       <select
                         disabled={disableInputs}
                         className="form-control"
@@ -2072,7 +2058,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                       <Label for="gradeOfEncephalopathy">
                         Grade of Encephalopathy
                       </Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                      
                       <select
                         disabled={disableInputs}
                         className="form-control"
@@ -2105,7 +2091,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                   <div className="form-group mb-3 col-md-4">
                     <CustomFormGroup formik={formik} name="childPughScore">
                       <Label for="childPughScore">Child pugh score</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                     
                       <select
                         disabled={disableInputs}
                         className="form-control"
@@ -2139,7 +2125,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                   <div className="form-group mb-3 col-md-4">
                     <CustomFormGroup formik={formik} name="liverBiopsyStage">
                       <Label for="liverBiopsyStage">Liver biopsy stage</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                      
                       <select
                         disabled={disableInputs}
                         className="form-control"
@@ -2219,7 +2205,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                         <div className="form-group mb-3 col-md-4">
                           <CustomFormGroup formik={formik} name="diagnosisResult">
                             <Label for="diagnosisResult">Diagnosis</Label>
-                            <span style={{ color: "red" }}> *</span>{" "}
+                            
                             <select
                               disabled={disableInputs}
                               className="form-control"
