@@ -27,9 +27,10 @@ import { useValidateExistingPatientTreatmentFormValuesHook } from "./Formvalidat
 import { useFetchCodesets } from "../../../../hooks/useFetchCodesets.hook";
 import { useHistory } from "react-router-dom";
 import CustomFormGroup from "../../../CustomFormGroup/CustomFormGroup";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { saveTreatment } from "../../../../services/saveTreatment";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { getRecentActivties } from "../../../../services/getRecentActivities";
 
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
@@ -109,8 +110,6 @@ const ExistingPatientTreatment = ({ step, setStep }) => {
   const [patientDateOfBirth] = useState(enrolmentData?.person?.dateOfBirth);
   const [enrollmentUuid] = useState(enrolmentData?.enrollmentUuid);
   const patientObj = history?.location?.state?.patientObj;
-
-  console.log("existing patient",patientObj)
 
   const [isRecordOnSameDateExists, setIsRecordOnSameDateExists] = useState(false)
 
@@ -228,6 +227,12 @@ const ExistingPatientTreatment = ({ step, setStep }) => {
   });
 
   const handleSubmit = (values) => {
+
+    if (isRecordOnSameDateExists) {
+      toast.error("You have filled treatment form today") 
+      return
+    }
+
     const hepatitisBTreatment = {};
     const hepatitisCTreatment = {};
 
@@ -252,6 +257,34 @@ const ExistingPatientTreatment = ({ step, setStep }) => {
 
   const { formik } =
     useValidateExistingPatientTreatmentFormValuesHook(handleSubmit);
+
+    function getTodayDate() {
+      const today = new Date();
+  
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed, so we add 1
+      const day = String(today.getDate()).padStart(2, '0');
+  
+      return `${year}-${month}-${day}`;
+  }
+
+    useQuery(
+      ["FECTH_RECENT_ACTIVITIES", patientObj?.uuid || patientObj?.personUuid],
+      () => getRecentActivties(patientObj?.uuid || patientObj?.personUuid),
+      {
+        onSuccess: (data) => {
+          if (data && Array.isArray(data) && data?.length !== 0) {
+            const allRecentDiagnosis = data.filter((activity) => activity.path === "hepatitis_treatment" && activity?.activityDate === getTodayDate())
+            if (allRecentDiagnosis.length !== 0) {
+              setIsRecordOnSameDateExists(true)
+            }
+            else {
+              setIsRecordOnSameDateExists(false)
+            }
+          }
+        },
+      }
+    );
 
   console.log(formik.errors)
 

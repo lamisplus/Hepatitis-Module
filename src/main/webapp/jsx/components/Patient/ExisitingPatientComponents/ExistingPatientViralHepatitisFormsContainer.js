@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import "react-toastify/dist/ReactToastify.css";
 import "react-widgets/dist/css/react-widgets.css";
@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import { TiArrowBack } from "react-icons/ti";
 import { ToastContainer } from "react-toastify";
 import ExistingPatientRegistrationForm from "./Forms/ExistingPatientRegistrationForm";
-import { useLocalStorageState } from "../../../hooks/useLocalStorageState";
 import ExistingPatientDiagnosis from "./Forms/ExistingPatientDiagnosis";
 import ExistingPatientTreatment from "./Forms/ExistingPatientTreatment";
 import ExistingPatientSteppers from "./Stepper/ExisitingPatientSteppers";
