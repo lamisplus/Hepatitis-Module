@@ -904,7 +904,7 @@ const FollowupUpdate = (props) => {
                                   <div className="form-group mb-3 col-md-4">
                                     <FormGroup>
                                       <Label for="fuAlt">ALT (IU/mL)</Label>
-                                      {/* <span style={{ color: "red" }}> *</span>{" "} */}
+                                      <span style={{ color: "red" }}> *</span>{" "}
                                       <Input
                                         className="form-control"
                                         disabled={disableInputs}
@@ -931,7 +931,7 @@ const FollowupUpdate = (props) => {
                                   <div className="form-group mb-3 col-md-4">
                                     <FormGroup>
                                       <Label for="fuAst">AST (IU/mL)</Label>
-                                      {/* <span style={{ color: "red" }}> *</span>{" "} */}
+                                      <span style={{ color: "red" }}> *</span>{" "}
                                       <Input
                                         className="form-control"
                                         disabled={disableInputs}
@@ -959,6 +959,7 @@ const FollowupUpdate = (props) => {
                                     <FormGroup>
                                       <Label for="fuPlt">
                                         Platelet (mm<sup>3</sup>)
+                                        <span style={{ color: "red" }}> *</span>
                                       </Label>
                                       <Input
                                         className="form-control"

@@ -302,7 +302,7 @@ const PatientDashboardTreatmentViewUpdate = ({
   };
 
   const { formik } =
-    useValidatePatientDashboardTreatmentFormValuesHook(handleSubmit);
+    useValidatePatientDashboardTreatmentFormValuesHook(handleSubmit, disableInputs);
 
     console.log(formik.errors)
 
@@ -356,7 +356,7 @@ const PatientDashboardTreatmentViewUpdate = ({
                               borderRadius: "0.2rem",
                             }}
                           >
-                            <option>Select</option>
+                            <option value="">Select</option>
                             <option value={"YES"}>Yes</option>
                             <option value={"NO"}>No</option>
                           </select>
@@ -534,7 +534,7 @@ const PatientDashboardTreatmentViewUpdate = ({
                                   borderRadius: "0.2rem",
                                 }}
                               >
-                                <option>Select</option>
+                                <option value="">Select</option>
                                 <option value={"8"}>8 weeks</option>
                                 <option value={"12"}>12 weeks</option>
                                 <option value={"24"}>24 weeks</option>
@@ -624,7 +624,7 @@ const PatientDashboardTreatmentViewUpdate = ({
                                   borderRadius: "0.2rem",
                                 }}
                               >
-                                <option>Select</option>
+                                <option value="">Select</option>
                                 <option value={"8"}>8 weeks</option>
                                 <option value={"12"}>12 weeks</option>
                                 <option value={"24"}>24 weeks</option>
@@ -1411,7 +1411,7 @@ const PatientDashboardTreatmentViewUpdate = ({
                                     borderRadius: "0.2rem",
                                   }}
                                 >
-                                  <option>Select</option>
+                                  <option value="">Select</option>
                                   <option value={"8"}>8 weeks</option>
                                   <option value={"12"}>12 weeks</option>
                                   <option value={"24"}>24 weeks</option>
@@ -1509,7 +1509,7 @@ const PatientDashboardTreatmentViewUpdate = ({
                                     borderRadius: "0.2rem",
                                   }}
                                 >
-                                  <option>Select</option>
+                                  <option value="">Select</option>
                                   <option value={"8"}>8 weeks</option>
                                   <option value={"12"}>12 weeks</option>
                                   <option value={"24"}>24 weeks</option>
@@ -2016,7 +2016,7 @@ const PatientDashboardTreatmentViewUpdate = ({
                                 borderRadius: "0.2rem",
                               }}
                             >
-                              <option>Select</option>
+                              <option value="">Select</option>
                               <option value={"8"}>8 weeks</option>
                               <option value={"12"}>12 weeks</option>
                               <option value={"24"}>24 weeks</option>

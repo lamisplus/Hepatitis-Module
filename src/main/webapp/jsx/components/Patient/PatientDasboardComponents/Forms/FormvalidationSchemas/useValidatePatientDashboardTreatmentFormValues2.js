@@ -60,8 +60,8 @@ export const useValidatePatientDashboardTreatmentFormValuesHook = (onSubmit, isU
 
  
   const patientDashboardTreatmentValidationSchema = yup.object({
-    hepatitisBTreatmentExperience: yup.string().required(requiredTextPrompt),
 
+    hepatitisBTreatmentExperience: yup.string().required(requiredTextPrompt),
     hepatitisBPastTreatmentRegimen: yup.string(),
     hepatitisBPastTreatmentExperienceDateStarted: yup.date(),
     hepatitisBPastTreatmentExperienceDateCompleted: yup.date(),
