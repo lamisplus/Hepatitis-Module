@@ -85,7 +85,7 @@ export const useValidateExistingPatientDiagnosisFormValuesHook = (onSubmit, user
     treatmentEligible: yup.string().required(requiredTextPrompt),
     pmtctEligible: userGender?.toLowerCase() === "female" ? yup.string().required(requiredTextPrompt) : yup.string(),//done
     comment: yup.string(),//done
-    hcvRNA: yup.string(),//done
+    hcvRNA: yup.string().required(requiredTextPrompt),//done
 
     hcvRnaValue: yup.number().when("hcvRNA", {
         is: (hcvRNA) => hcvRNA === "DETECTED",

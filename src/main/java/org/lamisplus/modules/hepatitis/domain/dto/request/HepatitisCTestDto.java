@@ -21,7 +21,7 @@ import java.io.Serializable;
 public class HepatitisCTestDto implements Serializable {
     private astPltAltDto selectedClinicalParamsOptions;
     @NotEmpty(message = "selectedClinicalParamsOption can not be empty")
-    private Detect hcvRNA;
+    private String hcvRNA;
     @NotEmpty(message = "hcRnaValue can not be empty")
     private Long hcvRnaValue;
     @NotEmpty(message = "hepatitisCoinfection can not be empty")

@@ -44,7 +44,7 @@ public class ClinicalParametersDto implements Serializable {
     private Long fibroscan;
     @NotEmpty(message = " ultrasoundScan can not be empty")
     private Long ultrasoundScan;
-    private Status ascites;
+    private String ascites;
     private String severityOfAscites;
     @NotEmpty(message = " gradeOfEncephalopathy can not be empty")
     private Long gradeOfEncephalopathy;

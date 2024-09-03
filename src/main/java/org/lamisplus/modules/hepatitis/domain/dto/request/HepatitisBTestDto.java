@@ -38,7 +38,7 @@ public class HepatitisBTestDto implements Serializable {
     private LocalDate stagingDateOfLiverBiopsy;
 
     @NotNull(message = "hbvDna can either be detected or undetected")
-    private Detect hbvDna;
+    private String hbvDna;
 
     @NotEmpty(message ="hvbDnaValue can not be empty")
     private Long hvbDnaValue;

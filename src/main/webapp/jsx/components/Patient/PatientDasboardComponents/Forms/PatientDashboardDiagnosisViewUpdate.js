@@ -113,11 +113,14 @@ const PatientDashboardDiagnosisViewUpdate = ({
   activeContent,
   disableInputs = false
 }) => {
-    const [userGender] = useState(patientObj?.gender?.display);
-    const [, setDiagnosisData] = useState(null);
-    const [enrollmentUuid, setEnrollmentUuid] = useState("");
-    const [formInitialValue, setFormInitialValue] = useState(null);
- 
+  const [userGender] = useState(
+    patientObj?.gender ||
+    patientObj?.gender?.display
+  );
+  const [, setDiagnosisData] = useState(null);
+  const [enrollmentUuid, setEnrollmentUuid] = useState("");
+  const [formInitialValue, setFormInitialValue] = useState(null);
+
 
   const [recordId] = useState(activeContent?.record?.recordId);
 
@@ -153,19 +156,19 @@ const PatientDashboardDiagnosisViewUpdate = ({
         ...data?.hepatitisCTest?.hepatitisCoinfection,
         hbvDnaValue: data?.hepatitisBTest?.hvbDnaValue,
         dateHbvSampleRequested: formatDate(data?.hepatitisBTest?.dateHbvSampleRequested
-            ),
-            dateHbvDnaTestRequested: formatDate(data?.hepatitisBTest?.dateHbvDnaTestRequested
-            ),
-            dateHbvDnaResultReported: formatDate(data?.hepatitisBTest?.dateHbvDnaResultReported
-            ),
-            stagingDateOfLiverBiopsy: formatDate(data?.hepatitisBTest?.stagingDateOfLiverBiopsy
-            ),
+        ),
+        dateHbvDnaTestRequested: formatDate(data?.hepatitisBTest?.dateHbvDnaTestRequested
+        ),
+        dateHbvDnaResultReported: formatDate(data?.hepatitisBTest?.dateHbvDnaResultReported
+        ),
+        stagingDateOfLiverBiopsy: formatDate(data?.hepatitisBTest?.stagingDateOfLiverBiopsy
+        ),
       };
 
-      
+
       delete initialValues?.selectedClinicalParamsOptions
       delete initialValues?.hepatitisCoinfection
-     
+
 
 
       if (formInitialValue === null) {
@@ -317,7 +320,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
       },
     };
 
-    mutate({id: recordId, data: payload});
+    mutate({ id: recordId, data: payload });
   };
 
   const { formik } = useValidatePatientDashboardDiagnosisFormValuesHook(
@@ -363,7 +366,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
   ]);
 
   console.log(formik.errors)
-  
+
 
   return (
     <div>
@@ -442,7 +445,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                                 <span style={{ color: "red" }}> *</span>{" "}
                               </Label>
                               <input
-                              disabled={disableInputs}
+                                disabled={disableInputs}
                                 className="form-control"
                                 type="date"
                                 name="dateHbvDnaTestRequested"
@@ -458,7 +461,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                               />
                               {formik?.touched?.dateHbvDnaTestRequested &&
                                 formik?.errors.dateHbvDnaTestRequested !==
-                                  "" && (
+                                "" && (
                                   <span className={classes.error}>
                                     {formik?.errors.dateHbvDnaTestRequested}
                                   </span>
@@ -476,7 +479,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                                 <span style={{ color: "red" }}> *</span>{" "}
                               </Label>
                               <input
-                              disabled={disableInputs}
+                                disabled={disableInputs}
                                 className="form-control"
                                 type="date"
                                 name="dateHbvSampleRequested"
@@ -497,7 +500,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                               />
                               {formik?.touched.dateHbvSampleRequested &&
                                 formik?.errors.dateHbvSampleRequested !==
-                                  "" && (
+                                "" && (
                                   <span className={classes.error}>
                                     {formik?.errors?.dateHbvSampleRequested}
                                   </span>
@@ -515,7 +518,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                                 <span style={{ color: "red" }}> *</span>{" "}
                               </Label>
                               <input
-                              disabled={disableInputs}
+                                disabled={disableInputs}
                                 className="form-control"
                                 type="date"
                                 name="dateHbvDnaResultReported"
@@ -536,7 +539,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                               />
                               {formik?.touched?.dateHbvDnaResultReported &&
                                 formik?.errors.dateHbvDnaResultReported !==
-                                  "" && (
+                                "" && (
                                   <span className={classes.error}>
                                     {formik?.errors.dateHbvDnaResultReported}
                                   </span>
@@ -553,7 +556,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                               <div className="radio">
                                 <label>
                                   <input
-                                  disabled={disableInputs}
+                                    disabled={disableInputs}
                                     type="radio"
                                     value="DETECTED"
                                     name="hbvDna"
@@ -573,7 +576,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                               <div className="radio">
                                 <label>
                                   <input
-                                  disabled={disableInputs}
+                                    disabled={disableInputs}
                                     type="radio"
                                     value="UNDETECTED"
                                     name="hbvDna"
@@ -612,7 +615,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                                     <span style={{ color: "red" }}> *</span>{" "}
                                   </Label>
                                   <input
-                                  disabled={disableInputs}
+                                    disabled={disableInputs}
                                     className="form-control"
                                     type="number"
                                     name="hbvDnaValue"
@@ -644,7 +647,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                                     <span style={{ color: "red" }}> *</span>{" "}
                                   </Label>
                                   <input
-                                  disabled={disableInputs}
+                                    disabled={disableInputs}
                                     className="form-control"
                                     type="number"
                                     name="hbsAgQuantification"
@@ -659,7 +662,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                                   />
                                   {formik?.touched?.hbsAgQuantification &&
                                     formik?.errors.hbsAgQuantification !==
-                                      "" && (
+                                    "" && (
                                       <span className={classes.error}>
                                         {formik?.errors.hbsAgQuantification}
                                       </span>
@@ -674,7 +677,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                               <Label for="hbeAG">HbeAG</Label>{" "}
                               <span style={{ color: "red" }}> *</span>{" "}
                               <select
-                              disabled={disableInputs}
+                                disabled={disableInputs}
                                 className="form-control"
                                 name="hbeAG"
                                 id="hbeAG"
@@ -706,7 +709,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                               <Label for="antiHDV">Anti-HDV</Label>
                               <span style={{ color: "red" }}> *</span>{" "}
                               <select
-                              disabled={disableInputs}
+                                disabled={disableInputs}
                                 className="form-control"
                                 name="antiHDV"
                                 id="antiHDV"
@@ -735,8 +738,8 @@ const PatientDashboardDiagnosisViewUpdate = ({
                           </div>
 
                           {formik?.values.hbvDna === "UNDETECTED" &&
-                          formik?.values.hbeAG === "NON_REACTIVE" &&
-                          formik?.values?.antiHDV === "NON_REACTIVE" ? null : (
+                            formik?.values.hbeAG === "NON_REACTIVE" &&
+                            formik?.values?.antiHDV === "NON_REACTIVE" ? null : (
                             <div className="form-group mb-3 col-md-4">
                               <CustomFormGroup
                                 formik={formik}
@@ -747,7 +750,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                                 </Label>
                                 <span style={{ color: "red" }}> *</span>{" "}
                                 <select
-                                disabled={disableInputs}
+                                  disabled={disableInputs}
                                   className="form-control"
                                   name="treatmentEligible"
                                   id="treatmentEligible"
@@ -900,7 +903,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                               <div className="radio">
                                 <label>
                                   <input
-                                  disabled={disableInputs}
+                                    disabled={disableInputs}
                                     type="radio"
                                     value="DETECTED"
                                     name="hcvRNA"
@@ -920,7 +923,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                               <div className="radio">
                                 <label>
                                   <input
-                                  disabled={disableInputs}
+                                    disabled={disableInputs}
                                     type="radio"
                                     value="UNDETECTED"
                                     name="hcvRNA"
@@ -958,7 +961,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                                   <span style={{ color: "red" }}> *</span>{" "}
                                 </Label>
                                 <input
-                                disabled={disableInputs}
+                                  disabled={disableInputs}
                                   className="form-control"
                                   type="number"
                                   name="hcvRnaValue"
@@ -993,7 +996,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                                   name="hbvHcvCheckbox"
                                 >
                                   <input
-                                  disabled={disableInputs}
+                                    disabled={disableInputs}
                                     className="form-control"
                                     type="checkbox"
                                     name="hbvHcvCheckbox"
@@ -1034,7 +1037,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                                   name="hbvHivCheckbox"
                                 >
                                   <input
-                                  disabled={disableInputs}
+                                    disabled={disableInputs}
                                     className="form-control"
                                     type="checkbox"
                                     name="hbvHivCheckbox"
@@ -1075,7 +1078,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                                   name="hcvHivCheckbox"
                                 >
                                   <input
-                                  disabled={disableInputs}
+                                    disabled={disableInputs}
                                     className="form-control"
                                     type="checkbox"
                                     name="hcvHivCheckbox"
@@ -1122,7 +1125,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                                       <span style={{ color: "red" }}> *</span>{" "}
                                     </Label>
                                     <input
-                                    disabled={disableInputs}
+                                      disabled={disableInputs}
                                       className="form-control"
                                       type="number"
                                       name="hbvHcvInputValue"
@@ -1155,7 +1158,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                                       <span style={{ color: "red" }}> *</span>{" "}
                                     </Label>
                                     <input
-                                    disabled={disableInputs}
+                                      disabled={disableInputs}
                                       className="form-control"
                                       type="number"
                                       name="hbvHivInputValue"
@@ -1188,7 +1191,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                                       <span style={{ color: "red" }}> *</span>{" "}
                                     </Label>
                                     <input
-                                    disabled={disableInputs}
+                                      disabled={disableInputs}
                                       className="form-control"
                                       type="number"
                                       name="hcvHivInputValue"
@@ -1218,7 +1221,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                                   name="hbvHdvCheckbox"
                                 >
                                   <input
-                                  disabled={disableInputs}
+                                    disabled={disableInputs}
                                     className="form-control"
                                     type="checkbox"
                                     name="hbvHdvCheckbox"
@@ -1259,7 +1262,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                                   name="hbvHcvHivCheckbox"
                                 >
                                   <input
-                                  disabled={disableInputs}
+                                    disabled={disableInputs}
                                     className="form-control"
                                     type="checkbox"
                                     name="hbvHcvHivCheckbox"
@@ -1307,7 +1310,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                                       <span style={{ color: "red" }}> *</span>{" "}
                                     </Label>
                                     <input
-                                    disabled={disableInputs}
+                                      disabled={disableInputs}
                                       className="form-control"
                                       type="number"
                                       name="hbvHdvInputValue"
@@ -1340,7 +1343,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                                       <span style={{ color: "red" }}> *</span>{" "}
                                     </Label>
                                     <input
-                                    disabled={disableInputs}
+                                      disabled={disableInputs}
                                       className="form-control"
                                       type="number"
                                       name="hbvHcvHivInputValue"
@@ -1358,7 +1361,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                                   </CustomFormGroup>
                                   {formik?.touched?.hbvHcvHivInputValue &&
                                     formik?.errors.hbvHcvHivInputValue !==
-                                      "" && (
+                                    "" && (
                                       <span className={classes.error}>
                                         {formik?.errors.hbvHcvHivInputValue}
                                       </span>
@@ -1377,7 +1380,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                                     Commobidities
                                   </Label>
                                   <select
-                                  disabled={disableInputs}
+                                    disabled={disableInputs}
                                     className="form-control"
                                     name="commobidities"
                                     id="commobidities"
@@ -1414,7 +1417,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                                       <span style={{ color: "red" }}> *</span>{" "}
                                     </Label>
                                     <input
-                                    disabled={disableInputs}
+                                      disabled={disableInputs}
                                       className="form-control"
                                       type="text"
                                       name="multipleInfection"
@@ -1429,7 +1432,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                                     />
                                     {formik?.touched?.multipleInfection &&
                                       formik?.errors?.multipleInfection !==
-                                        "" && (
+                                      "" && (
                                         <span className={classes.error}>
                                           {formik?.errors?.multipleInfection}
                                         </span>
@@ -1465,7 +1468,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                   <div className="form-group mb-3 col-md-4">
                     <CustomFormGroup formik={formik} name="astCheckbox">
                       <input
-                      disabled={disableInputs}
+                        disabled={disableInputs}
                         className="form-control"
                         type="checkbox"
                         name="astCheckbox"
@@ -1500,7 +1503,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                   <div className="form-group mb-3 col-md-4">
                     <CustomFormGroup formik={formik} name="pltCheckbox">
                       <input
-                      disabled={disableInputs}
+                        disabled={disableInputs}
                         className="form-control"
                         type="checkbox"
                         name="pltCheckbox"
@@ -1535,7 +1538,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                   <div className="form-group mb-3 col-md-4">
                     <CustomFormGroup formik={formik} name="altCheckbox">
                       <input
-                      disabled={disableInputs}
+                        disabled={disableInputs}
                         className="form-control"
                         type="checkbox"
                         name="altCheckbox"
@@ -1577,7 +1580,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                           <span style={{ color: "red" }}> *</span>{" "}
                         </Label>
                         <input
-                        disabled={disableInputs}
+                          disabled={disableInputs}
                           className="form-control"
                           type="number"
                           name="astInputValue"
@@ -1608,7 +1611,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                           <span style={{ color: "red" }}> *</span>{" "}
                         </Label>
                         <input
-                        disabled={disableInputs}
+                          disabled={disableInputs}
                           className="form-control"
                           type="number"
                           name="pltInputValue"
@@ -1640,7 +1643,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                           <span style={{ color: "red" }}> *</span>{" "}
                         </Label>
                         <input
-                        disabled={disableInputs}
+                          disabled={disableInputs}
                           className="form-control"
                           type="number"
                           name="altInputValue"
@@ -1673,7 +1676,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                         <span style={{ color: "red" }}> *</span>{" "}
                       </Label>
                       <input
-                      disabled={disableInputs}
+                        disabled={disableInputs}
                         className="form-control"
                         type="text"
                         name="totalBiliRubin"
@@ -1702,7 +1705,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                       </Label>
                       <span style={{ color: "red" }}> *</span>{" "}
                       <input
-                      disabled={disableInputs}
+                        disabled={disableInputs}
                         className="form-control"
                         type="text"
                         name="directBiliribin"
@@ -1729,7 +1732,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                       <Label for="albumin">Albumin (g/dl)</Label>
                       <span style={{ color: "red" }}> *</span>{" "}
                       <input
-                      disabled={disableInputs}
+                        disabled={disableInputs}
                         className="form-control"
                         type="number"
                         name="albumin"
@@ -1783,7 +1786,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                       <Label for="fib4">FIB-4</Label>
                       <span style={{ color: "red" }}> *</span>{" "}
                       <input
-                     
+
                         disabled
                         className="form-control"
                         type="text"
@@ -1812,7 +1815,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                       </Label>
                       <span style={{ color: "red" }}> *</span>{" "}
                       <input
-                      disabled={disableInputs}
+                        disabled={disableInputs}
                         className="form-control"
                         type="number"
                         name="prothrombinTimeNR"
@@ -1839,7 +1842,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                       <Label for="urea">Urea (mg/dl)</Label>
                       <span style={{ color: "red" }}> *</span>{" "}
                       <input
-                      disabled={disableInputs}
+                        disabled={disableInputs}
                         className="form-control"
                         type="number"
                         name="urea"
@@ -1865,7 +1868,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                       <Label for="creatinine">Creatinine (μmol/L)</Label>
                       <span style={{ color: "red" }}> *</span>{" "}
                       <input
-                      disabled={disableInputs}
+                        disabled={disableInputs}
                         className="form-control"
                         type="number"
                         name="creatinine"
@@ -1892,7 +1895,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                       <Label for="ultrasoundScan">Ultrasound scan</Label>
                       <span style={{ color: "red" }}> *</span>{" "}
                       <input
-                      disabled={disableInputs}
+                        disabled={disableInputs}
                         className="form-control"
                         type="number"
                         name="ultrasoundScan"
@@ -1919,7 +1922,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                       <Label for="afp">AFP (ng/ml)</Label>
                       <span style={{ color: "red" }}> *</span>{" "}
                       <input
-                      disabled={disableInputs}
+                        disabled={disableInputs}
                         className="form-control"
                         type="number"
                         name="afp"
@@ -1945,7 +1948,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                       <Label for="fibroscan">Fibroscan (Kpa)</Label>
                       <span style={{ color: "red" }}> *</span>{" "}
                       <input
-                      disabled={disableInputs}
+                        disabled={disableInputs}
                         className="form-control"
                         type="number"
                         name="fibroscan"
@@ -1972,7 +1975,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                       <Label for="ctScan">CT scan</Label>
                       <span style={{ color: "red" }}> *</span>{" "}
                       <input
-                      disabled={disableInputs}
+                        disabled={disableInputs}
                         className="form-control"
                         type="text"
                         name="ctScan"
@@ -1999,7 +2002,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                       <Label for="ascites">Ascites</Label>
                       <span style={{ color: "red" }}> *</span>{" "}
                       <select
-                      disabled={disableInputs}
+                        disabled={disableInputs}
                         className="form-control"
                         name="ascites"
                         id="ascites"
@@ -2032,7 +2035,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                         </Label>
                         <span style={{ color: "red" }}> *</span>{" "}
                         <select
-                        disabled={disableInputs}
+                          disabled={disableInputs}
                           className="form-control"
                           name="severityOfAscites"
                           id="severityOfAscites"
@@ -2071,7 +2074,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                       </Label>
                       <span style={{ color: "red" }}> *</span>{" "}
                       <select
-                      disabled={disableInputs}
+                        disabled={disableInputs}
                         className="form-control"
                         name="gradeOfEncephalopathy"
                         id="gradeOfEncephalopathy"
@@ -2104,7 +2107,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                       <Label for="childPughScore">Child pugh score</Label>
                       <span style={{ color: "red" }}> *</span>{" "}
                       <select
-                      disabled={disableInputs}
+                        disabled={disableInputs}
                         className="form-control"
                         name="childPughScore"
                         id="childPughScore"
@@ -2138,7 +2141,7 @@ const PatientDashboardDiagnosisViewUpdate = ({
                       <Label for="liverBiopsyStage">Liver biopsy stage</Label>
                       <span style={{ color: "red" }}> *</span>{" "}
                       <select
-                      disabled={disableInputs}
+                        disabled={disableInputs}
                         className="form-control"
                         name="liverBiopsyStage"
                         id="liverBiopsyStage"
@@ -2179,95 +2182,95 @@ const PatientDashboardDiagnosisViewUpdate = ({
                     "SEVERE_FIBROSIS",
                     "CIRRHOSIS",
                   ]?.includes(formik?.values?.liverBiopsyStage) && (
-                    <>
-                      <div className="form-group mb-3 col-md-4">
-                        <CustomFormGroup
-                          formik={formik}
-                          name="stagingDateOfLiverBiopsy"
-                        >
-                          <Label for="stagingDateOfLiverBiopsy">
-                            Staging date of liver biopsy{" "}
-                          </Label>
-                          <span style={{ color: "red" }}> *</span>{" "}
-                          <input
-                          disabled={disableInputs}
-                            className="form-control"
-                            type="date"
+                      <>
+                        <div className="form-group mb-3 col-md-4">
+                          <CustomFormGroup
+                            formik={formik}
                             name="stagingDateOfLiverBiopsy"
-                            max={moment(new Date()).format("YYYY-MM-DD")}
-                            id="stagingDateOfLiverBiopsy"
-                            value={formik.values.stagingDateOfLiverBiopsy}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            style={{
-                              border: "1px solid #014D88",
-                              borderRadius: "0.2rem",
-                            }}
-                          />
-                          {formik?.touched?.stagingDateOfLiverBiopsy &&
-                            formik?.errors.stagingDateOfLiverBiopsy !== "" && (
-                              <span className={classes.error}>
-                                {formik?.errors.stagingDateOfLiverBiopsy}
-                              </span>
-                            )}
-                        </CustomFormGroup>
-                      </div>
-
-                      <div className="form-group mb-3 col-md-4">
-                        <CustomFormGroup formik={formik} name="diagnosisResult">
-                          <Label for="diagnosisResult">Diagnosis</Label>
-                          <span style={{ color: "red" }}> *</span>{" "}
-                          <select
-                          disabled={disableInputs}
-                            className="form-control"
-                            name="diagnosisResult"
-                            id="diagnosisResult"
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            value={formik?.values.diagnosisResult}
-                            style={{
-                              border: "1px solid #014D88",
-                              borderRadius: "0.2rem",
-                            }}
                           >
-                            <option value={""}>Select</option>
-                            <option value={"NO_FIBROSIS"}> No Fibrosis</option>
-                            <option value={"FIBROSIS"}>Fibrosis</option>
-                            <option value={"CIRRHOSIS"}>Cirrhosis</option>
-                            <option value={"HIGH_CC"}>HCC</option>
-                          </select>
-                          {formik?.touched?.diagnosisResult &&
-                            formik?.errors?.diagnosisResult !== "" && (
-                              <span className={classes.error}>
-                                {formik?.errors.diagnosisResult}
-                              </span>
-                            )}
-                        </CustomFormGroup>
-                      </div>
-                    </>
-                  )}
+                            <Label for="stagingDateOfLiverBiopsy">
+                              Staging date of liver biopsy{" "}
+                            </Label>
+                            <span style={{ color: "red" }}> *</span>{" "}
+                            <input
+                              disabled={disableInputs}
+                              className="form-control"
+                              type="date"
+                              name="stagingDateOfLiverBiopsy"
+                              max={moment(new Date()).format("YYYY-MM-DD")}
+                              id="stagingDateOfLiverBiopsy"
+                              value={formik.values.stagingDateOfLiverBiopsy}
+                              onChange={formik.handleChange}
+                              onBlur={formik.handleBlur}
+                              style={{
+                                border: "1px solid #014D88",
+                                borderRadius: "0.2rem",
+                              }}
+                            />
+                            {formik?.touched?.stagingDateOfLiverBiopsy &&
+                              formik?.errors.stagingDateOfLiverBiopsy !== "" && (
+                                <span className={classes.error}>
+                                  {formik?.errors.stagingDateOfLiverBiopsy}
+                                </span>
+                              )}
+                          </CustomFormGroup>
+                        </div>
+
+                        <div className="form-group mb-3 col-md-4">
+                          <CustomFormGroup formik={formik} name="diagnosisResult">
+                            <Label for="diagnosisResult">Diagnosis</Label>
+                            <span style={{ color: "red" }}> *</span>{" "}
+                            <select
+                              disabled={disableInputs}
+                              className="form-control"
+                              name="diagnosisResult"
+                              id="diagnosisResult"
+                              onChange={formik.handleChange}
+                              onBlur={formik.handleBlur}
+                              value={formik?.values.diagnosisResult}
+                              style={{
+                                border: "1px solid #014D88",
+                                borderRadius: "0.2rem",
+                              }}
+                            >
+                              <option value={""}>Select</option>
+                              <option value={"NO_FIBROSIS"}> No Fibrosis</option>
+                              <option value={"FIBROSIS"}>Fibrosis</option>
+                              <option value={"CIRRHOSIS"}>Cirrhosis</option>
+                              <option value={"HIGH_CC"}>HCC</option>
+                            </select>
+                            {formik?.touched?.diagnosisResult &&
+                              formik?.errors?.diagnosisResult !== "" && (
+                                <span className={classes.error}>
+                                  {formik?.errors.diagnosisResult}
+                                </span>
+                              )}
+                          </CustomFormGroup>
+                        </div>
+                      </>
+                    )}
                 </div>
               </div>
 
               {isLoading && <Spinner />}
               <br />
 
-             {
-             !disableInputs && (
-                <div className="d-flex justify-content-end">
-                <MatButton
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  disabled={isLoading}
-                  className={classes.button}
-                  style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}
-                >
-                  <span style={{ textTransform: "capitalize" }}>Update</span>
-                </MatButton>
-              </div>
+              {
+                !disableInputs && (
+                  <div className="d-flex justify-content-end">
+                    <MatButton
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                      disabled={isLoading}
+                      className={classes.button}
+                      style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}
+                    >
+                      <span style={{ textTransform: "capitalize" }}>Update</span>
+                    </MatButton>
+                  </div>
                 )
-             }
+              }
             </Form>
           </div>
         </CardContent>

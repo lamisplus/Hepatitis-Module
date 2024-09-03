@@ -1028,10 +1028,7 @@ const ExistingPatientDiagnosis = ({ step, setStep }) => {
                                   />
                                   <Label for="hcvHivCheckbox">
                                     HCV/HIV (IU/ml)
-                                    <span style={{ color: "red" }}>
-                                      {" "}
-                                      *
-                                    </span>{" "}
+                                    
                                   </Label>
                                 </CustomFormGroup>
                                 {formik?.touched?.hcvHivCheckbox &&
