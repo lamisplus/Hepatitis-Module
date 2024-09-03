@@ -38,7 +38,8 @@ public class EnrollmentController {
 
     @PostMapping("/diagnosis")
     public ResponseEntity<String> hepatitisDiagnosis(@Valid @RequestBody HepatitisDiagnosisDto diagnosisDto) {
-        log.info("Diagnosis Gamal from controller: " + diagnosisDto);
+
+//        log.info("Diagnosis Gamal from controller: " + diagnosisDto);
 
         return enrollmentService.hepatitisDiagnosis(diagnosisDto);
     }

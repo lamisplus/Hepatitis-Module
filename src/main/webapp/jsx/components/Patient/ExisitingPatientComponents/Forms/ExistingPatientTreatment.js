@@ -108,6 +108,11 @@ const ExistingPatientTreatment = ({ step, setStep }) => {
   const enrolmentData = history?.location?.state?.enrolmentData;
   const [patientDateOfBirth] = useState(enrolmentData?.person?.dateOfBirth);
   const [enrollmentUuid] = useState(enrolmentData?.enrollmentUuid);
+  const patientObj = history?.location?.state?.patientObj;
+
+  console.log("existing patient",patientObj)
+
+  const [isRecordOnSameDateExists, setIsRecordOnSameDateExists] = useState(false)
 
   const classes = useStyles();
 

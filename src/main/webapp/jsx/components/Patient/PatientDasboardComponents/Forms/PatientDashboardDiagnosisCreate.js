@@ -31,6 +31,7 @@ import { toast } from "react-toastify";
 import { FETCH_ENROLMENT_KEY } from "../../../../utils/queryKeys";
 import { fetchEnrolment } from "../../../../services/fetchEnrolment";
 import { useValidatePatientDashboardDiagnosisFormValuesHook } from "./FormvalidationSchemas/useValidatePatientDasboardDiagnosisFormValues";
+import { getRecentActivties } from "../../../../services/getRecentActivities";
 
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
@@ -106,13 +107,13 @@ const useStyles = makeStyles((theme) => ({
 
 const PatientDashboardDiagnosisCreate = ({ patientObj, setActiveContent }) => {
   const [enrollmentUuid, setEnrollmentUuid] = useState("");
+  const [isRecordOnSameDateExists, setIsRecordOnSameDateExists] = useState(false)
+
   const [userGender] = useState(
     patientObj?.gender ||
     patientObj?.gender?.display
     
     );
-
- 
 
   const classes = useStyles();
 
@@ -145,6 +146,10 @@ const PatientDashboardDiagnosisCreate = ({ patientObj, setActiveContent }) => {
   });
 
   const handleSubmit = (values) => {
+    if (isRecordOnSameDateExists) {
+      toast.error("You have filled Diagnosis form today") 
+      return
+    }
     const {
       dateHbvDnaTestRequested,
       dateHbvSampleRequested,
@@ -282,8 +287,40 @@ const PatientDashboardDiagnosisCreate = ({ patientObj, setActiveContent }) => {
     userGender
   );
 
-  console.log(userGender)
+  
   const { returnData: childPughScoreOptions } = useFetchCodesets("CHILD_PUGH");
+
+
+
+  function getTodayDate() {
+    const today = new Date();
+
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed, so we add 1
+    const day = String(today.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+  }
+
+
+  useQuery(
+    ["FECTH_RECENT_ACTIVITIES", patientObj?.personUuid],
+    () => getRecentActivties(patientObj?.personUuid),
+    {
+      onSuccess: (data) => {
+        if (data && Array.isArray(data) && data?.length !== 0) {
+          const allRecentDiagnosis = data.filter((activity) => activity.path === "hepatitis_diagnosis" && activity?.activityDate === getTodayDate())
+          
+          if (allRecentDiagnosis.length !== 0) {
+            setIsRecordOnSameDateExists(true)
+          }
+          else {
+            setIsRecordOnSameDateExists(false)
+          }
+        }
+      },
+    }
+  );
 
   React.useEffect(() => {
     if (
