@@ -12,7 +12,7 @@ import ExistingPatientTreatment from "./Forms/ExistingPatientTreatment";
 import ExistingPatientSteppers from "./Stepper/ExisitingPatientSteppers";
 
 const ExistingViralHepatitisFormsContainer = () => {
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(0);
 
   const formMap = {
     0: <ExistingPatientRegistrationForm step={step} setStep={setStep} />,

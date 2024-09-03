@@ -337,7 +337,7 @@ const PatientDashboardTreatment = ({
                             >
                               <Label for="hepatitisBPastTreatmentRegimen">
                                 HBV Past treatment regimen
-                                <span style={{ color: "red" }}> *</span>{" "}
+                                {" "}
                               </Label>
                               <select
                                 className="form-control"
@@ -386,7 +386,7 @@ const PatientDashboardTreatment = ({
                                 <Label for="hepatitisBPastTreatmentExperienceDateStarted">
                                   Date started
                                 </Label>
-                                <span style={{ color: "red" }}> *</span>{" "}
+                                {" "}
                                 <input
                                   className="form-control"
                                   type="date"
@@ -428,7 +428,7 @@ const PatientDashboardTreatment = ({
                               >
                                 <Label for="hepatitisBPastTreatmentExperienceDateCompleted">
                                   Date Completed{" "}
-                                  <span style={{ color: "red" }}> *</span>
+                                  
                                 </Label>
                                 <input
                                   className="form-control"
@@ -473,7 +473,7 @@ const PatientDashboardTreatment = ({
                                 <Label for="hepatitisBPastTreatmentExperiencePrescribedDuration">
                                   Prescribed duration
                                 </Label>
-                                <span style={{ color: "red" }}> *</span>
+                                
                                 <select
                                   className="form-control"
                                   name="hepatitisBPastTreatmentExperiencePrescribedDuration"
@@ -518,7 +518,7 @@ const PatientDashboardTreatment = ({
                           <Label for="hepatitisBNewTreatmentRegimen">
                             New regimen
                           </Label>
-                          <span style={{ color: "red" }}> *</span>{" "}
+                          {" "}
                           <select
                             className="form-control"
                             name="hepatitisBNewTreatmentRegimen"
@@ -560,7 +560,7 @@ const PatientDashboardTreatment = ({
                                 Prescribed duration
                               </Label>
 
-                              <span style={{ color: "red" }}> *</span>
+                              
 
                               <select
                                 className="form-control"
@@ -604,7 +604,7 @@ const PatientDashboardTreatment = ({
                               <Label for="hepatitisBNewTreatmentRegimenDateStarted">
                                 Date started
                               </Label>
-                              <span style={{ color: "red" }}> *</span>{" "}
+                              {" "}
                               <input
                                 className="form-control"
                                 type="date"
@@ -646,7 +646,7 @@ const PatientDashboardTreatment = ({
                             >
                               <Label for="hepatitisBNewTreatmentRegimenDateCompleted">
                                 Date Completed{" "}
-                                <span style={{ color: "red" }}> *</span>
+                                
                               </Label>
                               <input
                                 className="form-control"
@@ -693,7 +693,7 @@ const PatientDashboardTreatment = ({
                           <Label for="hepatitisBAdverseEventReported">
                             Adverse event reported
                           </Label>
-                          <span style={{ color: "red" }}> *</span>{" "}
+                          {" "}
                           <select
                             className="form-control"
                             name="hepatitisBAdverseEventReported"
@@ -822,7 +822,7 @@ const PatientDashboardTreatment = ({
                           >
                             <Label for="hepatitisBRegimenSwitchDateStarted">
                               Date Started{" "}
-                              <span style={{ color: "red" }}> *</span>
+                              
                             </Label>
                             <input
                               className="form-control"
@@ -865,7 +865,7 @@ const PatientDashboardTreatment = ({
                           >
                             <Label for="hepatitisBRegimenSwitchDateCompleted">
                               Date Completed{" "}
-                              <span style={{ color: "red" }}> *</span>
+                              
                             </Label>
                             <input
                               className="form-control"
@@ -910,7 +910,7 @@ const PatientDashboardTreatment = ({
                           >
                             <Label for="hepatitisBRegimenSwitchReasonForSwitch">
                               Reason for switch
-                              <span style={{ color: "red" }}> *</span>
+                              
                             </Label>
                             <input
                               className="form-control"
@@ -950,7 +950,7 @@ const PatientDashboardTreatment = ({
                           >
                             <Label for="hepatitisBRegimenSwitchAdverseEffectReported">
                               Adverse event reported{" "}
-                              <span style={{ color: "red" }}> *</span>
+                              
                             </Label>{" "}
                             <select
                               className="form-control"
@@ -1045,7 +1045,7 @@ const PatientDashboardTreatment = ({
                             <Label for="hepatitisBReasonForTreatment">
                               Reasons for treatment
                             </Label>
-                            <span style={{ color: "red" }}> *</span>{" "}
+                            {" "}
                             <select
                               className="form-control"
                               name="hepatitisBReasonForTreatment"
@@ -1152,7 +1152,7 @@ const PatientDashboardTreatment = ({
                           >
                             <Label for="hepatitisCPastTreatmentExperience">
                               Treatment experience
-                              <span style={{ color: "red" }}> *</span>{" "}
+                              {" "}
                             </Label>
                             <select
                               className="form-control"
@@ -1196,7 +1196,7 @@ const PatientDashboardTreatment = ({
                                 <Label for="hepatitisCPastTreatmentRegimen">
                                   HCV Past treatment regimen
                                 </Label>
-                                <span style={{ color: "red" }}> *</span>{" "}
+                                {" "}
                                 <select
                                   className="form-control"
                                   name="hepatitisCPastTreatmentRegimen"
@@ -1246,7 +1246,7 @@ const PatientDashboardTreatment = ({
                                   <Label for="hepatitisCPastTreatmentExperienceDateStarted">
                                     Date started
                                   </Label>
-                                  <span style={{ color: "red" }}> *</span>{" "}
+                                  {" "}
                                   <input
                                     className="form-control"
                                     type="date"
@@ -1288,7 +1288,7 @@ const PatientDashboardTreatment = ({
                                 >
                                   <Label for="hepatitisCPastTreatmentExperienceDateCompleted">
                                     Date Completed{" "}
-                                    <span style={{ color: "red" }}> *</span>
+                                    
                                   </Label>
                                   <input
                                     className="form-control"
@@ -1333,7 +1333,7 @@ const PatientDashboardTreatment = ({
                                   <Label for="hepatitisCPastTreatmentExperiencePrescribedDuration">
                                     Prescribed duration
                                   </Label>
-                                  <span style={{ color: "red" }}> *</span>
+                                  
                                   <select
                                     className="form-control"
                                     name="hepatitisCPastTreatmentExperiencePrescribedDuration"
@@ -1379,7 +1379,7 @@ const PatientDashboardTreatment = ({
                             <Label for="hepatitisCNewTreatmentRegimen">
                               New regimen
                             </Label>
-                            <span style={{ color: "red" }}> *</span>{" "}
+                            {" "}
                             <select
                               className="form-control"
                               name="hepatitisCNewTreatmentRegimen"
@@ -1428,7 +1428,7 @@ const PatientDashboardTreatment = ({
                                   Prescribed duration
                                 </Label>
 
-                                <span style={{ color: "red" }}> *</span>
+                                
 
                                 <select
                                   className="form-control"
@@ -1472,7 +1472,7 @@ const PatientDashboardTreatment = ({
                                 <Label for="hepatitisCNewTreatmentRegimenDateStarted">
                                   Date started
                                 </Label>
-                                <span style={{ color: "red" }}> *</span>{" "}
+                                {" "}
                                 <input
                                   className="form-control"
                                   type="date"
@@ -1514,7 +1514,7 @@ const PatientDashboardTreatment = ({
                               >
                                 <Label for="hepatitisCNewTreatmentRegimenDateCompleted">
                                   Date Completed{" "}
-                                  <span style={{ color: "red" }}> *</span>
+                                  
                                 </Label>
                                 <input
                                   className="form-control"
@@ -1561,7 +1561,7 @@ const PatientDashboardTreatment = ({
                             <Label for="hepatitisCAdverseEventReported">
                               Adverse event reported
                             </Label>
-                            <span style={{ color: "red" }}> *</span>{" "}
+                            {" "}
                             <select
                               className="form-control"
                               name="hepatitisCAdverseEventReported"
@@ -1652,7 +1652,7 @@ const PatientDashboardTreatment = ({
                             <Label for="hepatitisCSvr12TestingDateTested">
                               Date tested
                             </Label>
-                            <span style={{ color: "red" }}> *</span>{" "}
+                            {" "}
                             <input
                               className="form-control"
                               name="hepatitisCSvr12TestingDateTested"
@@ -1693,7 +1693,7 @@ const PatientDashboardTreatment = ({
                           >
                             <Label for="hepatitisCSvr12TestingHcvRna">
                               HCV RNA{" "}
-                              <span style={{ color: "red" }}> *</span>{" "}
+                              {" "}
                             </Label>
                             <select
                               className="form-control"
@@ -1732,7 +1732,7 @@ const PatientDashboardTreatment = ({
                               >
                                 <Label for="hepatitisCSvr12TestingHcvRnaValue">
                                   Input HCV RNA value (IU/ml)
-                                  <span style={{ color: "red" }}> *</span>{" "}
+                                  {" "}
                                 </Label>
                                 <input
                                   className="form-control"
@@ -1830,7 +1830,7 @@ const PatientDashboardTreatment = ({
                             <Label for="hepatitisCHcvRetreatmentHcvGenotype">
                               HCV Genotype
                             </Label>
-                            <span style={{ color: "red" }}> *</span>
+                            
                             <select
                               className="form-control"
                               name="hepatitisCHcvRetreatmentHcvGenotype"
@@ -1879,7 +1879,7 @@ const PatientDashboardTreatment = ({
                             <Label for="hepatitisCHcvRetreatmentNewRegimen">
                               New regimen
                             </Label>
-                            <span style={{ color: "red" }}> *</span>
+                            
                             <select
                               className="form-control"
                               name="hepatitisCHcvRetreatmentNewRegimen"
@@ -1926,7 +1926,7 @@ const PatientDashboardTreatment = ({
                           >
                             <Label for="hepatitisCHcvRetreatmentPrescribedDuration">
                               Prescribed Duration
-                              <span style={{ color: "red" }}> *</span>{" "}
+                              {" "}
                             </Label>
                             <select
                               className="form-control"
@@ -1970,7 +1970,7 @@ const PatientDashboardTreatment = ({
                           >
                             <Label for="hepatitisCHcvRetreatmentDateStarted">
                               Date started
-                              <span style={{ color: "red" }}> *</span>
+                              
                             </Label>
                             <input
                               tpe={"date"}
@@ -2015,7 +2015,7 @@ const PatientDashboardTreatment = ({
                           >
                             <Label for="hepatitisCHcvRetreatmentAdverseEffect">
                               Retreatment Adverse events
-                              <span style={{ color: "red" }}> *</span>{" "}
+                              {" "}
                             </Label>
                             <select
                               className="form-control"
@@ -2058,7 +2058,7 @@ const PatientDashboardTreatment = ({
                           >
                             <Label for="hepatitisCHcvRetreatmentHistoryOfAdverseEffect">
                               History of adverse events
-                              <span style={{ color: "red" }}> *</span>{" "}
+                              {" "}
                             </Label>
                             <select
                               className="form-control"
@@ -2199,7 +2199,7 @@ const PatientDashboardTreatment = ({
                         >
                           <Label for="hepatitisCRetreatmentSvr12TestingRetreatmentHcvRna">
                             Retreatment HCV RNA
-                            <span style={{ color: "red" }}> *</span>{" "}
+                            {" "}
                           </Label>
                           <select
                             className="form-control"
@@ -2245,7 +2245,7 @@ const PatientDashboardTreatment = ({
                             >
                               <Label for="hepatitisCRetreatmentSvr12TestingRetreatmentHcvRnaValue">
                                 Input Retreatment HCV RNA value
-                                <span style={{ color: "red" }}> *</span>{" "}
+                                {" "}
                               </Label>
                               <input
                                 className="form-control"

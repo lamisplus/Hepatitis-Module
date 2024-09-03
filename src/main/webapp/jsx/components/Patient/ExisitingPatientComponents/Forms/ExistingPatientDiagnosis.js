@@ -504,7 +504,7 @@ const ExistingPatientDiagnosis = ({ step, setStep }) => {
                             <CustomFormGroup formik={formik} name="hbvDna">
                               <Label for="hbvDna">
                                 HBV DNA(UI/ml){" "}
-                               
+                                
                               </Label>
                               <div className="radio">
                                 <label>
@@ -842,7 +842,7 @@ const ExistingPatientDiagnosis = ({ step, setStep }) => {
                             <CustomFormGroup formik={formik} name="hcvRNA">
                               <Label for="hcvRNA">
                                 HCV RNA{" "}
-                                
+                                <span style={{ color: "red" }}> *</span>{" "}
                               </Label>
                               <div className="radio">
                                 <label>
