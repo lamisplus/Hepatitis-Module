@@ -504,7 +504,7 @@ const ExistingPatientDiagnosis = ({ step, setStep }) => {
                             <CustomFormGroup formik={formik} name="hbvDna">
                               <Label for="hbvDna">
                                 HBV DNA(UI/ml){" "}
-                                <span style={{ color: "red" }}> *</span>
+                               
                               </Label>
                               <div className="radio">
                                 <label>
@@ -624,7 +624,7 @@ const ExistingPatientDiagnosis = ({ step, setStep }) => {
                           <div className="form-group mb-3 col-md-4">
                             <CustomFormGroup formik={formik} name="hbeAG">
                               <Label for="hbeAG">HbeAG</Label>{" "}
-                              <span style={{ color: "red" }}> *</span>{" "}
+                              
                               <select
                                 className="form-control"
                                 name="hbeAG"
@@ -842,7 +842,7 @@ const ExistingPatientDiagnosis = ({ step, setStep }) => {
                             <CustomFormGroup formik={formik} name="hcvRNA">
                               <Label for="hcvRNA">
                                 HCV RNA{" "}
-                                <span style={{ color: "red" }}> *</span>
+                                
                               </Label>
                               <div className="radio">
                                 <label>
@@ -956,10 +956,7 @@ const ExistingPatientDiagnosis = ({ step, setStep }) => {
                                   />
                                   <Label for="hbvHcvCheckbox">
                                     HBV/HCV (IU/ml)
-                                    <span style={{ color: "red" }}>
-                                      {" "}
-                                      *
-                                    </span>{" "}
+                                   
                                   </Label>
                                 </CustomFormGroup>
                                 {formik?.touched?.hbvHcvCheckbox &&
@@ -995,10 +992,7 @@ const ExistingPatientDiagnosis = ({ step, setStep }) => {
                                   />
                                   <Label for="hbvHivCheckbox">
                                     HBV/HIV (IU/ml)
-                                    <span style={{ color: "red" }}>
-                                      {" "}
-                                      *
-                                    </span>{" "}
+                                   
                                   </Label>
                                 </CustomFormGroup>
                                 {formik?.touched?.hbvHivCheckbox &&
@@ -1172,10 +1166,7 @@ const ExistingPatientDiagnosis = ({ step, setStep }) => {
                                   />
                                   <Label for="hbvHdvCheckbox">
                                     HBV/HDV (IU/ml)
-                                    <span style={{ color: "red" }}>
-                                      {" "}
-                                      *
-                                    </span>{" "}
+                                   
                                   </Label>
                                 </CustomFormGroup>
                                 {formik?.touched?.hbvHdvCheckbox &&
@@ -1211,10 +1202,6 @@ const ExistingPatientDiagnosis = ({ step, setStep }) => {
                                   />
                                   <Label for="hbvHcvHivCheckbox">
                                     HBV/HCV/HIV (IU/ml)
-                                    <span style={{ color: "red" }}>
-                                      {" "}
-                                      *
-                                    </span>{" "}
                                   </Label>
                                 </CustomFormGroup>
                                 {formik?.touched?.hbvHcvHivCheckbox &&
@@ -1588,7 +1575,6 @@ const ExistingPatientDiagnosis = ({ step, setStep }) => {
                     <CustomFormGroup formik={formik} name="totalBiliRubin">
                       <Label for="totalBiliRubin">
                         Total Bilirubin (μmol/L){" "}
-                        <span style={{ color: "red" }}> *</span>{" "}
                       </Label>
                       <input
                         className="form-control"
@@ -1617,7 +1603,6 @@ const ExistingPatientDiagnosis = ({ step, setStep }) => {
                       <Label for="directBiliribin">
                         Direct Bilirubin (μmol/L)
                       </Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
                       <input
                         className="form-control"
                         type="text"
@@ -1643,7 +1628,7 @@ const ExistingPatientDiagnosis = ({ step, setStep }) => {
                   <div className="form-group mb-3 col-md-4">
                     <CustomFormGroup formik={formik} name="albumin">
                       <Label for="albumin">Albumin (g/dl)</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                      
                       <input
                         className="form-control"
                         type="number"
@@ -1724,7 +1709,7 @@ const ExistingPatientDiagnosis = ({ step, setStep }) => {
                       <Label for="prothrombinTimeNR">
                         Prothrombin time/INR
                       </Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                      
                       <input
                         className="form-control"
                         type="number"
@@ -1750,7 +1735,7 @@ const ExistingPatientDiagnosis = ({ step, setStep }) => {
                   <div className="form-group mb-3 col-md-4">
                     <CustomFormGroup formik={formik} name="urea">
                       <Label for="urea">Urea (mg/dl)</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                      
                       <input
                         className="form-control"
                         type="number"
@@ -1775,7 +1760,7 @@ const ExistingPatientDiagnosis = ({ step, setStep }) => {
                   <div className="form-group mb-3 col-md-4">
                     <CustomFormGroup formik={formik} name="creatinine">
                       <Label for="creatinine">Creatinine (μmol/L)</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                      
                       <input
                         className="form-control"
                         type="number"
@@ -1801,7 +1786,7 @@ const ExistingPatientDiagnosis = ({ step, setStep }) => {
                   <div className="form-group mb-3 col-md-4">
                     <CustomFormGroup formik={formik} name="ultrasoundScan">
                       <Label for="ultrasoundScan">Ultrasound scan</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                     
                       <input
                         className="form-control"
                         type="number"
@@ -1827,7 +1812,7 @@ const ExistingPatientDiagnosis = ({ step, setStep }) => {
                   <div className="form-group mb-3 col-md-4">
                     <CustomFormGroup formik={formik} name="afp">
                       <Label for="afp">AFP (ng/ml)</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                      
                       <input
                         className="form-control"
                         type="number"
@@ -1852,7 +1837,7 @@ const ExistingPatientDiagnosis = ({ step, setStep }) => {
                   <div className="form-group mb-3 col-md-4">
                     <CustomFormGroup formik={formik} name="fibroscan">
                       <Label for="fibroscan">Fibroscan (Kpa)</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                      
                       <input
                         className="form-control"
                         type="number"
@@ -1878,7 +1863,7 @@ const ExistingPatientDiagnosis = ({ step, setStep }) => {
                   <div className="form-group mb-3 col-md-4">
                     <CustomFormGroup formik={formik} name="ctScan">
                       <Label for="ctScan">CT scan</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                      
                       <input
                         className="form-control"
                         type="text"
@@ -1904,7 +1889,7 @@ const ExistingPatientDiagnosis = ({ step, setStep }) => {
                   <div className="form-group mb-3 col-md-4">
                     <CustomFormGroup formik={formik} name="ascites">
                       <Label for="ascites">Ascites</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                     
                       <select
                         className="form-control"
                         name="ascites"
@@ -1974,7 +1959,7 @@ const ExistingPatientDiagnosis = ({ step, setStep }) => {
                       <Label for="gradeOfEncephalopathy">
                         Grade of Encephalopathy
                       </Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                      
                       <select
                         className="form-control"
                         name="gradeOfEncephalopathy"
@@ -2006,7 +1991,7 @@ const ExistingPatientDiagnosis = ({ step, setStep }) => {
                   <div className="form-group mb-3 col-md-4">
                     <CustomFormGroup formik={formik} name="childPughScore">
                       <Label for="childPughScore">Child pugh score</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                      
                       <select
                         className="form-control"
                         name="childPughScore"
@@ -2039,7 +2024,7 @@ const ExistingPatientDiagnosis = ({ step, setStep }) => {
                   <div className="form-group mb-3 col-md-4">
                     <CustomFormGroup formik={formik} name="liverBiopsyStage">
                       <Label for="liverBiopsyStage">Liver biopsy stage</Label>
-                      <span style={{ color: "red" }}> *</span>{" "}
+                     
                       <select
                         className="form-control"
                         name="liverBiopsyStage"

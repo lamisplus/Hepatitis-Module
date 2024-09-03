@@ -65,7 +65,7 @@ export const useValidateExistingPatientDiagnosisFormValuesHook = (onSubmit, user
     dateHbvSampleRequested: yup.date().required(requiredTextPrompt),//done
     dateHbvDnaResultReported: yup.date().required(requiredTextPrompt),//done
 
-    hbvDna: yup.string().required(requiredTextPrompt),//done
+    hbvDna: yup.string(),//done
 
     hbvDnaValue: yup.number().when("hbvDna", {
         is: (hbvDna) => hbvDna === "DETECTED",
@@ -85,7 +85,7 @@ export const useValidateExistingPatientDiagnosisFormValuesHook = (onSubmit, user
     treatmentEligible: yup.string().required(requiredTextPrompt),
     pmtctEligible: userGender?.toLowerCase() === "female" ? yup.string().required(requiredTextPrompt) : yup.string(),//done
     comment: yup.string(),//done
-    hcvRNA: yup.string().required(requiredTextPrompt),//done
+    hcvRNA: yup.string(),//done
 
     hcvRnaValue: yup.number().when("hcvRNA", {
         is: (hcvRNA) => hcvRNA === "DETECTED",
@@ -94,12 +94,12 @@ export const useValidateExistingPatientDiagnosisFormValuesHook = (onSubmit, user
       }),//done
 
     
-    hbvHcvCheckbox: yup.boolean().required(requiredTextPrompt),//done
-    hbvHivCheckbox: yup.boolean().required(requiredTextPrompt),//done
-    hcvHivCheckbox: yup.boolean().required(requiredTextPrompt),//done
-    hbvHcvCheckbox: yup.boolean().required(requiredTextPrompt),//done
-    hbvHdvCheckbox: yup.boolean().required(requiredTextPrompt),//done
-    hbvHcvHivCheckbox: yup.boolean().required(requiredTextPrompt),//done
+    hbvHcvCheckbox: yup.boolean(),//done
+    hbvHivCheckbox: yup.boolean(),//done
+    hcvHivCheckbox: yup.boolean(),//done
+    hbvHcvCheckbox: yup.boolean(),//done
+    hbvHdvCheckbox: yup.boolean(),//done
+    hbvHcvHivCheckbox: yup.boolean(),//done
 
     hbvHcvInputValue: yup.number().when("hbvHcvCheckbox", {
         is: (hbvHcvCheckbox) => hbvHcvCheckbox === true,
@@ -165,22 +165,22 @@ export const useValidateExistingPatientDiagnosisFormValuesHook = (onSubmit, user
         otherwise: yup.number(),
       }),//done
 
-    totalBiliRubin: yup.string().required(requiredTextPrompt),//done
-    directBiliribin: yup.string().required(requiredTextPrompt),//done
+    totalBiliRubin: yup.string(),//done
+    directBiliribin: yup.string(),//done
 
-    albumin: yup.number().required(requiredTextPrompt),//done
+    albumin: yup.number(),//done
     apriScore: yup.number().typeError(`${numberTypeError}. Ensure there are numeric values for AST and PLT`).required(requiredTextPrompt),//done
     fib4: yup.number().typeError(`${numberTypeError}. Ensure there are numeric values for AST, ALT and PLT`).required(requiredTextPrompt),//done
 
-    prothrombinTimeNR: yup.number().required(requiredTextPrompt),//done
-    urea: yup.number().required(requiredTextPrompt), //done
-    creatinine: yup.number().required(requiredTextPrompt),//done
-    ultrasoundScan: yup.number().required(requiredTextPrompt),
-    afp: yup.number().required(requiredTextPrompt),//done
-    fibroscan: yup.number().required(requiredTextPrompt),//done
+    prothrombinTimeNR: yup.number(),//done
+    urea: yup.number(), //done
+    creatinine: yup.number(),//done
+    ultrasoundScan: yup.number(),
+    afp: yup.number(),//done
+    fibroscan: yup.number(),//done
 
-    ctScan: yup.string().required(requiredTextPrompt),//done
-    ascites: yup.string().required(requiredTextPrompt),//done
+    ctScan: yup.string(),//done
+    ascites: yup.string(),//done
 
     severityOfAscites: yup.string().when("ascites", {
         is: (ascites) => ascites === "YES",
@@ -189,11 +189,11 @@ export const useValidateExistingPatientDiagnosisFormValuesHook = (onSubmit, user
       }),//done
 
     
-    gradeOfEncephalopathy: yup.number().required(requiredTextPrompt),//done
-    childPughScore: yup.string().required(requiredTextPrompt),//done
-    liverBiopsyStage: yup.string().required(requiredTextPrompt), //done,
-    stagingDateOfLiverBiopsy: yup.date().required(requiredTextPrompt),//done
-    diagnosisResult: yup.string().required(requiredTextPrompt),//done
+    gradeOfEncephalopathy: yup.number(),//done
+    childPughScore: yup.string(),//done
+    liverBiopsyStage: yup.string(), //done,
+    stagingDateOfLiverBiopsy: yup.date(),//done
+    diagnosisResult: yup.string(),//done
 
 });
 
