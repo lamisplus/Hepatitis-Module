@@ -29,4 +29,8 @@ public class HepatitisTreatmentDto implements Serializable {
 
     @NotNull(message = "hepatitishepatitisCTreatmentDtoCTest cannot be null or empty")
     private HepatitisCTreatmentDto hepatitisCTreatment;
+
+    private String source;
+    private String latitude;
+    private String longitude;
 }

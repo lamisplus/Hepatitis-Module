@@ -53,5 +53,8 @@ public class HepatitisEnrollmentDto implements Serializable {
 
     @NotNull(message = "Please add screening with: screening: { dateOfFirstHepatitisBPositiveScreening\": 2020-08-23, hepatitisC: '' }")
     private HepatitisScreeningDto screening;
+    private String source;
+    private String latitude;
+    private String longitude;
 
 }

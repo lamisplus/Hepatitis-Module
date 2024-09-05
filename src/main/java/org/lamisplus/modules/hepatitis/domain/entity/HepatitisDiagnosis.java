@@ -38,4 +38,11 @@ public class HepatitisDiagnosis extends AbstractPersistableEntity {
     private JsonNode clinicalParameters;
     @Column(name = "hepatitis_enrollment_uuid")
     private String hepatitisEnrollmentUuid;
+
+    @Column(name = "latitude")
+    private String latitude;
+    @Column(name = "longitude")
+    private String longitude;
+    @Column(name = "source")
+    private String source;
 }

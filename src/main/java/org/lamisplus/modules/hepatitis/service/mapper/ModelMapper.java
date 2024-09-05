@@ -77,9 +77,15 @@ public class ModelMapper {
                 .breastfeeding(breastfeedingEnum)
                 .historyOfUsingAbusedSubstance(historyOfUsingAbusedSubstanceEnum)
                 .screening(screeningNode)
+                .latitude(enrollmentDto.getLatitude())
+                .longitude(enrollmentDto.getLongitude())
+                .source(enrollmentDto.getSource())
                 .build();
         hepatitisEnrollment.setArchived(0);
         hepatitisEnrollment.setUuid(UUID.randomUUID().toString());
+        hepatitisEnrollment.setLatitude(enrollmentDto.getLatitude());
+        hepatitisEnrollment.setLongitude(enrollmentDto.getLongitude());
+        hepatitisEnrollment.setSource((enrollmentDto.getSource() != null && !enrollmentDto.getSource().trim().isEmpty()) ? enrollmentDto.getSource()  : "Web" );
 
         return hepatitisEnrollment;
     }
@@ -113,9 +119,15 @@ public class ModelMapper {
                 .hepatitisCTest(hepatitisCNode)
                 .clinicalParameters(clinicalParametersNode)
                 .hepatitisEnrollmentUuid(diagnosisDto.getEnrollmentUuid())
+                .latitude(diagnosisDto.getLatitude())
+                .longitude(diagnosisDto.getLongitude())
+                .source(diagnosisDto.getSource())
                 .build();
         hepatitisDiagnosis.setUuid(UUID.randomUUID().toString());
         hepatitisDiagnosis.setArchived(0);
+        hepatitisDiagnosis.setLatitude(diagnosisDto.getLatitude());
+        hepatitisDiagnosis.setLongitude(diagnosisDto.getLongitude());
+        hepatitisDiagnosis.setSource((diagnosisDto.getSource() != null && !diagnosisDto.getSource().trim().isEmpty()) ? diagnosisDto.getSource()  : "Web" );
         return hepatitisDiagnosis;
     }
 
@@ -137,9 +149,15 @@ public class ModelMapper {
         HepatitisTreatment hepatitisTreatment = HepatitisTreatment.builder()
                 .hepatitisBTreatmentDto(hepatitisBNode)
                 .hepatitisCTreatmentDto(hepatitisCNode)
+                .latitude(treatmentDto.getLatitude())
+                .longitude(treatmentDto.getLongitude())
+                .source(treatmentDto.getSource())
                 .build();
         hepatitisTreatment.setUuid(UUID.randomUUID().toString());
         hepatitisTreatment.setArchived(0);
+        hepatitisTreatment.setLatitude(treatmentDto.getLatitude());
+        hepatitisTreatment.setLongitude(treatmentDto.getLongitude());
+        hepatitisTreatment.setSource((treatmentDto.getSource() != null && !treatmentDto.getSource().trim().isEmpty()) ? treatmentDto.getSource()  : "Web" );
         return hepatitisTreatment;
     }
 

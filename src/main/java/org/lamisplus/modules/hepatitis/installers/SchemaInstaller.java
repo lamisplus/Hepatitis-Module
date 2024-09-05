@@ -5,10 +5,10 @@ import com.foreach.across.core.installers.AcrossLiquibaseInstaller;
 import com.foreach.across.core.installers.InstallerRunCondition;
 import org.springframework.core.annotation.Order;
 
-@Order(1)
+@Order(3)
 @Installer(name = "schema-installer-hepatitis",
         description = "Installs the required database for hepatitis tables",
-        version = 4,
+        version = 6,
         runCondition = InstallerRunCondition.AlwaysRun)
 public class SchemaInstaller extends AcrossLiquibaseInstaller {
     public SchemaInstaller() {

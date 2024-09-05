@@ -68,4 +68,11 @@ public class HepatitisEnrollment extends AbstractPersistableEntity {
 
     @Column(name = "care_entry_point")
     private String careEntryPoint;
+
+    @Column(name = "latitude")
+    private String latitude;
+    @Column(name = "longitude")
+    private String longitude;
+    @Column(name = "source")
+    private String source;
 }

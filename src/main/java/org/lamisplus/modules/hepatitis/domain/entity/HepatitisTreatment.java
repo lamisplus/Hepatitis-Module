@@ -33,4 +33,11 @@ public class HepatitisTreatment extends AbstractPersistableEntity {
     @Type(type = "jsonb-node")
     @Column(name = "hepatitis_c_treatment", columnDefinition = "jsonb")
     private JsonNode hepatitisCTreatmentDto;
+
+    @Column(name = "latitude")
+    private String latitude;
+    @Column(name = "longitude")
+    private String longitude;
+    @Column(name = "source")
+    private String source;
 }
