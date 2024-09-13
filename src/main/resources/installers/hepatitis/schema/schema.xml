@@ -16,31 +16,8 @@
                  splitStatements="false"
                  stripComments="true"/>
     </changeSet>
-    <changeSet failOnError="true" author="josh-data.fi" id="20240905-01">
-    <preConditions onFail="MARK_RAN">
-        <not>
-            <columnExists tableName="hepatitis_treatments" columnName="latitude" />
-            <columnExists tableName="hepatitis_treatments" columnName="longitude" />
-            <columnExists tableName="hepatitis_treatments" columnName="source" />
-            <columnExists tableName="hepatitis_diagnosis" columnName="latitude" />
-            <columnExists tableName="hepatitis_diagnosis" columnName="longitude" />
-            <columnExists tableName="hepatitis_diagnosis" columnName="source" />
-            <columnExists tableName="hepatitis_enrollments" columnName="latitude" />
-            <columnExists tableName="hepatitis_enrollments" columnName="longitude" />
-            <columnExists tableName="hepatitis_enrollments" columnName="source" />
-        </not>
-    </preConditions>
-    <sql>
-        ALTER TABLE hepatitis_treatments ADD COLUMN latitude varchar(255);
-        ALTER TABLE hepatitis_treatments ADD COLUMN longitude varchar(255);
-        ALTER TABLE hepatitis_treatments ADD COLUMN source varchar(25);
-        ALTER TABLE hepatitis_diagnosis ADD COLUMN latitude varchar(255);
-        ALTER TABLE hepatitis_diagnosis ADD COLUMN longitude varchar(255);
-        ALTER TABLE hepatitis_diagnosis ADD COLUMN source varchar(25);
-        ALTER TABLE hepatitis_enrollments ADD COLUMN latitude varchar(255);
-        ALTER TABLE hepatitis_enrollments ADD COLUMN longitude varchar(255);
-        ALTER TABLE hepatitis_enrollments ADD COLUMN source varchar(25);
-    </sql>
-</changeSet>
+
+
+
 </databaseChangeLog>
 

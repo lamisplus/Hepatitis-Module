@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS hepatitis_enrollments (
     person_uuid                       VARCHAR(255),
     core_entry_point                  VARCHAR(255),
     sex                               VARCHAR(255),
-    pregnancy                         INTEGER,
+    pregnancy                         VARCHAR(25),
     weight                            DOUBLE PRECISION,
     height                            DOUBLE PRECISION,
     bmi                               DOUBLE PRECISION,
@@ -21,10 +21,13 @@ CREATE TABLE IF NOT EXISTS hepatitis_enrollments (
     breastfeeding                     VARCHAR(255),
     history_of_using_abused_substance VARCHAR(255),
     screening                         JSONB,
-    CONSTRAINT pk_hepatitis_enrollments PRIMARY KEY (id)
+    latitude                          varchar(255),
+    longitude                         varchar(255),
+    source                            varchar(25),
+    care_entry_point                  varchar(255),
+    CONSTRAINT pk_hepatitis_enrollments PRIMARY KEY (id),
+    CONSTRAINT uc_hepatitis_enrollments_uuid UNIQUE (uuid)
     );
-ALTER TABLE hepatitis_enrollments
-    ADD CONSTRAINT uc_hepatitis_enrollments_uuid UNIQUE (uuid);
 
 -- hepatitis_diagnosis
 CREATE TABLE IF NOT EXISTS hepatitis_diagnosis
@@ -41,13 +44,17 @@ CREATE TABLE IF NOT EXISTS hepatitis_diagnosis
     hepatitis_b_test    JSONB,
     hepatitis_c_test    JSONB,
     clinical_parameters JSONB,
-    CONSTRAINT pk_hepatitis_diagnosis PRIMARY KEY (id)
-    );
-    ALTER TABLE hepatitis_diagnosis
-    ADD CONSTRAINT uc_hepatitis_diagnosis_uuid UNIQUE (uuid);
+    hepatitis_enrollment_uuid character varying COLLATE pg_catalog."default",
+    latitude                          varchar(255),
+    longitude                         varchar(255),
+    source                            varchar(25),
+    ast_plt_alt JSONB,
+    CONSTRAINT pk_hepatitis_diagnosis PRIMARY KEY (id),
+    CONSTRAINT uc_hepatitis_diagnosis_uuid UNIQUE (uuid),
+    CONSTRAINT FK_HEPATITIS_DIAGNOSIS_ON_ENROLLMENT_UUID FOREIGN KEY (enrollment_uuid) REFERENCES hepatitis_enrollments (uuid),
+    CONSTRAINT hepatitis_diagnosis_hepatitis_enrollment_uuid_fk FOREIGN KEY (hepatitis_enrollment_uuid) REFERENCES hepatitis_enrollments (uuid)
 
-    ALTER TABLE hepatitis_diagnosis
-    ADD CONSTRAINT FK_HEPATITIS_DIAGNOSIS_ON_ENROLLMENT_UUID FOREIGN KEY (enrollment_uuid) REFERENCES hepatitis_enrollments (uuid);
+    );
 
 -- hepatitis_treatments
 CREATE TABLE IF NOT EXISTS hepatitis_treatments
@@ -63,14 +70,13 @@ CREATE TABLE IF NOT EXISTS hepatitis_treatments
     enrollment_uuid       VARCHAR(255) NOT NULL,
     hepatitis_b_treatment JSONB,
     hepatitis_c_treatment JSONB,
-    CONSTRAINT pk_hepatitis_treatments PRIMARY KEY (id)
+    latitude                          varchar(255),
+    longitude                         varchar(255),
+    source                            varchar(25),
+    CONSTRAINT pk_hepatitis_treatments PRIMARY KEY (id),
+    CONSTRAINT uc_hepatitis_treatments_uuid UNIQUE (uuid),
+    CONSTRAINT FK_HEPATITIS_TREATMENTS_ON_ENROLLMENT_UUID FOREIGN KEY (enrollment_uuid) REFERENCES hepatitis_enrollments (uuid)
     );
-    ALTER TABLE hepatitis_treatments
-    ADD CONSTRAINT uc_hepatitis_treatments_uuid UNIQUE (uuid);
-
-    ALTER TABLE hepatitis_treatments
-    ADD CONSTRAINT FK_HEPATITIS_TREATMENTS_ON_ENROLLMENT_UUID FOREIGN KEY (enrollment_uuid) REFERENCES hepatitis_enrollments (uuid);
-
 
 -- hepatitis_followups
 CREATE TABLE IF NOT EXISTS hepatitis_followups
@@ -87,10 +93,7 @@ CREATE TABLE IF NOT EXISTS hepatitis_followups
     preliminary JSONB,
     clinical_parameters JSONB,
     appointment JSONB,
-    CONSTRAINT pk_hepatitis_followups PRIMARY KEY (id)
+    CONSTRAINT pk_hepatitis_followups PRIMARY KEY (id),
+    CONSTRAINT uc_hepatitis_followups_uuid UNIQUE (uuid),
+    CONSTRAINT FK_HEPATITIS_FOLLOWUPS_ON_ENROLLMENT_UUID FOREIGN KEY (enrollment_uuid) REFERENCES hepatitis_enrollments (uuid)
     );
-ALTER TABLE hepatitis_followups
-    ADD CONSTRAINT uc_hepatitis_followups_uuid UNIQUE (uuid);
-
-ALTER TABLE hepatitis_followups
-    ADD CONSTRAINT FK_HEPATITIS_FOLLOWUPS_ON_ENROLLMENT_UUID FOREIGN KEY (enrollment_uuid) REFERENCES hepatitis_enrollments (uuid);

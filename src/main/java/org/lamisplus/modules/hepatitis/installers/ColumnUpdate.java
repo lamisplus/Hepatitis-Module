@@ -8,7 +8,7 @@ import org.springframework.core.annotation.Order;
 @Order(2)
 @Installer(name = "update-columns",
         description = "add new columns",
-        version = 4,
+        version = 3,
         runCondition = InstallerRunCondition.AlwaysRun)
 public class ColumnUpdate extends AcrossLiquibaseInstaller {
     public ColumnUpdate() {

@@ -123,7 +123,7 @@ const ExistingPatientDiagnosis = ({ step, setStep }) => {
     hepatitisCDropdown: true,
     coInfectionDropdown: true,
   });
-  const [isRecordOnSameDateExists, setIsRecordOnSameDateExists] = useState(false)
+  // const [isRecordOnSameDateExists, setIsRecordOnSameDateExists] = useState(false)
 
 
   const { mutate, isLoading } = useMutation({
@@ -145,10 +145,6 @@ const ExistingPatientDiagnosis = ({ step, setStep }) => {
   });
 
   const handleSubmit = (values) => {
-    if (isRecordOnSameDateExists) {
-      toast.error("You have filled Diagnosis form today")
-      return
-    }
 
     const {
       dateHbvDnaTestRequested,
@@ -306,17 +302,17 @@ const ExistingPatientDiagnosis = ({ step, setStep }) => {
     ["FECTH_RECENT_ACTIVITIES", patientObj?.uuid],
     () => getRecentActivties(patientObj?.uuid),
     {
-      onSuccess: (data) => {
-        if (data && Array.isArray(data) && data?.length !== 0) {
-          const allRecentDiagnosis = data.filter((activity) => activity.path === "hepatitis_diagnosis" && activity?.activityDate === getTodayDate())
-          if (allRecentDiagnosis.length !== 0) {
-            setIsRecordOnSameDateExists(true)
-          }
-          else {
-            setIsRecordOnSameDateExists(false)
-          }
-        }
-      },
+      // onSuccess: (data) => {
+      //   if (data && Array.isArray(data) && data?.length !== 0) {
+      //     const allRecentDiagnosis = data.filter((activity) => activity.path === "hepatitis_diagnosis" && activity?.activityDate === getTodayDate())
+      //     if (allRecentDiagnosis.length !== 0) {
+      //       setIsRecordOnSameDateExists(true)
+      //     }
+      //     else {
+      //       setIsRecordOnSameDateExists(false)
+      //     }
+      //   }
+      // },
     }
   );
 

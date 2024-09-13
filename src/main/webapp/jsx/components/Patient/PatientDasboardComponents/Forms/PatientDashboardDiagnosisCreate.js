@@ -107,7 +107,6 @@ const useStyles = makeStyles((theme) => ({
 
 const PatientDashboardDiagnosisCreate = ({ patientObj, setActiveContent }) => {
   const [enrollmentUuid, setEnrollmentUuid] = useState("");
-  const [isRecordOnSameDateExists, setIsRecordOnSameDateExists] = useState(false)
 
   const [userGender] = useState(
     patientObj?.gender ||
@@ -146,10 +145,7 @@ const PatientDashboardDiagnosisCreate = ({ patientObj, setActiveContent }) => {
   });
 
   const handleSubmit = (values) => {
-    if (isRecordOnSameDateExists) {
-      toast.error("You have filled Diagnosis form today") 
-      return
-    }
+   
     const {
       dateHbvDnaTestRequested,
       dateHbvSampleRequested,
@@ -307,18 +303,18 @@ const PatientDashboardDiagnosisCreate = ({ patientObj, setActiveContent }) => {
     ["FECTH_RECENT_ACTIVITIES", patientObj?.personUuid],
     () => getRecentActivties(patientObj?.personUuid),
     {
-      onSuccess: (data) => {
-        if (data && Array.isArray(data) && data?.length !== 0) {
-          const allRecentDiagnosis = data.filter((activity) => activity.path === "hepatitis_diagnosis" && activity?.activityDate === getTodayDate())
+      // onSuccess: (data) => {
+      //   if (data && Array.isArray(data) && data?.length !== 0) {
+      //     const allRecentDiagnosis = data.filter((activity) => activity.path === "hepatitis_diagnosis" && activity?.activityDate === getTodayDate())
           
-          if (allRecentDiagnosis.length !== 0) {
-            setIsRecordOnSameDateExists(true)
-          }
-          else {
-            setIsRecordOnSameDateExists(false)
-          }
-        }
-      },
+      //     if (allRecentDiagnosis.length !== 0) {
+      //       setIsRecordOnSameDateExists(true)
+      //     }
+      //     else {
+      //       setIsRecordOnSameDateExists(false)
+      //     }
+      //   }
+      // },
     }
   );
 

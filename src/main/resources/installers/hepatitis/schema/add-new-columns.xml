@@ -6,125 +6,125 @@
 
     <property name="autoIncrement" value="true"/>
 
-    <changeSet failOnError="true" author="peter-data-fi" id="20230209-002">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="hepatitis_enrollments" columnName="archived" />
-            </not>
-        </preConditions>
-        <sql>
-            ALTER TABLE hepatitis_enrollments
-                ADD COLUMN archived integer;
+<!--    <changeSet failOnError="true" author="peter-data-fi" id="20230209-002">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <not>-->
+<!--                <columnExists tableName="hepatitis_enrollments" columnName="archived" />-->
+<!--            </not>-->
+<!--        </preConditions>-->
+<!--        <sql>-->
+<!--            ALTER TABLE hepatitis_enrollments-->
+<!--                ADD COLUMN archived integer;-->
 
-        </sql>
-    </changeSet>
+<!--        </sql>-->
+<!--    </changeSet>-->
 
-    <changeSet failOnError="true" author="peter-data-fi" id="20230209-003">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="hepatitis_enrollments" columnName="care_entry_point" />
-            </not>
-        </preConditions>
-        <sql>
-            ALTER TABLE hepatitis_enrollments
-                ADD COLUMN care_entry_point character varying(255);
+<!--    <changeSet failOnError="true" author="peter-data-fi" id="20230209-003">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <not>-->
+<!--                <columnExists tableName="hepatitis_enrollments" columnName="care_entry_point" />-->
+<!--            </not>-->
+<!--        </preConditions>-->
+<!--        <sql>-->
+<!--            ALTER TABLE hepatitis_enrollments-->
+<!--                ADD COLUMN care_entry_point character varying(255);-->
 
-        </sql>
-    </changeSet>
+<!--        </sql>-->
+<!--    </changeSet>-->
 
-    <changeSet failOnError="true" author="peter-data-fi" id="20230209-004">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="hepatitis_enrollments" columnName="facility_id" />
-            </not>
-        </preConditions>
-        <sql>
-            ALTER TABLE hepatitis_enrollments
-                ADD COLUMN facility_id bigint;
+<!--    <changeSet failOnError="true" author="peter-data-fi" id="20230209-004">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <not>-->
+<!--                <columnExists tableName="hepatitis_enrollments" columnName="facility_id" />-->
+<!--            </not>-->
+<!--        </preConditions>-->
+<!--        <sql>-->
+<!--            ALTER TABLE hepatitis_enrollments-->
+<!--                ADD COLUMN facility_id bigint;-->
 
-        </sql>
-    </changeSet>
+<!--        </sql>-->
+<!--    </changeSet>-->
 
-    <changeSet failOnError="true" author="peter-data-fi" id="20230209-005">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="hepatitis_enrollments" columnName="history_of_using_abused_substance" />
-            </not>
-        </preConditions>
-        <sql>
-            ALTER TABLE hepatitis_enrollments
-                ADD COLUMN history_of_using_abused_substance character varying(255);
+<!--    <changeSet failOnError="true" author="peter-data-fi" id="20230209-005">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <not>-->
+<!--                <columnExists tableName="hepatitis_enrollments" columnName="history_of_using_abused_substance" />-->
+<!--            </not>-->
+<!--        </preConditions>-->
+<!--        <sql>-->
+<!--            ALTER TABLE hepatitis_enrollments-->
+<!--                ADD COLUMN history_of_using_abused_substance character varying(255);-->
 
-        </sql>
-    </changeSet>
+<!--        </sql>-->
+<!--    </changeSet>-->
     <!--    hepatitis_diagnosis added field for ast, plt and alt-->
 
-    <changeSet failOnError="true" author="gamaliel-data-fi" id="20230209-0005">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="hepatitis_diagnosis" columnName="ast_plt_alt" />
-            </not>
-        </preConditions>
-        <sql>
-            ALTER TABLE hepatitis_diagnosis
-            ADD COLUMN ast_plt_alt JSONB;
-        </sql>
-    </changeSet>
+<!--    <changeSet failOnError="true" author="gamaliel-data-fi" id="20230209-0005">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <not>-->
+<!--                <columnExists tableName="hepatitis_diagnosis" columnName="ast_plt_alt" />-->
+<!--            </not>-->
+<!--        </preConditions>-->
+<!--        <sql>-->
+<!--            ALTER TABLE hepatitis_diagnosis-->
+<!--            ADD COLUMN ast_plt_alt JSONB;-->
+<!--        </sql>-->
+<!--    </changeSet>-->
 
-    <changeSet failOnError="true" author="peter-data-fi" id="20230209-006">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="hepatitis_enrollments" columnName="pregnancy" />
-            </not>
-        </preConditions>
-        <sql>
-            ALTER TABLE hepatitis_enrollments
-                ADD COLUMN pregnancy character varying(255);
+<!--    <changeSet failOnError="true" author="peter-data-fi" id="20230209-006">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <not>-->
+<!--                <columnExists tableName="hepatitis_enrollments" columnName="pregnancy" />-->
+<!--            </not>-->
+<!--        </preConditions>-->
+<!--        <sql>-->
+<!--            ALTER TABLE hepatitis_enrollments-->
+<!--                ADD COLUMN pregnancy character varying(255);-->
 
-        </sql>
-    </changeSet>
+<!--        </sql>-->
+<!--    </changeSet>-->
 <!--    hepatitis_diagnosis-->
-    <changeSet failOnError="true" author="peter-data-fi" id="20230209-007">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="hepatitis_diagnosis" columnName="hepatitis_enrollment_uuid" />
-            </not>
-        </preConditions>
-        <sql>
-            ALTER TABLE hepatitis_diagnosis
-                ADD COLUMN hepatitis_enrollment_uuid character varying COLLATE pg_catalog."default";
+<!--    <changeSet failOnError="true" author="peter-data-fi" id="20230209-007">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <not>-->
+<!--                <columnExists tableName="hepatitis_diagnosis" columnName="hepatitis_enrollment_uuid" />-->
+<!--            </not>-->
+<!--        </preConditions>-->
+<!--        <sql>-->
+<!--&#45;&#45;             ALTER TABLE hepatitis_diagnosis-->
+<!--&#45;&#45;                 ADD COLUMN hepatitis_enrollment_uuid character varying COLLATE pg_catalog."default";-->
 
-            ALTER TABLE hepatitis_diagnosis
-                ADD CONSTRAINT hepatitis_diagnosis_hepatitis_enrollment_uuid_fk
-                    FOREIGN KEY (hepatitis_enrollment_uuid) REFERENCES hepatitis_enrollments (uuid);
-        </sql>
-    </changeSet>
+<!--            ALTER TABLE hepatitis_diagnosis-->
+<!--                ADD CONSTRAINT hepatitis_diagnosis_hepatitis_enrollment_uuid_fk-->
+<!--                    FOREIGN KEY (hepatitis_enrollment_uuid) REFERENCES hepatitis_enrollments (uuid);-->
+<!--        </sql>-->
+<!--    </changeSet>-->
 
-    <changeSet failOnError="true" author="peter-data-fi" id="20230209-008">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="hepatitis_diagnosis" columnName="archived" />
-            </not>
-        </preConditions>
-        <sql>
-            ALTER TABLE hepatitis_diagnosis
-                ADD COLUMN archived integer;
+<!--    <changeSet failOnError="true" author="peter-data-fi" id="20230209-008">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <not>-->
+<!--                <columnExists tableName="hepatitis_diagnosis" columnName="archived" />-->
+<!--            </not>-->
+<!--        </preConditions>-->
+<!--        <sql>-->
+<!--            ALTER TABLE hepatitis_diagnosis-->
+<!--                ADD COLUMN archived integer;-->
 
-        </sql>
-    </changeSet>
+<!--        </sql>-->
+<!--    </changeSet>-->
 
-    <changeSet failOnError="true" author="peter-data-fi" id="20230209-009">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="hepatitis_diagnosis" columnName="facility_id" />
-            </not>
-        </preConditions>
-        <sql>
-            ALTER TABLE hepatitis_diagnosis
-                ADD COLUMN facility_id bigint;
+<!--    <changeSet failOnError="true" author="peter-data-fi" id="20230209-009">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <not>-->
+<!--                <columnExists tableName="hepatitis_diagnosis" columnName="facility_id" />-->
+<!--            </not>-->
+<!--        </preConditions>-->
+<!--        <sql>-->
+<!--            ALTER TABLE hepatitis_diagnosis-->
+<!--                ADD COLUMN facility_id bigint;-->
 
-        </sql>
-    </changeSet>
+<!--        </sql>-->
+<!--    </changeSet>-->
 
     <changeSet failOnError="true" author="peter-data-fi" id="20230209-010">
         <preConditions onFail="MARK_RAN">
@@ -147,47 +147,47 @@
                 onUpdate="CASCADE"/>
     </changeSet>
 
-    <changeSet failOnError="true" author="peter-data-fi" id="20230209-011">
-        <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="1">
-                SELECT COUNT(*)
-                FROM information_schema.table_constraints
-                WHERE constraint_name = 'hepatitis_diagnosis_hepatitis_enrollments_fk_uuid'
-                  AND table_name = 'hepatitis_diagnosis';
-            </sqlCheck>
-        </preConditions>
-        <sql>
-            ALTER TABLE hepatitis_diagnosis
-            DROP CONSTRAINT hepatitis_diagnosis_hepatitis_enrollments_fk_uuid;
-        </sql>
-    </changeSet>
+<!--    <changeSet failOnError="true" author="peter-data-fi" id="20230209-011">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <sqlCheck expectedResult="1">-->
+<!--                SELECT COUNT(*)-->
+<!--                FROM information_schema.table_constraints-->
+<!--                WHERE constraint_name = 'hepatitis_diagnosis_hepatitis_enrollments_fk_uuid'-->
+<!--                  AND table_name = 'hepatitis_diagnosis';-->
+<!--            </sqlCheck>-->
+<!--        </preConditions>-->
+<!--        <sql>-->
+<!--            ALTER TABLE hepatitis_diagnosis-->
+<!--            DROP CONSTRAINT hepatitis_diagnosis_hepatitis_enrollments_fk_uuid;-->
+<!--        </sql>-->
+<!--    </changeSet>-->
 
 <!--    hepatitis_treatments-->
-    <changeSet failOnError="true" author="peter-data-fi" id="20230209-012">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="hepatitis_treatments" columnName="archived" />
-            </not>
-        </preConditions>
-        <sql>
-            ALTER TABLE hepatitis_treatments
-                ADD COLUMN archived integer;
+<!--    <changeSet failOnError="true" author="peter-data-fi" id="20230209-012">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <not>-->
+<!--                <columnExists tableName="hepatitis_treatments" columnName="archived" />-->
+<!--            </not>-->
+<!--        </preConditions>-->
+<!--        <sql>-->
+<!--            ALTER TABLE hepatitis_treatments-->
+<!--                ADD COLUMN archived integer;-->
 
-        </sql>
-    </changeSet>
+<!--        </sql>-->
+<!--    </changeSet>-->
 
-    <changeSet failOnError="true" author="peter-data-fi" id="20230209-013">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="hepatitis_treatments" columnName="facility_id" />
-            </not>
-        </preConditions>
-        <sql>
-            ALTER TABLE hepatitis_treatments
-                ADD COLUMN facility_id bigint;
+<!--    <changeSet failOnError="true" author="peter-data-fi" id="20230209-013">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <not>-->
+<!--                <columnExists tableName="hepatitis_treatments" columnName="facility_id" />-->
+<!--            </not>-->
+<!--        </preConditions>-->
+<!--        <sql>-->
+<!--            ALTER TABLE hepatitis_treatments-->
+<!--                ADD COLUMN facility_id bigint;-->
 
-        </sql>
-    </changeSet>
+<!--        </sql>-->
+<!--    </changeSet>-->
 
     <changeSet failOnError="true" author="peter-data-fi" id="20230209-014">
         <preConditions onFail="MARK_RAN">
@@ -210,82 +210,109 @@
                 onUpdate="CASCADE"/>
     </changeSet>
 
-    <changeSet failOnError="true" author="peter-data-fi" id="20230209-015">
-        <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="1">
-                SELECT COUNT(*)
-                FROM information_schema.table_constraints
-                WHERE constraint_name = 'hepatitis_treatments_hepatitis_enrollments_fk_uuid'
-                  AND table_name = 'hepatitis_treatments';
-            </sqlCheck>
-        </preConditions>
-        <sql>
-            ALTER TABLE hepatitis_treatments
-            DROP CONSTRAINT hepatitis_treatments_hepatitis_enrollments_fk_uuid;
-        </sql>
-    </changeSet>
+<!--    <changeSet failOnError="true" author="peter-data-fi" id="20230209-015">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <sqlCheck expectedResult="1">-->
+<!--                SELECT COUNT(*)-->
+<!--                FROM information_schema.table_constraints-->
+<!--                WHERE constraint_name = 'hepatitis_treatments_hepatitis_enrollments_fk_uuid'-->
+<!--                  AND table_name = 'hepatitis_treatments';-->
+<!--            </sqlCheck>-->
+<!--        </preConditions>-->
+<!--        <sql>-->
+<!--            ALTER TABLE hepatitis_treatments-->
+<!--            DROP CONSTRAINT hepatitis_treatments_hepatitis_enrollments_fk_uuid;-->
+<!--        </sql>-->
+<!--    </changeSet>-->
     <!--    hepatitis_followups -->
-    <changeSet failOnError="true" author="emmanuel-data-fi" id="20240423-016">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="hepatitis_followups" columnName="archived" />
-            </not>
-        </preConditions>
-        <sql>
-            ALTER TABLE hepatitis_followups
-                ADD COLUMN archived integer;
+<!--    <changeSet failOnError="true" author="emmanuel-data-fi" id="20240423-016">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <not>-->
+<!--                <columnExists tableName="hepatitis_followups" columnName="archived" />-->
+<!--            </not>-->
+<!--        </preConditions>-->
+<!--        <sql>-->
+<!--            ALTER TABLE hepatitis_followups-->
+<!--                ADD COLUMN archived integer;-->
 
-        </sql>
-    </changeSet>
+<!--        </sql>-->
+<!--    </changeSet>-->
 
-    <changeSet failOnError="true" author="emmanuel-data-fi" id="20240423-017">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="hepatitis_followups" columnName="facility_id" />
-            </not>
-        </preConditions>
-        <sql>
-            ALTER TABLE hepatitis_followups
-                ADD COLUMN facility_id bigint;
+<!--    <changeSet failOnError="true" author="emmanuel-data-fi" id="20240423-017">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <not>-->
+<!--                <columnExists tableName="hepatitis_followups" columnName="facility_id" />-->
+<!--            </not>-->
+<!--        </preConditions>-->
+<!--        <sql>-->
+<!--            ALTER TABLE hepatitis_followups-->
+<!--                ADD COLUMN facility_id bigint;-->
 
-        </sql>
-    </changeSet>
+<!--        </sql>-->
+<!--    </changeSet>-->
 
-    <changeSet failOnError="true" author="emmanuel-data-fi" id="20240423-018">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="hepatitis_followups" columnName="enrollment_uuid" />
-            </not>
-        </preConditions>
-        <addColumn tableName="hepatitis_followups">
-            <column name="enrollment_uuid" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-        </addColumn>
-        <addForeignKeyConstraint
-                baseTableName="hepatitis_followups"
-                baseColumnNames="enrollment_uuid"
-                constraintName="fk_hepatitis_followups_enrollment"
-                referencedTableName="hepatitis_enrollments"
-                referencedColumnNames="uuid"
-                onDelete="CASCADE"
-                onUpdate="CASCADE"/>
-    </changeSet>
+<!--    <changeSet failOnError="true" author="emmanuel-data-fi" id="20240423-018">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <not>-->
+<!--                <columnExists tableName="hepatitis_followups" columnName="enrollment_uuid" />-->
+<!--            </not>-->
+<!--        </preConditions>-->
+<!--        <addColumn tableName="hepatitis_followups">-->
+<!--            <column name="enrollment_uuid" type="VARCHAR(255)">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+<!--        </addColumn>-->
+<!--        <addForeignKeyConstraint-->
+<!--                baseTableName="hepatitis_followups"-->
+<!--                baseColumnNames="enrollment_uuid"-->
+<!--                constraintName="fk_hepatitis_followups_enrollment"-->
+<!--                referencedTableName="hepatitis_enrollments"-->
+<!--                referencedColumnNames="uuid"-->
+<!--                onDelete="CASCADE"-->
+<!--                onUpdate="CASCADE"/>-->
+<!--    </changeSet>-->
 
-    <changeSet failOnError="true" author="emmanuel-data-fi" id="20240423-019">
-        <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="1">
-                SELECT COUNT(*)
-                FROM information_schema.table_constraints
-                WHERE constraint_name = 'hepatitis_followups_hepatitis_enrollments_fk_uuid'
-                  AND table_name = 'hepatitis_followups';
-            </sqlCheck>
-        </preConditions>
-        <sql>
-            ALTER TABLE hepatitis_followups
-            DROP CONSTRAINT hepatitis_followups_hepatitis_enrollments_fk_uuid;
-        </sql>
-    </changeSet>
+<!--    <changeSet failOnError="true" author="emmanuel-data-fi" id="20240423-019">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <sqlCheck expectedResult="1">-->
+<!--                SELECT COUNT(*)-->
+<!--                FROM information_schema.table_constraints-->
+<!--                WHERE constraint_name = 'hepatitis_followups_hepatitis_enrollments_fk_uuid'-->
+<!--                  AND table_name = 'hepatitis_followups';-->
+<!--            </sqlCheck>-->
+<!--        </preConditions>-->
+<!--        <sql>-->
+<!--            ALTER TABLE hepatitis_followups-->
+<!--            DROP CONSTRAINT hepatitis_followups_hepatitis_enrollments_fk_uuid;-->
+<!--        </sql>-->
+<!--    </changeSet>-->
+
+<!--    <changeSet failOnError="true" author="josh-data.fi" id="20240905-01">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <not>-->
+<!--                <columnExists tableName="hepatitis_treatments" columnName="latitude" />-->
+<!--                <columnExists tableName="hepatitis_treatments" columnName="longitude" />-->
+<!--                <columnExists tableName="hepatitis_treatments" columnName="source" />-->
+<!--                <columnExists tableName="hepatitis_diagnosis" columnName="latitude" />-->
+<!--                <columnExists tableName="hepatitis_diagnosis" columnName="longitude" />-->
+<!--                <columnExists tableName="hepatitis_diagnosis" columnName="source" />-->
+<!--                <columnExists tableName="hepatitis_enrollments" columnName="latitude" />-->
+<!--                <columnExists tableName="hepatitis_enrollments" columnName="longitude" />-->
+<!--                <columnExists tableName="hepatitis_enrollments" columnName="source" />-->
+<!--            </not>-->
+<!--        </preConditions>-->
+<!--        <sql>-->
+<!--            ALTER TABLE hepatitis_treatments ADD COLUMN latitude varchar(255);-->
+<!--            ALTER TABLE hepatitis_treatments ADD COLUMN longitude varchar(255);-->
+<!--            ALTER TABLE hepatitis_treatments ADD COLUMN source varchar(25);-->
+<!--            ALTER TABLE hepatitis_diagnosis ADD COLUMN latitude varchar(255);-->
+<!--            ALTER TABLE hepatitis_diagnosis ADD COLUMN longitude varchar(255);-->
+<!--            ALTER TABLE hepatitis_diagnosis ADD COLUMN source varchar(25);-->
+<!--            ALTER TABLE hepatitis_enrollments ADD COLUMN latitude varchar(255);-->
+<!--            ALTER TABLE hepatitis_enrollments ADD COLUMN longitude varchar(255);-->
+<!--            ALTER TABLE hepatitis_enrollments ADD COLUMN source varchar(25);-->
+<!--        </sql>-->
+<!--    </changeSet>-->
 </databaseChangeLog>
 
 

@@ -67,16 +67,24 @@ export const useValidatePatientDashboardDiagnosisFormValuesHook = (onSubmit, use
 
     hbvDna: yup.string(),//done
 
-    hbvDnaValue: yup.number().when("hbvDna", {
+    hbvDnaValue: !isUpdate? yup.mixed().when("hbvDna", {
+      is: (hbvDna) => hbvDna === "DETECTED",
+      then: yup.number().typeError(numberTypeError).required(requiredTextPrompt),
+      otherwise: yup.mixed(),
+    }): yup.number().when("hbvDna", {
         is: (hbvDna) => hbvDna === "DETECTED",
         then: yup.number().typeError(numberTypeError).required(requiredTextPrompt),
         otherwise: yup.number().typeError(numberTypeError),
       }),//done
 
-    hbsAgQuantification: yup.number().when("hbvDna", {
+    hbsAgQuantification: !isUpdate? yup.mixed().when("hbvDna", {
+      is: (hbvDna) => hbvDna === "DETECTED",
+      then: yup.number().typeError(numberTypeError).required(requiredTextPrompt),
+      otherwise: yup.mixed(),
+    }): yup.number().typeError(numberTypeError).when("hbvDna", {
         is: (hbvDna) => hbvDna === "DETECTED",
-        then: yup.number().required(requiredTextPrompt),
-        otherwise: yup.number(),
+        then: yup.number().typeError(numberTypeError).required(requiredTextPrompt),
+        otherwise: yup.number().typeError(numberTypeError),
       }),//done
     
     

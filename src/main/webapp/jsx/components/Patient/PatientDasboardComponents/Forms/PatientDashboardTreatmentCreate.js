@@ -245,10 +245,7 @@ const PatientDashboardTreatment = ({
   });
 
   const handleSubmit = (values) => {
-    if (isRecordOnSameDateExists) {
-      toast.error("You have filled treatment form today") 
-      return
-    }
+
 
     const hepatitisBTreatment = {};
     const hepatitisCTreatment = {};

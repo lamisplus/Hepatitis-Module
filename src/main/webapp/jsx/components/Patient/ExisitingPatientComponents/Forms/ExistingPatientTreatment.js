@@ -228,10 +228,6 @@ const ExistingPatientTreatment = ({ step, setStep }) => {
 
   const handleSubmit = (values) => {
 
-    if (isRecordOnSameDateExists) {
-      toast.error("You have filled treatment form today") 
-      return
-    }
 
     const hepatitisBTreatment = {};
     const hepatitisCTreatment = {};
@@ -272,17 +268,17 @@ const ExistingPatientTreatment = ({ step, setStep }) => {
       ["FECTH_RECENT_ACTIVITIES", patientObj?.uuid || patientObj?.personUuid],
       () => getRecentActivties(patientObj?.uuid || patientObj?.personUuid),
       {
-        onSuccess: (data) => {
-          if (data && Array.isArray(data) && data?.length !== 0) {
-            const allRecentDiagnosis = data.filter((activity) => activity.path === "hepatitis_treatment" && activity?.activityDate === getTodayDate())
-            if (allRecentDiagnosis.length !== 0) {
-              setIsRecordOnSameDateExists(true)
-            }
-            else {
-              setIsRecordOnSameDateExists(false)
-            }
-          }
-        },
+        // onSuccess: (data) => {
+        //   if (data && Array.isArray(data) && data?.length !== 0) {
+        //     const allRecentDiagnosis = data.filter((activity) => activity.path === "hepatitis_treatment" && activity?.activityDate === getTodayDate())
+        //     if (allRecentDiagnosis.length !== 0) {
+        //       setIsRecordOnSameDateExists(true)
+        //     }
+        //     else {
+        //       setIsRecordOnSameDateExists(false)
+        //     }
+        //   }
+        // },
       }
     );
 
